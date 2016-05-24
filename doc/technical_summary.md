@@ -4,4 +4,4 @@ This document provides the technical summary for implementing VoiceMyNews so tha
 
 # Technical summary
 
-![Platform components](https://raw.githubusercontent.com/rcosnita/voicemynews/master/doc/images/platform_components.png)
+![Platform components](/rcosnita/voicemynews/blob/rcosnita/initial-proposal/doc/images/platform_components.png)
