@@ -5,16 +5,32 @@ VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "VoiceMyNewsCore", "VoiceMyNewsCore\VoiceMyNewsCore.vcxproj", "{041F327D-691A-427F-A2D6-7195D0C70B0C}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "VoiceMyNewsCoreTests", "VoiceMyNewsCoreTests\VoiceMyNewsCoreTests.vcxproj", "{9F73C064-203E-48DD-883B-31A7D29844AC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
 		Release|x64 = Release|x64
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{041F327D-691A-427F-A2D6-7195D0C70B0C}.Debug|x64.ActiveCfg = Debug|x64
 		{041F327D-691A-427F-A2D6-7195D0C70B0C}.Debug|x64.Build.0 = Debug|x64
+		{041F327D-691A-427F-A2D6-7195D0C70B0C}.Debug|x86.ActiveCfg = Debug|Win32
+		{041F327D-691A-427F-A2D6-7195D0C70B0C}.Debug|x86.Build.0 = Debug|Win32
 		{041F327D-691A-427F-A2D6-7195D0C70B0C}.Release|x64.ActiveCfg = Release|x64
 		{041F327D-691A-427F-A2D6-7195D0C70B0C}.Release|x64.Build.0 = Release|x64
+		{041F327D-691A-427F-A2D6-7195D0C70B0C}.Release|x86.ActiveCfg = Release|Win32
+		{041F327D-691A-427F-A2D6-7195D0C70B0C}.Release|x86.Build.0 = Release|Win32
+		{9F73C064-203E-48DD-883B-31A7D29844AC}.Debug|x64.ActiveCfg = Debug|x64
+		{9F73C064-203E-48DD-883B-31A7D29844AC}.Debug|x64.Build.0 = Debug|x64
+		{9F73C064-203E-48DD-883B-31A7D29844AC}.Debug|x86.ActiveCfg = Debug|Win32
+		{9F73C064-203E-48DD-883B-31A7D29844AC}.Debug|x86.Build.0 = Debug|Win32
+		{9F73C064-203E-48DD-883B-31A7D29844AC}.Release|x64.ActiveCfg = Release|x64
+		{9F73C064-203E-48DD-883B-31A7D29844AC}.Release|x64.Build.0 = Release|x64
+		{9F73C064-203E-48DD-883B-31A7D29844AC}.Release|x86.ActiveCfg = Release|Win32
+		{9F73C064-203E-48DD-883B-31A7D29844AC}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -5,6 +5,21 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tga;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="io">
+      <UniqueIdentifier>{f3df9dab-07fd-4bd1-a071-35f9a1cb9c19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="network">
+      <UniqueIdentifier>{26a04ea7-5073-4ac7-a939-3beed5f2db8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="io\fs">
+      <UniqueIdentifier>{a071575d-8915-4c78-9807-612e250ed310}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="io\storage">
+      <UniqueIdentifier>{f95a300e-c9c2-43d7-828a-27b8a2f8c91d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="analytics">
+      <UniqueIdentifier>{917b8e8f-ab80-4acb-a56a-56ac10b8b064}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
