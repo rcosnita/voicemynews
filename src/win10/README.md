@@ -1,3 +1,12 @@
+<!-- MarkdownTOC -->
+
+- Summary
+- Target devices
+- Getting started
+
+<!-- /MarkdownTOC -->
+
+
 # Summary
 
 This folder holds the implementation for Windows 10 platform.
