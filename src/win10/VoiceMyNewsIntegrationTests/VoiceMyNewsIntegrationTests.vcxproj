@@ -145,14 +145,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AnalyticsTests.cpp" />
+    <ClCompile Include="..\..\..\tests\integrationtests\core\c++\analytics\AnalyticsTests.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="VoiceMyNewsIntegrationTests.cpp" />
   </ItemGroup>

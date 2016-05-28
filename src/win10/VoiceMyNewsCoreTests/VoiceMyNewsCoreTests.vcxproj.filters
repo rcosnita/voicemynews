@@ -32,7 +32,13 @@
     <ClCompile Include="VoiceMyNewsCoreTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AnalyticsTests.cpp">
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\gtest\gtest-all.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\gmock\gmock-all.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\tests\unittests\core\c++\analytics\AnalyticsTests.cpp">
       <Filter>Source Files\analytics</Filter>
     </ClCompile>
   </ItemGroup>

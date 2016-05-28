@@ -149,7 +149,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AnalyticsTests.cpp" />
+    <ClCompile Include="..\..\..\tests\unittests\core\c++\analytics\AnalyticsTests.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="VoiceMyNewsCoreTests.cpp" />
   </ItemGroup>
