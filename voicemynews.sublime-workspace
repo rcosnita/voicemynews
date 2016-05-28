@@ -1,1 +1,501 @@
-{}
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"TESTFILTER",
+				"TESTFILTER_FILES_WIN32"
+			],
+			[
+				"tar",
+				"target_link_libraries"
+			],
+			[
+				"cmake_",
+				"cmake_minimum_required"
+			],
+			[
+				"PROJ",
+				"PROJECT_SOURCE_DIR"
+			],
+			[
+				"ver",
+				"_verbose"
+			],
+			[
+				"build",
+				"buildCfg"
+			],
+			[
+				"neigh",
+				"neighbours"
+			],
+			[
+				"is",
+				"isListeneningCallback"
+			],
+			[
+				"socket",
+				"socket1"
+			],
+			[
+				"lis",
+				"listening"
+			],
+			[
+				"confiu",
+				"configureProgram"
+			],
+			[
+				"server",
+				"server2Socket"
+			],
+			[
+				"v8",
+				"v8-libfolder"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 335.0,
+		"last_filter": "preview",
+		"selected_items":
+		[
+			[
+				"preview",
+				"Markdown Preview: Preview in Browser"
+			],
+			[
+				"markdown toc",
+				"MarkdownTOC:Insert TOC"
+			],
+			[
+				"pre",
+				"Markdown Preview: Preview in Browser"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"install ",
+				"Package Control: Install Package"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"ma",
+				"Markdown Preview: Preview in Browser"
+			],
+			[
+				"Package Control: install",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: install package",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: instal",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 816.0
+	},
+	"console":
+	{
+		"height": 186.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '2915d1851351e5ee549c20394736b442' + '8bc59f460fa1548d1514676163dafc88'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by) "
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/win10",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/core",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/core/js"
+	],
+	"file_history":
+	[
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/win10/README.md",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/README.md",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/win10/.gitignore",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/core/js/README.md",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/core/c++/README.md",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/core/README.md",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/win10/README.md",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/ios/README.md",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/android/README.md",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/core/README.md",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/android/README.md",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/ios/README.md",
+		"/C/Users/cosnita.ADOBENET/tutorials/ChakraCoreGettingStarted/README.md",
+		"/C/Users/cosnita.ADOBENET/tutorials/ChakraCoreGettingStarted/ChakraCoreGettingStarted/js/app.js",
+		"/C/Users/cosnita.ADOBENET/Documents/Visual Studio 2015/Projects/uwp-brokeredcomp-nativedll/BrokeredComponentStub/BrokeredComponentStub.vcxproj",
+		"/C/Comet/sparkler-shell/Sparkler/SparklerWindows/SparklerApp/SparklerApp.vcxproj",
+		"/C/Users/cosnita.ADOBENET/tutorials/ChakraCoreGettingStarted/ChakraCoreGettingStarted/ChakraCoreGettingStarted.vcxproj",
+		"/C/Users/cosnita.ADOBENET/Documents/Visual Studio 2015/Projects/uwp-brokeredcomp-nativedll/README.md",
+		"/C/Users/cosnita.ADOBENET/Documents/Visual Studio 2015/Projects/uwp-brokeredcomp-nativedll/.gitignore",
+		"/C/Users/cosnita.ADOBENET/Documents/Visual Studio 2015/Projects/BrokeredSampleUWP/Win32Wrapper/Win32Wrapper.vcxproj",
+		"/C/Users/cosnita.ADOBENET/tutorials/ChakraCoreGettingStarted/.gitignore",
+		"/C/Comet/sparkler-shell/package.json",
+		"/C/Users/cosnita.ADOBENET/tutorials/amtlib-integration/x64/Debug/AMT/application.xml",
+		"/C/Users/cosnita.ADOBENET/Documents/Visual Studio 2015/Projects/BrokeredSampleUWP/.gitignore",
+		"/C/Comet/sparkler-shell/README.md",
+		"/C/Comet/sparkler-shell/README-win10.md",
+		"/C/Users/cosnita.ADOBENET/tutorials/Windows-universal-samples/.gitignore",
+		"/C/Users/cosnita.ADOBENET/tutorials/cmake-tutorial/README.md",
+		"/C/Users/cosnita.ADOBENET/tutorials/cmake-tutorial/Main/CMakeLists.txt",
+		"/C/Users/cosnita.ADOBENET/tutorials/cmake-tutorial/Project1/CMakeLists.txt",
+		"/C/Users/cosnita.ADOBENET/tutorials/cmake-tutorial/Project1/testfilter/proj3.cpp",
+		"/C/Users/cosnita.ADOBENET/tutorials/cmake-tutorial/Project1/testfilter/CMakeLists.txt",
+		"/C/Users/cosnita.ADOBENET/tutorials/cmake-tutorial/Project1/proj2.cpp",
+		"/C/Users/cosnita.ADOBENET/tutorials/cmake-tutorial/Project1/proj1.cpp",
+		"/C/Users/cosnita.ADOBENET/tutorials/cmake-tutorial/.gitignore",
+		"/C/Users/cosnita.ADOBENET/tutorials/cmake-tutorial/Project2/CMakeLists.txt",
+		"/C/Users/cosnita.ADOBENET/tutorials/cmake-tutorial/main.cpp",
+		"/C/Users/cosnita.ADOBENET/tutorials/cmake-tutorial/CMakeLists.txt",
+		"/C/Users/cosnita.ADOBENET/tutorials/cmake-tutorial/Project2/proj2.h",
+		"/C/Users/cosnita.ADOBENET/tutorials/cmake-tutorial/Project2/proj2.cpp",
+		"/C/Users/cosnita.ADOBENET/tutorials/cmake-tutorial/Project1/proj1.h",
+		"/C/Users/cosnita.ADOBENET/tutorials/cmake-tutorial/Tutorial/tutorial.cpp",
+		"/C/Users/cosnita.ADOBENET/tutorials/cmake-tutorial/ALL_BUILD.vcxproj",
+		"/C/Users/cosnita.ADOBENET/tutorials/cmake-tutorial/Tutorial/version.h.in",
+		"/C/Users/cosnita.ADOBENET/tutorials/cmake-tutorial/MathFunctions/CMakeLists.txt",
+		"/C/Users/cosnita.ADOBENET/tutorials/cmake-tutorial/MathFunctions/CMakesLists.txt",
+		"/C/Users/cosnita.ADOBENET/tutorials/cmake-tutorial/MathFunctions/mysqrt.cpp",
+		"/C/Users/cosnita.ADOBENET/tutorials/cmake-tutorial/MathFunctions/mysqrt.h",
+		"/C/Users/cosnita.ADOBENET/tutorials/cmake-tutorial/MathFunctions",
+		"/C/Users/cosnita.ADOBENET/tutorials/cmake-tutorial/CMakeLists",
+		"/C/Users/cosnita.ADOBENET/Documents/Visual Studio 2015/Projects/UnmanagedAndManaged/.gitignore",
+		"/C/Users/cosnita.ADOBENET/Documents/Visual Studio 2015/Projects/LoopbackRuntimeExempt/.gitignore",
+		"/C/Users/cosnita.ADOBENET/work/sockets-proxy/src/socket_wrapper.js",
+		"/C/Comet/sparkler-shell/Gruntfile.js",
+		"/C/Users/cosnita.ADOBENET/work/sockets-proxy/proxy.js",
+		"/C/Comet/sparkler-shell/npm-shrinkwrap.json",
+		"/C/Users/cosnita.ADOBENET/work/sockets-proxy/src/arguments_parser.js",
+		"/C/Comet/sparkler-shell/Sparkler/SparklerWindows/README.md",
+		"/C/Users/cosnita.ADOBENET/work-personal/node/BUILDING.md",
+		"/C/Users/cosnita.ADOBENET/work/sockets-proxy/spec/socket_wrapper_spec.js",
+		"/C/Users/cosnita.ADOBENET/work/sockets-proxy/spec/arguments_parser_spec.js",
+		"/C/Users/cosnita.ADOBENET/work/sockets-proxy/package.json",
+		"/C/Users/cosnita.ADOBENET/work/sockets-proxy/README.md",
+		"/C/Comet/listener.js",
+		"/C/Users/cosnita.ADOBENET/work/sockets-proxy/spec/support/jasmine.json",
+		"/C/Users/cosnita.ADOBENET/work/sockets-proxy/.gitignore",
+		"/C/Users/cosnita.ADOBENET/work/sockets-proxy/LICENSE",
+		"/C/Users/cosnita.ADOBENET/work/sockets-proxy/sockets-proxy.sublime-project",
+		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/README.md",
+		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/_nuget/minizip/minizip.targets",
+		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/.gitignore",
+		"/C/Comet/sparkler-shell/.gitignore",
+		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/_nuget/skia/skia.targets",
+		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/_nuget/rapidjson/RapidJson.targets",
+		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/_nuget/zlib/zlib.targets",
+		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/_nuget/planarmap/planarmap.targets",
+		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/_nuget/offsetpath/offsetpath.targets",
+		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/_nuget/highbeam/highbeam.targets",
+		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/_nuget/amtlib/amtlib.targets",
+		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/_nuget/v8/v8.targets",
+		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/_nuget/v8/v8.uwp.targets",
+		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/_nuget/v8/v8.nuspec",
+		"/C/Users/cosnita.ADOBENET/work/sparkler-shell/Sparkler/SparklerWindows/README.md",
+		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/_nuget/minizip/minizip.nuspec",
+		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/_nuget/minizip/package.ps1",
+		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/_nuget/minizip/build.ps1",
+		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/_nuget/skia/tmp-skia/src/ports/SkFontMgr_win_dw.cpp",
+		"/C/Comet/local_repository/v8.4.10.253/lib/v8.lib",
+		"/C/Users/cosnita.ADOBENET/work/sparkler-shell/.gitignore",
+		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/README.md",
+		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/zlib/zlib.nuspec",
+		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/zlib/package.ps1",
+		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/rapidjson/RapidJson.nuspec",
+		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/rapidjson/package.ps1",
+		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/rapidjson/tmp-rapidjson/readme.md",
+		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/scripts_utils/files_helper.ps1",
+		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/rapidjson/build.ps1",
+		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/scripts_utils/java/ChecksumGenerator.java",
+		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/setup_local_repository.ps1",
+		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/scripts_utils/common_paths.ps1",
+		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/v8/v8.nuspec",
+		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/scripts_utils/depottools_setup.ps1",
+		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/scripts_utils/nuget_packager.ps1",
+		"/C/Users/cosnita.ADOBENET/AppData/Roaming/Sublime Text 3/Packages/User/SideBarEnhancements/Open With/Side Bar.sublime-menu",
+		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/v8/package.ps1",
+		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/v8/build.psm1",
+		"/C/Users/cosnita.ADOBENET/AppData/Roaming/Sublime Text 3/Packages/Default/Preferences.sublime-settings",
+		"/C/Users/cosnita.ADOBENET/AppData/Roaming/Sublime Text 3/Packages/User/Side Bar Folders.sublime-settings",
+		"/C/Users/cosnita.ADOBENET/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/C/Users/cosnita.ADOBENET/AppData/Roaming/Sublime Text 3/Packages/User/Package Control.sublime-settings",
+		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/v8/tmp-v8/build/gyp_v8.py",
+		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/v8/tmp-v8/build/gyp_v8",
+		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/v8/depot_tools/fetch_configs/config_util.py",
+		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/v8/build_v8_sparkler.sh",
+		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/v8/build.ps1",
+		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/scripts/v8/build.ps1",
+		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/scripts",
+		"/C/Users/cosnita.ADOBENET/work/sparkler-shell/Sparkler/Sparkler/win/app/src/views/PropertyPaneContainer.js6",
+		"/C/Users/cosnita.ADOBENET/work/sparkler-shell/Sparkler/Sparkler/win/app/public/components/layers-panel/comet_model.js",
+		"/C/Users/cosnita.ADOBENET/work/sparkler-shell/Sparkler/Sparkler/win/app/public/components/layers-panel/css/layersPanel.css",
+		"/C/Users/cosnita.ADOBENET/work/sparkler-shell/Sparkler/Sparkler/index.html",
+		"/C/Users/cosnita.ADOBENET/work/sparkler-shell/Sparkler/Sparkler/win/app/src/Main.js6",
+		"/C/Users/cosnita.ADOBENET/work/sparkler-shell/Sparkler/Sparkler/win/app/build/components/layers-panel/css/layersPanel.css",
+		"/C/Users/cosnita.ADOBENET/work/sparkler-shell/Sparkler/Sparkler/win/app/build/components/layers-panel/comet_model.js",
+		"/C/Users/cosnita.ADOBENET/AppData/Roaming/Sublime Text 3/Packages/User/Babel.sublime-settings",
+		"/C/Users/cosnita.ADOBENET/work/sparkler-shell/Sparkler/Sparkler/win/app/src/views/MainView.js6",
+		"/C/Users/cosnita.ADOBENET/work/sparkler-shell/Sparkler/Sparkler/win/app/src/controllers/CometLayout.js6",
+		"/C/Users/cosnita.ADOBENET/work/sparkler-shell/Sparkler/Sparkler/win/app/src/views/RightPanel.js6"
+	],
+	"find":
+	{
+		"height": 44.0
+	},
+	"find_in_files":
+	{
+		"height": 138.0,
+		"where_history":
+		[
+			"C:\\Users\\cosnita.ADOBENET\\work\\sparkler-deps\\nuget",
+			"C:\\Users\\cosnita.ADOBENET\\work\\sparkler-shell\\Sparkler\\Sparkler\\win\\app\\src",
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"sockets-proxy",
+			"console.log",
+			"socketsProxy",
+			"sockets-proxy",
+			"socketsProxy",
+			"getSafePathToAppExecutableInBuildDirectory",
+			"debugbrk",
+			"\"start\"",
+			"node-inspector",
+			"nodeInspect",
+			"checkNodeInspector",
+			"configureNPM",
+			"load",
+			"shell:",
+			"sparkler:debug",
+			"dependencies",
+			"node-inspector",
+			"neighbours.push",
+			"connection",
+			"RapidJson",
+			"planarmap",
+			"offsetpath",
+			"highbeam",
+			"v8::local<class v8::String>",
+			"__cdecl v8::local<class v8::String>",
+			"__cdecl class v8::local<class v8::String>",
+			"class v8::local<class v8::String>",
+			"class v8::local",
+			"v8::local",
+			"v8::Local",
+			"SK_BUILD_FOR_WIN32",
+			"warning ",
+			"error",
+			"/MD",
+			"wind",
+			"v8",
+			"Must specify a a fetch/root action",
+			"../assets",
+			"notify",
+			"componets",
+			"componets/assets",
+			"assets/",
+			"../",
+			"rightPanelView",
+			"layout",
+			"layoutController"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"addNeighbour",
+			"zlib",
+			"RapidJson",
+			"planarmap",
+			"offsetpath",
+			"minizip",
+			"components/layers-panel/assets",
+			"components",
+			"componets/layers-panel/assets/",
+			"componets/assets/",
+			""
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 44.0
+	},
+	"input":
+	{
+		"height": 43.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "voicemynews.sublime-project",
+	"replace":
+	{
+		"height": 84.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"skfontmgr_d",
+				"tmp-skia\\src\\ports\\SkFontMgr_win_dw.cpp"
+			],
+			[
+				"index.html",
+				"Sparkler\\Sparkler\\index.html"
+			],
+			[
+				"layerspanel",
+				"Sparkler\\Sparkler\\win\\app\\public\\components\\layers-panel\\css\\layersPanel.css"
+			],
+			[
+				"layers",
+				"Sparkler\\Sparkler\\win\\app\\build\\components\\layers-panel\\css\\layersPanel.css"
+			],
+			[
+				"comet_model",
+				"Sparkler\\Sparkler\\win\\app\\public\\components\\layers-panel\\comet_model.js"
+			],
+			[
+				"comet_moe",
+				"Sparkler\\Sparkler\\win\\app\\build\\components\\layers-panel\\comet_model.js"
+			],
+			[
+				"main.js6",
+				"Sparkler\\Sparkler\\win\\app\\src\\Main.js6"
+			],
+			[
+				"propertypane",
+				"Sparkler\\Sparkler\\win\\app\\src\\views\\PropertyPaneContainer.js6"
+			],
+			[
+				"main.js",
+				"Sparkler\\Sparkler\\win\\app\\src\\Main.js6"
+			],
+			[
+				"propertypanecon",
+				"Sparkler\\Sparkler\\win\\app\\src\\views\\PropertyPaneContainer.js6"
+			],
+			[
+				"rightp",
+				"Sparkler\\Sparkler\\win\\app\\src\\views\\RightPanel.js6"
+			],
+			[
+				"cometlay",
+				"Sparkler\\Sparkler\\win\\app\\src\\controllers\\CometLayout.js6"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 1000.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 760.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 445.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

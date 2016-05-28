@@ -3,20 +3,20 @@
 
 namespace voicemynews {
 namespace tests {
-namespace unittesting {
+namespace integration {
 namespace core {
-class AnalyticsTest : public ::testing::Test {
+class AnalyticsIntegrationTest : public ::testing::Test {
 public:
-    AnalyticsTest() = default;
+    AnalyticsIntegrationTest() = default;
 
-    virtual ~AnalyticsTest() = default;
+    virtual ~AnalyticsIntegrationTest() = default;
 
     virtual void SetUp() { }
 
     virtual void TearDown() { }
 };
 
-TEST_F(AnalyticsTest, AnalyticsSayHelloOk) {
+TEST_F(AnalyticsIntegrationTest, AnalyticsSayHelloOk) {
     std::string msg = "Hello world !!!";
     auto output = voicemynews::core::analytics::SayHello(msg);
 
