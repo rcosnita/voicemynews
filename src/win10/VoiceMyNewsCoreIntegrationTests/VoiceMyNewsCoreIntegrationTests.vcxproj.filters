@@ -16,6 +16,27 @@
     <Filter Include="Source Files\analytics">
       <UniqueIdentifier>{c12ef0c0-1203-4d51-a561-017b60ea7e9b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\io">
+      <UniqueIdentifier>{dca4048a-17ec-4642-a727-bcf38934fe33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\io\fs">
+      <UniqueIdentifier>{cbb3174a-2fd9-4f01-a8d7-6f7eea01d0b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\utils">
+      <UniqueIdentifier>{bb31924c-f040-408d-a684-2db9497beb25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="samples">
+      <UniqueIdentifier>{c28a587f-b770-4228-8602-637f540c2b49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="samples\integrations">
+      <UniqueIdentifier>{4f32abf2-bb4c-4632-8f1b-f46390c3e07e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="samples\integrations\io">
+      <UniqueIdentifier>{051b2752-ac23-4156-8e91-de6426c5261b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="samples\integrations\io\fs">
+      <UniqueIdentifier>{303a93a4-862c-4b60-8343-4c2513c30a43}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -23,6 +44,9 @@
     </ClInclude>
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\tests\integrationtests\core\c++\utils\TestIOUtils.h">
+      <Filter>Source Files\utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -41,8 +65,20 @@
     <ClCompile Include="VoiceMyNewsCoreIntegrationTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\tests\integrationtests\core\c++\io\fs\RequireIntegrationTests.cpp">
+      <Filter>Source Files\io\fs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\tests\integrationtests\core\c++\utils\TestIOUtils.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="..\..\..\tests\integrationtests\core\c++\samples\integrations\io\fs\app.js">
+      <Filter>samples\integrations\io\fs</Filter>
+    </None>
+    <None Include="..\..\..\tests\integrationtests\core\c++\samples\integrations\io\fs\app_expected.js">
+      <Filter>samples\integrations\io\fs</Filter>
+    </None>
   </ItemGroup>
 </Project>
