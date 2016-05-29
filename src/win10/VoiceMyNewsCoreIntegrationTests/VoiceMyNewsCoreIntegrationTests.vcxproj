@@ -158,6 +158,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\tests\integrationtests\core\c++\samples\integrations\io\fs\app.js" />
+    <None Include="..\..\..\tests\integrationtests\core\c++\samples\integrations\io\fs\app_corrupted.js" />
+    <None Include="..\..\..\tests\integrationtests\core\c++\samples\integrations\io\fs\app_corrupted_expected.js" />
     <None Include="..\..\..\tests\integrationtests\core\c++\samples\integrations\io\fs\app_expected.js" />
     <None Include="packages.config" />
   </ItemGroup>

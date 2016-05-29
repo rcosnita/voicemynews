@@ -80,5 +80,11 @@
     <None Include="..\..\..\tests\integrationtests\core\c++\samples\integrations\io\fs\app_expected.js">
       <Filter>samples\integrations\io\fs</Filter>
     </None>
+    <None Include="..\..\..\tests\integrationtests\core\c++\samples\integrations\io\fs\app_corrupted.js">
+      <Filter>samples\integrations\io\fs</Filter>
+    </None>
+    <None Include="..\..\..\tests\integrationtests\core\c++\samples\integrations\io\fs\app_corrupted_expected.js">
+      <Filter>samples\integrations\io\fs</Filter>
+    </None>
   </ItemGroup>
 </Project>

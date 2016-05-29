@@ -31,9 +31,26 @@ public:
     std::unique_ptr<Require> require_;
 };
 
+/**
+ * \brief This test case ensures the files are correctly decorated with anonymous requirejs function.
+ */
 TEST_F(RequireIntegrationTests, FileCorrectlyResolved) {
     std::string fileName = "samples/integrations/io/fs/app.js";
     std::string expectedFile = "samples/integrations/io/fs/app_expected.js";
+
+    auto result = require_->Load(fileName);
+    auto expectedResult = ioUtils_->ReadFile(expectedFile);
+
+    EXPECT_EQ(expectedResult, result);
+}
+
+/**
+ * \brief This test case ensures the files are correctly decorated with anonymous requirejs function even though the
+ * files content is not valid js code..
+ */
+TEST_F(RequireIntegrationTests, CorruptedJsCorrectlyResolved) {
+    std::string fileName = "samples/integrations/io/fs/app_corrupted.js";
+    std::string expectedFile = "samples/integrations/io/fs/app_corrupted_expected.js";
 
     auto result = require_->Load(fileName);
     auto expectedResult = ioUtils_->ReadFile(expectedFile);
