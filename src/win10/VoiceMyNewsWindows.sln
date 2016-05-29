@@ -10,7 +10,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "VoiceMyNewsCoreTests", "Voi
 		{041F327D-691A-427F-A2D6-7195D0C70B0C} = {041F327D-691A-427F-A2D6-7195D0C70B0C}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "VoiceMyNewsIntegrationTests", "VoiceMyNewsIntegrationTests\VoiceMyNewsIntegrationTests.vcxproj", "{337AC5C3-D55E-4647-8688-E3B7E471EEEF}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "VoiceMyNewsCoreIntegrationTests", "VoiceMyNewsCoreIntegrationTests\VoiceMyNewsCoreIntegrationTests.vcxproj", "{337AC5C3-D55E-4647-8688-E3B7E471EEEF}"
 	ProjectSection(ProjectDependencies) = postProject
 		{041F327D-691A-427F-A2D6-7195D0C70B0C} = {041F327D-691A-427F-A2D6-7195D0C70B0C}
 	EndProjectSection
@@ -20,6 +20,9 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "VoiceMyNewsAppUI", "VoiceMyNewsAppUI\VoiceMyNewsAppUI.vcxproj", "{41CE78CA-A1D2-47DA-B5B0-1E34831454BA}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "VoiceMyNewsAppTests", "VoiceMyNewsAppTests\VoiceMyNewsAppTests.vcxproj", "{839DEF51-670F-4080-A1F8-FDE41AF8F265}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B6E49741-42CE-4039-9A7E-CFF40CD8462C} = {B6E49741-42CE-4039-9A7E-CFF40CD8462C}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

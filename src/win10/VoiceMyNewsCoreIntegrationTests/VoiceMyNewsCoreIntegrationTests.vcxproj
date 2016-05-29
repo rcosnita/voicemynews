@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{337AC5C3-D55E-4647-8688-E3B7E471EEEF}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>VoiceMyNewsIntegrationTests</RootNamespace>
+    <RootNamespace>VoiceMyNewsCoreIntegrationTests</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.10240.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -151,7 +151,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\tests\integrationtests\core\c++\analytics\AnalyticsTests.cpp" />
     <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="VoiceMyNewsIntegrationTests.cpp" />
+    <ClCompile Include="VoiceMyNewsCoreIntegrationTests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
