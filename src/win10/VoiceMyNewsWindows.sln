@@ -6,10 +6,20 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "VoiceMyNewsCore", "VoiceMyNewsCore\VoiceMyNewsCore.vcxproj", "{041F327D-691A-427F-A2D6-7195D0C70B0C}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "VoiceMyNewsCoreTests", "VoiceMyNewsCoreTests\VoiceMyNewsCoreTests.vcxproj", "{9F73C064-203E-48DD-883B-31A7D29844AC}"
+	ProjectSection(ProjectDependencies) = postProject
+		{041F327D-691A-427F-A2D6-7195D0C70B0C} = {041F327D-691A-427F-A2D6-7195D0C70B0C}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "VoiceMyNewsIntegrationTests", "VoiceMyNewsIntegrationTests\VoiceMyNewsIntegrationTests.vcxproj", "{337AC5C3-D55E-4647-8688-E3B7E471EEEF}"
+	ProjectSection(ProjectDependencies) = postProject
+		{041F327D-691A-427F-A2D6-7195D0C70B0C} = {041F327D-691A-427F-A2D6-7195D0C70B0C}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "VoiceMyNewsApp", "VoiceMyNewsApp\VoiceMyNewsApp.vcxproj", "{B6E49741-42CE-4039-9A7E-CFF40CD8462C}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "VoiceMyNewsAppUI", "VoiceMyNewsAppUI\VoiceMyNewsAppUI.vcxproj", "{41CE78CA-A1D2-47DA-B5B0-1E34831454BA}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "VoiceMyNewsAppTests", "VoiceMyNewsAppTests\VoiceMyNewsAppTests.vcxproj", "{839DEF51-670F-4080-A1F8-FDE41AF8F265}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,6 +81,36 @@ Global
 		{B6E49741-42CE-4039-9A7E-CFF40CD8462C}.Release|x86.ActiveCfg = Release|Win32
 		{B6E49741-42CE-4039-9A7E-CFF40CD8462C}.Release|x86.Build.0 = Release|Win32
 		{B6E49741-42CE-4039-9A7E-CFF40CD8462C}.Release|x86.Deploy.0 = Release|Win32
+		{41CE78CA-A1D2-47DA-B5B0-1E34831454BA}.Debug|ARM.ActiveCfg = Debug|ARM
+		{41CE78CA-A1D2-47DA-B5B0-1E34831454BA}.Debug|ARM.Build.0 = Debug|ARM
+		{41CE78CA-A1D2-47DA-B5B0-1E34831454BA}.Debug|x64.ActiveCfg = Debug|x64
+		{41CE78CA-A1D2-47DA-B5B0-1E34831454BA}.Debug|x64.Build.0 = Debug|x64
+		{41CE78CA-A1D2-47DA-B5B0-1E34831454BA}.Debug|x86.ActiveCfg = Debug|Win32
+		{41CE78CA-A1D2-47DA-B5B0-1E34831454BA}.Debug|x86.Build.0 = Debug|Win32
+		{41CE78CA-A1D2-47DA-B5B0-1E34831454BA}.Release|ARM.ActiveCfg = Release|ARM
+		{41CE78CA-A1D2-47DA-B5B0-1E34831454BA}.Release|ARM.Build.0 = Release|ARM
+		{41CE78CA-A1D2-47DA-B5B0-1E34831454BA}.Release|x64.ActiveCfg = Release|x64
+		{41CE78CA-A1D2-47DA-B5B0-1E34831454BA}.Release|x64.Build.0 = Release|x64
+		{41CE78CA-A1D2-47DA-B5B0-1E34831454BA}.Release|x86.ActiveCfg = Release|Win32
+		{41CE78CA-A1D2-47DA-B5B0-1E34831454BA}.Release|x86.Build.0 = Release|Win32
+		{839DEF51-670F-4080-A1F8-FDE41AF8F265}.Debug|ARM.ActiveCfg = Debug|ARM
+		{839DEF51-670F-4080-A1F8-FDE41AF8F265}.Debug|ARM.Build.0 = Debug|ARM
+		{839DEF51-670F-4080-A1F8-FDE41AF8F265}.Debug|ARM.Deploy.0 = Debug|ARM
+		{839DEF51-670F-4080-A1F8-FDE41AF8F265}.Debug|x64.ActiveCfg = Debug|x64
+		{839DEF51-670F-4080-A1F8-FDE41AF8F265}.Debug|x64.Build.0 = Debug|x64
+		{839DEF51-670F-4080-A1F8-FDE41AF8F265}.Debug|x64.Deploy.0 = Debug|x64
+		{839DEF51-670F-4080-A1F8-FDE41AF8F265}.Debug|x86.ActiveCfg = Debug|Win32
+		{839DEF51-670F-4080-A1F8-FDE41AF8F265}.Debug|x86.Build.0 = Debug|Win32
+		{839DEF51-670F-4080-A1F8-FDE41AF8F265}.Debug|x86.Deploy.0 = Debug|Win32
+		{839DEF51-670F-4080-A1F8-FDE41AF8F265}.Release|ARM.ActiveCfg = Release|ARM
+		{839DEF51-670F-4080-A1F8-FDE41AF8F265}.Release|ARM.Build.0 = Release|ARM
+		{839DEF51-670F-4080-A1F8-FDE41AF8F265}.Release|ARM.Deploy.0 = Release|ARM
+		{839DEF51-670F-4080-A1F8-FDE41AF8F265}.Release|x64.ActiveCfg = Release|x64
+		{839DEF51-670F-4080-A1F8-FDE41AF8F265}.Release|x64.Build.0 = Release|x64
+		{839DEF51-670F-4080-A1F8-FDE41AF8F265}.Release|x64.Deploy.0 = Release|x64
+		{839DEF51-670F-4080-A1F8-FDE41AF8F265}.Release|x86.ActiveCfg = Release|Win32
+		{839DEF51-670F-4080-A1F8-FDE41AF8F265}.Release|x86.Build.0 = Release|Win32
+		{839DEF51-670F-4080-A1F8-FDE41AF8F265}.Release|x86.Deploy.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

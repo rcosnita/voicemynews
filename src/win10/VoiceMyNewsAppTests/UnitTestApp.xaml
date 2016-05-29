@@ -1,8 +1,8 @@
 ﻿<Application
-    x:Class="VoiceMyNewsApp.App"
+    x:Class="VoiceMyNewsAppTests.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:VoiceMyNewsApp"
+    xmlns:local="using:VoiceMyNewsAppTests"
     RequestedTheme="Light">
 
 </Application>

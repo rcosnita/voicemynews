@@ -1,5 +1,4 @@
 ﻿#include "pch.h"
-#include "MainPage.xaml.h"
 
 using namespace Platform;
 using namespace Windows::ApplicationModel;
@@ -15,9 +14,9 @@ using namespace Windows::UI::Xaml::Interop;
 using namespace Windows::UI::Xaml::Media;
 using namespace Windows::UI::Xaml::Navigation;
 
-namespace voicemynews {
-namespace app {
-namespace win10 {
+using voicemynews::app::win10::MainPage;
+
+namespace VoiceMyNewsApp {
 /// <summary>
 /// Initializes the singleton application object.  This is the first line of authored code
 /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -117,7 +116,5 @@ void App::OnSuspending(Object^ sender, SuspendingEventArgs^ e)
 void App::OnNavigationFailed(Platform::Object ^sender, Windows::UI::Xaml::Navigation::NavigationFailedEventArgs ^e)
 {
     throw ref new FailureException("Failed to load Page " + e->SourcePageType.Name);
-}
-}
 }
 }

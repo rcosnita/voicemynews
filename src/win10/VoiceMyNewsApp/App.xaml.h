@@ -2,9 +2,7 @@
 
 #include "App.g.h"
 
-namespace voicemynews {
-namespace app {
-namespace win10 {
+namespace VoiceMyNewsApp {
 /// <summary>
 /// Provides application-specific behavior to supplement the default Application class.
 /// </summary>
@@ -20,6 +18,4 @@ private:
     void OnSuspending(Platform::Object^ sender, Windows::ApplicationModel::SuspendingEventArgs^ e);
     void OnNavigationFailed(Platform::Object ^sender, Windows::UI::Xaml::Navigation::NavigationFailedEventArgs ^e);
 };
-}
-}
 }
