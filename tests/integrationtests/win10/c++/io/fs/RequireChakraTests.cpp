@@ -1,6 +1,7 @@
 #include "pch.h"
 
 #include <jsrt.h>
+#include <vector>
 
 #include "CppUnitTest.h"
 
@@ -35,7 +36,7 @@ public:
 
         auto requireSource = fileUtils_.ReadFile("js/require.js");
         auto jsErrorCode = JsRunScript(requireSource.c_str(), currentSourceContext_++, L"js/require.js", nullptr);
-        Assert::AreEqual(static_cast<int>(JsErrorCode::JsNoError), static_cast<int>(jsErrorCode));
+        AssertNoJsError(jsErrorCode);
     }
 
     TEST_METHOD_CLEANUP(TearDown) {
@@ -44,24 +45,79 @@ public:
     }
 
     /**
-     * \brief This test case provides the logic for verifying requirejs implementation inside chakra js engine.
+     * \brief This test case checks if require can load modules with extension.
      */
-    TEST_METHOD(RequireChakraEmbeddedOk) {
-        const wchar_t *jsScript = L"(() => { const dummy = require('js/samples/dummymodule.js'); return dummy; })();";
+    TEST_METHOD(RequireChakraEmbeddedOkJsExtensionProvided) {
+        CheckRequireChakraEmbeddedOkTemplate("js/samples/dummymodule.js");
+    }
+
+    /**
+    * \brief This test case checks if require can load modules without extension.
+    */
+    TEST_METHOD(RequireChakraEmbeddedOkJsExtensionNotProvided) {
+        CheckRequireChakraEmbeddedOkTemplate("js/samples/dummymodule");
+    }
+
+    /**
+     * \brief This test case checks if require fails if no module name is provided.
+     */
+    TEST_METHOD(RequireChakraEmbeddedOkNoModuleNameProvided) {
+        std::vector<std::wstring> scriptSources = {
+            L"(() => { const dummy = require(); return dummy; })();",
+            L"(() => { const dummy = require(null); return dummy; })();",
+            L"(() => { const dummy = require(""); return dummy; })();",
+            L"(() => { const dummy = require('   '); return dummy; })();"
+        };
+
+        for (auto it = scriptSources.begin(); it != scriptSources.end(); it++) {
+            auto jsScript = it->c_str();
+
+            JsValueRef result;
+            auto jsErrorCode = JsRunScript(jsScript, currentSourceContext_++, L"", &result);
+            AssertNoJsError(jsErrorCode);
+
+            JsValueRef undefinedObj ;
+            jsErrorCode = JsGetUndefinedValue(&undefinedObj);
+            AssertNoJsError(jsErrorCode);
+
+            Assert::AreEqual(undefinedObj, result);
+        }
+    }
+
+private:
+    /**
+     * \brief This method provides a generic template for testing if require correctly loads existing modules.
+     *
+     * We are able to use this in order to see if module with and without js extension are correctly loaded.
+     *
+     * \param moduleName the relative path to AppX of the module we want to load.
+     */
+    void CheckRequireChakraEmbeddedOkTemplate(String^ moduleName) {
+        auto testScriptSource = "(() => { const dummy = require('" + moduleName + "'); return dummy; })();";
+        auto jsScript = testScriptSource->Data();
+
         JsValueRef result;
         auto jsErrorCode = JsRunScript(jsScript, currentSourceContext_++, L"", &result);
-        Assert::AreEqual(static_cast<int>(JsErrorCode::JsNoError), static_cast<int>(jsErrorCode));
+        AssertNoJsError(jsErrorCode);
 
         JsValueRef resultJSString;
         jsErrorCode = JsConvertValueToString(result, &resultJSString);
-        Assert::AreEqual(static_cast<int>(JsErrorCode::JsNoError), static_cast<int>(jsErrorCode));
+        AssertNoJsError(jsErrorCode);
 
         const wchar_t *resultWC;
         size_t stringLength;
         jsErrorCode = JsStringToPointer(resultJSString, &resultWC, &stringLength);
-        Assert::AreEqual(static_cast<int>(JsErrorCode::JsNoError), static_cast<int>(jsErrorCode));
+        AssertNoJsError(jsErrorCode);
 
         Assert::AreEqual(L"Hello world", resultWC);
+    }
+
+    /**
+     * \brief This method asserts that given result code is not a js error code.
+     *
+     */
+    void AssertNoJsError(JsErrorCode jsErrorCode) {
+        Assert::AreEqual(static_cast<int>(JsErrorCode::JsNoError), static_cast<int>(jsErrorCode));
     }
 
 private:
