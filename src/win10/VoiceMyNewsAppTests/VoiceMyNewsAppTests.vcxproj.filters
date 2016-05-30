@@ -27,11 +27,11 @@
   <ItemGroup>
     <ClCompile Include="UnitTestApp.xaml.cpp" />
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="..\..\..\tests\unittests\win10\pages\MainPageTests.cpp">
-      <Filter>pages</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\tests\integrationtests\win10\io\fs\RequireChakraTests.cpp">
+    <ClCompile Include="..\..\..\tests\integrationtests\win10\c++\io\fs\RequireChakraTests.cpp">
       <Filter>core\io\fs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\tests\unittests\win10\c++\pages\MainPageTests.cpp">
+      <Filter>pages</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

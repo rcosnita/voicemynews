@@ -188,8 +188,8 @@
     <Image Include="Assets\Wide310x150Logo.scale-200.png" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\tests\integrationtests\win10\io\fs\RequireChakraTests.cpp" />
-    <ClCompile Include="..\..\..\tests\unittests\win10\pages\MainPageTests.cpp" />
+    <ClCompile Include="..\..\..\tests\integrationtests\win10\c++\io\fs\RequireChakraTests.cpp" />
+    <ClCompile Include="..\..\..\tests\unittests\win10\c++\pages\MainPageTests.cpp" />
     <ClCompile Include="UnitTestApp.xaml.cpp">
       <DependentUpon>UnitTestApp.xaml</DependentUpon>
     </ClCompile>
