@@ -1,6 +1,7 @@
 "use strict";
 ((global) => {
     const RequireNative = new voicemynews.app.win10.bindings.RequireBinding();
+    const loadedModulesCache = {};
 
     /**
      * This method provides an implementation of requirejs which is compatible with the nodejs.
@@ -15,10 +16,18 @@
 
         moduleName = enforceJsExt(moduleName);
 
+        const cachedModule = getFromCache(moduleName);
+
+        if (cachedModule) {
+            return cachedModule.exports;
+        }
+
         const moduleSource = RequireNative.load(moduleName);
         const exports = {};
         const module = {"exports": exports};
         const moduleObj = eval(moduleSource);
+
+        loadedModulesCache[moduleName] = moduleObj;
 
         return module.exports;
     };
@@ -37,5 +46,17 @@
         }
 
         return moduleName;
-    }
+    };
+
+    /**
+     * This method tries to load the given module name from module cache.
+     *
+     * @private
+     * @method
+     * @param {String} moduleName the name of the module which we want to load from cache.
+     * @returns {Object} the cached version of the module or undefined if the module was not previously loaded.
+     */
+    let getFromCache = (moduleName) => {
+        return loadedModulesCache[moduleName];
+    };
 })(this);

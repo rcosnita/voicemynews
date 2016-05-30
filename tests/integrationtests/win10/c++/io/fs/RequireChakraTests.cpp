@@ -1,5 +1,6 @@
 #include "pch.h"
 
+#include <chrono>
 #include <jsrt.h>
 #include <vector>
 
@@ -82,6 +83,29 @@ public:
 
             Assert::AreEqual(undefinedObj, result);
         }
+    }
+
+    /**
+     * \brief This test case triggers the load of a module twice in order to give require internal cache the change to work.
+     */
+    TEST_METHOD(RequireChakraEmbeddedOkTransparentCache) {
+        const float kCacheExpectedBoost = 2;
+        const int kSubsequentIterations = 1000;
+
+        auto startTime = std::chrono::system_clock().now();
+        CheckRequireChakraEmbeddedOkTemplate("js/samples/dummymodule");
+        auto endTime = std::chrono::system_clock().now();
+        auto firstDuration = endTime - startTime;
+        long duration = 0;
+
+        for (auto i = 0; i < kSubsequentIterations; i++) {
+            startTime = std::chrono::system_clock().now();
+            CheckRequireChakraEmbeddedOkTemplate("js/samples/dummymodule");
+            endTime = std::chrono::system_clock().now();
+            duration += (endTime - startTime).count();
+        }
+
+        Assert::IsTrue((duration / kSubsequentIterations) < (firstDuration.count() / kCacheExpectedBoost));
     }
 
 private:
