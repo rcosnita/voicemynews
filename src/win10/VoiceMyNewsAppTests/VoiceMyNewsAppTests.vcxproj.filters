@@ -11,6 +11,15 @@
     <Filter Include="pages">
       <UniqueIdentifier>{3bd54dad-a45f-4ecb-a165-907afba1d0fc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="core">
+      <UniqueIdentifier>{dbf768ad-c5d8-4452-882b-5a64bb220ddf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\io">
+      <UniqueIdentifier>{eea71c34-bd46-436c-a6e2-60b88c631e24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\io\fs">
+      <UniqueIdentifier>{4933dd15-1e14-4877-9054-89578660f768}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="UnitTestApp.xaml" />
@@ -18,7 +27,10 @@
   <ItemGroup>
     <ClCompile Include="UnitTestApp.xaml.cpp" />
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="..\..\..\tests\unittests\win10\pages\MainPageTests.cpp">
+    <ClCompile Include="..\..\..\tests\integrationtests\win10\c++\io\fs\RequireChakraTests.cpp">
+      <Filter>core\io\fs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\tests\unittests\win10\c++\pages\MainPageTests.cpp">
       <Filter>pages</Filter>
     </ClCompile>
   </ItemGroup>

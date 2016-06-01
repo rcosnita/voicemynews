@@ -144,7 +144,8 @@
     <ClCompile>
       <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
       <DisableSpecificWarnings>4453;28204</DisableSpecificWarnings>
-      <AdditionalIncludeDirectories>$(VCInstallDir)UnitTest\include\UWP;$(ProjectDir);$(IntermediateOutputPath);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(VCInstallDir)UnitTest\include\UWP;$(ProjectDir);$(IntermediateOutputPath);$(SolutionDir)VoiceMyNewsCore;$(SolutionDir)..\core;$(SolutionDir)..\win10;$(SolutionDir)VoiceMyNewsAppUI;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>USE_EDGEMODE_JSRT;_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(VCInstallDir)UnitTest\lib\UWP;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -187,7 +188,8 @@
     <Image Include="Assets\Wide310x150Logo.scale-200.png" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\tests\unittests\win10\pages\MainPageTests.cpp" />
+    <ClCompile Include="..\..\..\tests\integrationtests\win10\c++\io\fs\RequireChakraTests.cpp" />
+    <ClCompile Include="..\..\..\tests\unittests\win10\c++\pages\MainPageTests.cpp" />
     <ClCompile Include="UnitTestApp.xaml.cpp">
       <DependentUpon>UnitTestApp.xaml</DependentUpon>
     </ClCompile>
@@ -211,6 +213,17 @@
     <ProjectReference Include="..\VoiceMyNewsAppUI\VoiceMyNewsAppUI.vcxproj">
       <Project>{41ce78ca-a1d2-47da-b5b0-1e34831454ba}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\VoiceMyNewsCore\VoiceMyNewsCore.vcxproj">
+      <Project>{041f327d-691a-427f-a2d6-7195d0c70b0c}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <AppxPackagePayload Include="..\..\core\js\**\*">
+      <TargetPath>js\%(RecursiveDir)\%(Filename)%(Extension)</TargetPath>
+    </AppxPackagePayload>
+    <AppxPackagePayload Include="..\..\..\tests\integrationtests\core\js\samples\**\*">
+      <TargetPath>js\samples\%(RecursiveDir)\%(Filename)%(Extension)</TargetPath>
+    </AppxPackagePayload>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
