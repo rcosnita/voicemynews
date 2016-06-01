@@ -4,6 +4,18 @@
 		"selected_items":
 		[
 			[
+				"cache",
+				"cachedModule"
+			],
+			[
+				"get",
+				"getFromCache"
+			],
+			[
+				"module",
+				"moduleName"
+			],
+			[
 				"TESTFILTER",
 				"TESTFILTER_FILES_WIN32"
 			],
@@ -59,6 +71,30 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "src/core/js/require.js",
+			"settings":
+			{
+				"buffer_size": 1992,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Comet/sparkler-shell/Gruntfile.js",
+			"settings":
+			{
+				"buffer_size": 37439,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "tests/integrationtests/core/js/samples/dummymodule.js",
+			"settings":
+			{
+				"buffer_size": 113,
+				"line_ending": "Windows"
+			}
+		}
 	],
 	"build_system": "",
 	"build_system_choices":
@@ -135,19 +171,36 @@
 	[
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src",
-		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/win10",
-		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/core",
-		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/core/js"
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/core",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/core/js",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/integrationtests",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/integrationtests/core",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/integrationtests/core/js",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/integrationtests/core/js/samples",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/integrationtests/win10",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/win10"
 	],
 	"file_history":
 	[
+		"/C/Comet/sparkler-shell/.gitignore",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/integrationtests/win10/js/README.md",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/integrationtests/win10/c++/README.md",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/integrationtests/win10/README.md",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/win10/js/README.md",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/win10/README.md",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/win10/c++/README.md",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/core/js/README.md",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/win10/.gitignore",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/doc/technical_summary.md",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/integrationtests/core/c++/README.md",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/integrationtests/core/README.md",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/core/README.md",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/win10/README.md",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/README.md",
-		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/win10/.gitignore",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/core/js/README.md",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/core/c++/README.md",
-		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/core/README.md",
-		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/win10/README.md",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/ios/README.md",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/android/README.md",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/core/README.md",
@@ -212,7 +265,6 @@
 		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/README.md",
 		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/_nuget/minizip/minizip.targets",
 		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/.gitignore",
-		"/C/Comet/sparkler-shell/.gitignore",
 		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/_nuget/skia/skia.targets",
 		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/_nuget/rapidjson/RapidJson.targets",
 		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/_nuget/zlib/zlib.targets",
@@ -259,20 +311,11 @@
 		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/scripts/v8/build.ps1",
 		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/scripts",
 		"/C/Users/cosnita.ADOBENET/work/sparkler-shell/Sparkler/Sparkler/win/app/src/views/PropertyPaneContainer.js6",
-		"/C/Users/cosnita.ADOBENET/work/sparkler-shell/Sparkler/Sparkler/win/app/public/components/layers-panel/comet_model.js",
-		"/C/Users/cosnita.ADOBENET/work/sparkler-shell/Sparkler/Sparkler/win/app/public/components/layers-panel/css/layersPanel.css",
-		"/C/Users/cosnita.ADOBENET/work/sparkler-shell/Sparkler/Sparkler/index.html",
-		"/C/Users/cosnita.ADOBENET/work/sparkler-shell/Sparkler/Sparkler/win/app/src/Main.js6",
-		"/C/Users/cosnita.ADOBENET/work/sparkler-shell/Sparkler/Sparkler/win/app/build/components/layers-panel/css/layersPanel.css",
-		"/C/Users/cosnita.ADOBENET/work/sparkler-shell/Sparkler/Sparkler/win/app/build/components/layers-panel/comet_model.js",
-		"/C/Users/cosnita.ADOBENET/AppData/Roaming/Sublime Text 3/Packages/User/Babel.sublime-settings",
-		"/C/Users/cosnita.ADOBENET/work/sparkler-shell/Sparkler/Sparkler/win/app/src/views/MainView.js6",
-		"/C/Users/cosnita.ADOBENET/work/sparkler-shell/Sparkler/Sparkler/win/app/src/controllers/CometLayout.js6",
-		"/C/Users/cosnita.ADOBENET/work/sparkler-shell/Sparkler/Sparkler/win/app/src/views/RightPanel.js6"
+		"/C/Users/cosnita.ADOBENET/work/sparkler-shell/Sparkler/Sparkler/win/app/public/components/layers-panel/comet_model.js"
 	],
 	"find":
 	{
-		"height": 44.0
+		"height": 50.0
 	},
 	"find_in_files":
 	{
@@ -289,6 +332,14 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"buildCfg",
+			"getBuildCfg",
+			"debug:",
+			"jsunit",
+			"shell:sparkler:jsunit",
+			"jsunit",
+			"\"jsunit\"",
+			".g.h",
 			"sockets-proxy",
 			"console.log",
 			"socketsProxy",
@@ -363,8 +414,100 @@
 	"groups":
 	[
 		{
+			"selected": 1,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "src/core/js/require.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1992,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								750,
+								750
+							]
+						],
+						"settings":
+						{
+							"auto_name": "",
+							"side_bar_folders_auto_load_folder": 1,
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 36.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/C/Comet/sparkler-shell/Gruntfile.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 37439,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								18092,
+								18092
+							]
+						],
+						"settings":
+						{
+							"side_bar_folders_auto_load_folder": 1,
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 11532.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "tests/integrationtests/core/js/samples/dummymodule.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 113,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								81,
+								81
+							]
+						],
+						"settings":
+						{
+							"auto_name": "",
+							"side_bar_folders_auto_load_folder": 1,
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				}
 			]
 		}
 	],
