@@ -4,6 +4,14 @@ VoiceMyNews platform offers the best news experience. For more information, read
 
 # Getting started
 
+## Platform independent steps
+
+From **voicemynews** root folder execute the following commands:
+
+```bash
+npm install
+```
+
 ## Windows 10
 
 In order to have everything setup on a development machine you must follow the steps described in [Windows 10 Readme](src/win10/README.md).

@@ -1,0 +1,10 @@
+{
+    "name": "voicemynews",
+    "version": "0.0.1",
+    "description": "VoiceMyNews platform which reinvents the experience of reading news.",
+    "homepage": "https://github.com/rcosnita/voicemynews",
+    "license" : "SEE LICENSE IN LICENSE",
+    "dependencies": {
+        "q": "1.4.1"
+    }
+}

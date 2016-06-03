@@ -5,8 +5,8 @@
 #include <vector>
 
 #include "CppUnitTest.h"
-
 #include "io/fs/FileUtils.h"
+#include "utils/CommonAssertions.h"
 
 namespace voicemynews {
 namespace tests {
@@ -16,6 +16,7 @@ using Microsoft::VisualStudio::CppUnitTestFramework::Assert;
 using Platform::String;
 
 using voicemynews::core::io::fs::FileUtils;
+using voicemynews::tests::app::win10::utils::assertions::AssertNoJsError;
 
 /**
  * \class RequireChakraIntegrationTests
@@ -134,14 +135,6 @@ private:
         AssertNoJsError(jsErrorCode);
 
         Assert::AreEqual(L"Hello world", resultWC);
-    }
-
-    /**
-     * \brief This method asserts that given result code is not a js error code.
-     *
-     */
-    void AssertNoJsError(JsErrorCode jsErrorCode) {
-        Assert::AreEqual(static_cast<int>(JsErrorCode::JsNoError), static_cast<int>(jsErrorCode));
     }
 
 private:
