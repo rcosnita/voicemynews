@@ -76,22 +76,17 @@
 			"settings":
 			{
 				"buffer_size": 1992,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "/C/Comet/sparkler-shell/Gruntfile.js",
-			"settings":
-			{
-				"buffer_size": 37439,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "tests/integrationtests/core/js/samples/dummymodule.js",
+			"contents": "\"use strict\";\n\n/**\n * This module provides a simple implementation for http operations which we are going to use in the project.\n * It provides a general method which is able to support all verbs and then provides some simplified wrappers\n * over it.\n * @module voicemynews/js/networking/http\n */\n\n/**\n * This function provides a generic implementation for http request which supports all verbs and actions.\n *\n * @alias module:voicemynews/js/networking/http.request\n * @param {Object} requestDesc the request descriptor which defines what http action must be taken.\n * @param {String} requestDesc.type the request http type we want to use (e.g GET, POST, PUT, DELETE, ...).\n * @param {Object} requestDesc.headers the request headers we want to use for this request.\n * @param {Object} requestDesc.content the request content we want to pass to this request. If the chosen method does not support body, content will simply be ignored.\n * @returns {Promise} a promise which can be used for handling the response of the request.\n */\nlet request = (requestDesc) => {\n\n};\n\n/**\n * This function provides an http get implementation. Internally, it wraps {@see module:voicemynews/js/networking/http.request} method.\n *\n * @alias module:voicemynews/js/networking/http.get\n * @param {String} url the url we want to get.\n * @param {Object} headers the headers we want to use in the get request.\n * @param {Object} queryParams the query parameters we want to pass to the request.\n * @returns {Promise} a promise which can be used for handling the response.\n * @example\n * const http = require(\"js/networking/http\");\n * const resp = http.get(\"http://www.google.ro\", {\"Content-Type\": \"text/html\"}, {\"q\": \"search this term\"});\n * resp.then((data, respDesc) => {\n *      console.log(data);\n *      const isOk = respDesc.statusCode == 200;\n * });\n */\nlet get = (url, headers, queryParams) => {\n\n};\n\n/**\n * This function provides an http post implementation. Internally, it wraps {@see module:voicemynews/js/networking/http.request} method.\n *\n * @param {String} url the url where we are going to post the specified data.\n * @param {Object} headers the headers we want to use in the current request.\n * @param {Object} queryParams the query parameters we want to append to the specified url.\n * @param {Object} data binary or text data we want to post the specified url.\n * @returns {Promise} a promise which can be used for handling the response.\n * @example\n * const http = require(\"js/networking/http\");\n * const data\n */\nlet post = (url, headers, queryParams, data) => {\n\n};\n\nmodule.exports = {\n    \"request\": request\n};",
+			"file": "src/core/js/networking/http.js",
+			"file_size": 2653,
+			"file_write_time": 131092499124036157,
 			"settings":
 			{
-				"buffer_size": 113,
+				"buffer_size": 2607,
 				"line_ending": "Windows"
 			}
 		}
@@ -173,17 +168,19 @@
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/core",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/core/js",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/core/js/networking",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/integrationtests",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/integrationtests/core",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/integrationtests/core/js",
-		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/integrationtests/core/js/samples",
-		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/integrationtests/win10",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/win10"
 	],
 	"file_history":
 	[
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/core/js/require.js",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/integrationtests/core/js/samples/dummymodule.js",
+		"/C/Comet/sparkler-shell/Gruntfile.js",
 		"/C/Comet/sparkler-shell/.gitignore",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/integrationtests/win10/js/README.md",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/integrationtests/win10/c++/README.md",
@@ -247,7 +244,6 @@
 		"/C/Users/cosnita.ADOBENET/Documents/Visual Studio 2015/Projects/UnmanagedAndManaged/.gitignore",
 		"/C/Users/cosnita.ADOBENET/Documents/Visual Studio 2015/Projects/LoopbackRuntimeExempt/.gitignore",
 		"/C/Users/cosnita.ADOBENET/work/sockets-proxy/src/socket_wrapper.js",
-		"/C/Comet/sparkler-shell/Gruntfile.js",
 		"/C/Users/cosnita.ADOBENET/work/sockets-proxy/proxy.js",
 		"/C/Comet/sparkler-shell/npm-shrinkwrap.json",
 		"/C/Users/cosnita.ADOBENET/work/sockets-proxy/src/arguments_parser.js",
@@ -309,9 +305,7 @@
 		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/v8/build_v8_sparkler.sh",
 		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/v8/build.ps1",
 		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/scripts/v8/build.ps1",
-		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/scripts",
-		"/C/Users/cosnita.ADOBENET/work/sparkler-shell/Sparkler/Sparkler/win/app/src/views/PropertyPaneContainer.js6",
-		"/C/Users/cosnita.ADOBENET/work/sparkler-shell/Sparkler/Sparkler/win/app/public/components/layers-panel/comet_model.js"
+		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/scripts"
 	],
 	"find":
 	{
@@ -430,38 +424,8 @@
 						"selection":
 						[
 							[
-								750,
-								750
-							]
-						],
-						"settings":
-						{
-							"auto_name": "",
-							"side_bar_folders_auto_load_folder": 1,
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 36.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "/C/Comet/sparkler-shell/Gruntfile.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 37439,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								18092,
-								18092
+								0,
+								0
 							]
 						],
 						"settings":
@@ -472,40 +436,40 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 11532.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 1,
 					"type": "text"
 				},
 				{
-					"buffer": 2,
-					"file": "tests/integrationtests/core/js/samples/dummymodule.js",
+					"buffer": 1,
+					"file": "src/core/js/networking/http.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 113,
+						"buffer_size": 2607,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								81,
-								81
+								1882,
+								1882
 							]
 						],
 						"settings":
 						{
-							"auto_name": "",
+							"open_with_edit": true,
 							"side_bar_folders_auto_load_folder": 1,
 							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 636.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 0,
 					"type": "text"
 				}
 			]
