@@ -51,6 +51,11 @@ public:
      * \brief This method provides a thin wrapper over chakra api which allows a value to be converted to a wide string.
      */
     JsErrorCode ConvertStringToPointer(JsValueRef value, const wchar_t **str, size_t *stringLength);
+
+    /**
+     * \brief This method provides a thin wrapper over chakra api for obtaining the undefined value.
+     */
+    JsValueRef GetUndefinedValue();
 private:
     FileUtils fileUtils_;
     JsRuntimeHandle runtime_;

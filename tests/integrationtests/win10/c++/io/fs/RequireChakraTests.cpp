@@ -62,10 +62,7 @@ public:
             chakraRunner_.RunScript(*it, L"", [](const JsErrorCode jsErrorCode, const JsValueRef& result, ChakraRunner* runner) {
                 AssertNoJsError(jsErrorCode);
 
-                JsValueRef undefinedObj;
-                auto jsError = JsGetUndefinedValue(&undefinedObj);
-                AssertNoJsError(jsError);
-
+                JsValueRef undefinedObj = runner->GetUndefinedValue();
                 Assert::AreEqual(undefinedObj, result);
             });
         }

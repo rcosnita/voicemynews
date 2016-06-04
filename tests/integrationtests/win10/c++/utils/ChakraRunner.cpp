@@ -53,6 +53,14 @@ using voicemynews::tests::app::win10::utils::assertions::AssertNoJsError;
     JsErrorCode ChakraRunner::ConvertStringToPointer(JsValueRef value, const wchar_t **str, size_t *stringLength) {
         return JsStringToPointer(value, str, stringLength);
     }
+
+    JsValueRef ChakraRunner::GetUndefinedValue() {
+        JsValueRef undefinedObj;
+        auto jsError = JsGetUndefinedValue(&undefinedObj);
+        AssertNoJsError(jsError);
+
+        return undefinedObj;
+    }
 }
 }
 }
