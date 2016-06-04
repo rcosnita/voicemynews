@@ -59,7 +59,7 @@ public:
         };
 
         for (auto it = scriptSources.begin(); it != scriptSources.end(); it++) {
-            chakraRunner_.RunScript(*it, L"", [](const JsErrorCode jsErrorCode, const JsValueRef& result, ChakraRunner* runner) {
+            chakraRunner_.RunScript(*it, L"", [](const JsErrorCode& jsErrorCode, const JsValueRef& result, ChakraRunner* runner) {
                 AssertNoJsError(jsErrorCode);
 
                 JsValueRef undefinedObj = runner->GetUndefinedValue();
@@ -102,7 +102,7 @@ private:
     void CheckRequireChakraEmbeddedOkTemplate(String^ moduleName) {
         auto jsScript = "(() => { const dummy = require('" + moduleName + "'); return dummy; })();";
 
-        chakraRunner_.RunScript(jsScript, moduleName, [](const JsErrorCode jsErrorCode, const JsValueRef& result, ChakraRunner* runner) {
+        chakraRunner_.RunScript(jsScript, moduleName, [](const JsErrorCode& jsErrorCode, const JsValueRef& result, ChakraRunner* runner) {
             AssertNoJsError(jsErrorCode);
 
             JsValueRef resultJSString;

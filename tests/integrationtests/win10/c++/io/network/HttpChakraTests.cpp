@@ -4,6 +4,7 @@
 
 #include "CppUnitTest.h"
 #include "io/fs/FileUtils.h"
+#include "utils/ChakraRunner.h"
 #include "utils/CommonAssertions.h"
 
 namespace voicemynews {
@@ -15,6 +16,7 @@ using Platform::String;
 
 using voicemynews::core::io::fs::FileUtils;
 using voicemynews::tests::app::win10::utils::assertions::AssertNoJsError;
+using voicemynews::tests::app::win10::utils::js::ChakraRunner;
 
 /**
  * \class HttpChakraIntegrationTests
@@ -23,67 +25,41 @@ using voicemynews::tests::app::win10::utils::assertions::AssertNoJsError;
 TEST_CLASS(HttpChakraIntegrationTests) {
 public:
     TEST_METHOD_INITIALIZE(SetUp) {
-        currentSourceContext_ = 0;
-
-        JsCreateRuntime(JsRuntimeAttributeNone, nullptr, &runtime_);
-        JsCreateContext(runtime_, &context_);
-        JsSetCurrentContext(context_);
-
-        JsProjectWinRTNamespace(L"voicemynews.app.win10.bindings");
-#ifdef _DEBUG
-        JsStartDebugging();
-#endif
-
-        auto requireSource = fileUtils_.ReadFile("js/require.js");
-        auto jsErrorCode = JsRunScript(requireSource.c_str(), currentSourceContext_++, L"js/require.js", nullptr);
-        AssertNoJsError(jsErrorCode);
     }
 
     TEST_METHOD_CLEANUP(TearDown) {
-        JsSetCurrentContext(JS_INVALID_REFERENCE);
-        JsDisposeRuntime(runtime_);
     }
 
     /**
      * \brief This test case ensures http module loads as expected under chakra.
      */
     TEST_METHOD(HttpChakraModuleLoadedOk) {
-        String^ testScriptSource = "(() => {const http = require('js/networking/http'); return http; })()";
-        auto jsScript = testScriptSource->Data();
+        String^ jsScript = "(() => {const http = require('js/networking/http'); return http; })()";
 
-        JsValueRef undefinedObj;
-        auto jsErrorCode = JsGetUndefinedValue(&undefinedObj);
-        AssertNoJsError(jsErrorCode);
+        chakraRunner_.RunScript(jsScript, L"", [](const JsErrorCode& jsErrorCode, const JsValueRef& result, ChakraRunner* runner) {
+            AssertNoJsError(jsErrorCode);
 
-        JsValueRef result;
-        jsErrorCode = JsRunScript(jsScript, currentSourceContext_++, L"", &result);
-        AssertNoJsError(jsErrorCode);
-
-        Assert::AreNotEqual(undefinedObj, result);
+            auto undefinedObj = runner->GetUndefinedValue();
+            Assert::AreNotEqual(undefinedObj, result);
+        });
     }
 
     /**
      * \brief This test case ensures http module get operations work as expected under chakra.
      */
     TEST_METHOD(HttpChakraModuleGetOk) {
-        String^ testScriptSource = "(() => {const http = require('js/networking/http'); return http.get('http://www.google.ro'); })()";
-        auto jsScript = testScriptSource->Data();
+        String^ jsScript = "(() => {const http = require('js/networking/http'); return http.get('http://www.google.ro'); })()";
 
-        JsValueRef undefinedObj;
-        auto jsErrorCode = JsGetUndefinedValue(&undefinedObj);
-        AssertNoJsError(jsErrorCode);
+        chakraRunner_.RunScript(jsScript, L"", [](const JsErrorCode& jsErrorCode, const JsValueRef& result, ChakraRunner* runner) {
+            AssertNoJsError(jsErrorCode);
 
-        JsValueRef result;
-        jsErrorCode = JsRunScript(jsScript, currentSourceContext_++, L"", &result);
-        AssertNoJsError(jsErrorCode);
-
-        Assert::AreNotEqual(undefinedObj, result);
+            auto undefinedObj = runner->GetUndefinedValue();
+            Assert::AreNotEqual(undefinedObj, result);
+        });
     }
 private:
-    JsRuntimeHandle runtime_;
-    JsContextRef context_;
+    ChakraRunner chakraRunner_ = ChakraRunner(true);
     FileUtils fileUtils_;
-    unsigned int currentSourceContext_;
 };
 }
 }

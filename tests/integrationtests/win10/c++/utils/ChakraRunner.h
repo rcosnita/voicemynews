@@ -19,7 +19,7 @@ class ChakraRunner;
 /**
  * \brief This callback defines the contract which allows users to receive feedback from running a script in chakra.
  */
-typedef void(*JsScriptRunnerCb)(const JsErrorCode jsErrorCode, const JsValueRef& result, ChakraRunner* runner);
+typedef void(*JsScriptRunnerCb)(const JsErrorCode& jsErrorCode, const JsValueRef& result, ChakraRunner* runner);
 
 /**
  * \class ChakraRunner
