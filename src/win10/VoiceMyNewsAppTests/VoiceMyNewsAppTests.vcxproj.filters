@@ -45,11 +45,17 @@
     <ClCompile Include="..\..\..\tests\integrationtests\win10\c++\utils\CommonAssertions.cpp">
       <Filter>utils</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\tests\integrationtests\win10\c++\utils\ChakraRunner.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
     <ClInclude Include="UnitTestApp.xaml.h" />
     <ClInclude Include="..\..\..\tests\integrationtests\win10\c++\utils\CommonAssertions.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\tests\integrationtests\win10\c++\utils\ChakraRunner.h">
       <Filter>utils</Filter>
     </ClInclude>
   </ItemGroup>

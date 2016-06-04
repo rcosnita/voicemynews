@@ -162,6 +162,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\tests\integrationtests\win10\c++\utils\ChakraRunner.h" />
     <ClInclude Include="..\..\..\tests\integrationtests\win10\c++\utils\CommonAssertions.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="UnitTestApp.xaml.h">
@@ -191,6 +192,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\tests\integrationtests\win10\c++\io\fs\RequireChakraTests.cpp" />
     <ClCompile Include="..\..\..\tests\integrationtests\win10\c++\io\network\HttpChakraTests.cpp" />
+    <ClCompile Include="..\..\..\tests\integrationtests\win10\c++\utils\ChakraRunner.cpp" />
     <ClCompile Include="..\..\..\tests\integrationtests\win10\c++\utils\CommonAssertions.cpp" />
     <ClCompile Include="..\..\..\tests\unittests\win10\c++\pages\MainPageTests.cpp" />
     <ClCompile Include="UnitTestApp.xaml.cpp">
@@ -226,6 +228,9 @@
     </AppxPackagePayload>
     <AppxPackagePayload Include="..\..\..\tests\integrationtests\core\js\samples\**\*">
       <TargetPath>js\samples\%(RecursiveDir)\%(Filename)%(Extension)</TargetPath>
+    </AppxPackagePayload>
+    <AppxPackagePayload Include="..\..\..\node_modules\q\*.js">
+      <TargetPath>js\third_party\q\%(Filename)%(Extension)</TargetPath>
     </AppxPackagePayload>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

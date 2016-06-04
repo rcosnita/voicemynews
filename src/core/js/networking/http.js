@@ -1,5 +1,7 @@
 "use strict";
 
+const Q = require("js/third_party/q/q");
+
 /**
  * This module provides a simple implementation for http operations which we are going to use in the project.
  * It provides a general method which is able to support all verbs and then provides some simplified wrappers
