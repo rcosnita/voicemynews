@@ -5,6 +5,7 @@ namespace voicemynews {
 namespace app {
 namespace win10 {
 namespace bindings {
+using Platform::String;
 using Windows::Foundation::IAsyncOperationWithProgress;
 using Windows::Foundation::Uri;
 using Windows::Web::Http::HttpProgress;
@@ -23,7 +24,7 @@ public:
      *
      * \param uri the uri we want to get with this request.
      */
-    IAsyncOperationWithProgress<HttpResponseMessage^, HttpProgress>^ Get(Uri^ uri);
+    IAsyncOperationWithProgress<HttpResponseMessage^, HttpProgress>^ Get(String^ uri);
 };
 }
 }

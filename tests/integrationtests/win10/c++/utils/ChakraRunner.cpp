@@ -2,6 +2,12 @@
 #include "ChakraRunner.h"
 #include "CommonAssertions.h"
 
+static void CALLBACK PromiseContinuationCallback(JsValueRef task, void *callbackState)
+{
+    // save async task in the callback.
+    *(void **)callbackState = task;
+}
+
 namespace voicemynews {
 namespace tests {
 namespace app {
@@ -19,6 +25,8 @@ using voicemynews::tests::app::win10::utils::assertions::AssertNoJsError;
 
         JsProjectWinRTNamespace(L"voicemynews.core.network");
         JsProjectWinRTNamespace(L"voicemynews.app.win10.bindings");
+
+        JsSetPromiseContinuationCallback(PromiseContinuationCallback, &promiseCallback_);
 #ifdef _DEBUG
         JsStartDebugging();
 #endif

@@ -3,20 +3,17 @@
 #include <ppltasks.h>
 
 #include "bindings/network/HttpClientBinding.h"
-#include "utils/Conversions.h"
 
 namespace voicemynews {
 namespace app {
 namespace win10 {
 namespace bindings {
-using Platform::String;
-
-using voicemynews::app::win10::utils::ConvertPlatformMapToStd;
+using Windows::Foundation::Uri;
 using Windows::Web::Http::HttpClient;
 
-IAsyncOperationWithProgress<HttpResponseMessage^, HttpProgress>^ HttpClientBinding::Get(Uri^ uri) {
+IAsyncOperationWithProgress<HttpResponseMessage^, HttpProgress>^ HttpClientBinding::Get(Platform::String^ uri) {
     auto httpClient = ref new HttpClient();
-    return httpClient->GetAsync(uri);
+    return httpClient->GetAsync(ref new Uri(uri));
 }
 }
 }

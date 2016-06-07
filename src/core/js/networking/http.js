@@ -15,6 +15,7 @@ const HttpNativeClient = voicemynews.core.network.HttpClient.getInstance();
  *
  * @alias module:voicemynews/js/networking/http.request
  * @param {Object} requestDesc the request descriptor which defines what http action must be taken.
+ * @param {String} requestDesc.url the request url.
  * @param {String} requestDesc.type the request http type we want to use (e.g GET, POST, PUT, DELETE, ...).
  * @param {Object} requestDesc.headers the request headers we want to use for this request.
  * @param {Object} requestDesc.content the request content we want to pass to this request. If the chosen method does not support body, content will simply be ignored.
@@ -22,6 +23,11 @@ const HttpNativeClient = voicemynews.core.network.HttpClient.getInstance();
  */
 let request = (requestDesc) => {
     const result = Q.defer()
+    const response = HttpNativeClient.get(requestDesc.url);
+
+    response.done(() => {
+        throw new Error("Not implemented yet ...");
+    });
 
     return result.promise;
 };
