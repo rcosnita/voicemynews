@@ -48,5 +48,8 @@
     <ClInclude Include="..\..\core\io\fs\exceptions\FileNotFoundException.h">
       <Filter>io\fs\exceptions</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\core\network\HttpClientInterface.h">
+      <Filter>network</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

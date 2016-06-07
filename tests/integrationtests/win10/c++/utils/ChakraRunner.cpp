@@ -17,6 +17,7 @@ using voicemynews::tests::app::win10::utils::assertions::AssertNoJsError;
         JsCreateContext(runtime_, &context_);
         JsSetCurrentContext(context_);
 
+        JsProjectWinRTNamespace(L"voicemynews.core.network");
         JsProjectWinRTNamespace(L"voicemynews.app.win10.bindings");
 #ifdef _DEBUG
         JsStartDebugging();

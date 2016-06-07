@@ -4,6 +4,7 @@
 #include <jsrt.h>
 
 #include "io/fs/FileUtils.h"
+#include "network/HttpClientNativeWin.h"
 
 namespace voicemynews {
 namespace tests {

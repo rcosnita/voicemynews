@@ -1,6 +1,7 @@
 "use strict";
 
 const Q = require("js/third_party/q/q");
+const HttpNativeClient = voicemynews.core.network.HttpClient.getInstance();
 
 /**
  * This module provides a simple implementation for http operations which we are going to use in the project.
@@ -20,7 +21,9 @@ const Q = require("js/third_party/q/q");
  * @returns {Promise} a promise which can be used for handling the response of the request.
  */
 let request = (requestDesc) => {
+    const result = Q.defer()
 
+    return result.promise;
 };
 
 /**
@@ -40,7 +43,11 @@ let request = (requestDesc) => {
  * });
  */
 let get = (url, headers, queryParams) => {
-
+    return request({
+        url: url,
+        headers: headers,
+        queryParams: queryParams
+    });
 };
 
 /**

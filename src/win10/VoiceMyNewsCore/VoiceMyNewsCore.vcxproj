@@ -193,6 +193,7 @@
     <ClInclude Include="..\..\core\io\fs\exceptions\FileNotFoundException.h" />
     <ClInclude Include="..\..\core\io\fs\FileUtils.h" />
     <ClInclude Include="..\..\core\io\fs\Require.h" />
+    <ClInclude Include="..\..\core\network\HttpClientInterface.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\core\io\fs\exceptions\FileNotFoundException.cpp" />
