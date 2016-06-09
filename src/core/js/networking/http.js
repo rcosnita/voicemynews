@@ -25,8 +25,10 @@ let request = (requestDesc) => {
     const result = Q.defer()
     const response = HttpNativeClient.get(requestDesc.url);
 
-    response.done(() => {
-        throw new Error("Not implemented yet ...");
+    response.done((responseData) => {
+        HttpNativeClient.parseResponseWithStringContent(responseData).done((responseParsed) => {
+            result.resolve(responseParsed);
+        });
     });
 
     return result.promise;

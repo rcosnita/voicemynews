@@ -11,9 +11,38 @@ namespace bindings {
 using Windows::Foundation::Uri;
 using Windows::Web::Http::HttpClient;
 
+HttpResponseMessageParsed::HttpResponseMessageParsed(int statusCode, String^ reason, HttpResponseHeaderCollection^ headers,
+    String^ content)
+    : statusCode_(statusCode),
+      reason_(reason),
+      headers_(headers),
+      content_(content) {
+}
+
+int HttpResponseMessageParsed::GetStatusCode() {
+    return statusCode_;
+}
+
+String^ HttpResponseMessageParsed::GetContent() {
+    return content_;
+}
+
+HttpResponseHeaderCollection^ HttpResponseMessageParsed::GetHeaders() {
+    return headers_;
+}
+
 IAsyncOperationWithProgress<HttpResponseMessage^, HttpProgress>^ HttpClientBinding::Get(Platform::String^ uri) {
     auto httpClient = ref new HttpClient();
     return httpClient->GetAsync(ref new Uri(uri));
+}
+
+IAsyncOperation<HttpResponseMessageParsed^>^ HttpClientBinding::ParseResponseWithStringContent(HttpResponseMessage^ msg) {
+    return concurrency::create_async([msg]() {
+        String^ content = concurrency::create_task(msg->Content->ReadAsStringAsync()).get();
+
+        return ref new HttpResponseMessageParsed(static_cast<int>(msg->StatusCode), msg->ReasonPhrase, msg->Headers,
+            content);
+    });
 }
 }
 }
