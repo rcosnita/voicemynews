@@ -30,9 +30,6 @@
     <ClCompile Include="utils\Conversions.cpp">
       <Filter>utils</Filter>
     </ClCompile>
-    <ClCompile Include="network\HttpClientNativeWin.cpp">
-      <Filter>network</Filter>
-    </ClCompile>
     <ClCompile Include="bindings\network\HttpClientBinding.cpp">
       <Filter>bindings\network</Filter>
     </ClCompile>

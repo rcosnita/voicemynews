@@ -221,7 +221,6 @@
   <ItemGroup>
     <ClCompile Include="bindings\network\HttpClientBinding.cpp" />
     <ClCompile Include="bindings\RequireBinding.cpp" />
-    <ClCompile Include="network\HttpClientNativeWin.cpp" />
     <ClCompile Include="pages\MainPage.xaml.cpp">
       <DependentUpon>pages\MainPage.xaml</DependentUpon>
     </ClCompile>

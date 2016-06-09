@@ -1,6 +1,8 @@
 #ifndef VoiceMyNewsAppUI_win10_bindings_network_HttpClientBinding_H_
 #define VoiceMyNewsAppUI_win10_bindings_network_HttpClientBinding_H_
 
+#include "network/HttpClientNativeWin.h"
+
 namespace voicemynews {
 namespace app {
 namespace win10 {
@@ -22,7 +24,11 @@ public:
     HttpResponseMessageParsed(int statusCode, String^ reason, HttpResponseHeaderCollection^ headers, String^ content);
 
     int GetStatusCode();
+
+    String^ GetReason();
+
     String^ GetContent();
+
     HttpResponseHeaderCollection^  GetHeaders();
 private:
     int statusCode_;
@@ -64,6 +70,11 @@ namespace voicemynews {
 namespace core {
 namespace network {
 typedef voicemynews::app::win10::bindings::HttpClientBinding HttpClientPlatform;
+
+/**
+ * This method provides a factory for obtaining a http client instance which can be used in the core code.
+ */
+std::shared_ptr<HttpClientInterface> GetHttpClientInstance();
 
 /**
  * \brief This class provides the factory implementation for obtaining a platform specific instance of HttpClient.

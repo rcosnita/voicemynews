@@ -23,6 +23,10 @@ int HttpResponseMessageParsed::GetStatusCode() {
     return statusCode_;
 }
 
+String^ HttpResponseMessageParsed::GetReason() {
+    return reason_;
+}
+
 String^ HttpResponseMessageParsed::GetContent() {
     return content_;
 }
@@ -52,6 +56,14 @@ IAsyncOperation<HttpResponseMessageParsed^>^ HttpClientBinding::ParseResponseWit
 namespace voicemynews {
 namespace core {
 namespace network {
+typedef voicemynews::app::win10::bindings::HttpResponseMessageParsed HttpResponseMessageParsed;
+std::shared_ptr<HttpClientInterface> GetHttpClientInstance() {
+    auto httpClientPlatform = HttpClient::GetInstance();
+    std::shared_ptr<HttpClientNativeWin<HttpClientPlatform, HttpResponseMessageParsed>> httpClientStd(new HttpClientNativeWin<HttpClientPlatform, HttpResponseMessageParsed>(httpClientPlatform));
+
+    return httpClientStd;
+}
+
 HttpClientPlatform^ HttpClient::GetInstance() {
     return ref new HttpClientPlatform();
 }

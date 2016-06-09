@@ -3,14 +3,55 @@
 
 #include <string>
 #include <map>
+#include <memory>
 
 namespace voicemynews {
 namespace core {
 namespace network {
 /**
+ * \class HttpResponseData
+ * \brief This class provides a cross platform representation of a http response.
+ */
+template<typename T>
+class HttpResponseData {
+public:
+    HttpResponseData(int statusCode, std::map<std::string, std::string> headers, std::string reason, T content)
+        : statusCode_(statusCode),
+          headers_(headers),
+          reason_(reason),
+          content_(content) {
+    }
+
+    /**
+     * This method returns the status code from the response.
+     */
+    int GetStatusCode() const { return statusCode_; }
+
+    /**
+     * This method obtains the reason phrase from the response.
+     */
+    std::string GetReason() const { return reason_; }
+
+    /**
+     * This method obtains the content from the http response.
+     */
+    std::string GetContent() const { return content_; }
+
+    /**
+     * This method obtains the response headers.
+     */
+    std::map<std::string, std::string> GetHeaders() const { return headers_; }
+private:
+    int statusCode_;
+    std::string reason_;
+    std::string content_;
+    std::map<std::string, std::string> headers_;
+};
+
+/**
  * This pointer function defines the compatible callbacks which can be passed to the http client methods.
  */
-typedef void(*HttpClientResponseCallback)(const std::map<std::string, std::string>& headers, const int statusCode, void* data);
+typedef void(*HttpClientResponseStringCallback)(std::shared_ptr<HttpResponseData<std::string>>);
 
 /**
  * \class HttpClientInterface
@@ -34,7 +75,7 @@ public:
      * \param handleResponse The callback used to handle the response of the get operation.
      */
     virtual void Get(const std::string& url, const std::map<std::string, std::string>& headers,
-        const std::map<std::string, std::string>& queryParams, HttpClientResponseCallback handleResponse = nullptr) = 0;
+        const std::map<std::string, std::string>& queryParams, HttpClientResponseStringCallback handleResponse = nullptr) = 0;
 };
 }
 }
