@@ -47,6 +47,24 @@ public:
             auto responseHeaders = responseData->GetHeaders();
 
             Assert::IsTrue(responseHeaders["Content-Type"].find(std::string("text/plain;")) > 0);
+            Assert::IsTrue(responseData->GetContent().length() > 0);
+        });
+    }
+
+    TEST_METHOD(HttpClientIntegrationTestGetStringDomainNotFound) {
+        RunTestAsync<std::shared_ptr<HttpResponseData<std::string>>>(
+            [this](std::function<void(std::shared_ptr<HttpResponseData<std::string>>)> done) {
+            httpClient_->Get("http://www.googlexassaddsa.ro/not/found/for/sure", headers_, queryParams_,
+                [done](std::shared_ptr<HttpResponseData<std::string>> response) {
+                done(response);
+            });
+        }, [](std::shared_ptr<HttpResponseData<std::string>> responseData) {
+            Assert::IsTrue(static_cast<bool>(responseData));
+            Assert::AreEqual(404, responseData->GetStatusCode());
+            Assert::AreEqual(std::string("Not Found"), responseData->GetReason());
+
+            auto responseHeaders = responseData->GetHeaders();
+            Assert::IsTrue(responseHeaders.begin() == responseHeaders.end());
         });
     }
 private:

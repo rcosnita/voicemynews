@@ -5,10 +5,12 @@
 #include "utils/Conversions.h"
 
 #include <ppltasks.h>
+#include <string>
 
 namespace voicemynews {
 namespace core {
 namespace network {
+using Platform::Exception;
 using Platform::String;
 using Windows::Foundation::Uri;
 using voicemynews::app::win10::utils::ConvertPlatformMapToStd;
@@ -33,9 +35,12 @@ public:
         const std::map<std::string, std::string>& queryParams, HttpClientResponseStringCallback handleResponse = nullptr) {
         String^ uriPlatform = ref new String(std::wstring(url.begin(), url.end()).c_str());
 
-        concurrency::create_task(httpClient_->Get(uriPlatform)).then([this, handleResponse](HttpResponseMessage^ response) {
-            concurrency::create_task(httpClient_->ParseResponseWithStringContent(response))
-                .then([handleResponse, &response](TParsedResponseTypeStr^ responseParsed) {
+        auto taskGetUri = concurrency::create_task(httpClient_->Get(uriPlatform));
+
+        try {
+            taskGetUri.then([this, handleResponse](HttpResponseMessage^ response) {
+                concurrency::create_task(httpClient_->ParseResponseWithStringContent(response))
+                    .then([handleResponse, &response](TParsedResponseTypeStr^ responseParsed) {
                     int statusCode = responseParsed->GetStatusCode();
                     auto headers = ConvertPlatformMapToStd(responseParsed->GetHeaders());
                     auto reason = ConvertPlatformStrToStd(responseParsed->GetReason());
@@ -45,7 +50,15 @@ public:
 
                     handleResponse(responseStd);
                 });
-        });
+            }).wait();
+        }
+        catch (Exception^ ex) {
+            // TODO [rcosnita] at this point we assume the uri was not found. We shall interpret HRESULT code correctly.
+            auto responseStd = std::shared_ptr<HttpResponseData<std::string>>(
+                new HttpResponseData<std::string>(404, std::map<std::string, std::string>(), "Not Found", std::string()));
+
+            handleResponse(responseStd);
+        }
     }
 
 private:
