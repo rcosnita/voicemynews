@@ -166,7 +166,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <CompileAsWinRT>false</CompileAsWinRT>
+      <CompileAsWinRT>true</CompileAsWinRT>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)..\core;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
@@ -179,7 +179,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <CompileAsWinRT>false</CompileAsWinRT>
+      <CompileAsWinRT>true</CompileAsWinRT>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
@@ -194,11 +194,13 @@
     <ClInclude Include="..\..\core\io\fs\FileUtils.h" />
     <ClInclude Include="..\..\core\io\fs\Require.h" />
     <ClInclude Include="..\..\core\network\HttpClientInterface.h" />
+    <ClInclude Include="utils\Conversions.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\core\io\fs\exceptions\FileNotFoundException.cpp" />
     <ClCompile Include="..\..\core\io\fs\FileUtils.cpp" />
     <ClCompile Include="..\..\core\io\fs\Require.cpp" />
+    <ClCompile Include="utils\Conversions.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

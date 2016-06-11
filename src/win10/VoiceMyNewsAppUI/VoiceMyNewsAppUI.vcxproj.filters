@@ -17,18 +17,12 @@
     <Filter Include="bindings\network">
       <UniqueIdentifier>{71d43984-1cae-4ab5-85ea-285a3f57a22d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="utils">
-      <UniqueIdentifier>{37b2b4a1-1f1a-437c-bf94-0206511765ec}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="pages\MainPage.xaml.cpp" />
     <ClCompile Include="bindings\RequireBinding.cpp">
       <Filter>bindings</Filter>
-    </ClCompile>
-    <ClCompile Include="utils\Conversions.cpp">
-      <Filter>utils</Filter>
     </ClCompile>
     <ClCompile Include="bindings\network\HttpClientBinding.cpp">
       <Filter>bindings\network</Filter>
@@ -39,9 +33,6 @@
     <ClInclude Include="pages\MainPage.xaml.h" />
     <ClInclude Include="bindings\RequireBinding.h">
       <Filter>bindings</Filter>
-    </ClInclude>
-    <ClInclude Include="utils\Conversions.h">
-      <Filter>utils</Filter>
     </ClInclude>
     <ClInclude Include="network\HttpClientNativeWin.h">
       <Filter>network</Filter>

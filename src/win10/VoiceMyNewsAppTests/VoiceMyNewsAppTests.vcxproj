@@ -149,6 +149,7 @@
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(VCInstallDir)UnitTest\lib\UWP;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -159,6 +160,7 @@
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(VCInstallDir)UnitTest\lib\UWP;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -191,7 +193,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\tests\integrationtests\win10\c++\io\fs\RequireChakraTests.cpp" />
-    <ClCompile Include="..\..\..\tests\integrationtests\win10\c++\io\network\HttpChakraTests.cpp" />
+    <ClCompile Include="..\..\..\tests\integrationtests\win10\c++\network\HttpChakraTests.cpp" />
+    <ClCompile Include="..\..\..\tests\integrationtests\win10\c++\network\HttpClientTests.cpp" />
     <ClCompile Include="..\..\..\tests\integrationtests\win10\c++\utils\ChakraRunner.cpp" />
     <ClCompile Include="..\..\..\tests\integrationtests\win10\c++\utils\CommonAssertions.cpp" />
     <ClCompile Include="..\..\..\tests\unittests\win10\c++\pages\MainPageTests.cpp" />
@@ -217,9 +220,15 @@
   <ItemGroup>
     <ProjectReference Include="..\VoiceMyNewsAppUI\VoiceMyNewsAppUI.vcxproj">
       <Project>{41ce78ca-a1d2-47da-b5b0-1e34831454ba}</Project>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
     </ProjectReference>
     <ProjectReference Include="..\VoiceMyNewsCore\VoiceMyNewsCore.vcxproj">
       <Project>{041f327d-691a-427f-a2d6-7195d0c70b0c}</Project>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
+    </ProjectReference>
+    <ProjectReference Include="..\VoiceMyNewsHybridImpl\VoiceMyNewsHybridImpl.vcxproj">
+      <Project>{1deaf6cd-37f2-455a-9bfc-a4a566f12068}</Project>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

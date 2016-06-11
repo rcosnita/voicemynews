@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "Conversions.h"
 
 namespace voicemynews {

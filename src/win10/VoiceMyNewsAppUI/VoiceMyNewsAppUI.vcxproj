@@ -216,7 +216,6 @@
       <DependentUpon>pages\MainPage.xaml</DependentUpon>
     </ClInclude>
     <ClInclude Include="pch.h" />
-    <ClInclude Include="utils\Conversions.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bindings\network\HttpClientBinding.cpp" />
@@ -232,7 +231,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="utils\Conversions.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VoiceMyNewsCore\VoiceMyNewsCore.vcxproj">

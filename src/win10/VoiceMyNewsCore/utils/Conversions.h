@@ -1,5 +1,5 @@
-#ifndef VoiceMyNewsAppUI_utils_conversions_H_
-#define VoiceMyNewsAppUI_utils_conversions_H_
+#ifndef VoiceMyNewsCore_utils_conversions_H_
+#define VoiceMyNewsCore_utils_conversions_H_
 
 #include <string>
 #include <map>
@@ -53,4 +53,4 @@ namespace utils {
 }
 }
 
-#endif // VoiceMyNewsAppUI_utils_conversions_H_
+#endif // VoiceMyNewsCore_utils_conversions_H_

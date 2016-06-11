@@ -1,9 +1,10 @@
 #ifndef VoiceMyNewsCore_core_network_HttpClientInterface_H_
 #define VoiceMyNewsCore_core_network_HttpClientInterface_H_
 
-#include <string>
+#include <functional>
 #include <map>
 #include <memory>
+#include <string>
 
 namespace voicemynews {
 namespace core {
@@ -51,7 +52,8 @@ private:
 /**
  * This pointer function defines the compatible callbacks which can be passed to the http client methods.
  */
-typedef void(*HttpClientResponseStringCallback)(std::shared_ptr<HttpResponseData<std::string>>);
+typedef std::function<void(std::shared_ptr<HttpResponseData<std::string>>)> HttpClientResponseStringCallback;
+//typedef void(*HttpClientResponseStringCallback)(std::shared_ptr<HttpResponseData<std::string>>);
 
 /**
  * \class HttpClientInterface
@@ -76,6 +78,12 @@ public:
      */
     virtual void Get(const std::string& url, const std::map<std::string, std::string>& headers,
         const std::map<std::string, std::string>& queryParams, HttpClientResponseStringCallback handleResponse = nullptr) = 0;
+
+    /**
+     * This method provides a helper factory method for obtaining a http client implementation which
+     * works with standard library types.
+     */
+    static std::shared_ptr<HttpClientInterface> GetHttpClientInstance();
 };
 }
 }
