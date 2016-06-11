@@ -51,6 +51,9 @@
     <ClCompile Include="..\..\..\tests\integrationtests\win10\c++\network\HttpClientTests.cpp">
       <Filter>core\network</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\tests\integrationtests\win10\c++\utils\TestRunnerUtils.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -62,6 +65,9 @@
       <Filter>utils</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\tests\integrationtests\win10\c++\utils\TestConstants.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\tests\integrationtests\win10\c++\utils\TestRunnerUtils.h">
       <Filter>utils</Filter>
     </ClInclude>
   </ItemGroup>

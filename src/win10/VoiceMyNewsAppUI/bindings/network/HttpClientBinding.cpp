@@ -11,7 +11,7 @@ namespace bindings {
 using Windows::Foundation::Uri;
 using Windows::Web::Http::HttpClient;
 
-HttpResponseMessageParsed::HttpResponseMessageParsed(int statusCode, String^ reason, HttpResponseHeaderCollection^ headers,
+HttpResponseMessageParsed::HttpResponseMessageParsed(int statusCode, String^ reason, HttpContentHeaderCollection^ headers,
     String^ content)
     : statusCode_(statusCode),
       reason_(reason),
@@ -31,7 +31,7 @@ String^ HttpResponseMessageParsed::GetContent() {
     return content_;
 }
 
-HttpResponseHeaderCollection^ HttpResponseMessageParsed::GetHeaders() {
+HttpContentHeaderCollection^ HttpResponseMessageParsed::GetHeaders() {
     return headers_;
 }
 
@@ -44,7 +44,7 @@ IAsyncOperation<HttpResponseMessageParsed^>^ HttpClientBinding::ParseResponseWit
     return concurrency::create_async([msg]() {
         String^ content = concurrency::create_task(msg->Content->ReadAsStringAsync()).get();
 
-        return ref new HttpResponseMessageParsed(static_cast<int>(msg->StatusCode), msg->ReasonPhrase, msg->Headers,
+        return ref new HttpResponseMessageParsed(static_cast<int>(msg->StatusCode), msg->ReasonPhrase, msg->Content->Headers,
             content);
     });
 }

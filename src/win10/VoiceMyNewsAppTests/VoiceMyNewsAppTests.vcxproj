@@ -167,6 +167,7 @@
     <ClInclude Include="..\..\..\tests\integrationtests\win10\c++\utils\ChakraRunner.h" />
     <ClInclude Include="..\..\..\tests\integrationtests\win10\c++\utils\CommonAssertions.h" />
     <ClInclude Include="..\..\..\tests\integrationtests\win10\c++\utils\TestConstants.h" />
+    <ClInclude Include="..\..\..\tests\integrationtests\win10\c++\utils\TestRunnerUtils.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="UnitTestApp.xaml.h">
       <DependentUpon>UnitTestApp.xaml</DependentUpon>
@@ -198,6 +199,7 @@
     <ClCompile Include="..\..\..\tests\integrationtests\win10\c++\network\HttpClientTests.cpp" />
     <ClCompile Include="..\..\..\tests\integrationtests\win10\c++\utils\ChakraRunner.cpp" />
     <ClCompile Include="..\..\..\tests\integrationtests\win10\c++\utils\CommonAssertions.cpp" />
+    <ClCompile Include="..\..\..\tests\integrationtests\win10\c++\utils\TestRunnerUtils.cpp" />
     <ClCompile Include="..\..\..\tests\unittests\win10\c++\pages\MainPageTests.cpp" />
     <ClCompile Include="UnitTestApp.xaml.cpp">
       <DependentUpon>UnitTestApp.xaml</DependentUpon>

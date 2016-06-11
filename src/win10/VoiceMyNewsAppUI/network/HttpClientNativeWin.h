@@ -35,7 +35,7 @@ public:
 
         concurrency::create_task(httpClient_->Get(uriPlatform)).then([this, handleResponse](HttpResponseMessage^ response) {
             concurrency::create_task(httpClient_->ParseResponseWithStringContent(response))
-                .then([handleResponse](TParsedResponseTypeStr^ responseParsed) {
+                .then([handleResponse, &response](TParsedResponseTypeStr^ responseParsed) {
                     int statusCode = responseParsed->GetStatusCode();
                     auto headers = ConvertPlatformMapToStd(responseParsed->GetHeaders());
                     auto reason = ConvertPlatformStrToStd(responseParsed->GetReason());

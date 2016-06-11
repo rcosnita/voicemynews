@@ -3,6 +3,7 @@
 #include "CppUnitTest.h"
 #include "network/HttpClientInterface.h"
 #include "utils/TestConstants.h"
+#include "utils/TestRunnerUtils.h"
 
 #include <chrono>
 #include <map>
@@ -20,6 +21,7 @@ using voicemynews::core::network::HttpClientInterface;
 using voicemynews::core::network::HttpClientResponseStringCallback;
 using voicemynews::core::network::HttpResponseData;
 using voicemynews::tests::kTestAsyncMaximumTimeout;
+using voicemynews::tests::utils::RunTestAsync;
 
 TEST_CLASS(HttpClientTest) {
 public:
@@ -31,31 +33,21 @@ public:
     }
 
     TEST_METHOD(HttpClientIntegrationTestGetStringOk) {
-        std::mutex syncObj;
-        std::condition_variable cv;
-        bool asyncLogicExecuted = false;
-        std::shared_ptr<HttpResponseData<std::string>> responseData;
+        RunTestAsync<std::shared_ptr<HttpResponseData<std::string>>>(
+            [this](std::function<void(std::shared_ptr<HttpResponseData<std::string>>)> done) {
+            httpClient_->Get("http://www.google.ro", headers_, queryParams_,
+                [done](std::shared_ptr<HttpResponseData<std::string>> response) {
+                done(response);
+            });
+        }, [](std::shared_ptr<HttpResponseData<std::string>> responseData) {
+            Assert::IsTrue(static_cast<bool>(responseData));
+            Assert::AreEqual(200, responseData->GetStatusCode());
+            Assert::AreEqual(std::string("OK"), responseData->GetReason());
 
-        httpClient_->Get("http://www.google.ro", headers_, queryParams_,
-            [&syncObj, &asyncLogicExecuted, &responseData, &cv](std::shared_ptr<HttpResponseData<std::string>> response) {
-            std::lock_guard<std::mutex> lock(syncObj);
+            auto responseHeaders = responseData->GetHeaders();
 
-            responseData = response;
-            asyncLogicExecuted = true;
-
-            cv.notify_one();
+            Assert::IsTrue(responseHeaders["Content-Type"].find(std::string("text/plain;")) > 0);
         });
-
-        {
-            std::unique_lock<std::mutex> lock(syncObj);
-
-            cv.wait_for(lock, kTestAsyncMaximumTimeout,
-                [&asyncLogicExecuted]() { return asyncLogicExecuted; });
-        }
-
-        Assert::IsTrue(static_cast<bool>(responseData));
-        Assert::AreEqual(200, responseData->GetStatusCode());
-        Assert::AreEqual(std::string("OK"), responseData->GetReason());
     }
 private:
     std::map<std::string, std::string> headers_;

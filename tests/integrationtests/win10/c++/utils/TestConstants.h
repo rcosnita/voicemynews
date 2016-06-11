@@ -9,7 +9,7 @@ namespace tests {
  * This constant controls the maximum allowed number of milliseconds we are willing to wait for a test async operation
  * to finish.
  */
-auto kTestAsyncMaximumTimeout = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::milliseconds(1000));
+auto kTestAsyncMaximumTimeout = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::milliseconds(10000));
 }
 }
 

@@ -13,7 +13,7 @@ using Windows::Foundation::IAsyncOperation;
 using Windows::Foundation::IAsyncOperationWithProgress;
 using Windows::Foundation::Uri;
 using Windows::Web::Http::HttpProgress;
-using Windows::Web::Http::Headers::HttpResponseHeaderCollection;
+using Windows::Web::Http::Headers::HttpContentHeaderCollection;
 using Windows::Web::Http::HttpResponseMessage;
 
 /**
@@ -22,7 +22,7 @@ using Windows::Web::Http::HttpResponseMessage;
  */
 public ref class HttpResponseMessageParsed sealed {
 public:
-    HttpResponseMessageParsed(int statusCode, String^ reason, HttpResponseHeaderCollection^ headers, String^ content);
+    HttpResponseMessageParsed(int statusCode, String^ reason, HttpContentHeaderCollection^ headers, String^ content);
 
     int GetStatusCode();
 
@@ -30,12 +30,12 @@ public:
 
     String^ GetContent();
 
-    HttpResponseHeaderCollection^  GetHeaders();
+    HttpContentHeaderCollection^  GetHeaders();
 private:
     int statusCode_;
     String^ reason_;
     String^ content_;
-    HttpResponseHeaderCollection^ headers_;
+    HttpContentHeaderCollection^ headers_;
 };
 
 /**
