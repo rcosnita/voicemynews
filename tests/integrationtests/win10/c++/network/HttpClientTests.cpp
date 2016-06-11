@@ -2,6 +2,7 @@
 
 #include "CppUnitTest.h"
 #include "network/HttpClientInterface.h"
+#include "utils/TestConstants.h"
 
 #include <chrono>
 #include <map>
@@ -18,7 +19,7 @@ using Platform::String;
 using voicemynews::core::network::HttpClientInterface;
 using voicemynews::core::network::HttpClientResponseStringCallback;
 using voicemynews::core::network::HttpResponseData;
-
+using voicemynews::tests::kTestAsyncMaximumTimeout;
 
 TEST_CLASS(HttpClientTest) {
 public:
@@ -48,7 +49,7 @@ public:
         {
             std::unique_lock<std::mutex> lock(syncObj);
 
-            cv.wait_for(lock, std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::milliseconds(1000)), 
+            cv.wait_for(lock, kTestAsyncMaximumTimeout,
                 [&asyncLogicExecuted]() { return asyncLogicExecuted; });
         }
 

@@ -61,6 +61,9 @@
     <ClInclude Include="..\..\..\tests\integrationtests\win10\c++\utils\ChakraRunner.h">
       <Filter>utils</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\tests\integrationtests\win10\c++\utils\TestConstants.h">
+      <Filter>utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="UnitTestApp.rd.xml" />

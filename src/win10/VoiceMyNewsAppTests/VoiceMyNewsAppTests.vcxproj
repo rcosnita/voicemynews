@@ -166,6 +166,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\tests\integrationtests\win10\c++\utils\ChakraRunner.h" />
     <ClInclude Include="..\..\..\tests\integrationtests\win10\c++\utils\CommonAssertions.h" />
+    <ClInclude Include="..\..\..\tests\integrationtests\win10\c++\utils\TestConstants.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="UnitTestApp.xaml.h">
       <DependentUpon>UnitTestApp.xaml</DependentUpon>
