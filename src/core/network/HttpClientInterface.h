@@ -50,10 +50,10 @@ private:
 };
 
 /**
- * This pointer function defines the compatible callbacks which can be passed to the http client methods.
+ * This template function defines the compatible callbacks which can be passed to the http client methods. It automatically
+ * accepts lambdas, delegates and other functions.
  */
 typedef std::function<void(std::shared_ptr<HttpResponseData<std::string>>)> HttpClientResponseStringCallback;
-//typedef void(*HttpClientResponseStringCallback)(std::shared_ptr<HttpResponseData<std::string>>);
 
 /**
  * \class HttpClientInterface
