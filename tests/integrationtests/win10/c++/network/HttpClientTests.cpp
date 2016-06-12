@@ -86,6 +86,28 @@ public:
             Assert::IsTrue(responseData->GetContent().length() > 0);
         });
     }
+
+    TEST_METHOD(HttpClientIntegrationTestGetStringRequestHeadersPassed) {
+        headers_.emplace("Accept", "application/xml");
+        headers_.emplace("User-Agent", "voicemynews-uwp/integration-tests");
+
+        RunTestAsync<std::shared_ptr<HttpResponseData<std::string>>>(
+            [this](std::function<void(std::shared_ptr<HttpResponseData<std::string>>)> done) {
+            httpClient_->Get("https://api.github.com", headers_, queryParams_,
+                [done](std::shared_ptr<HttpResponseData<std::string>> response) {
+                done(response);
+            });
+        }, [](std::shared_ptr<HttpResponseData<std::string>> responseData) {
+            Assert::IsTrue(static_cast<bool>(responseData));
+            Assert::AreEqual(415, responseData->GetStatusCode());
+            Assert::AreEqual(std::string("Unsupported Media Type"), responseData->GetReason());
+
+            auto responseHeaders = responseData->GetHeaders();
+
+            Assert::IsTrue(responseHeaders["Content-Type"].find(std::string("application/json;")) == 0);
+            Assert::IsTrue(responseData->GetContent().length() > 0);
+        });
+    }
 private:
     std::map<std::string, std::string> headers_;
     std::shared_ptr<HttpClientInterface> httpClient_;

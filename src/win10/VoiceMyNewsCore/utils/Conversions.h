@@ -1,13 +1,16 @@
 #ifndef VoiceMyNewsCore_utils_conversions_H_
 #define VoiceMyNewsCore_utils_conversions_H_
 
-#include <string>
+#include <collection.h>
+#include <functional>
 #include <map>
+#include <string>
 
 namespace voicemynews {
 namespace app {
 namespace win10 {
 namespace utils {
+using Windows::Foundation::Collections::IMap;
     /**
      * \brief This method provides a helper for converting platform string to standar string.
      *
@@ -48,6 +51,13 @@ namespace utils {
 
         return mapStd;
     }
+
+    /**
+     * \brief This method provides a conversion method between standard map and a platform specific collection.
+     *
+     * \param stdMap the standard map from which we copy all string entries and transform them to platform strings.
+     */
+    IMap<Platform::String^, Platform::String^>^ ConvertStdMapToPlatform(std::map<std::string, std::string> stdMap);
 }
 }
 }

@@ -4,19 +4,24 @@
 #include "network/HttpClientInterface.h"
 #include "utils/Conversions.h"
 
+#include <collection.h>
 #include <ppltasks.h>
 #include <string>
 
 namespace voicemynews {
 namespace core {
 namespace network {
+using Platform::Collections::Map;
 using Platform::Exception;
 using Platform::String;
-using Windows::Foundation::Uri;
+
 using voicemynews::app::win10::utils::ConvertPlatformMapToStd;
 using voicemynews::app::win10::utils::ConvertPlatformStrToStd;
+using voicemynews::app::win10::utils::ConvertStdMapToPlatform;
+
+using Windows::Foundation::Uri;
+using Windows::Web::Http::Headers::HttpContentHeaderCollection;
 using Windows::Web::Http::HttpResponseMessage;
-using Windows::Web::Http::Headers::HttpResponseHeaderCollection;
 /**
  * \class HttpClientNativeWin
  * \brief This class provides the native http client which can be used by native code.
@@ -35,7 +40,8 @@ public:
         const std::map<std::string, std::string>& queryParams, HttpClientResponseStringCallback handleResponse = nullptr) {
         String^ uriPlatform = ref new String(std::wstring(url.begin(), url.end()).c_str());
 
-        auto taskGetUri = concurrency::create_task(httpClient_->Get(uriPlatform));
+        auto requestHeaders = ConvertStdMapToPlatform(headers);
+        auto taskGetUri = concurrency::create_task(httpClient_->Get(uriPlatform, requestHeaders));
 
         try {
             taskGetUri.then([this, handleResponse](HttpResponseMessage^ response) {

@@ -10,6 +10,7 @@ namespace win10 {
 namespace bindings {
 using Windows::Foundation::Uri;
 using Windows::Web::Http::HttpClient;
+using Windows::Web::Http::HttpMethod;
 
 HttpResponseMessageParsed::HttpResponseMessageParsed(int statusCode, String^ reason, HttpContentHeaderCollection^ headers,
     String^ content)
@@ -35,9 +36,16 @@ HttpContentHeaderCollection^ HttpResponseMessageParsed::GetHeaders() {
     return headers_;
 }
 
-IAsyncOperationWithProgress<HttpResponseMessage^, HttpProgress>^ HttpClientBinding::Get(Platform::String^ uri) {
+IAsyncOperationWithProgress<HttpResponseMessage^, HttpProgress>^ HttpClientBinding::Get(Platform::String^ uri,
+    IMap<String^, String^>^ requestHeaders) {
     auto httpClient = ref new HttpClient();
-    return httpClient->GetAsync(ref new Uri(uri));
+    auto requestMessage = ref new HttpRequestMessage(HttpMethod::Get, ref new Uri(uri));
+
+    if (requestHeaders != nullptr) {
+        CopyHeadersToRequestMessage(*requestHeaders, *requestMessage);
+    }
+
+    return httpClient->SendRequestAsync(requestMessage);
 }
 
 IAsyncOperation<HttpResponseMessageParsed^>^ HttpClientBinding::ParseResponseWithStringContent(HttpResponseMessage^ msg) {
@@ -47,6 +55,13 @@ IAsyncOperation<HttpResponseMessageParsed^>^ HttpClientBinding::ParseResponseWit
         return ref new HttpResponseMessageParsed(static_cast<int>(msg->StatusCode), msg->ReasonPhrase, msg->Content->Headers,
             content);
     });
+}
+
+void HttpClientBinding::CopyHeadersToRequestMessage(IMap<String^, String^>% headers,
+    HttpRequestMessage% requestMessage) {
+    for (auto entry = headers.First(); entry->HasCurrent; entry->MoveNext()) {
+        requestMessage.Headers->Append(entry->Current->Key, entry->Current->Value);
+    }
 }
 }
 }
