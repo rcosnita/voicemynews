@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"reques",
+				"requestDesc"
+			],
+			[
 				"Http",
 				"HttpNativeClient"
 			],
@@ -83,23 +87,7 @@
 			"file": "src/core/js/networking/http.js",
 			"settings":
 			{
-				"buffer_size": 5419,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "README.md",
-			"settings":
-			{
-				"buffer_size": 489,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/win10/VoiceMyNewsHybridImpl/README.md",
-			"settings":
-			{
-				"buffer_size": 323,
+				"buffer_size": 5469,
 				"line_ending": "Windows"
 			}
 		},
@@ -107,7 +95,7 @@
 			"file": "package.json",
 			"settings":
 			{
-				"buffer_size": 295,
+				"buffer_size": 354,
 				"line_ending": "Windows"
 			}
 		}
@@ -187,14 +175,21 @@
 	[
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src",
-		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/core",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/core/js",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/core/js/networking",
-		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/win10",
-		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/win10/VoiceMyNewsHybridImpl"
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/win10/VoiceMyNewsHybridImpl",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/core",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/core/js",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/win10"
 	],
 	"file_history":
 	[
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/core/js/spec/support/jasmine.json",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/core/js/README.md",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/win10/VoiceMyNewsHybridImpl/README.md",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/README.md",
 		"/C/Comet/sparkler-shell/Sparkler/SparklerWindows/SparklerAdobeComponentsWrapper/SparklerAdobeComponentsWrapper.vcxproj",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/.gitignore",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/core/js/require.js",
@@ -215,8 +210,6 @@
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/integrationtests/core/README.md",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/core/README.md",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/win10/README.md",
-		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/README.md",
-		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/core/js/README.md",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/core/c++/README.md",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/ios/README.md",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/android/README.md",
@@ -320,9 +313,7 @@
 		"/C/Users/cosnita.ADOBENET/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
 		"/C/Users/cosnita.ADOBENET/AppData/Roaming/Sublime Text 3/Packages/User/Package Control.sublime-settings",
 		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/v8/tmp-v8/build/gyp_v8.py",
-		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/v8/tmp-v8/build/gyp_v8",
-		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/v8/depot_tools/fetch_configs/config_util.py",
-		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/v8/build_v8_sparkler.sh"
+		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/v8/tmp-v8/build/gyp_v8"
 	],
 	"find":
 	{
@@ -333,6 +324,7 @@
 		"height": 138.0,
 		"where_history":
 		[
+			"C:\\Users\\cosnita.ADOBENET\\work-personal\\voicemynews\\tests\\unittests\\core\\js",
 			"C:\\Users\\cosnita.ADOBENET\\work\\sparkler-deps\\nuget",
 			"C:\\Users\\cosnita.ADOBENET\\work\\sparkler-shell\\Sparkler\\Sparkler\\win\\app\\src",
 			""
@@ -343,6 +335,7 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"support",
 			"x64",
 			"Win32",
 			"x64",
@@ -428,7 +421,7 @@
 	"groups":
 	[
 		{
-			"selected": 2,
+			"selected": 1,
 			"sheets":
 			[
 				{
@@ -437,15 +430,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 5419,
+						"buffer_size": 5469,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								415,
-								415
+								1411,
+								1411
 							]
 						],
 						"settings":
@@ -460,82 +453,24 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "README.md",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 489,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								310,
-								310
-							]
-						],
-						"settings":
-						{
-							"side_bar_folders_auto_load_folder": 1,
-							"syntax": "Packages/MarkdownHighlighting/Markdown.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
 					"stack_index": 1,
 					"type": "text"
 				},
 				{
-					"buffer": 2,
-					"file": "src/win10/VoiceMyNewsHybridImpl/README.md",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 323,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								323,
-								323
-							]
-						],
-						"settings":
-						{
-							"auto_name": "",
-							"syntax": "Packages/MarkdownHighlighting/Markdown.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
+					"buffer": 1,
 					"file": "package.json",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 295,
+						"buffer_size": 354,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								29,
-								29
+								354,
+								354
 							]
 						],
 						"settings":
@@ -547,7 +482,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 0,
 					"type": "text"
 				}
 			]
