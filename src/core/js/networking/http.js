@@ -23,7 +23,8 @@ const HttpNativeClient = voicemynews.core.network.HttpClient.getInstance();
  */
 let request = (requestDesc) => {
     const result = Q.defer()
-    const response = HttpNativeClient.get(requestDesc.url);
+    const headers = requestDesc.headers || {}
+    const response = HttpNativeClient.get(requestDesc.url, {});
 
     response.done((responseData) => {
         HttpNativeClient.parseResponseWithStringContent(responseData).done((responseParsed) => {
