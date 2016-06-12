@@ -3,7 +3,6 @@
 #include <jsrt.h>
 
 #include "CppUnitTest.h"
-#include "io/fs/FileUtils.h"
 #include "utils/ChakraRunner.h"
 #include "utils/CommonAssertions.h"
 
@@ -14,7 +13,6 @@ namespace app {
 using Microsoft::VisualStudio::CppUnitTestFramework::Assert;
 using Platform::String;
 
-using voicemynews::core::io::fs::FileUtils;
 using voicemynews::tests::app::win10::utils::assertions::AssertNoJsError;
 using voicemynews::tests::app::win10::utils::js::ChakraRunner;
 
@@ -44,22 +42,8 @@ public:
         });
     }
 
-    /**
-     * \brief This test case ensures http module get operations work as expected under chakra.
-     */
-    TEST_METHOD(HttpChakraModuleGetOk) {
-        String^ jsScript = "(() => {const http = require('js/networking/http'); return http.get('http://www.google.ro'); })()";
-
-        chakraRunner_.RunScript(jsScript, L"", [](const JsErrorCode& jsErrorCode, const JsValueRef& result, ChakraRunner* runner) {
-            AssertNoJsError(jsErrorCode);
-
-            auto undefinedObj = runner->GetUndefinedValue();
-            Assert::AreNotEqual(undefinedObj, result);
-        });
-    }
 private:
     ChakraRunner chakraRunner_ = ChakraRunner(true);
-    FileUtils fileUtils_;
 };
 }
 }

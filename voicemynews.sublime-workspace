@@ -96,6 +96,14 @@
 			}
 		},
 		{
+			"file": "src/win10/VoiceMyNewsHybridImpl/README.md",
+			"settings":
+			{
+				"buffer_size": 323,
+				"line_ending": "Windows"
+			}
+		},
+		{
 			"file": "package.json",
 			"settings":
 			{
@@ -181,7 +189,9 @@
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/core",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/core/js",
-		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/core/js/networking"
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/core/js/networking",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/win10",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/win10/VoiceMyNewsHybridImpl"
 	],
 	"file_history":
 	[
@@ -418,7 +428,7 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 2,
 			"sheets":
 			[
 				{
@@ -434,8 +444,8 @@
 						"selection":
 						[
 							[
-								13,
-								13
+								415,
+								415
 							]
 						],
 						"settings":
@@ -450,7 +460,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
@@ -484,6 +494,35 @@
 				},
 				{
 					"buffer": 2,
+					"file": "src/win10/VoiceMyNewsHybridImpl/README.md",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 323,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								323,
+								323
+							]
+						],
+						"settings":
+						{
+							"auto_name": "",
+							"syntax": "Packages/MarkdownHighlighting/Markdown.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
 					"file": "package.json",
 					"semi_transient": false,
 					"settings":
@@ -508,7 +547,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 3,
 					"type": "text"
 				}
 			]
