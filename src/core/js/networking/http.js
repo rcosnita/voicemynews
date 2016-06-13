@@ -139,6 +139,10 @@ let del = (url, headers, queryParams, data) => {
  * @returns {String} a string containing all query parameters encoded.
  */
 let _encodeQueryParams = (queryParams) => {
+    if (!queryParams || Object.keys(queryParams).length === 0) {
+        return "";
+    }
+
     let result = [];
     for (let key in queryParams) {
         result.push(key + "=" + (queryParams[key] ? encodeURIComponent(queryParams[key]) : ""));
