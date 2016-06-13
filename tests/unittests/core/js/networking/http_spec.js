@@ -1,5 +1,7 @@
 "use strict";
 
+const NotImplemented = require("js/exceptions/notimplemented");
+const NotImplementedMethodException = NotImplemented.NotImplementedMethodException;
 const Q = require("q/q");
 
 describe("Test suites for unit testing http.js implementation.", () => {
@@ -81,15 +83,15 @@ describe("Test suites for unit testing http.js implementation.", () => {
     });
 
     it("http post verb not implemented.", () => {
-
+        expect(() => this._httpModule.post()).toThrowError(NotImplementedMethodException, NotImplementedMethodException.kDefaultMessage);
     });
 
     it("http put verb not implemented.", () => {
-
+        expect(() => this._httpModule.put()).toThrowError(NotImplementedMethodException, NotImplementedMethodException.kDefaultMessage);
     });
 
     it("http delete verb not implemented.", () => {
-
+        expect(() => this._httpModule.del()).toThrowError(NotImplementedMethodException, NotImplementedMethodException.kDefaultMessage);
     });
 
     /**

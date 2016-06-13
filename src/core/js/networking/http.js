@@ -1,7 +1,10 @@
 "use strict";
 
-const Q = require("js/third_party/q/q");
 const HttpNativeClient = voicemynews.core.network.HttpClient.getInstance();
+
+const NotImplemented = require("js/exceptions/notimplemented");
+const NotImplementedMethodException = NotImplemented.NotImplementedMethodException;
+const Q = require("js/third_party/q/q");
 
 /**
  * This module provides a simple implementation for http operations which we are going to use in the project.
@@ -87,7 +90,7 @@ let get = (url, headers, queryParams) => {
  * });
  */
 let post = (url, headers, queryParams, data) => {
-
+    throw new NotImplementedMethodException();
 };
 
 /**
@@ -109,7 +112,7 @@ let post = (url, headers, queryParams, data) => {
  * });
  */
 let put = (url, headers, queryParams, data) => {
-
+    throw new NotImplementedMethodException();
 };
 
 /**
@@ -129,7 +132,7 @@ let put = (url, headers, queryParams, data) => {
  * });
  */
 let del = (url, headers, queryParams, data) => {
-
+    throw new NotImplementedMethodException();
 };
 
 /**
