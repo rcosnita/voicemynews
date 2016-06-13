@@ -5,8 +5,9 @@
 #include <vector>
 
 #include "CppUnitTest.h"
-
 #include "io/fs/FileUtils.h"
+#include "utils/ChakraRunner.h"
+#include "utils/CommonAssertions.h"
 
 namespace voicemynews {
 namespace tests {
@@ -16,6 +17,9 @@ using Microsoft::VisualStudio::CppUnitTestFramework::Assert;
 using Platform::String;
 
 using voicemynews::core::io::fs::FileUtils;
+using voicemynews::tests::app::win10::utils::js::ChakraRunner;
+using voicemynews::tests::app::win10::utils::js::JsScriptRunnerCb;
+using voicemynews::tests::app::win10::utils::assertions::AssertNoJsError;
 
 /**
  * \class RequireChakraIntegrationTests
@@ -24,25 +28,9 @@ using voicemynews::core::io::fs::FileUtils;
 TEST_CLASS(RequireChakraIntegrationTests) {
 public:
     TEST_METHOD_INITIALIZE(SetUp) {
-        currentSourceContext_ = 0;
-
-        JsCreateRuntime(JsRuntimeAttributeNone, nullptr, &runtime_);
-        JsCreateContext(runtime_, &context_);
-        JsSetCurrentContext(context_);
-
-        JsProjectWinRTNamespace(L"voicemynews.app.win10.bindings");
-#ifdef _DEBUG
-        JsStartDebugging();
-#endif
-
-        auto requireSource = fileUtils_.ReadFile("js/require.js");
-        auto jsErrorCode = JsRunScript(requireSource.c_str(), currentSourceContext_++, L"js/require.js", nullptr);
-        AssertNoJsError(jsErrorCode);
     }
 
     TEST_METHOD_CLEANUP(TearDown) {
-        JsSetCurrentContext(JS_INVALID_REFERENCE);
-        JsDisposeRuntime(runtime_);
     }
 
     /**
@@ -63,7 +51,7 @@ public:
      * \brief This test case checks if require fails if no module name is provided.
      */
     TEST_METHOD(RequireChakraEmbeddedOkNoModuleNameProvided) {
-        std::vector<std::wstring> scriptSources = {
+        std::vector<String^> scriptSources = {
             L"(() => { const dummy = require(); return dummy; })();",
             L"(() => { const dummy = require(null); return dummy; })();",
             L"(() => { const dummy = require(""); return dummy; })();",
@@ -71,17 +59,12 @@ public:
         };
 
         for (auto it = scriptSources.begin(); it != scriptSources.end(); it++) {
-            auto jsScript = it->c_str();
+            chakraRunner_.RunScript(*it, L"", [](const JsErrorCode& jsErrorCode, const JsValueRef& result, ChakraRunner* runner) {
+                AssertNoJsError(jsErrorCode);
 
-            JsValueRef result;
-            auto jsErrorCode = JsRunScript(jsScript, currentSourceContext_++, L"", &result);
-            AssertNoJsError(jsErrorCode);
-
-            JsValueRef undefinedObj ;
-            jsErrorCode = JsGetUndefinedValue(&undefinedObj);
-            AssertNoJsError(jsErrorCode);
-
-            Assert::AreEqual(undefinedObj, result);
+                JsValueRef undefinedObj = runner->GetUndefinedValue();
+                Assert::AreEqual(undefinedObj, result);
+            });
         }
     }
 
@@ -117,38 +100,26 @@ private:
      * \param moduleName the relative path to AppX of the module we want to load.
      */
     void CheckRequireChakraEmbeddedOkTemplate(String^ moduleName) {
-        auto testScriptSource = "(() => { const dummy = require('" + moduleName + "'); return dummy; })();";
-        auto jsScript = testScriptSource->Data();
+        auto jsScript = "(() => { const dummy = require('" + moduleName + "'); return dummy; })();";
 
-        JsValueRef result;
-        auto jsErrorCode = JsRunScript(jsScript, currentSourceContext_++, L"", &result);
-        AssertNoJsError(jsErrorCode);
+        chakraRunner_.RunScript(jsScript, moduleName, [](const JsErrorCode& jsErrorCode, const JsValueRef& result, ChakraRunner* runner) {
+            AssertNoJsError(jsErrorCode);
 
-        JsValueRef resultJSString;
-        jsErrorCode = JsConvertValueToString(result, &resultJSString);
-        AssertNoJsError(jsErrorCode);
+            JsValueRef resultJSString;
+            auto jsError = runner->ConvertValueToString(result, &resultJSString);
+            AssertNoJsError(jsError);
 
-        const wchar_t *resultWC;
-        size_t stringLength;
-        jsErrorCode = JsStringToPointer(resultJSString, &resultWC, &stringLength);
-        AssertNoJsError(jsErrorCode);
+            const wchar_t *resultWC;
+            size_t stringLength;
+            jsError = runner->ConvertStringToPointer(resultJSString, &resultWC, &stringLength);
+            AssertNoJsError(jsError);
 
-        Assert::AreEqual(L"Hello world", resultWC);
-    }
-
-    /**
-     * \brief This method asserts that given result code is not a js error code.
-     *
-     */
-    void AssertNoJsError(JsErrorCode jsErrorCode) {
-        Assert::AreEqual(static_cast<int>(JsErrorCode::JsNoError), static_cast<int>(jsErrorCode));
+            Assert::AreEqual(L"Hello world", resultWC);
+        });
     }
 
 private:
-    JsRuntimeHandle runtime_;
-    JsContextRef context_;
-    FileUtils fileUtils_;
-    unsigned int currentSourceContext_;
+    ChakraRunner chakraRunner_ = ChakraRunner(true);
 };
 }
 }

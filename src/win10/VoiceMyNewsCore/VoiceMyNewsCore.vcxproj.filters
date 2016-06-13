@@ -23,6 +23,9 @@
     <Filter Include="io\fs\exceptions">
       <UniqueIdentifier>{964a854f-0309-48eb-a53e-d679af06cb85}</UniqueIdentifier>
     </Filter>
+    <Filter Include="utils">
+      <UniqueIdentifier>{bb8c9138-721b-4cb3-a496-8562078fe9fe}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\core\io\fs\Require.cpp">
@@ -33,6 +36,9 @@
     </ClCompile>
     <ClCompile Include="..\..\core\io\fs\exceptions\FileNotFoundException.cpp">
       <Filter>io\fs\exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="utils\Conversions.cpp">
+      <Filter>utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -47,6 +53,12 @@
     </ClInclude>
     <ClInclude Include="..\..\core\io\fs\exceptions\FileNotFoundException.h">
       <Filter>io\fs\exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\core\network\HttpClientInterface.h">
+      <Filter>network</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\Conversions.h">
+      <Filter>utils</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,0 +1,18 @@
+{
+    "name": "voicemynews",
+    "version": "0.0.1",
+    "description": "VoiceMyNews platform which reinvents the experience of reading news.",
+    "homepage": "https://github.com/rcosnita/voicemynews",
+    "license" : "SEE LICENSE IN LICENSE",
+    "dependencies": {
+        "q": "1.4.1"
+    },
+    "devDependencies": {
+        "fs-extra": "0.30.0",
+        "jasmine": "2.4.1"
+    },
+    "scripts": {
+        "pretest": "node tests/unittests/core/js/pretest.js",
+        "test": "node_modules/.bin/jasmine.cmd JASMINE_CONFIG_PATH=tests/unittests/core/js/support/jasmine.json"
+    }
+}

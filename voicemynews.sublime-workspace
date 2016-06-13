@@ -4,6 +4,18 @@
 		"selected_items":
 		[
 			[
+				"reques",
+				"requestDesc"
+			],
+			[
+				"Http",
+				"HttpNativeClient"
+			],
+			[
+				"H",
+				"HttpNativeClient"
+			],
+			[
 				"cache",
 				"cachedModule"
 			],
@@ -72,26 +84,18 @@
 	"buffers":
 	[
 		{
-			"file": "src/core/js/require.js",
+			"file": "src/core/js/networking/http.js",
 			"settings":
 			{
-				"buffer_size": 1992,
+				"buffer_size": 5469,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "/C/Comet/sparkler-shell/Gruntfile.js",
+			"file": "package.json",
 			"settings":
 			{
-				"buffer_size": 37439,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "tests/integrationtests/core/js/samples/dummymodule.js",
-			"settings":
-			{
-				"buffer_size": 113,
+				"buffer_size": 354,
 				"line_ending": "Windows"
 			}
 		}
@@ -171,19 +175,27 @@
 	[
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src",
-		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/core",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/core/js",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/core/js/networking",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/win10/VoiceMyNewsHybridImpl",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests",
-		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/integrationtests",
-		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/integrationtests/core",
-		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/integrationtests/core/js",
-		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/integrationtests/core/js/samples",
-		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/integrationtests/win10",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/core",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/core/js",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/win10"
 	],
 	"file_history":
 	[
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/core/js/spec/support/jasmine.json",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/core/js/README.md",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/win10/VoiceMyNewsHybridImpl/README.md",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/README.md",
+		"/C/Comet/sparkler-shell/Sparkler/SparklerWindows/SparklerAdobeComponentsWrapper/SparklerAdobeComponentsWrapper.vcxproj",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/.gitignore",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/core/js/require.js",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/LICENSE",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/integrationtests/core/js/samples/dummymodule.js",
+		"/C/Comet/sparkler-shell/Gruntfile.js",
 		"/C/Comet/sparkler-shell/.gitignore",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/integrationtests/win10/js/README.md",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/integrationtests/win10/c++/README.md",
@@ -198,8 +210,6 @@
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/integrationtests/core/README.md",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/core/README.md",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/win10/README.md",
-		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/README.md",
-		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/core/js/README.md",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/core/c++/README.md",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/ios/README.md",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/android/README.md",
@@ -247,7 +257,6 @@
 		"/C/Users/cosnita.ADOBENET/Documents/Visual Studio 2015/Projects/UnmanagedAndManaged/.gitignore",
 		"/C/Users/cosnita.ADOBENET/Documents/Visual Studio 2015/Projects/LoopbackRuntimeExempt/.gitignore",
 		"/C/Users/cosnita.ADOBENET/work/sockets-proxy/src/socket_wrapper.js",
-		"/C/Comet/sparkler-shell/Gruntfile.js",
 		"/C/Users/cosnita.ADOBENET/work/sockets-proxy/proxy.js",
 		"/C/Comet/sparkler-shell/npm-shrinkwrap.json",
 		"/C/Users/cosnita.ADOBENET/work/sockets-proxy/src/arguments_parser.js",
@@ -304,14 +313,7 @@
 		"/C/Users/cosnita.ADOBENET/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
 		"/C/Users/cosnita.ADOBENET/AppData/Roaming/Sublime Text 3/Packages/User/Package Control.sublime-settings",
 		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/v8/tmp-v8/build/gyp_v8.py",
-		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/v8/tmp-v8/build/gyp_v8",
-		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/v8/depot_tools/fetch_configs/config_util.py",
-		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/v8/build_v8_sparkler.sh",
-		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/v8/build.ps1",
-		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/scripts/v8/build.ps1",
-		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/scripts",
-		"/C/Users/cosnita.ADOBENET/work/sparkler-shell/Sparkler/Sparkler/win/app/src/views/PropertyPaneContainer.js6",
-		"/C/Users/cosnita.ADOBENET/work/sparkler-shell/Sparkler/Sparkler/win/app/public/components/layers-panel/comet_model.js"
+		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/v8/tmp-v8/build/gyp_v8"
 	],
 	"find":
 	{
@@ -322,6 +324,7 @@
 		"height": 138.0,
 		"where_history":
 		[
+			"C:\\Users\\cosnita.ADOBENET\\work-personal\\voicemynews\\tests\\unittests\\core\\js",
 			"C:\\Users\\cosnita.ADOBENET\\work\\sparkler-deps\\nuget",
 			"C:\\Users\\cosnita.ADOBENET\\work\\sparkler-shell\\Sparkler\\Sparkler\\win\\app\\src",
 			""
@@ -332,6 +335,10 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"support",
+			"x64",
+			"Win32",
+			"x64",
 			"buildCfg",
 			"getBuildCfg",
 			"debug:",
@@ -419,29 +426,31 @@
 			[
 				{
 					"buffer": 0,
-					"file": "src/core/js/require.js",
+					"file": "src/core/js/networking/http.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1992,
+						"buffer_size": 5469,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								750,
-								750
+								1411,
+								1411
 							]
 						],
 						"settings":
 						{
-							"auto_name": "",
+							"open_with_edit": true,
 							"side_bar_folders_auto_load_folder": 1,
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 36.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 1,
@@ -449,63 +458,31 @@
 				},
 				{
 					"buffer": 1,
-					"file": "/C/Comet/sparkler-shell/Gruntfile.js",
+					"file": "package.json",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 37439,
+						"buffer_size": 354,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								18092,
-								18092
+								354,
+								354
 							]
 						],
 						"settings":
 						{
 							"side_bar_folders_auto_load_folder": 1,
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 11532.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "tests/integrationtests/core/js/samples/dummymodule.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 113,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								81,
-								81
-							]
-						],
-						"settings":
-						{
-							"auto_name": "",
-							"side_bar_folders_auto_load_folder": 1,
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
+							"syntax": "Packages/JavaScript/JSON.sublime-syntax"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 0,
 					"type": "text"
 				}
 			]

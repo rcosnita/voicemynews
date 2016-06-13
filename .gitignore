@@ -1,3 +1,6 @@
+# js files
+node_modules
+
 # visual paradigm files
 
 *.vpp~*

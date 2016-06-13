@@ -144,11 +144,12 @@
     <ClCompile>
       <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
       <DisableSpecificWarnings>4453;28204</DisableSpecificWarnings>
-      <AdditionalIncludeDirectories>$(VCInstallDir)UnitTest\include\UWP;$(ProjectDir);$(IntermediateOutputPath);$(SolutionDir)VoiceMyNewsCore;$(SolutionDir)..\core;$(SolutionDir)..\win10;$(SolutionDir)VoiceMyNewsAppUI;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(VCInstallDir)UnitTest\include\UWP;$(ProjectDir);$(IntermediateOutputPath);$(SolutionDir)VoiceMyNewsCore;$(SolutionDir)..\core;$(SolutionDir)..\win10;$(SolutionDir)VoiceMyNewsAppUI;$(SolutionDir)..\..\tests\integrationtests\win10\c++;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>USE_EDGEMODE_JSRT;_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(VCInstallDir)UnitTest\lib\UWP;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -159,9 +160,14 @@
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(VCInstallDir)UnitTest\lib\UWP;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\tests\integrationtests\win10\c++\utils\ChakraRunner.h" />
+    <ClInclude Include="..\..\..\tests\integrationtests\win10\c++\utils\CommonAssertions.h" />
+    <ClInclude Include="..\..\..\tests\integrationtests\win10\c++\utils\TestConstants.h" />
+    <ClInclude Include="..\..\..\tests\integrationtests\win10\c++\utils\TestRunnerUtils.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="UnitTestApp.xaml.h">
       <DependentUpon>UnitTestApp.xaml</DependentUpon>
@@ -189,6 +195,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\tests\integrationtests\win10\c++\io\fs\RequireChakraTests.cpp" />
+    <ClCompile Include="..\..\..\tests\integrationtests\win10\c++\network\HttpChakraTests.cpp" />
+    <ClCompile Include="..\..\..\tests\integrationtests\win10\c++\network\HttpClientTests.cpp" />
+    <ClCompile Include="..\..\..\tests\integrationtests\win10\c++\utils\ChakraRunner.cpp" />
+    <ClCompile Include="..\..\..\tests\integrationtests\win10\c++\utils\CommonAssertions.cpp" />
+    <ClCompile Include="..\..\..\tests\integrationtests\win10\c++\utils\TestRunnerUtils.cpp" />
     <ClCompile Include="..\..\..\tests\unittests\win10\c++\pages\MainPageTests.cpp" />
     <ClCompile Include="UnitTestApp.xaml.cpp">
       <DependentUpon>UnitTestApp.xaml</DependentUpon>
@@ -212,9 +223,15 @@
   <ItemGroup>
     <ProjectReference Include="..\VoiceMyNewsAppUI\VoiceMyNewsAppUI.vcxproj">
       <Project>{41ce78ca-a1d2-47da-b5b0-1e34831454ba}</Project>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
     </ProjectReference>
     <ProjectReference Include="..\VoiceMyNewsCore\VoiceMyNewsCore.vcxproj">
       <Project>{041f327d-691a-427f-a2d6-7195d0c70b0c}</Project>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
+    </ProjectReference>
+    <ProjectReference Include="..\VoiceMyNewsHybridImpl\VoiceMyNewsHybridImpl.vcxproj">
+      <Project>{1deaf6cd-37f2-455a-9bfc-a4a566f12068}</Project>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -223,6 +240,9 @@
     </AppxPackagePayload>
     <AppxPackagePayload Include="..\..\..\tests\integrationtests\core\js\samples\**\*">
       <TargetPath>js\samples\%(RecursiveDir)\%(Filename)%(Extension)</TargetPath>
+    </AppxPackagePayload>
+    <AppxPackagePayload Include="..\..\..\node_modules\q\*.js">
+      <TargetPath>js\third_party\q\%(Filename)%(Extension)</TargetPath>
     </AppxPackagePayload>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

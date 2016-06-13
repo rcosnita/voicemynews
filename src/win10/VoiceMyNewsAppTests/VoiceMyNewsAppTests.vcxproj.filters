@@ -20,6 +20,12 @@
     <Filter Include="core\io\fs">
       <UniqueIdentifier>{4933dd15-1e14-4877-9054-89578660f768}</UniqueIdentifier>
     </Filter>
+    <Filter Include="utils">
+      <UniqueIdentifier>{c1718e89-7134-4802-9f26-beb3075dea2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\network">
+      <UniqueIdentifier>{250b884b-262a-4f79-a6be-7c53ced3b922}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="UnitTestApp.xaml" />
@@ -33,10 +39,37 @@
     <ClCompile Include="..\..\..\tests\unittests\win10\c++\pages\MainPageTests.cpp">
       <Filter>pages</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\tests\integrationtests\win10\c++\utils\CommonAssertions.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\tests\integrationtests\win10\c++\utils\ChakraRunner.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\tests\integrationtests\win10\c++\network\HttpChakraTests.cpp">
+      <Filter>core\network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\tests\integrationtests\win10\c++\network\HttpClientTests.cpp">
+      <Filter>core\network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\tests\integrationtests\win10\c++\utils\TestRunnerUtils.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
     <ClInclude Include="UnitTestApp.xaml.h" />
+    <ClInclude Include="..\..\..\tests\integrationtests\win10\c++\utils\CommonAssertions.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\tests\integrationtests\win10\c++\utils\ChakraRunner.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\tests\integrationtests\win10\c++\utils\TestConstants.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\tests\integrationtests\win10\c++\utils\TestRunnerUtils.h">
+      <Filter>utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="UnitTestApp.rd.xml" />

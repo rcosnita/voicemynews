@@ -209,13 +209,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="bindings\network\HttpClientBinding.h" />
     <ClInclude Include="bindings\RequireBinding.h" />
+    <ClInclude Include="network\HttpClientNativeWin.h" />
     <ClInclude Include="pages\MainPage.xaml.h">
       <DependentUpon>pages\MainPage.xaml</DependentUpon>
     </ClInclude>
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="bindings\network\HttpClientBinding.cpp" />
     <ClCompile Include="bindings\RequireBinding.cpp" />
     <ClCompile Include="pages\MainPage.xaml.cpp">
       <DependentUpon>pages\MainPage.xaml</DependentUpon>
