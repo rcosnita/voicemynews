@@ -22,9 +22,18 @@ const HttpNativeClient = voicemynews.core.network.HttpClient.getInstance();
  * @returns {Promise} a promise which can be used for handling the response of the request.
  */
 let request = (requestDesc) => {
+    let url = requestDesc.url;
+    const queryParams = requestDesc.queryParams;
+
+    if(!url || url.trim().length == 0) {
+        throw new Error("No url provided.");
+    }
+
+    url += _encodeQueryParams(queryParams);
+
     const result = Q.defer()
     const headers = requestDesc.headers || {}
-    const response = HttpNativeClient.get(requestDesc.url, {});
+    const response = HttpNativeClient.get(url, headers);
 
     response.done((responseData) => {
         HttpNativeClient.parseResponseWithStringContent(responseData).done((responseParsed) => {
@@ -122,6 +131,21 @@ let put = (url, headers, queryParams, data) => {
 let del = (url, headers, queryParams, data) => {
 
 };
+
+/**
+ * This function provides a mechanism for encoding the specified query parameters.
+ *
+ * @param {Object} queryParams the list of query parameters which must be encoded.
+ * @returns {String} a string containing all query parameters encoded.
+ */
+let _encodeQueryParams = (queryParams) => {
+    let result = [];
+    for (let key in queryParams) {
+        result.push(key + "=" + (queryParams[key] ? encodeURIComponent(queryParams[key]) : ""));
+    }
+
+    return "?" + result.join("&");
+}
 
 module.exports = {
     "request": request,
