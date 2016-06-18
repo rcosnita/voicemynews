@@ -26,6 +26,9 @@
     <Filter Include="utils">
       <UniqueIdentifier>{bb8c9138-721b-4cb3-a496-8562078fe9fe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="events">
+      <UniqueIdentifier>{814d5e20-93d0-4cb0-b063-f531409f3c50}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\core\io\fs\Require.cpp">
@@ -39,6 +42,9 @@
     </ClCompile>
     <ClCompile Include="utils\Conversions.cpp">
       <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\core\events\EventLoop.cpp">
+      <Filter>events</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -59,6 +65,12 @@
     </ClInclude>
     <ClInclude Include="utils\Conversions.h">
       <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\core\events\EventLoop.h">
+      <Filter>events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\core\events\EventData.h">
+      <Filter>events</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

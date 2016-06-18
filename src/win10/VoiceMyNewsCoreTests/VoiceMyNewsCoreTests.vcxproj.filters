@@ -16,6 +16,9 @@
     <Filter Include="Source Files\analytics">
       <UniqueIdentifier>{9383e920-dda1-4d6a-84de-9196ae529913}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\events">
+      <UniqueIdentifier>{afa4a32f-d377-47ee-9ff5-aa7cdfdc7a27}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -40,6 +43,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\tests\unittests\core\c++\analytics\AnalyticsTests.cpp">
       <Filter>Source Files\analytics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\tests\unittests\core\c++\events\EventLoopTests.cpp">
+      <Filter>Source Files\events</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

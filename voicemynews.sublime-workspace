@@ -4,6 +4,78 @@
 		"selected_items":
 		[
 			[
+				"Not",
+				"NotImplementedMethodException"
+			],
+			[
+				"NotIm",
+				"NotImplemented"
+			],
+			[
+				"NotImplemente",
+				"NotImplementedMethodException"
+			],
+			[
+				"_ht",
+				"_httpRequired"
+			],
+			[
+				"ca",
+				"calls"
+			],
+			[
+				"_h",
+				"_httpClient"
+			],
+			[
+				"req",
+				"requestHeaders"
+			],
+			[
+				"ok",
+				"okResponse"
+			],
+			[
+				"respon",
+				"responseData"
+			],
+			[
+				"expe",
+				"expectedReason"
+			],
+			[
+				"okRe",
+				"okRequestQueryParamsStr"
+			],
+			[
+				"request",
+				"requestDesc"
+			],
+			[
+				"query",
+				"queryParams"
+			],
+			[
+				"expec",
+				"expectedResponse"
+			],
+			[
+				"call",
+				"callFake"
+			],
+			[
+				"queryPar",
+				"queryParamsArg"
+			],
+			[
+				"header",
+				"headersArg"
+			],
+			[
+				"netw",
+				"network"
+			],
+			[
 				"reques",
 				"requestDesc"
 			],
@@ -84,19 +156,11 @@
 	"buffers":
 	[
 		{
-			"file": "src/core/js/networking/http.js",
+			"file": "/C/Comet/sparkler-shell/.gitignore",
 			"settings":
 			{
-				"buffer_size": 5469,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "package.json",
-			"settings":
-			{
-				"buffer_size": 354,
-				"line_ending": "Windows"
+				"buffer_size": 2479,
+				"line_ending": "Unix"
 			}
 		}
 	],
@@ -107,8 +171,8 @@
 	"build_varint": "",
 	"command_palette":
 	{
-		"height": 335.0,
-		"last_filter": "preview",
+		"height": 159.0,
+		"last_filter": "",
 		"selected_items":
 		[
 			[
@@ -152,7 +216,7 @@
 				"Package Control: Install Package"
 			]
 		],
-		"width": 816.0
+		"width": 864.0
 	},
 	"console":
 	{
@@ -175,28 +239,36 @@
 	[
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/core",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/core/js",
-		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/core/js/networking",
-		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/win10/VoiceMyNewsHybridImpl",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/core",
-		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/core/js",
-		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/win10"
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/core/js"
 	],
 	"file_history":
 	[
+		"/C/Comet/sparkler-shell/.gitignore",
+		"/C/Comet/sparkler-shell/js/lib/MouseEvent.js",
+		"/C/Comet/sparkler-shell/Sparkler/amt/win/application.xml",
+		"/C/Users/cosnita.ADOBENET/tutorials/V8GettingStarted/.gitignore",
+		"/C/Users/cosnita.ADOBENET/tutorials/ChakraCoreGettingStarted/ChakraCoreGettingStarted/js/app.js",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/.gitignore",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/core/js/networking/http_spec.js",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/core/js/exceptions/notimplemented.js",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/core/js/networking/http.js",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/package.json",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/core/js/pretest.js",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/core/js/support/jasmine.json",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/core/js/spec/support/jasmine.json",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/core/js/README.md",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/win10/VoiceMyNewsHybridImpl/README.md",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/README.md",
 		"/C/Comet/sparkler-shell/Sparkler/SparklerWindows/SparklerAdobeComponentsWrapper/SparklerAdobeComponentsWrapper.vcxproj",
-		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/.gitignore",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/core/js/require.js",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/LICENSE",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/integrationtests/core/js/samples/dummymodule.js",
 		"/C/Comet/sparkler-shell/Gruntfile.js",
-		"/C/Comet/sparkler-shell/.gitignore",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/integrationtests/win10/js/README.md",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/integrationtests/win10/c++/README.md",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/integrationtests/win10/README.md",
@@ -217,7 +289,6 @@
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/android/README.md",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/ios/README.md",
 		"/C/Users/cosnita.ADOBENET/tutorials/ChakraCoreGettingStarted/README.md",
-		"/C/Users/cosnita.ADOBENET/tutorials/ChakraCoreGettingStarted/ChakraCoreGettingStarted/js/app.js",
 		"/C/Users/cosnita.ADOBENET/Documents/Visual Studio 2015/Projects/uwp-brokeredcomp-nativedll/BrokeredComponentStub/BrokeredComponentStub.vcxproj",
 		"/C/Comet/sparkler-shell/Sparkler/SparklerWindows/SparklerApp/SparklerApp.vcxproj",
 		"/C/Users/cosnita.ADOBENET/tutorials/ChakraCoreGettingStarted/ChakraCoreGettingStarted/ChakraCoreGettingStarted.vcxproj",
@@ -304,16 +375,7 @@
 		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/scripts_utils/common_paths.ps1",
 		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/v8/v8.nuspec",
 		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/scripts_utils/depottools_setup.ps1",
-		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/scripts_utils/nuget_packager.ps1",
-		"/C/Users/cosnita.ADOBENET/AppData/Roaming/Sublime Text 3/Packages/User/SideBarEnhancements/Open With/Side Bar.sublime-menu",
-		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/v8/package.ps1",
-		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/v8/build.psm1",
-		"/C/Users/cosnita.ADOBENET/AppData/Roaming/Sublime Text 3/Packages/Default/Preferences.sublime-settings",
-		"/C/Users/cosnita.ADOBENET/AppData/Roaming/Sublime Text 3/Packages/User/Side Bar Folders.sublime-settings",
-		"/C/Users/cosnita.ADOBENET/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
-		"/C/Users/cosnita.ADOBENET/AppData/Roaming/Sublime Text 3/Packages/User/Package Control.sublime-settings",
-		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/v8/tmp-v8/build/gyp_v8.py",
-		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/v8/tmp-v8/build/gyp_v8"
+		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/scripts_utils/nuget_packager.ps1"
 	],
 	"find":
 	{
@@ -335,6 +397,12 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			".bat",
+			"NotImplementedMethodException",
+			"okRequestHeaders",
+			"okRequestQueryParamsStr",
+			"query",
+			"headers",
 			"support",
 			"x64",
 			"Win32",
@@ -421,65 +489,38 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"sheets":
+			[
+			]
+		},
+		{
+			"selected": 0,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "src/core/js/networking/http.js",
+					"file": "/C/Comet/sparkler-shell/.gitignore",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 5469,
+						"buffer_size": 2479,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1411,
-								1411
-							]
-						],
-						"settings":
-						{
-							"open_with_edit": true,
-							"side_bar_folders_auto_load_folder": 1,
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "package.json",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 354,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								354,
-								354
+								2224,
+								2224
 							]
 						],
 						"settings":
 						{
 							"side_bar_folders_auto_load_folder": 1,
-							"syntax": "Packages/JavaScript/JSON.sublime-syntax"
+							"syntax": "Packages/Text/Plain text.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 2259.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
@@ -505,11 +546,18 @@
 				0,
 				1,
 				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
 			]
 		],
 		"cols":
 		[
 			0.0,
+			0.5,
 			1.0
 		],
 		"rows":
@@ -536,6 +584,10 @@
 		"last_filter": "",
 		"selected_items":
 		[
+			[
+				"http_se",
+				"tests\\unittests\\core\\js\\networking\\http_spec.js"
+			],
 			[
 				"skfontmgr_d",
 				"tmp-skia\\src\\ports\\SkFontMgr_win_dw.cpp"
@@ -605,7 +657,7 @@
 		],
 		"width": 0.0
 	},
-	"selected_group": 0,
+	"selected_group": 1,
 	"settings":
 	{
 	},
