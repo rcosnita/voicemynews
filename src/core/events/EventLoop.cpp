@@ -5,6 +5,34 @@ namespace core {
 namespace events {
 const std::chrono::duration<float> EventLoop::kPendingTimeout = std::chrono::milliseconds(1);
 
+void EventLoop::Off(std::string evtName, void* fnPointer) {
+    std::unique_lock<std::mutex> lock(listenersMutex_);
+
+    auto listenersPos = listeners_.find(evtName);
+    if (listenersPos == listeners_.end()) {
+        return;
+    }
+
+    auto fnPointerPos = listenersRegisteredAssoc_.find(evtName)->second->find(fnPointer);
+    if (fnPointerPos == listenersRegisteredAssoc_.find(evtName)->second->end()) {
+        return;
+    }
+
+    auto listenerPos = std::find(listeners_.find(evtName)->second->begin(),
+                            listeners_.find(evtName)->second->end(),
+                            fnPointerPos->second);
+
+    delete *listenerPos;
+    listeners_.find(evtName)->second->erase(listenerPos);
+    listenersRegisteredAssoc_.at(evtName)->erase(fnPointerPos);
+}
+
+int EventLoop::GetListenersCount(std::string evtName) const {
+    auto listenersPos = listeners_.find(evtName);
+
+    return listenersPos == listeners_.end() ? 0 : listenersPos->second->size();
+}
+
 void EventLoop::ProcessEvents() {
     std::unique_lock<std::mutex> lock(pendingEventsMutex_);
     auto checkNonZeroSize = [this]() {
@@ -22,6 +50,14 @@ void EventLoop::ProcessEvents() {
     }
 
     pendingEvents_.clear();
+}
+
+bool EventLoop::InternalRegisteredMethod::operator==(const InternalRegisteredMethod& obj) {
+    return id_ == obj.id_;
+}
+
+void EventLoop::InternalRegisteredMethod::operator()(void* dataPtr) const {
+    fn_(dataPtr);
 }
 }
 }

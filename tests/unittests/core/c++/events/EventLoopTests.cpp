@@ -35,18 +35,62 @@ TEST_F(EventLoopTest, TestEmitUnregisteredEvent) {
     eventLoop->ProcessEvents();
 }
 
+TEST_F(EventLoopTest, TestProcessEventsEmptyQueue) {
+    eventLoop->ProcessEvents();
+}
+
 TEST_F(EventLoopTest, TestEmitRegisteredEventOk) {
     const std::string kEventName = "event";
     bool invoked = false;
 
-    eventLoop->On<void>(kEventName, [&invoked](std::shared_ptr<EventData<void>> evtData) {
+    std::function<void(std::shared_ptr<EventData<void>>)> fn = [&invoked](std::shared_ptr<EventData<void>> evtData) {
         invoked = true;
-    });
+    };
+
+    eventLoop->On<void>(kEventName, fn);
 
     eventLoop->Emit(kEventName, std::make_shared<EventData<void>>());
     eventLoop->ProcessEvents();
 
     EXPECT_TRUE(invoked);
+}
+
+TEST_F(EventLoopTest, TestOnOffOk) {
+    const std::string kEventName = "myEvent";
+
+    EXPECT_EQ(0, eventLoop->GetListenersCount("not registered event"));
+    EXPECT_EQ(0, eventLoop->GetListenersCount("not registered event 2"));
+    EXPECT_EQ(0, eventLoop->GetListenersCount(kEventName));
+
+    std::function<void(std::shared_ptr<EventData<void>>)> fn1 = [](std::shared_ptr<EventData<void>>) { };
+    std::function<void(std::shared_ptr<EventData<void>>)> fn2 = [](std::shared_ptr<EventData<void>>) { };
+
+    eventLoop->On<void>(kEventName, fn1);
+    EXPECT_EQ(1, eventLoop->GetListenersCount(kEventName));
+
+    eventLoop->On<void>(kEventName, fn2);
+    EXPECT_EQ(2, eventLoop->GetListenersCount(kEventName));
+
+    eventLoop->Off(kEventName, &fn1);
+    EXPECT_EQ(1, eventLoop->GetListenersCount(kEventName));
+
+    eventLoop->Off(kEventName, &fn2);
+    EXPECT_EQ(0, eventLoop->GetListenersCount(kEventName));
+}
+
+TEST_F(EventLoopTest, TestOffMethodNotRegisteredForExistingEvent) {
+    const std::string kEvtName = "sample event";
+    std::function<void(std::shared_ptr<EventData<void>>)> fn = [](std::shared_ptr<EventData<void>>) { };
+    std::function<void(std::shared_ptr<EventData<void>>)> fn2 = [](std::shared_ptr<EventData<void>>) {};
+
+    eventLoop->On(kEvtName, fn2);
+    EXPECT_EQ(1, eventLoop->GetListenersCount(kEvtName));
+
+    eventLoop->Off(kEvtName, &fn);
+    EXPECT_EQ(1, eventLoop->GetListenersCount(kEvtName));
+
+    eventLoop->Off(kEvtName, &fn);
+    EXPECT_EQ(1, eventLoop->GetListenersCount(kEvtName));
 }
 
 TEST_F(EventLoopTest, TestProcessEventsOk) {
@@ -55,9 +99,11 @@ TEST_F(EventLoopTest, TestProcessEventsOk) {
 
     std::atomic_int listenerInvokedCounter = 0;
 
-    eventLoop->On<void*>(kEvtName, [&listenerInvokedCounter](std::shared_ptr<EventData<void*>> evtData) {
+    std::function<void(std::shared_ptr<EventData<void*>>)> fn = [&listenerInvokedCounter](std::shared_ptr<EventData<void*>> evtData) {
         listenerInvokedCounter++;
-    });
+    };
+
+    eventLoop->On<void*>(kEvtName, fn);
 
     auto processEvents = std::thread([&kMaxThreads, &listenerInvokedCounter, this]() {
         while (listenerInvokedCounter < kMaxThreads) {
