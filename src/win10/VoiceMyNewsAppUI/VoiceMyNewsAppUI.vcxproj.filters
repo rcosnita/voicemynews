@@ -17,6 +17,9 @@
     <Filter Include="bindings\network">
       <UniqueIdentifier>{71d43984-1cae-4ab5-85ea-285a3f57a22d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="bindings\events">
+      <UniqueIdentifier>{7be52061-399f-42b8-baff-3db6b4e351a6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -26,6 +29,12 @@
     </ClCompile>
     <ClCompile Include="bindings\network\HttpClientBinding.cpp">
       <Filter>bindings\network</Filter>
+    </ClCompile>
+    <ClCompile Include="bindings\events\EventDataBinding.cpp">
+      <Filter>bindings\events</Filter>
+    </ClCompile>
+    <ClCompile Include="bindings\events\EventLoopBinding.cpp">
+      <Filter>bindings\events</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -39,6 +48,12 @@
     </ClInclude>
     <ClInclude Include="bindings\network\HttpClientBinding.h">
       <Filter>bindings\network</Filter>
+    </ClInclude>
+    <ClInclude Include="bindings\events\EventDataBinding.h">
+      <Filter>bindings\events</Filter>
+    </ClInclude>
+    <ClInclude Include="bindings\events\EventLoopBinding.h">
+      <Filter>bindings\events</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

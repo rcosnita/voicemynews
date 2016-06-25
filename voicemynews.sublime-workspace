@@ -155,14 +155,6 @@
 	},
 	"buffers":
 	[
-		{
-			"file": "/C/Comet/sparkler-shell/.gitignore",
-			"settings":
-			{
-				"buffer_size": 2479,
-				"line_ending": "Unix"
-			}
-		}
 	],
 	"build_system": "",
 	"build_system_choices":
@@ -249,6 +241,7 @@
 	"file_history":
 	[
 		"/C/Comet/sparkler-shell/.gitignore",
+		"/C/Comet/sparkler-shell/README-win10.md",
 		"/C/Comet/sparkler-shell/js/lib/MouseEvent.js",
 		"/C/Comet/sparkler-shell/Sparkler/amt/win/application.xml",
 		"/C/Users/cosnita.ADOBENET/tutorials/V8GettingStarted/.gitignore",
@@ -300,7 +293,6 @@
 		"/C/Users/cosnita.ADOBENET/tutorials/amtlib-integration/x64/Debug/AMT/application.xml",
 		"/C/Users/cosnita.ADOBENET/Documents/Visual Studio 2015/Projects/BrokeredSampleUWP/.gitignore",
 		"/C/Comet/sparkler-shell/README.md",
-		"/C/Comet/sparkler-shell/README-win10.md",
 		"/C/Users/cosnita.ADOBENET/tutorials/Windows-universal-samples/.gitignore",
 		"/C/Users/cosnita.ADOBENET/tutorials/cmake-tutorial/README.md",
 		"/C/Users/cosnita.ADOBENET/tutorials/cmake-tutorial/Main/CMakeLists.txt",
@@ -397,6 +389,7 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"visual studio 2015",
 			".bat",
 			"NotImplementedMethodException",
 			"okRequestHeaders",
@@ -494,38 +487,8 @@
 			]
 		},
 		{
-			"selected": 0,
 			"sheets":
 			[
-				{
-					"buffer": 0,
-					"file": "/C/Comet/sparkler-shell/.gitignore",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2479,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2224,
-								2224
-							]
-						],
-						"settings":
-						{
-							"side_bar_folders_auto_load_folder": 1,
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 2259.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				}
 			]
 		}
 	],
