@@ -5,8 +5,10 @@
 #include <thread>
 
 #include "CppUnitTest.h"
+#include "events/EventNames.h"
 #include "utils/ChakraRunner.h"
 #include "utils/CommonAssertions.h"
+#include "utils/Conversions.h"
 
 namespace voicemynews {
 namespace tests {
@@ -22,6 +24,7 @@ using voicemynews::tests::app::win10::utils::assertions::AssertNoJsError;
 using voicemynews::tests::app::win10::utils::js::ChakraRunner;
 using voicemynews::app::win10::bindings::events::EventDataBinding;
 using voicemynews::app::win10::bindings::events::EventHandler;
+using voicemynews::app::win10::utils::ConvertStdStrToPlatform;
 
 /**
  * \class JsAppIntegrationTests
@@ -42,10 +45,12 @@ public:
         auto eventLoop = EventLoopPlatform::GetInstance();
         std::thread shutdownEmitter;
 
-        eventLoop->On("start", ref new EventHandler([&eventLoop, &shutdownEmitter](EventDataBinding^ evtData) {
+        eventLoop->On(ConvertStdStrToPlatform(voicemynews::core::events::kAppJsStart),
+            ref new EventHandler([&eventLoop, &shutdownEmitter](EventDataBinding^ evtData) {
             shutdownEmitter = std::thread([&eventLoop]() {
                 std::this_thread::sleep_for(100ms);
-                eventLoop->Emit("shutdown", EventLoopPlatform::BuildEvent("{}"));
+                eventLoop->Emit(ConvertStdStrToPlatform(voicemynews::core::events::kAppJsShutdown),
+                    EventLoopPlatform::BuildEvent("{}"));
             });
         }));
 

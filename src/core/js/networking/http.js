@@ -1,3 +1,9 @@
+/**
+ * This module provides a simple implementation for http operations which we are going to use in the project.
+ * It provides a general method which is able to support all verbs and then provides some simplified wrappers
+ * over it.
+ * @module voicemynews/js/networking/http
+ */
 "use strict";
 
 const HttpNativeClient = voicemynews.core.network.HttpClient.getInstance();
@@ -5,13 +11,6 @@ const HttpNativeClient = voicemynews.core.network.HttpClient.getInstance();
 const NotImplemented = require("js/exceptions/notimplemented");
 const NotImplementedMethodException = NotImplemented.NotImplementedMethodException;
 const Q = require("js/third_party/q/q");
-
-/**
- * This module provides a simple implementation for http operations which we are going to use in the project.
- * It provides a general method which is able to support all verbs and then provides some simplified wrappers
- * over it.
- * @module voicemynews/js/networking/http
- */
 
 /**
  * This function provides a generic implementation for http request which supports all verbs and actions.

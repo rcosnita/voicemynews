@@ -72,5 +72,8 @@
     <ClInclude Include="..\..\core\events\EventData.h">
       <Filter>events</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\core\events\EventNames.h">
+      <Filter>events</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
