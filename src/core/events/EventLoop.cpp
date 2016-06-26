@@ -6,7 +6,7 @@ namespace events {
 const std::chrono::duration<float> EventLoop::kPendingTimeout = std::chrono::milliseconds(1);
 
 void EventLoop::Off(std::string evtName, void* fnPointer) {
-    std::unique_lock<std::mutex> lock(listenersMutex_);
+    std::lock_guard<std::mutex> lock(listenersMutex_);
 
     auto listenersPos = listeners_.find(evtName);
     if (listenersPos == listeners_.end()) {

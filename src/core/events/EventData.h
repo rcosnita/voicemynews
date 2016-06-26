@@ -9,7 +9,12 @@ namespace events {
  */
 template<typename T>
 class EventData {
+public:
+    EventData(T data) : data_(data) { }
 
+    T data() const { return data_; }
+private:
+    T data_;
 };
 }
 }

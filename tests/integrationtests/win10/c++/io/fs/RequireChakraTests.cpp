@@ -18,7 +18,6 @@ using Platform::String;
 
 using voicemynews::core::io::fs::FileUtils;
 using voicemynews::tests::app::win10::utils::js::ChakraRunner;
-using voicemynews::tests::app::win10::utils::js::JsScriptRunnerCb;
 using voicemynews::tests::app::win10::utils::assertions::AssertNoJsError;
 
 /**

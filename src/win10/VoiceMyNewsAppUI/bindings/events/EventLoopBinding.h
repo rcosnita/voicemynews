@@ -1,6 +1,7 @@
 #ifndef VoiceMyNewsAppUI_bindings_events_EventLoopBinding_H_
 #define VoiceMyNewsAppUI_bindings_events_EventLoopBinding_H_
 
+#include "EventDataBinding.h"
 #include "events/EventLoop.h"
 
 namespace voicemynews {
@@ -10,8 +11,6 @@ namespace bindings {
 namespace events {
 using Platform::String;
 using voicemynews::core::events::EventLoop;
-
-ref class EventDataBinding;
 
 /**
  * \brief This delegate defines a winrt method which can be binded from javascript.
@@ -54,6 +53,34 @@ private:
 };
 }
 }
+}
+}
+}
+
+namespace voicemynews {
+namespace core {
+namespace events {
+using Platform::String;
+using voicemynews::app::win10::bindings::events::EventDataBinding;
+using voicemynews::app::win10::bindings::events::EventLoopBinding;
+
+/**
+ * \brief This class provides a factory for obtaining EventLoop instances which are platform specific.
+ *
+ * JS code can safely rely on this in order to implement application main event loop.
+ */
+public ref class EventLoopPlatform sealed {
+public:
+    /**
+     * \brief This method obtains an event loop instance.
+     */
+    static EventLoopBinding^ GetInstance();
+
+    /**
+     * \brief This method builds an event instance which is compatible with application event loop.
+     */
+    static EventDataBinding^ BuildEvent(String^ data);
+};
 }
 }
 }

@@ -30,7 +30,7 @@ public:
 };
 
 TEST_F(EventLoopTest, TestEmitUnregisteredEvent) {
-    eventLoop->Emit("customEvent", std::make_shared<EventData<void>>());
+    eventLoop->Emit("customEvent", std::make_shared<EventData<std::string>>(""));
 
     eventLoop->ProcessEvents();
 }
@@ -43,13 +43,13 @@ TEST_F(EventLoopTest, TestEmitRegisteredEventOk) {
     const std::string kEventName = "event";
     bool invoked = false;
 
-    std::function<void(std::shared_ptr<EventData<void>>)> fn = [&invoked](std::shared_ptr<EventData<void>> evtData) {
+    std::function<void(std::shared_ptr<EventData<std::string>>)> fn = [&invoked](std::shared_ptr<EventData<std::string>> evtData) {
         invoked = true;
     };
 
-    eventLoop->On<void>(kEventName, fn);
+    eventLoop->On<std::string>(kEventName, fn);
 
-    eventLoop->Emit(kEventName, std::make_shared<EventData<void>>());
+    eventLoop->Emit(kEventName, std::make_shared<EventData<std::string>>(""));
     eventLoop->ProcessEvents();
 
     EXPECT_TRUE(invoked);
@@ -62,13 +62,13 @@ TEST_F(EventLoopTest, TestOnOffOk) {
     EXPECT_EQ(0, eventLoop->GetListenersCount("not registered event 2"));
     EXPECT_EQ(0, eventLoop->GetListenersCount(kEventName));
 
-    std::function<void(std::shared_ptr<EventData<void>>)> fn1 = [](std::shared_ptr<EventData<void>>) { };
-    std::function<void(std::shared_ptr<EventData<void>>)> fn2 = [](std::shared_ptr<EventData<void>>) { };
+    std::function<void(std::shared_ptr<EventData<std::string>>)> fn1 = [](std::shared_ptr<EventData<std::string>>) { };
+    std::function<void(std::shared_ptr<EventData<std::string>>)> fn2 = [](std::shared_ptr<EventData<std::string>>) { };
 
-    eventLoop->On<void>(kEventName, fn1);
+    eventLoop->On<std::string>(kEventName, fn1);
     EXPECT_EQ(1, eventLoop->GetListenersCount(kEventName));
 
-    eventLoop->On<void>(kEventName, fn2);
+    eventLoop->On<std::string>(kEventName, fn2);
     EXPECT_EQ(2, eventLoop->GetListenersCount(kEventName));
 
     eventLoop->Off(kEventName, &fn1);
@@ -80,8 +80,8 @@ TEST_F(EventLoopTest, TestOnOffOk) {
 
 TEST_F(EventLoopTest, TestOffMethodNotRegisteredForExistingEvent) {
     const std::string kEvtName = "sample event";
-    std::function<void(std::shared_ptr<EventData<void>>)> fn = [](std::shared_ptr<EventData<void>>) { };
-    std::function<void(std::shared_ptr<EventData<void>>)> fn2 = [](std::shared_ptr<EventData<void>>) {};
+    std::function<void(std::shared_ptr<EventData<std::string>>)> fn = [](std::shared_ptr<EventData<std::string>>) { };
+    std::function<void(std::shared_ptr<EventData<std::string>>)> fn2 = [](std::shared_ptr<EventData<std::string>>) {};
 
     eventLoop->On(kEvtName, fn2);
     EXPECT_EQ(1, eventLoop->GetListenersCount(kEvtName));

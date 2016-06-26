@@ -54,6 +54,9 @@
     <ClCompile Include="..\..\..\tests\integrationtests\win10\c++\utils\TestRunnerUtils.cpp">
       <Filter>utils</Filter>
     </ClCompile>
+    <ClCompile Include="JsAppTests.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />

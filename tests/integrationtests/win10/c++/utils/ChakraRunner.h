@@ -1,6 +1,7 @@
 #ifndef VoiceMyNewsTests_win10_cpp_utils_ChakraRunner_H_
 #define VoiceMyNewsTests_win10_cpp_utils_ChakraRunner_H_
 
+#include <functional>
 #include <jsrt.h>
 
 #include "io/fs/FileUtils.h"
@@ -16,11 +17,6 @@ using Platform::String;
 using voicemynews::core::io::fs::FileUtils;
 
 class ChakraRunner;
-
-/**
- * \brief This callback defines the contract which allows users to receive feedback from running a script in chakra.
- */
-typedef void(*JsScriptRunnerCb)(const JsErrorCode& jsErrorCode, const JsValueRef& result, ChakraRunner* runner);
 
 /**
  * \class ChakraRunner
@@ -41,7 +37,7 @@ public:
      * \param fileName an optional fileName from where the script was extracted.
      * \param handleResult an optional callback which is used to handle results from the current script execution.
      */
-    JsValueRef RunScript(String^ jsScript, String^ fileName = "", JsScriptRunnerCb handleResult = nullptr);
+    JsValueRef RunScript(String^ jsScript, String^ fileName = "", std::function<void(const JsErrorCode& jsErrorCode, const JsValueRef& result, ChakraRunner* runner)> handleResult = nullptr);
 
     /**
      * \brief This method provides a thin wrapper over chakra api which allows value conversion to string.

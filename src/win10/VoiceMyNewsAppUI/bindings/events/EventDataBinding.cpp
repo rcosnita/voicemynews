@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "EventDataBinding.h"
+#include "EventLoopBinding.h"
 
 namespace voicemynews {
 namespace app {
