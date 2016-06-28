@@ -25,6 +25,11 @@ App::App()
 {
     InitializeComponent();
     Suspending += ref new SuspendingEventHandler(this, &App::OnSuspending);
+
+    jsApp_ = ref new JsApp();
+    concurrency::create_async([this]() {
+        jsApp_->Start();
+    });
 }
 
 /// <summary>
