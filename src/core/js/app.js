@@ -5,7 +5,6 @@
  * module.
  * @module voicemynews/js/app
  */
-
 "use strict";
 
 const eventLoop = voicemynews.core.events.EventLoopPlatform.getInstance();

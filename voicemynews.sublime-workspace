@@ -155,6 +155,14 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "src/core/js/app.js",
+			"settings":
+			{
+				"buffer_size": 792,
+				"line_ending": "Windows"
+			}
+		}
 	],
 	"build_system": "",
 	"build_system_choices":
@@ -233,13 +241,16 @@
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/core",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/core/js",
-		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/core/js/events",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/core",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/core/js"
 	],
 	"file_history":
 	[
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/core/js/events/event_names.js",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/core/js/networking/http.js",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/core/js/require.js",
 		"/C/Comet/sparkler-shell/.gitignore",
 		"/C/Comet/sparkler-shell/README-win10.md",
 		"/C/Comet/sparkler-shell/js/lib/MouseEvent.js",
@@ -249,7 +260,6 @@
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/.gitignore",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/core/js/networking/http_spec.js",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/core/js/exceptions/notimplemented.js",
-		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/core/js/networking/http.js",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/package.json",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/core/js/pretest.js",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/core/js/support/jasmine.json",
@@ -258,7 +268,6 @@
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/win10/VoiceMyNewsHybridImpl/README.md",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/README.md",
 		"/C/Comet/sparkler-shell/Sparkler/SparklerWindows/SparklerAdobeComponentsWrapper/SparklerAdobeComponentsWrapper.vcxproj",
-		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/core/js/require.js",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/LICENSE",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/integrationtests/core/js/samples/dummymodule.js",
 		"/C/Comet/sparkler-shell/Gruntfile.js",
@@ -366,8 +375,7 @@
 		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/setup_local_repository.ps1",
 		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/scripts_utils/common_paths.ps1",
 		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/v8/v8.nuspec",
-		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/scripts_utils/depottools_setup.ps1",
-		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/scripts_utils/nuget_packager.ps1"
+		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/scripts_utils/depottools_setup.ps1"
 	],
 	"find":
 	{
@@ -482,8 +490,38 @@
 	"groups":
 	[
 		{
+			"selected": 0,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "src/core/js/app.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 792,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3,
+								3
+							]
+						],
+						"settings":
+						{
+							"auto_name": "",
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
 			]
 		},
 		{
@@ -620,7 +658,7 @@
 		],
 		"width": 0.0
 	},
-	"selected_group": 1,
+	"selected_group": 0,
 	"settings":
 	{
 	},
