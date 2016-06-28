@@ -150,6 +150,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\tests\unittests\core\c++\analytics\AnalyticsTests.cpp" />
+    <ClCompile Include="..\..\..\tests\unittests\core\c++\events\EventLoopTests.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="VoiceMyNewsCoreTests.cpp" />
   </ItemGroup>

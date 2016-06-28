@@ -190,6 +190,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\core\analytics\Analytics.h" />
+    <ClInclude Include="..\..\core\events\EventData.h" />
+    <ClInclude Include="..\..\core\events\EventLoop.h" />
+    <ClInclude Include="..\..\core\events\EventNames.h" />
     <ClInclude Include="..\..\core\io\fs\exceptions\FileNotFoundException.h" />
     <ClInclude Include="..\..\core\io\fs\FileUtils.h" />
     <ClInclude Include="..\..\core\io\fs\Require.h" />
@@ -197,6 +200,7 @@
     <ClInclude Include="utils\Conversions.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\core\events\EventLoop.cpp" />
     <ClCompile Include="..\..\core\io\fs\exceptions\FileNotFoundException.cpp" />
     <ClCompile Include="..\..\core\io\fs\FileUtils.cpp" />
     <ClCompile Include="..\..\core\io\fs\Require.cpp" />

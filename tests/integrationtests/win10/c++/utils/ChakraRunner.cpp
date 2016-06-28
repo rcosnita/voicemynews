@@ -23,8 +23,9 @@ using voicemynews::tests::app::win10::utils::assertions::AssertNoJsError;
         JsCreateContext(runtime_, &context_);
         JsSetCurrentContext(context_);
 
-        JsProjectWinRTNamespace(L"voicemynews.core.network");
         JsProjectWinRTNamespace(L"voicemynews.app.win10.bindings");
+        JsProjectWinRTNamespace(L"voicemynews.core.network");
+        JsProjectWinRTNamespace(L"voicemynews.core.events");
 
         JsSetPromiseContinuationCallback(PromiseContinuationCallback, &promiseCallback_);
 #ifdef _DEBUG
@@ -42,7 +43,7 @@ using voicemynews::tests::app::win10::utils::assertions::AssertNoJsError;
         JsDisposeRuntime(runtime_);
     }
 
-    JsValueRef ChakraRunner::RunScript(String^ jsScript, String^ sourceName, JsScriptRunnerCb handleResult) {
+    JsValueRef ChakraRunner::RunScript(String^ jsScript, String^ sourceName, std::function<void(const JsErrorCode& jsErrorCode, const JsValueRef& result, ChakraRunner* runner)> handleResult) {
         JsValueRef result;
         auto jsErrorCode = JsRunScript(jsScript->Data(), currentSourceContext_++, sourceName->Data(), &result);
 

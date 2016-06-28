@@ -3,6 +3,7 @@
 #include "App.g.h"
 
 namespace VoiceMyNewsApp {
+using voicemynews::app::win10::js::JsApp;
 /// <summary>
 /// Provides application-specific behavior to supplement the default Application class.
 /// </summary>
@@ -13,6 +14,9 @@ protected:
 
 internal:
     App();
+
+private:
+    JsApp^ jsApp_;
 
 private:
     void OnSuspending(Platform::Object^ sender, Windows::ApplicationModel::SuspendingEventArgs^ e);
