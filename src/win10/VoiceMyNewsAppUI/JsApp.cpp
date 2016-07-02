@@ -15,6 +15,8 @@ namespace win10 {
 namespace js {
 using Platform::String;
 
+static JsApp^ currInstance = nullptr;
+
 JsApp::JsApp() {
     currentSourceContext_ = 0;
 
@@ -30,11 +32,17 @@ JsApp::JsApp() {
 #ifdef _DEBUG
     JsStartDebugging();
 #endif
+
+    currInstance = this;
 }
 
 JsApp::~JsApp() {
     JsSetCurrentContext(JS_INVALID_REFERENCE);
     JsDisposeRuntime(runtime_);
+}
+
+JsApp^ JsApp::GetInstance() {
+    return currInstance;
 }
 
 void JsApp::Start() {

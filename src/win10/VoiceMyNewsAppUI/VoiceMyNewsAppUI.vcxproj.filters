@@ -20,6 +20,9 @@
     <Filter Include="bindings\events">
       <UniqueIdentifier>{7be52061-399f-42b8-baff-3db6b4e351a6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="components">
+      <UniqueIdentifier>{2951b31b-782c-4162-bfe4-d389115a0569}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -61,6 +64,9 @@
   <ItemGroup>
     <Page Include="pages\MainPage.xaml">
       <Filter>pages</Filter>
+    </Page>
+    <Page Include="components\MainMenu.xaml">
+      <Filter>components</Filter>
     </Page>
   </ItemGroup>
 </Project>

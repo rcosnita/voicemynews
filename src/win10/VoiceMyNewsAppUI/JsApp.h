@@ -21,6 +21,11 @@ public:
     virtual ~JsApp();
 
     /**
+     * \brief This method returns the current instance of the js application backend.
+     */
+    static JsApp^ GetInstance();
+
+    /**
      * \brief Start the js business logic of voicemynews application.
      */
     void Start();

@@ -33,9 +33,6 @@ public:
             std::lock_guard<std::mutex> lk(m);
             page = ref new MainPage();
 
-            auto btnTest = dynamic_cast<Button^>(page->FindName("btnTest"));
-            page->btnTest_Click(btnTest, ref new RoutedEventArgs());
-
             cv.notify_one();
         }));
 

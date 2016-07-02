@@ -1,14 +1,15 @@
 ﻿//
-// MainPage.xaml.cpp
-// Implementation of the MainPage class.
+// MainMenu.xaml.cpp
+// Implementation of the MainMenu class
 //
 
 #include "pch.h"
-#include "MainPage.xaml.h"
+#include "MainMenu.xaml.h"
 
 namespace voicemynews {
 namespace app {
 namespace win10 {
+namespace components {
 using namespace Platform;
 using namespace Windows::Foundation;
 using namespace Windows::Foundation::Collections;
@@ -20,48 +21,50 @@ using namespace Windows::UI::Xaml::Input;
 using namespace Windows::UI::Xaml::Media;
 using namespace Windows::UI::Xaml::Navigation;
 
-static DependencyProperty^ IsMenuVisibleProperty = DependencyProperty::RegisterAttached(
-    "IsMenuVisible",
+static DependencyProperty^ IsMenuExpandedProperty = DependencyProperty::RegisterAttached(
+    "IsMenuExpanded",
     Interop::TypeName(bool::typeid),
-    Interop::TypeName(MainPage::typeid),
+    Interop::TypeName(MainMenu::typeid),
     ref new PropertyMetadata(nullptr)
 );
 
 static DependencyProperty^ JsBackendProperty = DependencyProperty::RegisterAttached(
     "JsBackend",
     Interop::TypeName(JsApp::typeid),
-    Interop::TypeName(MainPage::typeid),
+    Interop::TypeName(MainMenu::typeid),
     ref new PropertyMetadata(nullptr)
 );
 
-bool MainPage::IsMenuVisible::get() {
-    return static_cast<bool>(GetValue(IsMenuVisibleProperty));
+bool MainMenu::IsMenuExpanded::get() {
+    return static_cast<bool>(GetValue(IsMenuExpandedProperty));
 }
 
-void MainPage::IsMenuVisible::set(bool value) {
-    SetValue(IsMenuVisibleProperty, value);
+void MainMenu::IsMenuExpanded::set(bool value) {
+    SetValue(IsMenuExpandedProperty, value);
+
+    MenuExpanded(value);
 }
 
-JsApp^ MainPage::JsBackend::get() {
+JsApp^ MainMenu::JsBackend::get() {
     return static_cast<JsApp^>(GetValue(JsBackendProperty));
 }
 
-void MainPage::JsBackend::set(JsApp^ value) {
+void MainMenu::JsBackend::set(JsApp^ value) {
     SetValue(JsBackendProperty, value);
 }
 
-MainPage::MainPage()
+MainMenu::MainMenu()
 {
     InitializeComponent();
-    JsBackend = JsApp::GetInstance();
-
-    DataContext = this;
 }
 
-void MainPage::OnMenuExpanded(bool isMenuExpanded) {
-    IsMenuVisible = isMenuExpanded;
+void MainMenu::OpenMenu(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
+{
+    auto jsBackend = JsBackend;
+    IsMenuExpanded = !IsMenuExpanded;
 }
 
+}
 }
 }
 }

@@ -2,13 +2,21 @@
     x:Class="voicemynews.app.win10.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:VoiceMyNewsApp"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:comps="using:voicemynews.app.win10.components"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Button x:Name="btnTest" Content="Test" HorizontalAlignment="Left" Height="70" Margin="60,90,0,0" VerticalAlignment="Top" Width="235" Click="btnTest_Click"/>
+    <SplitView Name="MenuAndContentView" DisplayMode="CompactInline" OpenPaneLength="100" CompactPaneLength="50"
+               IsPaneOpen="{Binding IsMenuVisible}">
+        <SplitView.Pane>
+            <StackPanel Orientation="Vertical" VerticalAlignment="Top">
+                <comps:MainMenu JsBackend="{Binding JsBackend}" MenuExpanded="OnMenuExpanded" />
+            </StackPanel>
+        </SplitView.Pane>
 
-    </Grid>
+        <SplitView.Content>
+            <TextBlock Text="Here we will add app content ..." Foreground="Black" Height="Auto" Width="Auto" FontSize="30" />
+        </SplitView.Content>
+    </SplitView>
 </Page>
