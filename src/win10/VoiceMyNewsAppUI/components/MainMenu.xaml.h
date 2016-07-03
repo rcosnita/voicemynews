@@ -6,14 +6,20 @@
 #pragma once
 
 #include "components\MainMenu.g.h"
+#include "converters/JsonObjectConverter.h"
 #include "JsApp.h"
 
 namespace voicemynews {
 namespace app {
 namespace win10 {
 namespace components {
+using Platform::String;
 using voicemynews::app::win10::js::JsApp;
 
+using Windows::Data::Json::IJsonObject;
+using Windows::Data::Json::IJsonValue;
+using Windows::Data::Json::JsonArray;
+using Windows::Foundation::Collections::IVector;
 using Windows::UI::Xaml::DependencyObject;
 using Windows::UI::Xaml::DependencyPropertyChangedEventArgs;
 
@@ -49,6 +55,15 @@ public:
         void set(JsApp^ value);
     }
 
+    /**
+     * \brief This property holds all the menu items which must be displayed in the hamburger menu.
+     */
+    property IVector<IJsonObject^>^ MenuItems {
+        IVector<IJsonObject^>^ get();
+        private:
+            void set(IVector<IJsonObject^>^ value);
+    }
+
 public:
     /**
      * \brief This event allows consumers of this component to determine the menu is expanded / collapsed.
@@ -67,6 +82,13 @@ public:
      * \brief this method expands / collapses menu. It simply negates the current expanded state.
      */
     void OpenMenu(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
+
+    /**
+     * brief this method wires the js menu model into the control.
+     *
+     * It does this asynchronously by waiting for menu loaded event and updating MenuItems property.
+     */
+    void WireJsMenuModel();
 };
 
 }
