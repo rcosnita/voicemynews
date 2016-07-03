@@ -33,6 +33,17 @@
     };
 
     /**
+     * Using a syntax similir to require, this method loads the specified filename and returns the raw content.
+     * At the moment, only text files are currently supported.
+     *
+     * @param {String} fileName the path to the file we want to load.
+     * @returns {String} the file content.
+     */
+    global.requireRaw = (fileName) => {
+        return RequireNative.loadRaw(fileName);
+    };
+
+    /**
      * This method enforces the given module name to end with .js.
      *
      * @private

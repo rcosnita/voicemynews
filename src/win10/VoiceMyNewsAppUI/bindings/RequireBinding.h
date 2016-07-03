@@ -28,6 +28,14 @@ public:
      * \return the module source code which can be executed by requirejs.
      */
     String^ Load(String^ fileName);
+
+    /**
+     * \brief This method returns the raw content of the specified file.
+     *
+     * \param fileName the absolute / relative path of the module we want to load.
+     * \return The raw content of the given file.
+     */
+    String^ LoadRaw(String^ fileName);
 private:
     Require require_;
 };

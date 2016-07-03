@@ -18,6 +18,10 @@ std::wstring Require::Load(const std::string& fileName) {
     return content;
 }
 
+std::wstring Require::LoadRaw(const std::string& fileName) {
+    return fileUtils_->ReadFile(fileName);
+}
+
 void Require::DecorateWithAnonymousFunction(std::wstring& moduleScript) {
     moduleScript.insert(0, kRequireAnonymousFunctionHeader);
     moduleScript.insert(kRequireAnonymousFunctionHeader.length(), L"\n");

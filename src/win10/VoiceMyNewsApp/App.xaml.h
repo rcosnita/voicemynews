@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+#include <thread>
+
 #include "App.g.h"
 
 namespace VoiceMyNewsApp {
@@ -28,6 +30,8 @@ internal:
 
 private:
     JsApp^ jsApp_;
+    bool jsAppStarted_;
+    std::thread jsAppRunner_;
 
 private:
     void OnSuspending(Platform::Object^ sender, Windows::ApplicationModel::SuspendingEventArgs^ e);

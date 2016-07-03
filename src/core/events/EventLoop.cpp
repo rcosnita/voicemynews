@@ -50,6 +50,14 @@ void EventLoop::ProcessEvents() {
     }
 
     pendingEvents_.clear();
+    
+    std::lock_guard<std::mutex> lockEmmiter(emitterMutex_);
+    for (auto curr = pendingEventsTemp_.begin(); curr != pendingEventsTemp_.end(); curr++) {
+        pendingEvents_.push_back(*curr);
+    }
+
+    pendingEventsTemp_.clear();
+    pendingEventsNotifier_.notify_all();
 }
 
 bool EventLoop::InternalRegisteredMethod::operator==(const InternalRegisteredMethod& obj) {

@@ -9,14 +9,16 @@
 
 const eventLoop = voicemynews.core.events.EventLoopPlatform.getInstance();
 const EventNames = require("js/events/event_names");
-const buildEvent = voicemynews.core.events.EventLoopPlatform.buildEvent;
+const buildEventData = voicemynews.core.events.EventLoopPlatform.buildEvent;
 var isRunning = true;
 
 eventLoop.on(EventNames.APP_SHUTDOWN, (evtData) => {
     isRunning = false;
 });
 
-eventLoop.emit(EventNames.APP_START, buildEvent(JSON.stringify("{}")));
+eventLoop.emit(EventNames.APP_START, buildEventData(JSON.stringify("{}")));
+
+require("js/menu/menu_logic").init(eventLoop, buildEventData);
 
 while (isRunning) {
     eventLoop.processEvents();

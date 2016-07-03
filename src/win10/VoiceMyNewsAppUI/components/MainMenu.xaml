@@ -17,13 +17,18 @@
         <Button Background="Transparent" Content="&#xE700;" Width="50" Height="50"
                         FontFamily="Segoe MDL2 Assets" Click="OpenMenu" />
 
-        <ListView ItemsSource="{Binding MenuItems}">
-            <ListView.ItemTemplate>
+        <ItemsControl ItemsSource="{Binding MenuItems}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Vertical" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding Converter={StaticResource jsonObjectConverter},
+                    <Button Content="{Binding Converter={StaticResource jsonObjectConverter},
                         ConverterParameter='label'}" />
                 </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
     </StackPanel>
 </UserControl>

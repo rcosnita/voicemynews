@@ -1,0 +1,13 @@
+[{
+    "icon": "",
+    "label": "Preferences",
+    "type": "item"
+}, {
+    "icon": "",
+    "label": "Genius news",
+    "type": "item"
+}, {
+    "icon": "",
+    "label": "Exit",
+    "type": "item"
+}]

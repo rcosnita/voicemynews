@@ -1,5 +1,10 @@
 ﻿#include "pch.h"
 
+#include <ppltasks.h>
+
+#include "events/EventNames.h"
+#include "utils/Conversions.h"
+
 using namespace Platform;
 using namespace Windows::ApplicationModel;
 using namespace Windows::ApplicationModel::Activation;
@@ -15,6 +20,8 @@ using namespace Windows::UI::Xaml::Media;
 using namespace Windows::UI::Xaml::Navigation;
 
 using voicemynews::app::win10::MainPage;
+using voicemynews::app::win10::bindings::events::EventDataBinding;
+using voicemynews::app::win10::utils::ConvertStdStrToPlatform;
 
 namespace VoiceMyNewsApp {
 JsApp^ App::JsBackend::get() {
@@ -27,7 +34,15 @@ App::App()
     Suspending += ref new SuspendingEventHandler(this, &App::OnSuspending);
 
     jsApp_ = ref new JsApp();
-    concurrency::create_async([this]() {
+    jsAppStarted_ = false;
+
+    auto appStartEvt = ConvertStdStrToPlatform(voicemynews::core::events::kAppJsStart);
+    jsApp_->GetEventLoop()->On(appStartEvt,
+        ref new voicemynews::app::win10::bindings::events::EventHandler([this](EventDataBinding^ evtData) {
+        jsAppStarted_ = true;
+    }));
+
+    jsAppRunner_ = std::thread([this]() {
         jsApp_->Start();
     });
 }
@@ -52,14 +67,24 @@ void App::OnLaunched(Windows::ApplicationModel::Activation::LaunchActivatedEvent
         {
             // TODO: Restore the saved session state only when appropriate, scheduling the
             // final launch steps after the restore is complete
-
         }
 
         if (e->PrelaunchActivated == false)
         {
             if (rootFrame->Content == nullptr)
             {
-                rootFrame->Navigate(TypeName(MainPage::typeid), e->Arguments);
+                if (jsAppStarted_) {
+                    rootFrame->Navigate(TypeName(MainPage::typeid), e->Arguments);
+                }
+                else {
+                    auto appStartEvt = ConvertStdStrToPlatform(voicemynews::core::events::kAppJsStart);
+                    jsApp_->GetEventLoop()->On(appStartEvt,
+                        ref new voicemynews::app::win10::bindings::events::EventHandler([rootFrame, e](EventDataBinding^ evtData) {
+                        concurrency::create_task(rootFrame->Dispatcher->RunAsync(Windows::UI::Core::CoreDispatcherPriority::High, ref new Windows::UI::Core::DispatchedHandler([rootFrame, e] {
+                            rootFrame->Navigate(TypeName(MainPage::typeid), e->Arguments);
+                        })));
+                    }));
+                }
             }
 
             Window::Current->Content = rootFrame;

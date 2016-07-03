@@ -15,6 +15,7 @@ namespace win10 {
 namespace components {
 using Platform::String;
 using voicemynews::app::win10::js::JsApp;
+using voicemynews::core::events::EventDataBinding;
 
 using Windows::Data::Json::IJsonObject;
 using Windows::Data::Json::IJsonValue;
@@ -79,9 +80,14 @@ private:
 public:
 #endif
     /**
-     * \brief this method expands / collapses menu. It simply negates the current expanded state.
+     * \brief This method expands / collapses menu. It simply negates the current expanded state.
      */
     void OpenMenu(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
+
+    /**
+     * \brief This method is invoked when the navigation menu is loaded by the business logic.
+     */
+    void OnMenuLoaded(EventDataBinding^ evtData);
 
     /**
      * brief this method wires the js menu model into the control.

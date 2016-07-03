@@ -5,6 +5,7 @@
 
 #include "pch.h"
 #include "MainMenu.xaml.h"
+#include "events/EventNames.h"
 #include "utils/Conversions.h"
 
 namespace voicemynews {
@@ -23,8 +24,12 @@ using namespace Windows::UI::Xaml::Media;
 using namespace Windows::UI::Xaml::Navigation;
 
 using Platform::Collections::Vector;
+using voicemynews::app::win10::bindings::events::EventHandler;
 using voicemynews::app::win10::utils::ConvertJsonArrayToVector;
+using voicemynews::app::win10::utils::ConvertStdStrToPlatform;
 using Windows::Data::Json::JsonObject;
+using Windows::UI::Core::CoreDispatcherPriority;
+using Windows::UI::Core::DispatchedHandler;
 
 static DependencyProperty^ IsMenuExpandedProperty = DependencyProperty::RegisterAttached(
     "IsMenuExpanded",
@@ -89,11 +94,22 @@ void MainMenu::OpenMenu(Platform::Object^ sender, Windows::UI::Xaml::RoutedEvent
 }
 
 void MainMenu::WireJsMenuModel() {
-    String^ modelStr = "[{\"label\": \"Menu 1\"}, {\"label\": \"Menu 2\"}]";
-    auto modelJson = JsonArray::Parse(modelStr);
-    auto model = ConvertJsonArrayToVector(*modelJson);
+    auto eventLoop = JsBackend->GetEventLoop();
+    
+    eventLoop->On(ConvertStdStrToPlatform(voicemynews::core::events::kAppNavigationMenuLoaded),
+        ref new EventHandler([this](EventDataBinding^ evtData) {
+        OnMenuLoaded(evtData);
+    }));
 
-    MenuItems = model;
+    eventLoop->Emit(ConvertStdStrToPlatform(voicemynews::core::events::kAppNavigationMenuLoad),
+        ref new EventDataBinding(""));
+}
+
+void MainMenu::OnMenuLoaded(EventDataBinding^ evtData) {
+    concurrency::create_task(Dispatcher->RunAsync(CoreDispatcherPriority::Normal, ref new DispatchedHandler([this, evtData]() {
+        auto model = JsonArray::Parse(evtData->EvtData);
+        MenuItems = ConvertJsonArrayToVector(*model);
+    })));
 }
 
 }
