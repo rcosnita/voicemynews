@@ -167,23 +167,39 @@
 			"file": "src/core/js/app.js",
 			"settings":
 			{
-				"buffer_size": 791,
+				"buffer_size": 863,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "node_modules/js/events/event_names.js",
+			"file": "src/core/js/events/event_names.js",
 			"settings":
 			{
-				"buffer_size": 507,
+				"buffer_size": 829,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "tests/unittests/core/js/app_spec.js",
+			"file": "src/core/js/require.js",
 			"settings":
 			{
-				"buffer_size": 2708,
+				"buffer_size": 2399,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/core/js/menu/menu_data.json",
+			"settings":
+			{
+				"buffer_size": 197,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "src/core/js/menu/menu_logic.js",
+			"settings":
+			{
+				"buffer_size": 1416,
 				"line_ending": "Windows"
 			}
 		}
@@ -262,23 +278,29 @@
 	"expanded_folders":
 	[
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews",
-		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/node_modules",
-		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/node_modules/js",
-		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/node_modules/js/events",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/core",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/core/js",
-		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/core/js/events"
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/core/js/events",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/core/js/menu",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/core",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/core/js"
 	],
 	"file_history":
 	[
+		"/C/Users/cosnita.ADOBENET/AppData/Local/Packages/Adobe.CC.XD_adky2gkssdxte/LocalState/xdAppState.json",
+		"/C/Comet/sparkler-shell/.gitignore",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/node_modules/js/events/event_names.js",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/win10/x64/Debug/VoiceMyNewsApp/AppX/js/app.js",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/core/js/require.js",
+		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/core/js/app_spec.js",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/node_modules/js/networking/http.js",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/tests/unittests/core/js/networking/http_spec.js",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/node_modules/js/exceptions/notimplemented.js",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/core/js/events/event_names.js",
 		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/core/js/networking/http.js",
-		"/C/Users/cosnita.ADOBENET/work-personal/voicemynews/src/core/js/require.js",
-		"/C/Comet/sparkler-shell/.gitignore",
 		"/C/Comet/sparkler-shell/README-win10.md",
 		"/C/Comet/sparkler-shell/js/lib/MouseEvent.js",
 		"/C/Comet/sparkler-shell/Sparkler/amt/win/application.xml",
@@ -395,11 +417,7 @@
 		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/rapidjson/RapidJson.nuspec",
 		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/rapidjson/package.ps1",
 		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/rapidjson/tmp-rapidjson/readme.md",
-		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/scripts_utils/files_helper.ps1",
-		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/rapidjson/build.ps1",
-		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/scripts_utils/java/ChecksumGenerator.java",
-		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/setup_local_repository.ps1",
-		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/scripts_utils/common_paths.ps1"
+		"/C/Users/cosnita.ADOBENET/work/sparkler-deps/nuget/scripts_utils/files_helper.ps1"
 	],
 	"find":
 	{
@@ -523,15 +541,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 791,
+						"buffer_size": 863,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								791,
-								791
+								360,
+								360
 							]
 						],
 						"settings":
@@ -544,35 +562,97 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 1,
 					"type": "text"
 				},
 				{
 					"buffer": 1,
-					"file": "node_modules/js/events/event_names.js",
+					"file": "src/core/js/events/event_names.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 507,
+						"buffer_size": 829,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								362,
-								362
+								636,
+								636
 							]
 						],
 						"settings":
 						{
+							"side_bar_folders_auto_load_folder": 1,
 							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
+						},
+						"translation.x": 10.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "src/core/js/require.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2399,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1456,
+								1456
+							]
+						],
+						"settings":
+						{
+							"side_bar_folders_auto_load_folder": 1,
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 348.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "src/core/js/menu/menu_data.json",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 197,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								86,
+								86
+							]
+						],
+						"settings":
+						{
+							"auto_name": "",
+							"side_bar_folders_auto_load_folder": 1,
+							"syntax": "Packages/JavaScript/JSON.sublime-syntax"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 4,
 					"type": "text"
 				}
 			]
@@ -582,31 +662,32 @@
 			"sheets":
 			[
 				{
-					"buffer": 2,
-					"file": "tests/unittests/core/js/app_spec.js",
+					"buffer": 4,
+					"file": "src/core/js/menu/menu_logic.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2708,
+						"buffer_size": 1416,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2705,
-								2705
+								916,
+								916
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Babel/JavaScript (Babel).sublime-syntax"
+							"side_bar_folders_auto_load_folder": 1,
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
 						},
 						"translation.x": 0.0,
-						"translation.y": 1860.0,
+						"translation.y": 564.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 0,
 					"type": "text"
 				}
 			]
@@ -667,6 +748,18 @@
 		"last_filter": "",
 		"selected_items":
 		[
+			[
+				"event_names",
+				"src\\core\\js\\events\\event_names.js"
+			],
+			[
+				"require.js",
+				"src\\core\\js\\require.js"
+			],
+			[
+				"require",
+				"src\\core\\js\\require.js"
+			],
 			[
 				"event_na",
 				"node_modules\\js\\events\\event_names.js"
@@ -760,7 +853,7 @@
 		],
 		"width": 0.0
 	},
-	"selected_group": 0,
+	"selected_group": 1,
 	"settings":
 	{
 	},

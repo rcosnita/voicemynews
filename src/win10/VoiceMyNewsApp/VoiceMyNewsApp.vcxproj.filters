@@ -8,6 +8,9 @@
       <UniqueIdentifier>7a7da419-66c9-4b2e-93ad-4a7d3c6644ca</UniqueIdentifier>
       <Extensions>bmp;fbx;gif;jpg;jpeg;tga;tiff;tif;png</Extensions>
     </Filter>
+    <Filter Include="Assets\icons">
+      <UniqueIdentifier>{30896e87-fe1c-4bed-887d-9a5e2c2dabd0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml" />
@@ -41,6 +44,36 @@
     </Image>
     <Image Include="Assets\Wide310x150Logo.scale-200.png">
       <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\icons\preferences.scale-100.png">
+      <Filter>Assets\icons</Filter>
+    </Image>
+    <Image Include="Assets\icons\preferences.scale-125.png">
+      <Filter>Assets\icons</Filter>
+    </Image>
+    <Image Include="Assets\icons\preferences.scale-150.png">
+      <Filter>Assets\icons</Filter>
+    </Image>
+    <Image Include="Assets\icons\preferences.scale-200.png">
+      <Filter>Assets\icons</Filter>
+    </Image>
+    <Image Include="Assets\icons\preferences.scale-400.png">
+      <Filter>Assets\icons</Filter>
+    </Image>
+    <Image Include="Assets\icons\genius.scale-100.png">
+      <Filter>Assets\icons</Filter>
+    </Image>
+    <Image Include="Assets\icons\genius.scale-125.png">
+      <Filter>Assets\icons</Filter>
+    </Image>
+    <Image Include="Assets\icons\genius.scale-150.png">
+      <Filter>Assets\icons</Filter>
+    </Image>
+    <Image Include="Assets\icons\genius.scale-200.png">
+      <Filter>Assets\icons</Filter>
+    </Image>
+    <Image Include="Assets\icons\genius.scale-400.png">
+      <Filter>Assets\icons</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>

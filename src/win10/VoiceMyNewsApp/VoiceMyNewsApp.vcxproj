@@ -155,6 +155,16 @@
     <None Include="VoiceMyNewsApp_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Assets\icons\genius.scale-100.png" />
+    <Image Include="Assets\icons\genius.scale-125.png" />
+    <Image Include="Assets\icons\genius.scale-150.png" />
+    <Image Include="Assets\icons\genius.scale-200.png" />
+    <Image Include="Assets\icons\genius.scale-400.png" />
+    <Image Include="Assets\icons\preferences.scale-100.png" />
+    <Image Include="Assets\icons\preferences.scale-125.png" />
+    <Image Include="Assets\icons\preferences.scale-150.png" />
+    <Image Include="Assets\icons\preferences.scale-200.png" />
+    <Image Include="Assets\icons\preferences.scale-400.png" />
     <Image Include="Assets\LockScreenLogo.scale-200.png" />
     <Image Include="Assets\SplashScreen.scale-200.png" />
     <Image Include="Assets\Square150x150Logo.scale-200.png" />

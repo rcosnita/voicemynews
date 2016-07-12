@@ -7,7 +7,7 @@
     xmlns:comps="using:voicemynews.app.win10.components"
     mc:Ignorable="d">
 
-    <SplitView Name="MenuAndContentView" DisplayMode="CompactInline" OpenPaneLength="100" CompactPaneLength="50"
+    <SplitView Name="MenuAndContentView" DisplayMode="CompactInline" OpenPaneLength="200" CompactPaneLength="50"
                IsPaneOpen="{Binding IsMenuVisible}">
         <SplitView.Pane>
             <StackPanel Orientation="Vertical" VerticalAlignment="Top">
