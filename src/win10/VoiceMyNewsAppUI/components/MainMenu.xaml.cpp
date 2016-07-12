@@ -5,8 +5,11 @@
 
 #include "pch.h"
 #include "MainMenu.xaml.h"
+#include "pages/UserPreferencesPage.xaml.h"
 #include "events/EventNames.h"
 #include "utils/Conversions.h"
+
+#include <ppltasks.h>
 
 namespace voicemynews {
 namespace app {
@@ -25,6 +28,7 @@ using namespace Windows::UI::Xaml::Navigation;
 
 using Platform::Collections::Vector;
 using voicemynews::app::win10::bindings::events::EventHandler;
+using voicemynews::app::win10::pages::UserPreferencesPage;
 using voicemynews::app::win10::utils::ConvertJsonArrayToVector;
 using voicemynews::app::win10::utils::ConvertStdStrToPlatform;
 using Windows::Data::Json::JsonObject;
@@ -33,22 +37,22 @@ using Windows::UI::Core::DispatchedHandler;
 
 static DependencyProperty^ IsMenuExpandedProperty = DependencyProperty::RegisterAttached(
     "IsMenuExpanded",
-    Interop::TypeName(bool::typeid),
-    Interop::TypeName(MainMenu::typeid),
+    bool::typeid,
+    MainMenu::typeid,
     ref new PropertyMetadata(nullptr)
 );
 
 static DependencyProperty^ JsBackendProperty = DependencyProperty::RegisterAttached(
     "JsBackend",
-    Interop::TypeName(JsApp::typeid),
-    Interop::TypeName(MainMenu::typeid),
+    JsApp::typeid,
+    MainMenu::typeid,
     ref new PropertyMetadata(nullptr)
 );
 
 static DependencyProperty^ MenuItemsProperty = DependencyProperty::RegisterAttached(
     "MenuItems",
-    Interop::TypeName(JsonArray::typeid),
-    Interop::TypeName(MainMenu::typeid),
+    JsonArray::typeid,
+    MainMenu::typeid,
     ref new PropertyMetadata(nullptr)
 );
 
@@ -78,11 +82,20 @@ void MainMenu::MenuItems::set(IVector<IJsonObject^>^ value) {
     SetValue(MenuItemsProperty, value);
 }
 
+Frame^ MainMenu::ContentView::get() {
+    return contentView_;
+}
+
+void MainMenu::ContentView::set(Frame^ value) {
+    contentView_ = value;
+}
+
 MainMenu::MainMenu()
 {
     InitializeComponent();
 
     WireJsMenuModel();
+    WireJsNavigationEvents();
 
     DataContext = this;
 }
@@ -103,6 +116,17 @@ void MainMenu::WireJsMenuModel() {
 
     eventLoop->Emit(ConvertStdStrToPlatform(voicemynews::core::events::kAppNavigationMenuLoad),
         ref new EventDataBinding(""));
+}
+
+void MainMenu::WireJsNavigationEvents() {
+    auto eventLoop = JsBackend->GetEventLoop();
+
+    eventLoop->On(ConvertStdStrToPlatform(voicemynews::core::events::kMenuItemOpenPreferences),
+        ref new EventHandler([this](EventDataBinding^ evtData) {
+        concurrency::create_task(Dispatcher->RunAsync(CoreDispatcherPriority::High, ref new DispatchedHandler([this]() {
+            ContentView->Navigate(UserPreferencesPage::typeid);
+        })));
+    }));
 }
 
 void MainMenu::OnMenuLoaded(EventDataBinding^ evtData) {

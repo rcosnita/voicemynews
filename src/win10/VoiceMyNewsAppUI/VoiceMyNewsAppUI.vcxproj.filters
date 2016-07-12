@@ -46,6 +46,7 @@
     <ClCompile Include="converters\JsonObjectConverter.cpp">
       <Filter>converters</Filter>
     </ClCompile>
+    <ClCompile Include="components\MainMenu.xaml.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -69,6 +70,7 @@
     <ClInclude Include="converters\JsonObjectConverter.h">
       <Filter>converters</Filter>
     </ClInclude>
+    <ClInclude Include="components\MainMenu.xaml.h" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="pages\MainPage.xaml">
@@ -76,6 +78,12 @@
     </Page>
     <Page Include="components\MainMenu.xaml">
       <Filter>components</Filter>
+    </Page>
+    <Page Include="components\MainMenuItem.xaml">
+      <Filter>components</Filter>
+    </Page>
+    <Page Include="pages\UserPreferencesPage.xaml">
+      <Filter>pages</Filter>
     </Page>
   </ItemGroup>
 </Project>

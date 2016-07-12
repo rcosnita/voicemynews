@@ -216,11 +216,17 @@
     <ClInclude Include="components\MainMenu.xaml.h">
       <DependentUpon>components\MainMenu.xaml</DependentUpon>
     </ClInclude>
+    <ClInclude Include="components\MainMenuItem.xaml.h">
+      <DependentUpon>components\MainMenuItem.xaml</DependentUpon>
+    </ClInclude>
     <ClInclude Include="converters\JsonObjectConverter.h" />
     <ClInclude Include="JsApp.h" />
     <ClInclude Include="network\HttpClientNativeWin.h" />
     <ClInclude Include="pages\MainPage.xaml.h">
       <DependentUpon>pages\MainPage.xaml</DependentUpon>
+    </ClInclude>
+    <ClInclude Include="pages\UserPreferencesPage.xaml.h">
+      <DependentUpon>pages\UserPreferencesPage.xaml</DependentUpon>
     </ClInclude>
     <ClInclude Include="pch.h" />
   </ItemGroup>
@@ -232,10 +238,16 @@
     <ClCompile Include="components\MainMenu.xaml.cpp">
       <DependentUpon>components\MainMenu.xaml</DependentUpon>
     </ClCompile>
+    <ClCompile Include="components\MainMenuItem.xaml.cpp">
+      <DependentUpon>components\MainMenuItem.xaml</DependentUpon>
+    </ClCompile>
     <ClCompile Include="converters\JsonObjectConverter.cpp" />
     <ClCompile Include="JsApp.cpp" />
     <ClCompile Include="pages\MainPage.xaml.cpp">
       <DependentUpon>pages\MainPage.xaml</DependentUpon>
+    </ClCompile>
+    <ClCompile Include="pages\UserPreferencesPage.xaml.cpp">
+      <DependentUpon>pages\UserPreferencesPage.xaml</DependentUpon>
     </ClCompile>
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -255,7 +267,13 @@
     <Page Include="components\MainMenu.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="components\MainMenuItem.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="pages\MainPage.xaml" />
+    <Page Include="pages\UserPreferencesPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

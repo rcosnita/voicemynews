@@ -5,6 +5,7 @@
 
 #include "pch.h"
 #include "MainPage.xaml.h"
+#include "components/MainMenu.xaml.h"
 
 namespace voicemynews {
 namespace app {
@@ -54,6 +55,8 @@ MainPage::MainPage()
 {
     InitializeComponent();
     JsBackend = JsApp::GetInstance();
+
+    AppMainMenu->ContentView = FrameAppActiveContent;
 
     DataContext = this;
 }

@@ -11,12 +11,12 @@
                IsPaneOpen="{Binding IsMenuVisible}">
         <SplitView.Pane>
             <StackPanel Orientation="Vertical" VerticalAlignment="Top">
-                <comps:MainMenu JsBackend="{Binding JsBackend}" MenuExpanded="OnMenuExpanded" />
+                <comps:MainMenu x:Name="AppMainMenu" JsBackend="{Binding JsBackend}" MenuExpanded="OnMenuExpanded" />
             </StackPanel>
         </SplitView.Pane>
 
         <SplitView.Content>
-            <TextBlock Text="Here we will add app content ..." Foreground="Black" Height="Auto" Width="Auto" FontSize="30" />
+            <Frame x:Name="FrameAppActiveContent" />
         </SplitView.Content>
     </SplitView>
 </Page>

@@ -1,9 +1,15 @@
 [{
     "icon": "/Assets/icons/menuitems/preferences.png",
     "label": "Preferences",
-    "type": "item"
+    "type": "item",
+    "data": {
+        "evtName": "js:menuitems:openPreferences:process"
+    }
 }, {
     "icon": "/Assets/icons/menuitems/genius.png",
     "label": "Genius news",
-    "type": "item"
+    "type": "item",
+    "data": {
+        "evtName": "js:menuitems:openGenius:process"
+    }
 }]

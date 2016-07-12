@@ -28,6 +28,8 @@ class MenuLogic {
      */
     init() {
         this._eventLoop.on(EventNames.APP_NAVIGATION_MENU_LOAD, () => this._loadMenu());
+        this._eventLoop.on(EventNames.MENUITEMS_OPENPREFERENCES_PROCESS, () => this._handleOpenPreferencesProcess());
+        this._eventLoop.on(EventNames.MENUITEMS_OPENGENIUS_PROCESS, () => this._handleOpenGeniusProcess());
     }
 
     /**
@@ -41,6 +43,22 @@ class MenuLogic {
         const menuData = requireRaw(kMenuFileName);
 
         this._eventLoop.emit(EventNames.APP_NAVIGATION_MENU_LOADED, this._buildEventData(menuData));
+    }
+
+    /**
+     * This method intercepts each open preferences event emitted by the native app, process it and sends back
+     * an open preferences navigation event.
+     */
+    _handleOpenPreferencesProcess() {
+        this._eventLoop.emit(EventNames.MENUITEMS_OPENPREFERENCES, this._buildEventData(""));
+    }
+
+    /**
+     * This method intercepts each open genius news event emitted by the native app, process it and sends back
+     * an open genius news navigation event.
+     */
+    _handleOpenGeniusProcess() {
+        this._eventLoop.emit(EventNames.MENUITEMS_OPENGENIUS, this._buildEventData(""));
     }
 }
 

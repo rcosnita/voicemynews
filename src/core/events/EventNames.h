@@ -25,6 +25,16 @@ namespace events {
      * \brief This event is emitted by the business logic in order to tell the native part which is the main menu.
      */
     const std::string kAppNavigationMenuLoaded = "app:navigation_menu:loaded";
+
+    /**
+    * \brief This event is emitted by the business logic so that preferences page can be opened.
+    */
+    const std::string kMenuItemOpenPreferences = "js:menuitems:openPreferences";
+
+    /**
+     * \brief This event is emitted by the business logic so that genius news page can be opened.
+     */
+    const std::string kMenuItemOpenGeniusNews = "js:menuitems:openGenius";
 }
 }
 }
