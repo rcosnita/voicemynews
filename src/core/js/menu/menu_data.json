@@ -1,9 +1,9 @@
 [{
-    "icon": "/Assets/icons/preferences.png",
+    "icon": "/Assets/icons/menuitems/preferences.png",
     "label": "Preferences",
     "type": "item"
 }, {
-    "icon": "/Assets/icons/genius.png",
+    "icon": "/Assets/icons/menuitems/genius.png",
     "label": "Genius news",
     "type": "item"
 }]
