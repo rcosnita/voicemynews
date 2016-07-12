@@ -85,5 +85,8 @@
     <Page Include="pages\UserPreferencesPage.xaml">
       <Filter>pages</Filter>
     </Page>
+    <Page Include="pages\GeniusNewsPage.xaml">
+      <Filter>pages</Filter>
+    </Page>
   </ItemGroup>
 </Project>

@@ -5,8 +5,9 @@
 
 #include "pch.h"
 #include "MainMenu.xaml.h"
-#include "pages/UserPreferencesPage.xaml.h"
 #include "events/EventNames.h"
+#include "pages/UserPreferencesPage.xaml.h"
+#include "pages/GeniusNewsPage.xaml.h"
 #include "utils/Conversions.h"
 
 #include <ppltasks.h>
@@ -28,6 +29,7 @@ using namespace Windows::UI::Xaml::Navigation;
 
 using Platform::Collections::Vector;
 using voicemynews::app::win10::bindings::events::EventHandler;
+using voicemynews::app::win10::pages::GeniusNewsPage;
 using voicemynews::app::win10::pages::UserPreferencesPage;
 using voicemynews::app::win10::utils::ConvertJsonArrayToVector;
 using voicemynews::app::win10::utils::ConvertStdStrToPlatform;
@@ -125,6 +127,13 @@ void MainMenu::WireJsNavigationEvents() {
         ref new EventHandler([this](EventDataBinding^ evtData) {
         concurrency::create_task(Dispatcher->RunAsync(CoreDispatcherPriority::High, ref new DispatchedHandler([this]() {
             ContentView->Navigate(UserPreferencesPage::typeid);
+        })));
+    }));
+
+    eventLoop->On(ConvertStdStrToPlatform(voicemynews::core::events::kMenuItemOpenGeniusNews),
+        ref new EventHandler([this](EventDataBinding^ evtData) {
+        concurrency::create_task(Dispatcher->RunAsync(CoreDispatcherPriority::High, ref new DispatchedHandler([this]() {
+            ContentView->Navigate(GeniusNewsPage::typeid);
         })));
     }));
 }

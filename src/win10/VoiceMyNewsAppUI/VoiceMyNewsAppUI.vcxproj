@@ -222,6 +222,9 @@
     <ClInclude Include="converters\JsonObjectConverter.h" />
     <ClInclude Include="JsApp.h" />
     <ClInclude Include="network\HttpClientNativeWin.h" />
+    <ClInclude Include="pages\GeniusNewsPage.xaml.h">
+      <DependentUpon>pages\GeniusNewsPage.xaml</DependentUpon>
+    </ClInclude>
     <ClInclude Include="pages\MainPage.xaml.h">
       <DependentUpon>pages\MainPage.xaml</DependentUpon>
     </ClInclude>
@@ -243,6 +246,9 @@
     </ClCompile>
     <ClCompile Include="converters\JsonObjectConverter.cpp" />
     <ClCompile Include="JsApp.cpp" />
+    <ClCompile Include="pages\GeniusNewsPage.xaml.cpp">
+      <DependentUpon>pages\GeniusNewsPage.xaml</DependentUpon>
+    </ClCompile>
     <ClCompile Include="pages\MainPage.xaml.cpp">
       <DependentUpon>pages\MainPage.xaml</DependentUpon>
     </ClCompile>
@@ -268,6 +274,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="components\MainMenuItem.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="pages\GeniusNewsPage.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Include="pages\MainPage.xaml" />
