@@ -5,7 +5,7 @@
 "use strict";
 
 const EventNames = require("js/events/event_names");
-const Navigation = require("js/events/navigation");
+const NavigationManager = require("js/events/navigation").NavigationManager;
 const kMenuFileName = "js/menu/menu_data.json"
 
 /**
@@ -18,6 +18,7 @@ class MenuLogic {
     constructor(eventLoop, buildEventData) {
         this._eventLoop = eventLoop;
         this._buildEventData = buildEventData;
+        this._navigationManager = new NavigationManager(undefined, buildEventData);
     }
 
     /**
@@ -51,7 +52,7 @@ class MenuLogic {
      * an open preferences navigation event.
      */
     _handleOpenPreferencesProcess() {
-        Navigation.navigateTo(EventNames.MENUITEMS_OPENPREFERENCES);
+        this._navigationManager.navigateTo(EventNames.MENUITEMS_OPENPREFERENCES);
     }
 
     /**
@@ -59,7 +60,7 @@ class MenuLogic {
      * an open genius news navigation event.
      */
     _handleOpenGeniusProcess() {
-        Navigation.navigateTo(EventNames.MENUITEMS_OPENGENIUS);
+        this._navigationManager.navigateTo(EventNames.MENUITEMS_OPENGENIUS);
     }
 }
 

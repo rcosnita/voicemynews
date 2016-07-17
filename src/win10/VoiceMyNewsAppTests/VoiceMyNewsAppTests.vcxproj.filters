@@ -60,7 +60,7 @@
     <ClCompile Include="JsAppTests.cpp">
       <Filter>core</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\tests\unittests\win10\c++\events\NavigationBinding.cpp">
+    <ClCompile Include="..\..\..\tests\unittests\win10\c++\events\NavigationBindingTests.cpp">
       <Filter>events</Filter>
     </ClCompile>
   </ItemGroup>

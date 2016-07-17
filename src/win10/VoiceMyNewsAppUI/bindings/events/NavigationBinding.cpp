@@ -80,3 +80,14 @@ bool NavigationBinding::NavigateByEvent(String^ evtName, EventDataBinding^ evtDa
 }
 }
 }
+
+namespace voicemynews {
+namespace core {
+namespace events {
+using NavigationBinding = voicemynews::app::win10::bindings::events::NavigationBinding;
+NavigationBinding^ NavigationManagerPlatform::GetInstance() {
+    return NavigationBinding::GetInstance();
+}
+}
+}
+}

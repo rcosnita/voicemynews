@@ -101,4 +101,24 @@ private:
 }
 }
 
+namespace voicemynews {
+namespace core {
+namespace events {
+/**
+ * \brief This class provides a factory for obtaining the navigation manager for the current platform.
+ *
+ * JS code can safely rely on this in order to implement navigation based on events.
+ */
+public ref class NavigationManagerPlatform sealed {
+using NavigationBinding = voicemynews::app::win10::bindings::events::NavigationBinding;
+public:
+    /**
+     * This method obtains the current navigation manager which can be used by the application.
+     */
+    static NavigationBinding^ GetInstance();
+};
+}
+}
+}
+
 #endif /* VoiceMyNewsAppUI_bindings_events_NavigationBinding_H_ */
