@@ -21,6 +21,7 @@ using namespace Windows::UI::Xaml::Input;
 using namespace Windows::UI::Xaml::Media;
 using namespace Windows::UI::Xaml::Navigation;
 
+using FrameAppNavigator = voicemynews::app::win10::bindings::events::FrameAppNavigator;
 using JsApp = voicemynews::app::win10::js::JsApp;
 using NavigationBinding = voicemynews::app::win10::bindings::events::NavigationBinding;
 
@@ -60,7 +61,7 @@ MainPage::MainPage()
     JsBackend = JsApp::GetInstance();
 
     navigationBinding_ = NavigationBinding::GetInstance();
-    navigationBinding_->MenuContentView = FrameAppActiveContent;
+    navigationBinding_->MenuContentNavigator = ref new FrameAppNavigator(FrameAppActiveContent);
 
     DataContext = this;
 }

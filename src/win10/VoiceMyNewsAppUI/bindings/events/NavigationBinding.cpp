@@ -11,6 +11,7 @@ using voicemynews::app::win10::utils::ConvertStdStrToPlatform;
 using Windows::UI::Core::CoreDispatcherPriority;
 using Windows::UI::Core::DispatchedHandler;
 using Windows::UI::Xaml::Controls::Frame;
+using Windows::UI::Xaml::Interop::TypeName;
 
 static voicemynews::app::win10::bindings::events::NavigationBinding^ navigationInstance = nullptr;
 
@@ -19,7 +20,30 @@ namespace app {
 namespace win10 {
 namespace bindings {
 namespace events {
+FrameAppNavigator::FrameAppNavigator(Frame^ frame) {
+    frame_ = frame;
+}
+
+bool FrameAppNavigator::Navigate(TypeName pageType, EventDataBinding^ navigationData) {
+    bool isSuccess = false;
+    concurrency::create_task(frame_->Dispatcher->RunAsync(CoreDispatcherPriority::High,
+        ref new DispatchedHandler([this, &pageType, &navigationData, &isSuccess]() {
+        isSuccess = frame_->Navigate(pageType, navigationData);
+    }))).wait();
+
+    return isSuccess;
+}
+
 NavigationBinding::NavigationBinding() {
+    InitComponent();
+}
+
+NavigationBinding::NavigationBinding(IAppNavigator^ menuContentNavigator)
+    : menuContentNavigator_(menuContentNavigator) {
+    InitComponent();
+}
+
+void NavigationBinding::InitComponent() {
     menuNavigationMapping_ = ref new Platform::Collections::Map<String^, TypeName>();
 
     menuNavigationMapping_->Insert(ConvertStdStrToPlatform(voicemynews::core::events::kMenuItemOpenGeniusNews),
@@ -28,12 +52,12 @@ NavigationBinding::NavigationBinding() {
         voicemynews::app::win10::pages::UserPreferencesPage::typeid);
 }
 
-void NavigationBinding::MenuContentView::set(Frame^ menuContentView) {
-    menuContentView_ = menuContentView;
+void NavigationBinding::MenuContentNavigator::set(IAppNavigator^ menuContentNavigator) {
+    menuContentNavigator_ = menuContentNavigator;
 }
 
-Frame^ NavigationBinding::MenuContentView::get() {
-    return menuContentView_;
+IAppNavigator^ NavigationBinding::MenuContentNavigator::get() {
+    return menuContentNavigator_;
 }
 
 NavigationBinding^ NavigationBinding::GetInstance() {
@@ -44,12 +68,12 @@ NavigationBinding^ NavigationBinding::GetInstance() {
     return navigationInstance;
 }
 
-void NavigationBinding::NavigateByEvent(String^ evtName, EventDataBinding^ evtData) {
+bool NavigationBinding::NavigateByEvent(String^ evtName, EventDataBinding^ evtData) {
     if (menuNavigationMapping_->HasKey(evtName)) {
-        concurrency::create_task(menuContentView_->Dispatcher->RunAsync(CoreDispatcherPriority::High, ref new DispatchedHandler([this, evtName, evtData]() {
-            menuContentView_->Navigate(menuNavigationMapping_->Lookup(evtName), evtData);
-        })));
+        return MenuContentNavigator->Navigate(menuNavigationMapping_->Lookup(evtName), evtData);
     }
+
+    return false;
 }
 }
 }
