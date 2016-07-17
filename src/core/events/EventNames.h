@@ -27,8 +27,8 @@ namespace events {
     const std::string kAppNavigationMenuLoaded = "app:navigation_menu:loaded";
 
     /**
-    * \brief This event is emitted by the business logic so that preferences page can be opened.
-    */
+     * \brief This event is emitted by the business logic so that preferences page can be opened.
+     */
     const std::string kMenuItemOpenPreferences = "js:menuitems:openPreferences";
 
     /**

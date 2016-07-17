@@ -32,19 +32,7 @@ module.exports = {
     MENUITEMS_OPENPREFERENCES: "js:menuitems:openPreferences",
 
     /**
-     * This event is emitted by the app, whenever a menuitem, or keyboard shortcut associated
-     * with openPreferences menu is triggered within native app.
-     */
-    MENUITEMS_OPENPREFERENCES_PROCESS: "js:menuitems:openPreferences:process",
-
-    /**
      * This event tells the native part that openGenius page is ready to be opened.
      */
     MENUITEMS_OPENGENIUS: "js:menuitems:openGenius",
-
-    /**
-     * This event is emitted by the app, whenever a menuitem, or keyboard shortcut associated
-     * with openGenius menu is triggered within native app.
-     */
-    MENUITEMS_OPENGENIUS_PROCESS: "js:menuitems:openGenius:process"
 };

@@ -211,6 +211,7 @@
   <ItemGroup>
     <ClInclude Include="bindings\events\EventDataBinding.h" />
     <ClInclude Include="bindings\events\EventLoopBinding.h" />
+    <ClInclude Include="bindings\events\NavigationBinding.h" />
     <ClInclude Include="bindings\network\HttpClientBinding.h" />
     <ClInclude Include="bindings\RequireBinding.h" />
     <ClInclude Include="components\MainMenu.xaml.h">
@@ -236,6 +237,7 @@
   <ItemGroup>
     <ClCompile Include="bindings\events\EventDataBinding.cpp" />
     <ClCompile Include="bindings\events\EventLoopBinding.cpp" />
+    <ClCompile Include="bindings\events\NavigationBinding.cpp" />
     <ClCompile Include="bindings\network\HttpClientBinding.cpp" />
     <ClCompile Include="bindings\RequireBinding.cpp" />
     <ClCompile Include="components\MainMenu.xaml.cpp">

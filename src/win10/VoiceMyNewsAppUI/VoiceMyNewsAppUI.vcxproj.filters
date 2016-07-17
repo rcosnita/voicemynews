@@ -47,6 +47,12 @@
       <Filter>converters</Filter>
     </ClCompile>
     <ClCompile Include="components\MainMenu.xaml.cpp" />
+    <ClCompile Include="components\MainMenuItem.xaml.cpp" />
+    <ClCompile Include="pages\GeniusNewsPage.xaml.cpp" />
+    <ClCompile Include="pages\UserPreferencesPage.xaml.cpp" />
+    <ClCompile Include="bindings\events\NavigationBinding.cpp">
+      <Filter>bindings\events</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -71,6 +77,12 @@
       <Filter>converters</Filter>
     </ClInclude>
     <ClInclude Include="components\MainMenu.xaml.h" />
+    <ClInclude Include="components\MainMenuItem.xaml.h" />
+    <ClInclude Include="pages\GeniusNewsPage.xaml.h" />
+    <ClInclude Include="pages\UserPreferencesPage.xaml.h" />
+    <ClInclude Include="bindings\events\NavigationBinding.h">
+      <Filter>bindings\events</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Page Include="pages\MainPage.xaml">

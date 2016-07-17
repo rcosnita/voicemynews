@@ -21,6 +21,9 @@ using namespace Windows::UI::Xaml::Input;
 using namespace Windows::UI::Xaml::Media;
 using namespace Windows::UI::Xaml::Navigation;
 
+using JsApp = voicemynews::app::win10::js::JsApp;
+using NavigationBinding = voicemynews::app::win10::bindings::events::NavigationBinding;
+
 static DependencyProperty^ IsMenuVisibleProperty = DependencyProperty::RegisterAttached(
     "IsMenuVisible",
     Interop::TypeName(bool::typeid),
@@ -56,7 +59,8 @@ MainPage::MainPage()
     InitializeComponent();
     JsBackend = JsApp::GetInstance();
 
-    AppMainMenu->ContentView = FrameAppActiveContent;
+    navigationBinding_ = NavigationBinding::GetInstance();
+    navigationBinding_->MenuContentView = FrameAppActiveContent;
 
     DataContext = this;
 }
@@ -64,7 +68,6 @@ MainPage::MainPage()
 void MainPage::OnMenuExpanded(bool isMenuExpanded) {
     IsMenuVisible = isMenuExpanded;
 }
-
 }
 }
 }

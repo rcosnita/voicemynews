@@ -84,20 +84,11 @@ void MainMenu::MenuItems::set(IVector<IJsonObject^>^ value) {
     SetValue(MenuItemsProperty, value);
 }
 
-Frame^ MainMenu::ContentView::get() {
-    return contentView_;
-}
-
-void MainMenu::ContentView::set(Frame^ value) {
-    contentView_ = value;
-}
-
 MainMenu::MainMenu()
 {
     InitializeComponent();
 
     WireJsMenuModel();
-    WireJsNavigationEvents();
 
     DataContext = this;
 }
@@ -118,24 +109,6 @@ void MainMenu::WireJsMenuModel() {
 
     eventLoop->Emit(ConvertStdStrToPlatform(voicemynews::core::events::kAppNavigationMenuLoad),
         ref new EventDataBinding(""));
-}
-
-void MainMenu::WireJsNavigationEvents() {
-    auto eventLoop = JsBackend->GetEventLoop();
-
-    eventLoop->On(ConvertStdStrToPlatform(voicemynews::core::events::kMenuItemOpenPreferences),
-        ref new EventHandler([this](EventDataBinding^ evtData) {
-        concurrency::create_task(Dispatcher->RunAsync(CoreDispatcherPriority::High, ref new DispatchedHandler([this]() {
-            ContentView->Navigate(UserPreferencesPage::typeid);
-        })));
-    }));
-
-    eventLoop->On(ConvertStdStrToPlatform(voicemynews::core::events::kMenuItemOpenGeniusNews),
-        ref new EventHandler([this](EventDataBinding^ evtData) {
-        concurrency::create_task(Dispatcher->RunAsync(CoreDispatcherPriority::High, ref new DispatchedHandler([this]() {
-            ContentView->Navigate(GeniusNewsPage::typeid);
-        })));
-    }));
 }
 
 void MainMenu::OnMenuLoaded(EventDataBinding^ evtData) {

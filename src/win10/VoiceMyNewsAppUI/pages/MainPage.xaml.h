@@ -1,13 +1,12 @@
 ﻿#pragma once
 
 #include "pages/MainPage.g.h"
+#include "bindings/events/NavigationBinding.h"
 #include "JsApp.h"
 
 namespace voicemynews {
 namespace app {
 namespace win10 {
-using voicemynews::app::win10::js::JsApp;
-
 /**
  * \brief This class provides the main page of the application.
  *
@@ -16,6 +15,9 @@ using voicemynews::app::win10::js::JsApp;
  */
 public ref class MainPage sealed
 {
+using JsApp = voicemynews::app::win10::js::JsApp;
+using NavigationBinding = voicemynews::app::win10::bindings::events::NavigationBinding;
+
 public:
     /**
      * \brief This property determines if the menu is visibile or not.
@@ -48,6 +50,12 @@ public:
      * \brief This method updated the menu expansion based on the events received from MainMenu component.
      */
     void OnMenuExpanded(bool isMenuExpanded);
+
+private:
+    /**
+     * \brief This member provides access to the navigation layer used by js.
+     */
+    NavigationBinding^ navigationBinding_;
 };
 }
 }

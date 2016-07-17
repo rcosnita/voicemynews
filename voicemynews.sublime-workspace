@@ -175,7 +175,7 @@
 			"file": "src/core/js/events/event_names.js",
 			"settings":
 			{
-				"buffer_size": 829,
+				"buffer_size": 1647,
 				"line_ending": "Windows"
 			}
 		},
@@ -191,7 +191,7 @@
 			"file": "src/core/js/menu/menu_data.json",
 			"settings":
 			{
-				"buffer_size": 197,
+				"buffer_size": 362,
 				"line_ending": "Windows"
 			}
 		},
@@ -199,7 +199,7 @@
 			"file": "src/core/js/menu/menu_logic.js",
 			"settings":
 			{
-				"buffer_size": 1416,
+				"buffer_size": 2254,
 				"line_ending": "Windows"
 			}
 		}
@@ -421,7 +421,7 @@
 	],
 	"find":
 	{
-		"height": 50.0
+		"height": 64.0
 	},
 	"find_in_files":
 	{
@@ -548,8 +548,8 @@
 						"selection":
 						[
 							[
-								360,
-								360
+								669,
+								669
 							]
 						],
 						"settings":
@@ -571,15 +571,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 829,
+						"buffer_size": 1647,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								636,
-								636
+								963,
+								938
 							]
 						],
 						"settings":
@@ -587,8 +587,8 @@
 							"side_bar_folders_auto_load_folder": 1,
 							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
 						},
-						"translation.x": 10.0,
-						"translation.y": 0.0,
+						"translation.x": 66.0,
+						"translation.y": 312.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 2,
@@ -631,15 +631,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 197,
+						"buffer_size": 362,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								86,
-								86
+								352,
+								321
 							]
 						],
 						"settings":
@@ -667,15 +667,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1416,
+						"buffer_size": 2254,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								916,
-								916
+								1539,
+								1539
 							]
 						],
 						"settings":
@@ -684,7 +684,7 @@
 							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
 						},
 						"translation.x": 0.0,
-						"translation.y": 564.0,
+						"translation.y": 888.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
