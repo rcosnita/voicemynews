@@ -7,9 +7,10 @@
  */
 "use strict";
 
+const buildEventData = voicemynews.core.events.EventLoopPlatform.buildEvent;
 const eventLoop = voicemynews.core.events.EventLoopPlatform.getInstance();
 const EventNames = require("js/events/event_names");
-const buildEventData = voicemynews.core.events.EventLoopPlatform.buildEvent;
+const NavigationManager = require("js/events/navigation").NavigationManager;
 var isRunning = true;
 
 eventLoop.on(EventNames.APP_SHUTDOWN, (evtData) => {
@@ -18,7 +19,7 @@ eventLoop.on(EventNames.APP_SHUTDOWN, (evtData) => {
 
 eventLoop.emit(EventNames.APP_START, buildEventData(JSON.stringify("{}")));
 
-require("js/menu/menu_logic").init(eventLoop, buildEventData);
+require("js/menu/menu_logic").init(eventLoop, buildEventData, new NavigationManager(undefined, buildEventData));
 
 while (isRunning) {
     eventLoop.processEvents();

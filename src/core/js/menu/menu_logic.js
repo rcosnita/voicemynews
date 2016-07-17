@@ -5,20 +5,20 @@
 "use strict";
 
 const EventNames = require("js/events/event_names");
-const NavigationManager = require("js/events/navigation").NavigationManager;
-const kMenuFileName = "js/menu/menu_data.json"
+const kMenuFileName = "js/menu/menu_data.json";
 
 /**
  * This class provides the business logic for loading the menu.
  *
  * @public
  * @class
+ * @alias module:voicemynews/js/menu/menu_logic.MenuLogic
  */
 class MenuLogic {
-    constructor(eventLoop, buildEventData) {
+    constructor(eventLoop, buildEventData, navigationManager) {
         this._eventLoop = eventLoop;
         this._buildEventData = buildEventData;
-        this._navigationManager = new NavigationManager(undefined, buildEventData);
+        this._navigationManager = navigationManager;
     }
 
     /**
@@ -30,8 +30,8 @@ class MenuLogic {
      */
     init() {
         this._eventLoop.on(EventNames.APP_NAVIGATION_MENU_LOAD, () => this._loadMenu());
-        this._eventLoop.on(EventNames.MENUITEMS_OPENPREFERENCES, () => this._handleOpenPreferencesProcess());
-        this._eventLoop.on(EventNames.MENUITEMS_OPENGENIUS, () => this._handleOpenGeniusProcess());
+        this._eventLoop.on(EventNames.MENUITEMS_OPENPREFERENCES, () => this._handleOpenPreferences());
+        this._eventLoop.on(EventNames.MENUITEMS_OPENGENIUS, () => this._handleOpenGenius());
     }
 
     /**
@@ -48,28 +48,29 @@ class MenuLogic {
     }
 
     /**
-     * This method intercepts each open preferences event emitted by the native app, process it and sends back
-     * an open preferences navigation event.
+     * This method intercepts each open preferences event emitted by the native app
+     * and opens preferences page.
      */
-    _handleOpenPreferencesProcess() {
+    _handleOpenPreferences() {
         this._navigationManager.navigateTo(EventNames.MENUITEMS_OPENPREFERENCES);
     }
 
     /**
-     * This method intercepts each open genius news event emitted by the native app, process it and sends back
-     * an open genius news navigation event.
+     * This method intercepts each open genius news event emitted by the native app
+     * and opens genius news page.
      */
-    _handleOpenGeniusProcess() {
+    _handleOpenGenius() {
         this._navigationManager.navigateTo(EventNames.MENUITEMS_OPENGENIUS);
     }
 }
 
 module.exports = {
+    MenuLogic: MenuLogic,
     /**
      * Method used to initialize the menu logic of the application. Internally, it instantiates MenuLogic class
      * and wires all menu related events correctly.
      */
-    init: ((eventLoop, buildEventData) => {
-        (new MenuLogic(eventLoop, buildEventData)).init();
+    init: ((eventLoop, buildEventData, navigationManager) => {
+        (new MenuLogic(eventLoop, buildEventData, navigationManager)).init();
     })
 }
