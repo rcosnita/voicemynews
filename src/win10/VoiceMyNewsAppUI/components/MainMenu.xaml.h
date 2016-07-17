@@ -8,17 +8,6 @@ namespace voicemynews {
 namespace app {
 namespace win10 {
 namespace components {
-using Platform::String;
-using voicemynews::app::win10::js::JsApp;
-using voicemynews::core::events::EventDataBinding;
-
-using Windows::Data::Json::IJsonObject;
-using Windows::Data::Json::IJsonValue;
-using Windows::Data::Json::JsonArray;
-using Windows::Foundation::Collections::IVector;
-using Windows::UI::Xaml::DependencyObject;
-using Windows::UI::Xaml::DependencyPropertyChangedEventArgs;
-
 /**
  * This delegate method can be used in order to handle menu expanded events.
  */
@@ -30,6 +19,16 @@ public delegate void OnMenuExpanded(bool isMenuExpanded);
 [Windows::Foundation::Metadata::WebHostHidden]
 public ref class MainMenu sealed
 {
+using String = Platform::String;
+using JsApp = voicemynews::app::win10::js::JsApp;
+using EventDataBinding = voicemynews::core::events::EventDataBinding;
+
+using IJsonObject = Windows::Data::Json::IJsonObject;
+using IJsonValue = Windows::Data::Json::IJsonValue;
+using JsonArray = Windows::Data::Json::JsonArray;
+using DependencyObject = Windows::UI::Xaml::DependencyObject;
+using DependencyPropertyChangedEventArgs = Windows::UI::Xaml::DependencyPropertyChangedEventArgs;
+
 public:
     /**
      * \brief This property determines if the menu is expanded or not.
@@ -54,10 +53,10 @@ public:
     /**
      * \brief This property holds all the menu items which must be displayed in the hamburger menu.
      */
-    property IVector<IJsonObject^>^ MenuItems {
-        IVector<IJsonObject^>^ get();
+    property Windows::Foundation::Collections::IVector<IJsonObject^>^ MenuItems {
+        Windows::Foundation::Collections::IVector<IJsonObject^>^ get();
         private:
-            void set(IVector<IJsonObject^>^ value);
+            void set(Windows::Foundation::Collections::IVector<IJsonObject^>^ value);
     }
 
 public:
@@ -68,6 +67,8 @@ public:
 
 public:
     MainMenu();
+
+    MainMenu(JsApp^ jsApp);
 
 #ifndef _DEBUG
 private:

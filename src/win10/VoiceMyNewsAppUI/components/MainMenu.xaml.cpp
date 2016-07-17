@@ -12,10 +12,6 @@
 
 #include <ppltasks.h>
 
-namespace voicemynews {
-namespace app {
-namespace win10 {
-namespace components {
 using namespace Platform;
 using namespace Windows::Foundation;
 using namespace Windows::Foundation::Collections;
@@ -28,15 +24,22 @@ using namespace Windows::UI::Xaml::Media;
 using namespace Windows::UI::Xaml::Navigation;
 
 using Platform::Collections::Vector;
-using voicemynews::app::win10::bindings::events::EventHandler;
+using voicemynews::app::win10::js::JsApp;
 using voicemynews::app::win10::pages::GeniusNewsPage;
 using voicemynews::app::win10::pages::UserPreferencesPage;
 using voicemynews::app::win10::utils::ConvertJsonArrayToVector;
 using voicemynews::app::win10::utils::ConvertStdStrToPlatform;
+using Windows::Data::Json::IJsonObject;
+using Windows::Data::Json::JsonArray;
 using Windows::Data::Json::JsonObject;
 using Windows::UI::Core::CoreDispatcherPriority;
 using Windows::UI::Core::DispatchedHandler;
 
+namespace voicemynews {
+namespace app {
+namespace win10 {
+namespace components {
+using EventHandler = voicemynews::app::win10::bindings::events::EventHandler;
 static DependencyProperty^ IsMenuExpandedProperty = DependencyProperty::RegisterAttached(
     "IsMenuExpanded",
     bool::typeid,
@@ -93,6 +96,15 @@ MainMenu::MainMenu()
     DataContext = this;
 }
 
+MainMenu::MainMenu(JsApp^ jsApp) {
+    InitializeComponent();
+
+    JsBackend = jsApp;
+    WireJsMenuModel();
+
+    DataContext = this;
+}
+
 void MainMenu::OpenMenu(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
     auto jsBackend = JsBackend;
@@ -115,7 +127,7 @@ void MainMenu::OnMenuLoaded(EventDataBinding^ evtData) {
     concurrency::create_task(Dispatcher->RunAsync(CoreDispatcherPriority::Normal, ref new DispatchedHandler([this, evtData]() {
         auto model = JsonArray::Parse(evtData->EvtData);
         MenuItems = ConvertJsonArrayToVector(*model);
-    })));
+    }))).wait();
 }
 
 }
