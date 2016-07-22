@@ -10,7 +10,11 @@ namespace voicemynews {
 namespace app {
 namespace win10 {
 namespace utils {
+using Windows::Data::Json::JsonArray;
+using Windows::Data::Json::IJsonObject;
 using Windows::Foundation::Collections::IMap;
+using Windows::Foundation::Collections::IVector;
+
     /**
      * \brief This method provides a helper for converting platform string to standar string.
      *
@@ -58,6 +62,11 @@ using Windows::Foundation::Collections::IMap;
      * \param stdMap the standard map from which we copy all string entries and transform them to platform strings.
      */
     IMap<Platform::String^, Platform::String^>^ ConvertStdMapToPlatform(std::map<std::string, std::string> stdMap);
+
+    /**
+     * \brief Converts a given json array to a platform vector of json objects.
+     */
+    IVector<IJsonObject^>^ ConvertJsonArrayToVector(JsonArray% jsonArray);
 }
 }
 }

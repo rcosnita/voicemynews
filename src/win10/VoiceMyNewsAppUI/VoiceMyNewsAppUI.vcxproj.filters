@@ -20,6 +20,12 @@
     <Filter Include="bindings\events">
       <UniqueIdentifier>{7be52061-399f-42b8-baff-3db6b4e351a6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="components">
+      <UniqueIdentifier>{2951b31b-782c-4162-bfe4-d389115a0569}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="converters">
+      <UniqueIdentifier>{8b42e004-e8af-47c1-9ba4-2b5038fbb910}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -37,6 +43,16 @@
       <Filter>bindings\events</Filter>
     </ClCompile>
     <ClCompile Include="JsApp.cpp" />
+    <ClCompile Include="converters\JsonObjectConverter.cpp">
+      <Filter>converters</Filter>
+    </ClCompile>
+    <ClCompile Include="components\MainMenu.xaml.cpp" />
+    <ClCompile Include="components\MainMenuItem.xaml.cpp" />
+    <ClCompile Include="pages\GeniusNewsPage.xaml.cpp" />
+    <ClCompile Include="pages\UserPreferencesPage.xaml.cpp" />
+    <ClCompile Include="bindings\events\NavigationBinding.cpp">
+      <Filter>bindings\events</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -57,9 +73,31 @@
       <Filter>bindings\events</Filter>
     </ClInclude>
     <ClInclude Include="JsApp.h" />
+    <ClInclude Include="converters\JsonObjectConverter.h">
+      <Filter>converters</Filter>
+    </ClInclude>
+    <ClInclude Include="components\MainMenu.xaml.h" />
+    <ClInclude Include="components\MainMenuItem.xaml.h" />
+    <ClInclude Include="pages\GeniusNewsPage.xaml.h" />
+    <ClInclude Include="pages\UserPreferencesPage.xaml.h" />
+    <ClInclude Include="bindings\events\NavigationBinding.h">
+      <Filter>bindings\events</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Page Include="pages\MainPage.xaml">
+      <Filter>pages</Filter>
+    </Page>
+    <Page Include="components\MainMenu.xaml">
+      <Filter>components</Filter>
+    </Page>
+    <Page Include="components\MainMenuItem.xaml">
+      <Filter>components</Filter>
+    </Page>
+    <Page Include="pages\UserPreferencesPage.xaml">
+      <Filter>pages</Filter>
+    </Page>
+    <Page Include="pages\GeniusNewsPage.xaml">
       <Filter>pages</Filter>
     </Page>
   </ItemGroup>

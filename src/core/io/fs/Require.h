@@ -35,6 +35,14 @@ public:
      */
     std::wstring Load(const std::string& fileName);
 
+    /**
+     * \brief This method loads the content from the specified file and returns its content.
+     *
+     * \param fileName the relative / absolute path of the file we want to load.
+     * \return The raw string content of the specified file.
+     */
+    std::wstring LoadRaw(const std::string& fileName);
+
 private:
     /**
      * \brief This method decorate the given module script with anonymous require function.

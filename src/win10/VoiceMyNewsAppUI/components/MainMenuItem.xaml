@@ -1,0 +1,23 @@
+﻿<UserControl
+    x:Class="voicemynews.app.win10.components.MainMenuItem"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:voicemynews"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:converters="using:voicemynews.app.win10.converters"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <UserControl.Resources>
+        <converters:JsonObjectConverter x:Key="jsonObjectConverter" />
+    </UserControl.Resources>
+
+    <StackPanel Orientation="Horizontal">
+        <Image Source="{Binding Converter={StaticResource jsonObjectConverter},
+                        ConverterParameter='icon'}" Margin="10,0,10,0" />
+        <Button Content="{Binding Converter={StaticResource jsonObjectConverter},
+                        ConverterParameter='label'}" Background="Transparent" Click="OnMenuItemClicked" />
+    </StackPanel>
+</UserControl>

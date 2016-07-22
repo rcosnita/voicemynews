@@ -35,9 +35,9 @@ public:
             return;
         }
 
-        std::lock_guard<std::mutex> lock(pendingEventsMutex_);
-
-        pendingEvents_.push_back([evtName, evtData, this]() {
+        std::unique_lock<std::mutex> lock(emitterMutex_);
+        auto pendingDest = pendingEvents_.size() == 0 ? &pendingEvents_ : &pendingEventsTemp_;
+        pendingDest->push_back([evtName, evtData, this]() {
             auto localDataCopy = evtData;
             auto listenerPos = listeners_.find(evtName);
             void* dataPtr = &localDataCopy;
@@ -46,8 +46,6 @@ public:
                 (*(*curr))(dataPtr);
             }
         });
-
-        pendingEventsNotifier_.notify_all();
     }
 
     /**
@@ -132,6 +130,7 @@ private:
 
     std::mutex listenersMutex_;
     std::mutex pendingEventsMutex_;
+    std::mutex emitterMutex_;
     std::condition_variable pendingEventsNotifier_;
 
     /**
@@ -142,6 +141,7 @@ private:
     std::map<std::string, std::unique_ptr<std::map<void*, InternalRegisteredMethod*>>> listenersRegisteredAssoc_;
     std::map<std::string, std::unique_ptr<std::vector<InternalRegisteredMethod*>>> listeners_;
     std::vector<std::function<void()>> pendingEvents_;
+    std::vector<std::function<void()>> pendingEventsTemp_;
 };
 }
 }

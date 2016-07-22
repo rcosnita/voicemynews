@@ -127,13 +127,14 @@
     <ClCompile>
       <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
       <DisableSpecificWarnings>4453;28204</DisableSpecificWarnings>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)VoiceMyNewsCore;$(SolutionDir)../core;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
       <DisableSpecificWarnings>4453;28204</DisableSpecificWarnings>
+      <AdditionalIncludeDirectories>$(SolutionDir)VoiceMyNewsCore;$(SolutionDir)../core;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -154,6 +155,16 @@
     <None Include="VoiceMyNewsApp_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Assets\icons\menuitems\genius.scale-100.png" />
+    <Image Include="Assets\icons\menuitems\genius.scale-125.png" />
+    <Image Include="Assets\icons\menuitems\genius.scale-150.png" />
+    <Image Include="Assets\icons\menuitems\genius.scale-200.png" />
+    <Image Include="Assets\icons\menuitems\genius.scale-400.png" />
+    <Image Include="Assets\icons\menuitems\preferences.scale-100.png" />
+    <Image Include="Assets\icons\menuitems\preferences.scale-125.png" />
+    <Image Include="Assets\icons\menuitems\preferences.scale-150.png" />
+    <Image Include="Assets\icons\menuitems\preferences.scale-200.png" />
+    <Image Include="Assets\icons\menuitems\preferences.scale-400.png" />
     <Image Include="Assets\LockScreenLogo.scale-200.png" />
     <Image Include="Assets\SplashScreen.scale-200.png" />
     <Image Include="Assets\Square150x150Logo.scale-200.png" />
@@ -178,6 +189,9 @@
   <ItemGroup>
     <ProjectReference Include="..\VoiceMyNewsAppUI\VoiceMyNewsAppUI.vcxproj">
       <Project>{41ce78ca-a1d2-47da-b5b0-1e34831454ba}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\VoiceMyNewsCore\VoiceMyNewsCore.vcxproj">
+      <Project>{041f327d-691a-427f-a2d6-7195d0c70b0c}</Project>
     </ProjectReference>
     <ProjectReference Include="..\VoiceMyNewsHybridImpl\VoiceMyNewsHybridImpl.vcxproj">
       <Project>{1deaf6cd-37f2-455a-9bfc-a4a566f12068}</Project>

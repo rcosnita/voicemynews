@@ -4,6 +4,8 @@
 #include "EventDataBinding.h"
 #include "events/EventLoop.h"
 
+#include <mutex>
+
 namespace voicemynews {
 namespace app {
 namespace win10 {
@@ -24,6 +26,8 @@ public delegate void EventHandler(EventDataBinding^);
  */
 public ref class EventLoopBinding sealed {
 public:
+    EventLoopBinding();
+
     /**
      * \brief This method queues a new event under evtName space.
      *

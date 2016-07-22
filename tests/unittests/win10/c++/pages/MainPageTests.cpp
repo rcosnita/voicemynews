@@ -1,50 +1,31 @@
 #include "pch.h"
-
-#include <mutex>
-#include <condition_variable>
-
 #include "CppUnitTest.h"
 
+#include <ppltasks.h>
+
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
+
+using Windows::ApplicationModel::Core::CoreApplication;
+using Windows::UI::Core::CoreDispatcherPriority;
+using Windows::UI::Core::DispatchedHandler;
+using voicemynews::app::win10::MainPage;
 
 namespace voicemynews {
 namespace tests {
 namespace unittesting {
 namespace app {
-using Windows::ApplicationModel::Core::CoreApplication;
-using Windows::UI::Core::CoreDispatcherPriority;
-using Windows::UI::Xaml::Controls::Button;
-using Windows::UI::Xaml::RoutedEventArgs;
-
-using voicemynews::app::win10::MainPage;
-
 TEST_CLASS(MainPageTests)
 {
 public:
-    TEST_METHOD(MainPageInstantiateOk)
-    {
-        std::mutex m;
-        std::condition_variable cv;
-
+    TEST_METHOD(MainPageTestsMainPageInstantiatedOk) {
         MainPage^ page = nullptr;
-
         auto dispatcher = CoreApplication::CreateNewView()->Dispatcher;
-        auto results = dispatcher->RunAsync(CoreDispatcherPriority::Normal, ref new Windows::UI::Core::DispatchedHandler([&m, &cv, &page] {
-            std::lock_guard<std::mutex> lk(m);
+
+        concurrency::create_task(dispatcher->RunAsync(CoreDispatcherPriority::Normal, ref new DispatchedHandler([&page] {
             page = ref new MainPage();
+        }))).wait();
 
-            auto btnTest = dynamic_cast<Button^>(page->FindName("btnTest"));
-            page->btnTest_Click(btnTest, ref new RoutedEventArgs());
-
-            cv.notify_one();
-        }));
-
-        {
-            std::unique_lock<std::mutex> lk(m);
-            cv.wait(lk, [&page] {return page != nullptr; });
-        }
-
-        Assert::IsTrue(true);
+        Assert::IsNotNull(page);
     }
 };
 }

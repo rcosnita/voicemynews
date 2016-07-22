@@ -46,17 +46,19 @@ class EventLoopMock {
     }
 }
 
-describe("Test suites for unit test app.js impementation.", () => {
+describe("Test suites for unit testing app.js implementation.", () => {
     beforeAll(() => {
         this._oldVoiceMyNewsCtx = global.voicemynews;
         this._eventLoop = new EventLoopMock();
         this._eventLoopPlatform = jasmine.createSpyObj("EventLoopPlatform", ["getInstance", "buildEvent"]);
+        this._navigationManagerPlatform = jasmine.createSpyObj("NavigationBinding", ["getInstance"]);
         this._eventLoopPlatform.getInstance.and.returnValue(this._eventLoop);
 
         global.voicemynews = {
             core: {
                 events: {
-                    EventLoopPlatform: this._eventLoopPlatform
+                    EventLoopPlatform: this._eventLoopPlatform,
+                    NavigationManagerPlatform: this._navigationManagerPlatform
                 }
             }
         }

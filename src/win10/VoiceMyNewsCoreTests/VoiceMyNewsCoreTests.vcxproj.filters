@@ -19,6 +19,12 @@
     <Filter Include="Source Files\events">
       <UniqueIdentifier>{afa4a32f-d377-47ee-9ff5-aa7cdfdc7a27}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\io">
+      <UniqueIdentifier>{6b0182d7-46a3-452f-920f-fefcf99590f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\io\fs">
+      <UniqueIdentifier>{f4571a56-722c-4c8d-b98a-73deda445a76}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">

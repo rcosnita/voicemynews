@@ -15,7 +15,22 @@ namespace win10 {
 namespace js {
 using Platform::String;
 
+static JsApp^ currInstance = nullptr;
+
 JsApp::JsApp() {
+    currInstance = this;
+}
+
+JsApp::~JsApp() {
+    JsSetCurrentContext(JS_INVALID_REFERENCE);
+    JsDisposeRuntime(runtime_);
+}
+
+JsApp^ JsApp::GetInstance() {
+    return currInstance;
+}
+
+void JsApp::Start() {
     currentSourceContext_ = 0;
 
     JsCreateRuntime(JsRuntimeAttributeNone, nullptr, &runtime_);
@@ -30,26 +45,25 @@ JsApp::JsApp() {
 #ifdef _DEBUG
     JsStartDebugging();
 #endif
-}
 
-JsApp::~JsApp() {
-    JsSetCurrentContext(JS_INVALID_REFERENCE);
-    JsDisposeRuntime(runtime_);
-}
-
-void JsApp::Start() {
     BindRequireJs();
     StartApp();
 }
 
-void JsApp::BindRequireJs() {
-    auto requireSource = fileUtils_.ReadFile("js/require.js");
-    JsRunScript(requireSource.c_str(), currentSourceContext_++, L"js/require.js", nullptr);
+EventLoopBinding^ JsApp::GetEventLoop() {
+    return EventLoopBinding::GetInstance();
 }
 
-void JsApp::StartApp() {
+JsErrorCode JsApp::BindRequireJs() {
+    auto requireSource = fileUtils_.ReadFile("js/require.js");
+    auto result = JsRunScript(requireSource.c_str(), currentSourceContext_++, L"js/require.js", nullptr);
+    return result;
+}
+
+JsErrorCode JsApp::StartApp() {
     String^ appScript = "(() => { const app = require('js/app'); })();";
-    JsRunScript(appScript->Data(), currentSourceContext_++, L"js/app.js", nullptr);
+    auto result = JsRunScript(appScript->Data(), currentSourceContext_++, L"js/app.js", nullptr);
+    return result;
 }
 
 }

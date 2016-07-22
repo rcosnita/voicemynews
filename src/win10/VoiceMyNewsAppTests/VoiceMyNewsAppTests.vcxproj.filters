@@ -26,6 +26,12 @@
     <Filter Include="core\network">
       <UniqueIdentifier>{250b884b-262a-4f79-a6be-7c53ced3b922}</UniqueIdentifier>
     </Filter>
+    <Filter Include="events">
+      <UniqueIdentifier>{b736b69a-2726-4735-a1b4-aa9cb0329f99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="components">
+      <UniqueIdentifier>{61fcf8f4-8883-4e3c-9051-1275964d6ca5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="UnitTestApp.xaml" />
@@ -56,6 +62,15 @@
     </ClCompile>
     <ClCompile Include="JsAppTests.cpp">
       <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\tests\unittests\win10\c++\events\NavigationBindingTests.cpp">
+      <Filter>events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\tests\unittests\win10\c++\components\MainMenuTests.cpp">
+      <Filter>components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\tests\unittests\win10\c++\components\MainMenuItemTests.cpp">
+      <Filter>components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
