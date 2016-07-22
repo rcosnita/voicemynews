@@ -4,3 +4,4 @@ node_modules
 # visual paradigm files
 
 *.vpp~*
+*.sublime-workspace
