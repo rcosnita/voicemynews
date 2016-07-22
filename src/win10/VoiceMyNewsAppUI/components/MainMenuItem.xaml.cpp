@@ -57,7 +57,7 @@ void MainMenuItem::OnMenuItemClicked(Platform::Object^ sender, Windows::UI::Xaml
     auto jsLoop = JsBackend->GetEventLoop();
 
     auto evtName = jsonModel->GetNamedObject("data")->GetNamedString("evtName");
-    jsLoop->Emit(evtName, ref new EventDataBinding(""));
+    jsLoop->Emit(evtName, ref new EventDataBinding(jsonModel->ToString()));
 }
 }
 }

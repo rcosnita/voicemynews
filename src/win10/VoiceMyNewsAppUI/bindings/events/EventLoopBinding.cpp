@@ -15,6 +15,9 @@ using voicemynews::core::events::EventLoopPlatform;
 
 static EventLoopBinding^ loopInstance = nullptr;
 
+EventLoopBinding::EventLoopBinding() {
+}
+
 EventLoopBinding^ EventLoopBinding::GetInstance() {
     if (loopInstance == nullptr) {
         loopInstance = ref new EventLoopBinding();
@@ -31,7 +34,8 @@ void EventLoopBinding::Emit(String^ evtName, EventDataBinding^ evtData) {
 void EventLoopBinding::On(String^ evtName, EventHandler^ handler) {
     auto evtNameStd = ConvertPlatformStrToStd(evtName);
     std::function<void(std::shared_ptr<EventData<std::string>>)> fn = [handler](std::shared_ptr<EventData<std::string>> evtDataStd) {
-        handler(EventLoopPlatform::BuildEvent(ConvertStdStrToPlatform(evtDataStd->data())));
+        auto evtData = EventLoopPlatform::BuildEvent(ConvertStdStrToPlatform(evtDataStd->data()));
+        handler(evtData);
     };
 
     eventLoop_.On(evtNameStd, fn);
