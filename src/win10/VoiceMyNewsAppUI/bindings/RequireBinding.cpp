@@ -28,3 +28,11 @@ String^ RequireBinding::LoadRaw(String^ fileName) {
 }
 }
 }
+
+namespace voicemynews {
+namespace core {
+voicemynews::app::win10::bindings::RequireBinding^ RequireFactory::GetInstance() {
+    return ref new voicemynews::app::win10::bindings::RequireBinding();
+}
+}
+}

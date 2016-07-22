@@ -4,7 +4,7 @@
         globalCtx = global;
     }
 
-    const RequireNative = new voicemynews.app.win10.bindings.RequireBinding();
+    const RequireNative = voicemynews.core.RequireFactory.getInstance();
     const loadedModulesCache = {};
 
     /**
