@@ -44,4 +44,19 @@ private:
 }
 }
 
+namespace voicemynews {
+namespace core {
+/**
+ * \brief This class provides a factory for obtaining a requirebinding which can be used in js.
+ */
+public ref class RequireFactory sealed {
+public:
+    /**
+     * This method obtains an instance of requirebinding which can be used in js.
+     */
+    static voicemynews::app::win10::bindings::RequireBinding^ GetInstance();
+};
+}
+}
+
 #endif // VoiceMyNewsAppUI_bindings_RequireBinding_H_

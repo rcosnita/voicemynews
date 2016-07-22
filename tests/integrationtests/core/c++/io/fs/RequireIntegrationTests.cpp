@@ -1,4 +1,5 @@
 #include <memory>
+#include <string>
 
 #include "io/fs/Require.h"
 #include "io/fs/exceptions/FileNotFoundException.h"
@@ -58,6 +59,9 @@ TEST_F(RequireIntegrationTests, CorruptedJsCorrectlyResolved) {
     EXPECT_EQ(expectedResult, result);
 }
 
+/**
+ * \brieft This test case ensures concrete exceptions are raised when trying to load a module which does not exist.
+ */
 TEST_F(RequireIntegrationTests, FileNotFoundException) {
     std::string fileName = "samples/integrations/io/fs/unknown_file.xxnonoon";
 
@@ -69,6 +73,46 @@ TEST_F(RequireIntegrationTests, FileNotFoundException) {
         EXPECT_EQ(fileName, ex.FileName());
     }
     catch (...) {
+        FAIL() << "Expected FileNotFound exception for file " << fileName;
+    }
+}
+
+/**
+ * \brief This test case ensures load raw correctly loads a js file.
+ */
+TEST_F(RequireIntegrationTests, LoadRawJsOk) {
+    std::string fileName = "samples/integrations/io/fs/app.js";
+
+    std::wstring loadedContent = require_->LoadRaw(fileName);
+    std::wstring expectedContent = ioUtils_->ReadFile(fileName);
+
+    EXPECT_EQ(expectedContent, loadedContent);
+}
+
+/**
+ * \brief This test case ensures load raw correctly loads a text file.
+ */
+TEST_F(RequireIntegrationTests, LoadRawTextOk) {
+    std::string fileName = "samples/integrations/io/fs/raw_sample.txt";
+
+    std::wstring loadedContent = require_->LoadRaw(fileName);
+    std::wstring expectedContent = ioUtils_->ReadFile(fileName);
+
+    EXPECT_EQ(expectedContent, loadedContent);
+}
+
+/**
+ * \brief This test case ensures load raw raises a concrete exception in case an attempt to load a missing file is done.
+ */
+TEST_F(RequireIntegrationTests, LoadRawFileNotFound) {
+    std::string fileName = "samples/integrations/io/fs/unknown_file.xxnonoon";
+
+    try {
+        require_->LoadRaw(fileName);
+        FAIL() << "Expected FileNotFound exception for file " << fileName;
+    } catch (const FileNotFoundException& ex) {
+        EXPECT_EQ(fileName, ex.FileName());
+    } catch (...) {
         FAIL() << "Expected FileNotFound exception for file " << fileName;
     }
 }

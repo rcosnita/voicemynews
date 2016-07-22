@@ -1,6 +1,10 @@
 "use strict";
-((global) => {
-    const RequireNative = new voicemynews.app.win10.bindings.RequireBinding();
+((globalCtx) => {
+    if (Object.keys(globalCtx).length === 0) {
+        globalCtx = global;
+    }
+
+    const RequireNative = voicemynews.core.RequireFactory.getInstance();
     const loadedModulesCache = {};
 
     /**
@@ -9,7 +13,7 @@
      * @param {String} moduleName the module we want to require as commonjs module. This is usually a relative path.
      * @returns {Object} an object which describes the public part of the module (exports).
      */
-    global.require = (moduleName) => {
+    globalCtx.require = (moduleName) => {
         if (!moduleName || moduleName.trim().length === 0) {
             return;
         }
@@ -39,7 +43,7 @@
      * @param {String} fileName the path to the file we want to load.
      * @returns {String} the file content.
      */
-    global.requireRaw = (fileName) => {
+    globalCtx.requireRaw = (fileName) => {
         return RequireNative.loadRaw(fileName);
     };
 

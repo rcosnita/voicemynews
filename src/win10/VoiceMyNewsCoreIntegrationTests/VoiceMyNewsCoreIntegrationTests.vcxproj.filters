@@ -87,4 +87,9 @@
       <Filter>samples\integrations\io\fs</Filter>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\..\tests\integrationtests\core\c++\samples\integrations\io\fs\raw_sample.txt">
+      <Filter>samples\integrations\io\fs</Filter>
+    </Text>
+  </ItemGroup>
 </Project>
