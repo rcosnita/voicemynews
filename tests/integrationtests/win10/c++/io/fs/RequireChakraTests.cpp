@@ -35,21 +35,21 @@ public:
     /**
      * \brief This test case checks if require can load modules with extension.
      */
-    TEST_METHOD(RequireChakraEmbeddedOkJsExtensionProvided) {
+    TEST_METHOD(RequireChakraIntegrationTestsRequireChakraEmbeddedOkJsExtensionProvided) {
         CheckRequireChakraEmbeddedOkTemplate("js/samples/dummymodule.js");
     }
 
     /**
     * \brief This test case checks if require can load modules without extension.
     */
-    TEST_METHOD(RequireChakraEmbeddedOkJsExtensionNotProvided) {
+    TEST_METHOD(RequireChakraIntegrationTestsRequireChakraEmbeddedOkJsExtensionNotProvided) {
         CheckRequireChakraEmbeddedOkTemplate("js/samples/dummymodule");
     }
 
     /**
      * \brief This test case checks if require fails if no module name is provided.
      */
-    TEST_METHOD(RequireChakraEmbeddedOkNoModuleNameProvided) {
+    TEST_METHOD(RequireChakraIntegrationTestsRequireChakraEmbeddedOkNoModuleNameProvided) {
         std::vector<String^> scriptSources = {
             L"(() => { const dummy = require(); return dummy; })();",
             L"(() => { const dummy = require(null); return dummy; })();",
@@ -70,7 +70,7 @@ public:
     /**
      * \brief This test case triggers the load of a module twice in order to give require internal cache the change to work.
      */
-    TEST_METHOD(RequireChakraEmbeddedOkTransparentCache) {
+    TEST_METHOD(RequireChakraIntegrationTestsRequireChakraEmbeddedOkTransparentCache) {
         const float kCacheExpectedBoost = 2;
         const int kSubsequentIterations = 1000;
 
@@ -88,6 +88,28 @@ public:
         }
 
         Assert::IsTrue((duration / kSubsequentIterations) < (firstDuration.count() / kCacheExpectedBoost));
+    }
+
+    /**
+     * \brief This test case ensures requireRaw works as expected for existing files.
+     */
+    TEST_METHOD(RequireChakraIntegrationTestsRequireRawOk) {
+        std::wstring expectedContent = fileUtils_.ReadFile("js/samples/raw_sample.txt");
+        String^ jsScript = "(() => {const content = requireRaw('js/samples/raw_sample.txt'); return content;})();";
+        chakraRunner_.RunScript(jsScript, L"", [&expectedContent](const JsErrorCode jsErrorCode, const JsValueRef result, ChakraRunner* runner) {
+            AssertNoJsError(jsErrorCode);
+
+            JsValueRef resultJSString;
+            auto jsError = runner->ConvertValueToString(result, &resultJSString);
+            AssertNoJsError(jsError);
+
+            const wchar_t *resultWC;
+            size_t stringLength;
+            jsError = runner->ConvertStringToPointer(resultJSString, &resultWC, &stringLength);
+            AssertNoJsError(jsError);
+
+            Assert::AreEqual(0, expectedContent.compare(std::wstring(resultWC)));
+        });
     }
 
 private:
@@ -119,6 +141,7 @@ private:
 
 private:
     ChakraRunner chakraRunner_ = ChakraRunner(true);
+    FileUtils fileUtils_;
 };
 }
 }
