@@ -166,6 +166,9 @@
   <ItemGroup>
     <SampleFiles Include="$(SolutionDir)..\..\tests\integrationtests\core\c++\samples\**\*.*" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\..\tests\integrationtests\core\c++\samples\integrations\io\fs\raw_sample.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="..\packages\gmock.1.7.0\build\native\gmock.targets" Condition="Exists('..\packages\gmock.1.7.0\build\native\gmock.targets')" />
