@@ -4,7 +4,7 @@ describe("Tests suite for unit testing require.js global functions.", () => {
     beforeAll(() => {
         this._oldVoiceMyNews = global.voicemynews;
         this._oldRequire = global.require;
-        this._requireInstance = jasmine.createSpyObj("RequireBinding", ["loadRaw"]);
+        this._requireInstance = jasmine.createSpyObj("RequireBinding", ["load", "loadRaw"]);
 
         global.voicemynews = {
             core: {
@@ -21,15 +21,56 @@ describe("Tests suite for unit testing require.js global functions.", () => {
 
     beforeEach(() => {
         this._requireInstance.loadRaw.calls.reset();
+        _clearRequireCache();
     });
 
     afterEach(() => {
+        _clearRequireCache();
         this._requireInstance.loadRaw.calls.reset();
     });
 
     afterAll(() => {
         global.voicemynews = this._oldVoiceMyNews;
         global.require = this._oldRequire;
+    });
+
+    it("require no cache no js extesion ok.", () => {
+        testRequireTemplate("testModule", "testModule.js");
+    });
+
+    it("require no cache js extension specified.", () => {
+        testRequireTemplate("testModule.js", "testModule.js");
+    });
+
+    it("require no cache no export ok.", () => {
+        const moduleName = "testModule";
+        const moduleSource = "";
+
+        this._requireInstance.load.and.returnValue(moduleSource);
+
+        let result = global.require(moduleName);
+
+        expect(JSON.stringify(result)).toBe("{}");
+        expect(this._requireInstance.load).toHaveBeenCalledWith(moduleName + ".js");
+    });
+
+    it("require no cache explicit undefined export.", () => {
+        const moduleName = "testModule";
+        const moduleSource = "module.exports = undefined";
+
+        this._requireInstance.load.and.returnValue(moduleSource);
+
+        let result = global.require(moduleName);
+
+        expect(result).toBe(undefined);
+        expect(this._requireInstance.load).toHaveBeenCalledWith(moduleName + ".js");
+    });
+
+    it("require cache test.", () => {
+        const expectedResult = testRequireTemplate("testModule", "testModule.js");
+        const result = global.require("testModule");
+
+        expect(expectedResult).toBe(result);
     });
 
     it("requireRaw ok.", () => {
@@ -60,4 +101,22 @@ describe("Tests suite for unit testing require.js global functions.", () => {
         expect(this._requireInstance.loadRaw.calls.count()).toBe(1);
         expect(this._requireInstance.loadRaw).toHaveBeenCalledWith(fileName);
     });
+
+    /**
+     * This function provides a template for testing require implementation.
+     */
+    let testRequireTemplate = (moduleName, expectedModuleName) => {
+        const moduleSource = "module.exports = {id:1,id2:2}";
+
+        this._requireInstance.load.and.returnValue(moduleSource);
+
+        let result = global.require(moduleName);
+
+        expect(result).not.toBe(undefined);
+        expect(result.id).toBe(1);
+        expect(result.id2).toBe(2);
+        expect(this._requireInstance.load).toHaveBeenCalledWith(expectedModuleName);
+
+        return result;
+    }
 });

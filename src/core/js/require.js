@@ -5,7 +5,7 @@
     }
 
     const RequireNative = voicemynews.core.RequireFactory.getInstance();
-    const loadedModulesCache = {};
+    var loadedModulesCache = {};
 
     /**
      * This method provides an implementation of requirejs which is compatible with the nodejs.
@@ -31,7 +31,7 @@
         const module = {"exports": exports};
         const moduleObj = eval(moduleSource);
 
-        loadedModulesCache[moduleName] = moduleObj;
+        loadedModulesCache[moduleName] = module;
 
         return module.exports;
     };
@@ -46,6 +46,13 @@
     globalCtx.requireRaw = (fileName) => {
         return RequireNative.loadRaw(fileName);
     };
+
+    /**
+     * This method provides a way to clear internal require cache. It should be used only in unit tests.
+     */
+    globalCtx._clearRequireCache = () => {
+        loadedModulesCache = {};
+    }
 
     /**
      * This method enforces the given module name to end with .js.
