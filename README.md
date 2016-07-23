@@ -12,6 +12,17 @@ From **voicemynews** root folder execute the following commands:
 npm install
 ```
 
+## JS business logic
+
+JS code is cross platform and we recommend using Sublime for developing more business logic. We already provide a sublime project which also provides all build systems.
+
+In order for the project to work on your platform you need to:
+
+1. Add node in your PATH.
+1. Add npm in your PATH.
+
+You can now open the project in Sublime, click on Tools -> Build System and select the build you want to execute. 
+
 ## Windows 10
 
 In order to have everything setup on a development machine you must follow the steps described in [Windows 10 Readme](src/win10/README.md).
