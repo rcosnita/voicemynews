@@ -37,6 +37,12 @@ using Platform::Collections::Vector;
 
     IVector<IJsonObject^>^ ConvertJsonArrayToVector(JsonArray% jsonArray) {
         auto result = ref new Vector<IJsonObject^>();
+        
+        try {
+            jsonArray.Equals(nullptr);
+        } catch (Platform::NullReferenceException^) {
+            return result;
+        }
 
         for (auto first = jsonArray.First(); first->HasCurrent; first->MoveNext()) {
             result->Append(first->Current->GetObject());

@@ -47,6 +47,10 @@ using Windows::Foundation::Collections::IVector;
     std::map<std::string, std::string> ConvertPlatformMapToStd(T platformMap) {
         std::map<std::string, std::string> mapStd;
 
+        if (platformMap == nullptr) {
+            return mapStd;
+        }
+
         for (auto entry = platformMap->First(); entry->HasCurrent; entry->MoveNext()) {
             std::wstring keyW = entry->Current->Key->Data();
             std::wstring valueW = entry->Current->Value->Data();

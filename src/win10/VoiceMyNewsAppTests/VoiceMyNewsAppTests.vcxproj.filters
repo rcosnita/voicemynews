@@ -72,6 +72,9 @@
     <ClCompile Include="..\..\..\tests\unittests\win10\c++\components\MainMenuItemTests.cpp">
       <Filter>components</Filter>
     </ClCompile>
+    <ClCompile Include="ConversionTests.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
