@@ -137,6 +137,29 @@ public:
         Assert::IsNotNull(output);
         Assert::AreEqual(0, static_cast<int>(output->Size));
     }
+
+    TEST_METHOD(ConversionTestsConvertJsonArrayToVector) {
+        auto jsonArray = JsonArray::Parse("[{\"num1\":1, \"str1\": \"str\"}, {\"attr1\": 123}]");
+
+        auto result = ConvertJsonArrayToVector(*jsonArray);
+
+        Assert::IsNotNull(result);
+        Assert::AreEqual(2, static_cast<int>(result->Size));
+        Assert::IsNotNull(result->GetAt(0));
+        Assert::AreEqual(1, static_cast<int>(result->GetAt(0)->GetNamedNumber("num1")));
+        Assert::AreEqual("str", result->GetAt(0)->GetNamedString("str1"));
+        Assert::IsNotNull(result->GetAt(1));
+        Assert::AreEqual(123, static_cast<int>(result->GetAt(1)->GetNamedNumber("attr1")));
+    }
+
+    TEST_METHOD(ConversionTestsConvertJsonArrayToVectorNullptr) {
+        JsonArray^ jsonArray = nullptr;
+
+        auto result = ConvertJsonArrayToVector(*jsonArray);
+
+        Assert::IsNotNull(result);
+        Assert::AreEqual(0, static_cast<int>(result->Size));
+    }
 };
 
 }
