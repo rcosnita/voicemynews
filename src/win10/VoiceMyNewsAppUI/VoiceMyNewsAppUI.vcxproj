@@ -214,6 +214,9 @@
     <ClInclude Include="bindings\events\NavigationBinding.h" />
     <ClInclude Include="bindings\network\HttpClientBinding.h" />
     <ClInclude Include="bindings\RequireBinding.h" />
+    <ClInclude Include="components\CategoriesPreferences.xaml.h">
+      <DependentUpon>components\CategoriesPreferences.xaml</DependentUpon>
+    </ClInclude>
     <ClInclude Include="components\MainMenu.xaml.h">
       <DependentUpon>components\MainMenu.xaml</DependentUpon>
     </ClInclude>
@@ -240,6 +243,9 @@
     <ClCompile Include="bindings\events\NavigationBinding.cpp" />
     <ClCompile Include="bindings\network\HttpClientBinding.cpp" />
     <ClCompile Include="bindings\RequireBinding.cpp" />
+    <ClCompile Include="components\CategoriesPreferences.xaml.cpp">
+      <DependentUpon>components\CategoriesPreferences.xaml</DependentUpon>
+    </ClCompile>
     <ClCompile Include="components\MainMenu.xaml.cpp">
       <DependentUpon>components\MainMenu.xaml</DependentUpon>
     </ClCompile>
@@ -272,6 +278,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="components\CategoriesPreferences.xaml" />
     <Page Include="components\MainMenu.xaml">
       <SubType>Designer</SubType>
     </Page>
