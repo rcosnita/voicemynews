@@ -27,6 +27,16 @@ module.exports = {
     APP_NAVIGATION_MENU_LOADED: "app:navigation_menu:loaded",
 
     /**
+     * This event is emitted by native part and tells the business logic to obtain the available categories.
+     */
+    CATEGORIES_GET: "js:categories:get",
+
+    /**
+     * This event is emitted by the business logic once it loaded all available categories.
+     */
+    CATEGORIES_GET_LOADED: "js:categories:get:loaded",
+
+    /**
      * This event tells the native part that openPreferences page is ready to be opened.
      */
     MENUITEMS_OPENPREFERENCES: "js:menuitems:openPreferences",
