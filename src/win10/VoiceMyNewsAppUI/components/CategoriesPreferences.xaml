@@ -28,11 +28,21 @@
             </GridView.ItemContainerStyle>
             <GridView.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Orientation="Vertical">
-                        <Rectangle Width="200" Height="200" Fill="AliceBlue" />
+                    <Grid Background="AliceBlue">
+                        <Grid.ColumnDefinitions>
+                             <ColumnDefinition Width="200" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="150" />
+                            <RowDefinition Height="50" />
+                        </Grid.RowDefinitions>
+
+                        <Image Source="{Binding Converter={StaticResource jsonObjectConverter},
+                            ConverterParameter='icon'}" Grid.Row="0" HorizontalAlignment="Center"
+                            VerticalAlignment="Center" Width="80" Height="80" />
                         <TextBlock Text="{Binding Converter={StaticResource jsonObjectConverter},
-                            ConverterParameter='name'}" />
-                    </StackPanel>
+                            ConverterParameter='name'}" Grid.Row="1" HorizontalAlignment="Center" />
+                    </Grid>
                 </DataTemplate>
             </GridView.ItemTemplate>
         </GridView>

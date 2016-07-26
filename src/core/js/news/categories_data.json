@@ -1,13 +1,45 @@
 [{
     "categoryId": 1,
-    "name": "Sample category 1"
+    "name": "Breaking News",
+    "icon": "/Assets/icons/categories/breaking-news.png"
 }, {
     "categoryId": 2,
-    "name": "Sample category 2"
+    "name": "Colleges and Universities",
+    "icon": "/Assets/icons/categories/colleges.png"
 }, {
     "categoryId": 3,
-    "name": "Sample category 3"
+    "name": "Current Events",
+    "icon": "/Assets/icons/categories/current-events.png"
 }, {
     "categoryId": 4,
-    "name": "Sample category 4"
+    "name": "Magazines",
+    "icon": "/Assets/icons/categories/magazines.png"
+}, {
+    "categoryId": 5,
+    "name": "Media",
+    "icon": "/Assets/icons/categories/media.png"
+}, {
+    "categoryId": 6,
+    "name": "Newspapers",
+    "icon": "/Assets/icons/categories/newspapers.png"
+}, {
+    "categoryId": 7,
+    "name": "Politics",
+    "icon": "/Assets/icons/categories/politics.png"
+}, {
+    "categoryId": 8,
+    "name": "Sports",
+    "icon": "/Assets/icons/categories/sports.png"
+}, {
+    "categoryId": 9,
+    "name": "Technology",
+    "icon": "/Assets/icons/categories/technology.png"
+}, {
+    "categoryId": 10,
+    "name": "Traffic",
+    "icon": "/Assets/icons/categories/traffic.png"
+}, {
+    "categoryId": 11,
+    "name": "Weblogs",
+    "icon": "/Assets/icons/categories/weblogs.png"
 }]

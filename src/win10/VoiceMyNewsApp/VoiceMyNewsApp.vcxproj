@@ -155,6 +155,17 @@
     <None Include="VoiceMyNewsApp_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Assets\icons\categories\breaking-news.scale-100.png" />
+    <Image Include="Assets\icons\categories\colleges.scale-100.png" />
+    <Image Include="Assets\icons\categories\current-events.scale-100.png" />
+    <Image Include="Assets\icons\categories\magazines.scale-100.png" />
+    <Image Include="Assets\icons\categories\media.scale-100.png" />
+    <Image Include="Assets\icons\categories\newspapers.scale-100.png" />
+    <Image Include="Assets\icons\categories\politics.scale-100.png" />
+    <Image Include="Assets\icons\categories\sports.scale-100.png" />
+    <Image Include="Assets\icons\categories\technology.scale-100.png" />
+    <Image Include="Assets\icons\categories\traffic.scale-100.png" />
+    <Image Include="Assets\icons\categories\weblogs.scale-100.png" />
     <Image Include="Assets\icons\menuitems\genius.scale-100.png" />
     <Image Include="Assets\icons\menuitems\genius.scale-125.png" />
     <Image Include="Assets\icons\menuitems\genius.scale-150.png" />
