@@ -61,6 +61,16 @@ CategoriesPreferences::CategoriesPreferences()
     DataContext = this;
 }
 
+CategoriesPreferences::CategoriesPreferences(JsApp^ jsBackend)
+{
+    InitializeComponent();
+    JsBackend = jsBackend;
+
+    WireEvents();
+
+    DataContext = this;
+}
+
 JsApp^ CategoriesPreferences::JsBackend::get() {
     return static_cast<JsApp^>(GetValue(JsBackendProperty));
 }

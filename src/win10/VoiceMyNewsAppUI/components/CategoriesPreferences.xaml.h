@@ -40,6 +40,8 @@ public:
 public:
     CategoriesPreferences();
 
+    CategoriesPreferences(JsApp^ jsBackend);
+
 private:
     /**
      * \brief Wires the events used for displaying the data. In addition, it also emits get categories events to business logic.

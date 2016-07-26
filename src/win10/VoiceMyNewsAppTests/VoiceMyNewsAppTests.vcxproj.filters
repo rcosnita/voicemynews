@@ -75,6 +75,9 @@
     <ClCompile Include="ConversionTests.cpp">
       <Filter>utils</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\tests\unittests\win10\c++\components\CategoriesPreferencesTests.cpp">
+      <Filter>components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
