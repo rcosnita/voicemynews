@@ -20,6 +20,7 @@ eventLoop.on(EventNames.APP_SHUTDOWN, (evtData) => {
 eventLoop.emit(EventNames.APP_START, buildEventData(JSON.stringify("{}")));
 
 require("js/menu/menu_logic").init(eventLoop, buildEventData, new NavigationManager(undefined, buildEventData));
+require("js/news/categories_logic").init(eventLoop, buildEventData);
 
 while (isRunning) {
     eventLoop.processEvents();

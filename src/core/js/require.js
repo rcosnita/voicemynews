@@ -36,6 +36,20 @@
         return module.exports;
     };
 
+    if (!globalCtx.setTimeout) {
+        /**
+         * This method provides a shim for setTimeout JS method in case it is not provided by the js engine.
+         * At the moment, if delay is defined and greater than 0 an exception is raised.
+         */
+        globalCtx.setTimeout = (fn, delay) => {
+            if (delay && delay > 0) {
+                throw new Error("Delay not currently supported ...");
+            }
+
+            fn();
+        };
+    }
+
     /**
      * Using a syntax similir to require, this method loads the specified filename and returns the raw content.
      * At the moment, only text files are currently supported.

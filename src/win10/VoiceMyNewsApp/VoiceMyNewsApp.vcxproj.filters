@@ -14,6 +14,9 @@
     <Filter Include="Assets\icons\menuitems">
       <UniqueIdentifier>{7618da9e-023f-4511-8cac-88249882c1bd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Assets\icons\categories">
+      <UniqueIdentifier>{4b080630-5f32-4c16-9a76-a89994cd8dcc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml" />
@@ -77,6 +80,39 @@
     </Image>
     <Image Include="Assets\icons\menuitems\preferences.scale-400.png">
       <Filter>Assets\icons\menuitems</Filter>
+    </Image>
+    <Image Include="Assets\icons\categories\breaking-news.scale-100.png">
+      <Filter>Assets\icons\categories</Filter>
+    </Image>
+    <Image Include="Assets\icons\categories\colleges.scale-100.png">
+      <Filter>Assets\icons\categories</Filter>
+    </Image>
+    <Image Include="Assets\icons\categories\current-events.scale-100.png">
+      <Filter>Assets\icons\categories</Filter>
+    </Image>
+    <Image Include="Assets\icons\categories\magazines.scale-100.png">
+      <Filter>Assets\icons\categories</Filter>
+    </Image>
+    <Image Include="Assets\icons\categories\media.scale-100.png">
+      <Filter>Assets\icons\categories</Filter>
+    </Image>
+    <Image Include="Assets\icons\categories\newspapers.scale-100.png">
+      <Filter>Assets\icons\categories</Filter>
+    </Image>
+    <Image Include="Assets\icons\categories\politics.scale-100.png">
+      <Filter>Assets\icons\categories</Filter>
+    </Image>
+    <Image Include="Assets\icons\categories\sports.scale-100.png">
+      <Filter>Assets\icons\categories</Filter>
+    </Image>
+    <Image Include="Assets\icons\categories\technology.scale-100.png">
+      <Filter>Assets\icons\categories</Filter>
+    </Image>
+    <Image Include="Assets\icons\categories\weblogs.scale-100.png">
+      <Filter>Assets\icons\categories</Filter>
+    </Image>
+    <Image Include="Assets\icons\categories\traffic.scale-100.png">
+      <Filter>Assets\icons\categories</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>

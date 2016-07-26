@@ -1,7 +1,7 @@
 ﻿#ifndef VoiceMyNewsAppUI_components_MainMenu_H_
 #define VoiceMyNewsAppUI_components_MainMenu_H_
 
-#include "components\MainMenu.g.h"
+#include "components/MainMenu.g.h"
 #include "JsApp.h"
 
 namespace voicemynews {
