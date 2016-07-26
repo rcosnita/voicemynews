@@ -57,6 +57,8 @@ CategoriesPreferences::CategoriesPreferences()
     InitializeComponent();
 
     WireEvents();
+
+    DataContext = this;
 }
 
 JsApp^ CategoriesPreferences::JsBackend::get() {
@@ -76,9 +78,9 @@ void CategoriesPreferences::Categories::set(IVector<IJsonObject^>^ categories) {
 }
 
 void CategoriesPreferences::WireEvents() {
-    concurrency::create_async([this]() {
-        auto jsEventLoop = JsBackend->GetEventLoop();
+    auto jsEventLoop = JsBackend->GetEventLoop();
 
+    concurrency::create_async([this, jsEventLoop]() {
         jsEventLoop->On(ConvertStdStrToPlatform(kCategoriesGetLoaded),
             ref new voicemynews::app::win10::bindings::events::EventHandler([this](EventDataBinding^ evtData) {
             OnCategoriesLoaded(evtData);

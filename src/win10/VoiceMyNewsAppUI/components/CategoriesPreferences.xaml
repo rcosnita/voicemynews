@@ -4,11 +4,37 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:converters="using:voicemynews.app.win10.converters"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <StackPanel>
-        <TextBlock Text="Categories will be listed in here ..." />
+    <UserControl.Resources>
+        <converters:JsonObjectConverter x:Key="jsonObjectConverter" />
+    </UserControl.Resources>
+
+    <StackPanel Orientation="Vertical">
+        <GridView ItemsSource="{Binding Categories}">
+            <GridView.ItemContainerStyle>
+                <Style TargetType="GridViewItem">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="GridViewItem">
+                                <GridViewItemPresenter SelectedBackground="Transparent" />
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </GridView.ItemContainerStyle>
+            <GridView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Vertical">
+                        <Rectangle Width="200" Height="200" Fill="AliceBlue" />
+                        <TextBlock Text="{Binding Converter={StaticResource jsonObjectConverter},
+                            ConverterParameter='name'}" />
+                    </StackPanel>
+                </DataTemplate>
+            </GridView.ItemTemplate>
+        </GridView>
     </StackPanel>
 </UserControl>
