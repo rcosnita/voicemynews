@@ -14,7 +14,7 @@
     </UserControl.Resources>
 
     <StackPanel Orientation="Vertical">
-        <GridView ItemsSource="{Binding Categories}">
+        <GridView ItemsSource="{Binding Categories}" Margin="10,0,10,10">
             <GridView.ItemContainerStyle>
                 <Style TargetType="GridViewItem">
                     <Setter Property="Template">

@@ -16,7 +16,11 @@
         </SplitView.Pane>
 
         <SplitView.Content>
-            <Frame x:Name="FrameAppActiveContent" />
+            <ScrollViewer HorizontalScrollMode="Disabled" VerticalScrollMode="Auto" VerticalScrollBarVisibility="Auto"
+                          ManipulationMode="All"
+                          ZoomMode="Enabled" MinZoomFactor="1" MaxZoomFactor="5">
+                <Frame x:Name="FrameAppActiveContent" />
+            </ScrollViewer>
         </SplitView.Content>
     </SplitView>
 </Page>
