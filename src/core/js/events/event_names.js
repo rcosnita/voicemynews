@@ -37,6 +37,17 @@ module.exports = {
     CATEGORIES_GET_LOADED: "js:categories:get:loaded",
 
     /**
+     * This event is emitted by the native part and tells the business logic to obtain all the preferred categories.
+     */
+    CATEGORIES_GET_PREFERRED: "js:categories:get:preferred",
+
+    /**
+     * This event is emitted by the business logic and tells the native part which are the preferred categories for the
+     * current user.
+     */
+    CATEGORIES_GET_PREFERRED_LOADED: "js:categories:get:preferred",
+
+    /**
      * This event tells the native part that openPreferences page is ready to be opened.
      */
     MENUITEMS_OPENPREFERENCES: "js:menuitems:openPreferences",
@@ -45,4 +56,25 @@ module.exports = {
      * This event tells the native part that openGenius page is ready to be opened.
      */
     MENUITEMS_OPENGENIUS: "js:menuitems:openGenius",
+
+    /**
+     * This event is emitted by the native part and tells the business logic to fetch news from a specified category.
+     */
+    NEWS_FETCH_FROM_CATEGORY: "js:news:get:from_category",
+
+    /**
+     * This event tells the native part which are the news from a requested category.
+     */
+    NEWS_FETCH_FROM_CATEGORY_LOADED: "js:news:get:from_category:loaded"
+
+    /**
+     * This event is emitted by the native part and tells the business logic to fetch news from preferred categories.
+     */
+    NEWS_FETCH_FROM_PREFERRED_CATEGORIES: "js:news:get:from_preferred_categories",
+
+    /**
+     * This event is emitted by the business logic and tells the native part which are the available news from
+     * preferred categories.
+     */
+    NEWS_FETCH_FROM_PREFERRED_CATEGORIES_LOADED: "js:news:get:from_preferred_categories:loaded"
 };

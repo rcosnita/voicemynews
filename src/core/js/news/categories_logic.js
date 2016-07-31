@@ -56,6 +56,24 @@ class CategoriesLogic {
     }
 
     /**
+     * Fetches all available news from the specified category.
+     * @param {Number} categoryId the category unique identifier.
+     * @returns {Promise} a promise object which resolves with an array of news from the specified category.
+     */
+    fetchNewsFromCategory(categoryId) {
+        throw new Error("Not implemented yet ...");
+    }
+
+    /**
+     * Fetches all available news from preferred categories. Preferred categories are obtained from user
+     * preferences logic.
+     * @returns {Promise} a promise object which resolves with an array of news belonging to the preferred categories.
+     */
+    fetchNewsFromPreferredCategories() {
+        throw new Error("Not implemented yet ...");
+    }
+
+    /**
      * This method get categories and emits loaded events when done.
      */
     _handleGetCategories() {
