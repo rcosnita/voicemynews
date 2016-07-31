@@ -77,7 +77,9 @@ class UserPreferencesLogic {
 
 module.exports = {
     UserPreferencesLogic: UserPreferencesLogic,
-    init: ((eventLoop, buildEventData) => {
-        (new UserPreferencesLogic(eventLoop, buildEventData)).init();
+    init: ((eventLoop, buildEventData, categoriesLogic) => {
+        const preferencesLogic = new UserPreferencesLogic(eventLoop, buildEventData, categoriesLogic);
+        preferencesLogic.init();
+        return preferencesLogic;
     })
 }
