@@ -65,7 +65,7 @@ module.exports = {
     /**
      * This event tells the native part which are the news from a requested category.
      */
-    NEWS_FETCH_FROM_CATEGORY_LOADED: "js:news:get:from_category:loaded"
+    NEWS_FETCH_FROM_CATEGORY_LOADED: "js:news:get:from_category:loaded",
 
     /**
      * This event is emitted by the native part and tells the business logic to fetch news from preferred categories.
