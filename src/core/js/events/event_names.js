@@ -45,7 +45,7 @@ module.exports = {
      * This event is emitted by the business logic and tells the native part which are the preferred categories for the
      * current user.
      */
-    CATEGORIES_GET_PREFERRED_LOADED: "js:categories:get:preferred",
+    CATEGORIES_GET_PREFERRED_LOADED: "js:categories:get:preferred:loaded",
 
     /**
      * This event tells the native part that openPreferences page is ready to be opened.

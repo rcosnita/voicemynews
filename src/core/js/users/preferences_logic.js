@@ -5,6 +5,7 @@
  */
 "use strict";
 
+const EventNames = require("js/events/event_names");
 const ExceptionsFactory = require("js/exceptions/exceptions_factory");
 const Q = require("js/third_party/q/q");
 
@@ -23,7 +24,9 @@ class UserPreferencesLogic {
     }
 
     init() {
-        throw new Error("Not implemented yet ...");
+        this._eventLoop.on(EventNames.CATEGORIES_GET_PREFERRED, (evtData) => {
+            this._handleGetCategoriesPreferredEvent();
+        });
     }
 
     /**
@@ -52,6 +55,23 @@ class UserPreferencesLogic {
         }
 
         return loader.promise;
+    }
+
+    /**
+     * Correctly loads the preferred categories and send them to the native part when loaded.
+     * @private
+     * @method
+     */
+    _handleGetCategoriesPreferredEvent() {
+        const categoriesLoader = this.getPreferredCategories();
+
+        categoriesLoader.then((categories) => {
+            const categoriesData = JSON.stringify(categories);
+            this._eventLoop.emit(EventNames.CATEGORIES_GET_PREFERRED_LOADED, this._buildEventData(categoriesData));
+        }, (rejectInfo) => {
+            const errDescStr = JSON.stringify(rejectInfo);
+            this._eventLoop.emit(EventNames.CATEGORIES_GET_PREFERRED_LOADED, this._buildEventData(errDescStr));
+        });
     }
 }
 
