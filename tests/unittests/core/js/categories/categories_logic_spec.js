@@ -117,4 +117,49 @@ describe("Tests suite for validating correct behaviour of categories logic modul
 
         this._eventLoop.emit(EventNames.CATEGORIES_GET, "");
     });
+
+    it("fetchNewsFromCategory works as expected for known category.", (done) => {
+        const categoryId = 9;
+        const newsFile = "js/news/data/news_categ_" + categoryId + ".json";
+        const expectedNews = [{
+            "newsId": 1,
+            "headline": "Amazing launch by ChromeOS",
+            "body": "Simple text describing what happened. It can be stored in any known format.",
+            "urls": {
+                "html": "http://www.google.com/news/chromeos-launch.html",
+                "rss": "http://www.google.com/news/chromeos-launch.rss"
+            }
+        }];
+        const expectedNewsStr = JSON.stringify(expectedNews);
+
+        this._requireRaw.and.returnValue(expectedNewsStr);
+        let newsLoader = this._categoriesManager.fetchNewsFromCategory(categoryId);
+
+        newsLoader.then((newsData) => {
+            expect(this._requireRaw).toHaveBeenCalledWith(newsFile);
+            expect(newsData).not.toBe(undefined);
+            expect(JSON.stringify(newsData)).toBe(expectedNewsStr);
+
+            done();
+        });
+    });
+
+    it("fetchNewsFromCategory datasource not found.", (done) => {
+        const categoryId = -1;
+        const newsFile = "js/news/data/news_categ_" + categoryId + ".json";
+        const ex = new Error("Unexpected exception while locating category data source...");
+
+        this._requireRaw.and.throwError(ex);
+        let newsLoader = this._categoriesManager.fetchNewsFromCategory(categoryId);
+
+        newsLoader.then(undefined, (rejectedData) => {
+            expect(this._requireRaw).toHaveBeenCalledWith(newsFile);
+            expect(rejectedData).not.toBe(undefined);
+            expect(rejectedData).not.toBe(undefined);
+            expect(rejectedData.errorCode).toBe(ExceptionsFactory.CATEGORIES_ERR_DATASOURCE_NOTFOUND);
+            expect(rejectedData.description).toBe(ex.toString());
+
+            done();
+        });
+    });
 });

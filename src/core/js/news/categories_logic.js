@@ -9,6 +9,7 @@ const ExceptionsFactory = require("js/exceptions/exceptions_factory");
 const Q = require("js/third_party/q/q");
 
 const kCategoriesJsonFile = "js/news/categories_data.json";
+const kNewsByCategoriesLocation = "js/news/data/news_categ_";
 
 /**
  * This class provides the business logic for managing the new categories available.
@@ -61,7 +62,18 @@ class CategoriesLogic {
      * @returns {Promise} a promise object which resolves with an array of news from the specified category.
      */
     fetchNewsFromCategory(categoryId) {
-        throw new Error("Not implemented yet ...");
+        const newsLoader = Q.defer();
+        try {
+            const categoryNewsData = requireRaw(kNewsByCategoriesLocation + categoryId + ".json");
+
+            newsLoader.resolve(JSON.parse(categoryNewsData));
+        } catch(ex) {
+            const errDesc = ExceptionsFactory.buildErrorDescriptor(ExceptionsFactory.CATEGORIES_ERR_DATASOURCE_NOTFOUND, ex.toString());
+
+            newsLoader.reject(errDesc);
+        }
+
+        return newsLoader.promise;
     }
 
     /**
