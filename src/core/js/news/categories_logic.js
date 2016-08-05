@@ -17,11 +17,21 @@ const kNewsByCategoriesLocation = "js/news/data/news_categ_";
  * @public
  * @class
  * @alias module:voicemynews/js/news/categories_logic.CategoriesLogic
+ * @property {module:voicemynews/js/users/preferences_logic.UserPreferencesLogic} preferencesManager the preferences manager we can use to obtain preferred categories.
  */
 class CategoriesLogic {
     constructor(eventLoop, buildEventData) {
         this._eventLoop = eventLoop;
         this._buildEventData = buildEventData;
+        this._preferencesManager = undefined;
+    }
+
+    get preferencesManager() {
+        return this._preferencesManager;
+    }
+
+    set preferencesManager(value) {
+        this._preferencesManager = value;
     }
 
     /**
@@ -65,7 +75,6 @@ class CategoriesLogic {
         const newsLoader = Q.defer();
         try {
             const categoryNewsData = requireRaw(kNewsByCategoriesLocation + categoryId + ".json");
-
             newsLoader.resolve(JSON.parse(categoryNewsData));
         } catch(ex) {
             const errDesc = ExceptionsFactory.buildErrorDescriptor(ExceptionsFactory.CATEGORIES_ERR_DATASOURCE_NOTFOUND, ex.toString());
@@ -82,7 +91,36 @@ class CategoriesLogic {
      * @returns {Promise} a promise object which resolves with an array of news belonging to the preferred categories.
      */
     fetchNewsFromPreferredCategories() {
-        throw new Error("Not implemented yet ...");
+        const newsLoader = Q.defer();
+        const categoriesLoader = this._preferencesManager.getPreferredCategories();
+        const pendingLoaders = [];
+        let errors = undefined;
+        var promiseIdx = 0;
+
+        categoriesLoader.then((categoriesData) => {
+            errors = new Array(categoriesData.length);
+
+            categoriesData.forEach((categoryDesc) => {
+                const idx = promiseIdx++;
+                let innerLoader = this.fetchNewsFromCategory(categoryDesc.categoryId);
+
+                innerLoader.then(undefined, (errDesc) => {
+                    errors[idx] = errDesc;
+                });
+
+                pendingLoaders.push(innerLoader);
+            });
+
+            Q.all(pendingLoaders).then((news) => {
+                newsLoader.resolve(news);
+            }, () => {
+                newsLoader.reject(errors[0]);
+            });
+        }, (rejectedData) => {
+            newsLoader.reject(rejectedData);
+        });
+
+        return newsLoader.promise;
     }
 
     /**

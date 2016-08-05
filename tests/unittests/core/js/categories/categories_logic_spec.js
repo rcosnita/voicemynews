@@ -5,6 +5,7 @@ const ExceptionsFactory = require("js/exceptions/exceptions_factory");
 const CategoriesLogic = require("js/news/categories_logic").CategoriesLogic;
 
 const EventEmitter = require("events").EventEmitter;
+const Q = require("js/third_party/q/q");
 
 const kCategoriesJsonFile = "js/news/categories_data.json";
 
@@ -13,9 +14,30 @@ describe("Tests suite for validating correct behaviour of categories logic modul
         this._eventLoop = new EventEmitter();
         this._buildEventData = jasmine.createSpy();
         this._categoriesManager = new CategoriesLogic(this._eventLoop, this._buildEventData);
+        this._preferencesManager = jasmine.createSpyObj("UserPreferencesLogic", ["getPreferredCategories"]);
+        this._categoriesManager.preferencesManager = this._preferencesManager;
 
         this._oldRequireRaw = global.requireRaw;
         this._requireRaw = global.requireRaw = jasmine.createSpy();
+
+        this._expectedNews = [{
+            "newsId": 1,
+            "headline": "Amazing launch by ChromeOS",
+            "body": "Simple text describing what happened. It can be stored in any known format.",
+            "urls": {
+                "html": "http://www.google.com/news/chromeos-launch.html",
+                "rss": "http://www.google.com/news/chromeos-launch.rss"
+            }
+        }, {
+            "newsId": 2,
+            "headline": "Amazing launch by Apple",
+            "body": "Simple text describing what happened. It can be stored in any known format.",
+            "urls": {
+                "html": "http://www.apple.com/news/apple-launch.html",
+                "rss": "http://www.apple.com/news/apple-launch.rss"
+            }
+        }];
+        this._expectedNewsStr = JSON.stringify(this._expectedNews);
     });
 
     afterEach(() => {
@@ -121,24 +143,14 @@ describe("Tests suite for validating correct behaviour of categories logic modul
     it("fetchNewsFromCategory works as expected for known category.", (done) => {
         const categoryId = 9;
         const newsFile = "js/news/data/news_categ_" + categoryId + ".json";
-        const expectedNews = [{
-            "newsId": 1,
-            "headline": "Amazing launch by ChromeOS",
-            "body": "Simple text describing what happened. It can be stored in any known format.",
-            "urls": {
-                "html": "http://www.google.com/news/chromeos-launch.html",
-                "rss": "http://www.google.com/news/chromeos-launch.rss"
-            }
-        }];
-        const expectedNewsStr = JSON.stringify(expectedNews);
 
-        this._requireRaw.and.returnValue(expectedNewsStr);
+        this._requireRaw.and.returnValue(this._expectedNewsStr);
         let newsLoader = this._categoriesManager.fetchNewsFromCategory(categoryId);
 
         newsLoader.then((newsData) => {
             expect(this._requireRaw).toHaveBeenCalledWith(newsFile);
             expect(newsData).not.toBe(undefined);
-            expect(JSON.stringify(newsData)).toBe(expectedNewsStr);
+            expect(JSON.stringify(newsData)).toBe(this._expectedNewsStr);
 
             done();
         });
@@ -158,6 +170,93 @@ describe("Tests suite for validating correct behaviour of categories logic modul
             expect(rejectedData).not.toBe(undefined);
             expect(rejectedData.errorCode).toBe(ExceptionsFactory.CATEGORIES_ERR_DATASOURCE_NOTFOUND);
             expect(rejectedData.description).toBe(ex.toString());
+
+            done();
+        });
+    });
+
+    it("fetchNewsFromPreferredCategories works ok.", (done) => {
+        const preferredCategoriesLoader = Q.defer();
+        const expectedCategories = [{
+            "categoryId": 1,
+            "name": "Category 1"
+        }, {
+            "categoryId": 2,
+            "name": "Category 2"
+        }];
+        
+        this._preferencesManager.getPreferredCategories.and.returnValue(preferredCategoriesLoader.promise);
+        this._categoriesManager.fetchNewsFromCategory = (categoryId) => {
+            const newsLoader = Q.defer();
+
+            if (categoryId == 1) {
+                newsLoader.resolve(this._expectedNews[0]);
+            } else if (categoryId == 2) {
+                newsLoader.resolve(this._expectedNews[1]);
+            }
+
+            return newsLoader.promise;
+        };
+
+        const newsLoader = this._categoriesManager.fetchNewsFromPreferredCategories();
+
+        preferredCategoriesLoader.resolve(expectedCategories);
+        newsLoader.then((newsData) => {
+            expect(this._preferencesManager.getPreferredCategories).toHaveBeenCalledWith();
+            expect(newsData).not.toBe(undefined);
+            expect(JSON.stringify(newsData)).toBe(this._expectedNewsStr);
+
+            done();
+        });
+    });
+
+    it("fetchNewsFromPreferredCategories fails if getPreferredCategories is rejected.", (done) => {
+        const errDesc = {};
+        const categoriesLoader = Q.defer();
+        this._preferencesManager.getPreferredCategories.and.returnValue(categoriesLoader.promise);
+
+        const newsLoader = this._categoriesManager.fetchNewsFromPreferredCategories();
+        categoriesLoader.reject(errDesc);
+
+        newsLoader.then(undefined, (rejectedData) => {
+            expect(this._preferencesManager.getPreferredCategories).toHaveBeenCalledWith();
+            expect(rejectedData).toBe(errDesc);
+
+            done();
+        });
+    });
+
+    it("fetchNewsFromPreferredCategories fails if fetchNewsFromCategory fails.", (done) => {
+        const preferredCategoriesLoader = Q.defer();
+        const errDesc1 = {};
+        const errDesc2 = {};
+        const expectedCategories = [{
+            "categoryId": 1,
+            "name": "Category 1"
+        }, {
+            "categoryId": 2,
+            "name": "Category 2"
+        }];
+        
+        this._preferencesManager.getPreferredCategories.and.returnValue(preferredCategoriesLoader.promise);
+        this._categoriesManager.fetchNewsFromCategory = (categoryId) => {
+            const newsLoader = Q.defer();
+
+            if (categoryId == 1) {
+                newsLoader.reject(errDesc1);
+            } else if (categoryId == 2) {
+                newsLoader.reject(errDesc2);
+            }
+
+            return newsLoader.promise;
+        };
+
+        const newsLoader = this._categoriesManager.fetchNewsFromPreferredCategories();
+
+        preferredCategoriesLoader.resolve(expectedCategories);
+        newsLoader.then(undefined, (rejectedData) => {
+            expect(this._preferencesManager.getPreferredCategories).toHaveBeenCalledWith();
+            expect(rejectedData).toBe(errDesc1);
 
             done();
         });
