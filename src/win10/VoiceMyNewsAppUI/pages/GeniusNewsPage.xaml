@@ -4,9 +4,34 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:converters="using:voicemynews.app.win10.converters"
     mc:Ignorable="d">
 
+    <UserControl.Resources>
+        <converters:JsonObjectConverter x:Key="jsonObjectConverter" />
+    </UserControl.Resources>
+    
     <StackPanel Orientation="Vertical">
-        <TextBlock Text="Please implement genius news feature ..." />
+        <ListView Name="NewsLst" ItemsSource="{Binding News}">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ListViewItem">
+                                <GridViewItemPresenter SelectedBackground="Transparent" />
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Converter={StaticResource jsonObjectConverter},
+                            ConverterParameter='headline'}" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </StackPanel>
 </Page>

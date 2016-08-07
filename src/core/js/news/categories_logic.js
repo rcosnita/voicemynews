@@ -42,6 +42,7 @@ class CategoriesLogic {
      */
     init() {
         this._eventLoop.on(EventNames.CATEGORIES_GET, () => this._handleGetCategories());
+        this._eventLoop.on(EventNames.NEWS_FETCH_FROM_PREFERRED_CATEGORIES, () => this._handleGetPreferredCategories());
     }
 
     /**
@@ -112,7 +113,9 @@ class CategoriesLogic {
             });
 
             Q.all(pendingLoaders).then((news) => {
-                newsLoader.resolve(news);
+                let newsFlat = [];
+                news.forEach((itemsArr) => itemsArr.forEach((item) => newsFlat.push(item)));
+                newsLoader.resolve(newsFlat);
             }, () => {
                 newsLoader.reject(errors[0]);
             });
@@ -137,11 +140,32 @@ class CategoriesLogic {
             this._eventLoop.emit(EventNames.CATEGORIES_GET_LOADED, this._buildEventData(errorDataStr));
         });
     }
+
+    /**
+     * This method get preferred categories and emit loaded events when everything is in place.
+     */
+    _handleGetPreferredCategories() {
+        const newsLoader = this.fetchNewsFromPreferredCategories();
+
+        newsLoader.then((newsData) => {
+            const newsDataStr = JSON.stringify(newsData);
+
+            this._eventLoop.emit(EventNames.NEWS_FETCH_FROM_PREFERRED_CATEGORIES_LOADED,
+                this._buildEventData(newsDataStr));
+        }, (errData) => {
+            const errDataStr = JSON.stringify(errData);
+
+            this._eventLoop.emit(EventNames.NEWS_FETCH_FROM_PREFERRED_CATEGORIES_LOADED,
+                this._buildEventData(errDataStr));
+        });
+    }
 }
 
 module.exports = {
     CategoriesLogic: CategoriesLogic,
-    init: ((eventLoop, buildEventData) => {
-        (new CategoriesLogic(eventLoop, buildEventData)).init();
-    })
+    init: (eventLoop, buildEventData) => {
+        const categoriesLogic = new CategoriesLogic(eventLoop, buildEventData);
+        categoriesLogic.init();
+        return categoriesLogic
+    }
 }

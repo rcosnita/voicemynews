@@ -190,9 +190,9 @@ describe("Tests suite for validating correct behaviour of categories logic modul
             const newsLoader = Q.defer();
 
             if (categoryId == 1) {
-                newsLoader.resolve(this._expectedNews[0]);
+                newsLoader.resolve([this._expectedNews[0]]);
             } else if (categoryId == 2) {
-                newsLoader.resolve(this._expectedNews[1]);
+                newsLoader.resolve([this._expectedNews[1]]);
             }
 
             return newsLoader.promise;
@@ -257,6 +257,56 @@ describe("Tests suite for validating correct behaviour of categories logic modul
         newsLoader.then(undefined, (rejectedData) => {
             expect(this._preferencesManager.getPreferredCategories).toHaveBeenCalledWith();
             expect(rejectedData).toBe(errDesc1);
+
+            done();
+        });
+    });
+
+    it("fetchNewsFromPreferredCategories ok through event.", (done) => {
+        const newsLoader = Q.defer();
+        this._categoriesManager.fetchNewsFromPreferredCategories = jasmine.createSpy();
+        this._categoriesManager.fetchNewsFromPreferredCategories.and.returnValue(newsLoader.promise);
+        this._buildEventData.and.returnValue(this._expectedNewsStr);
+
+        this._categoriesManager.init();
+
+        this._eventLoop.emit(EventNames.NEWS_FETCH_FROM_PREFERRED_CATEGORIES, "");
+
+        newsLoader.resolve(this._expectedNews);
+
+        this._eventLoop.on(EventNames.NEWS_FETCH_FROM_PREFERRED_CATEGORIES_LOADED, (newsData) => {
+            expect(this._categoriesManager.fetchNewsFromPreferredCategories).toHaveBeenCalledWith();
+            expect(this._buildEventData).toHaveBeenCalledWith(this._expectedNewsStr);
+            expect(newsData).not.toBe(undefined);
+            expect(newsData).toBe(this._expectedNewsStr);
+
+            done();
+        });
+    });
+
+    it("fetchNewsFromPreferredCategories rejection sent as event.", (done) => {
+        const newsLoader = Q.defer();
+        const expectedErrDesc = {
+            "errorCode": "sample err code",
+            "description": "sample description"
+        };
+        const expectedErrDescStr = JSON.stringify(expectedErrDesc);
+        
+        this._categoriesManager.fetchNewsFromPreferredCategories = jasmine.createSpy();
+        this._categoriesManager.fetchNewsFromPreferredCategories.and.returnValue(newsLoader.promise);
+        this._buildEventData.and.returnValue(expectedErrDescStr);
+
+        this._categoriesManager.init();
+
+        this._eventLoop.emit(EventNames.NEWS_FETCH_FROM_PREFERRED_CATEGORIES, "");
+
+        newsLoader.reject(expectedErrDesc);
+
+        this._eventLoop.on(EventNames.NEWS_FETCH_FROM_PREFERRED_CATEGORIES_LOADED, (rejectionData) => {
+            expect(this._categoriesManager.fetchNewsFromPreferredCategories).toHaveBeenCalledWith();
+            expect(this._buildEventData).toHaveBeenCalledWith(expectedErrDescStr);
+            expect(rejectionData).not.toBe(undefined);
+            expect(rejectionData).toBe(expectedErrDescStr);
 
             done();
         });
