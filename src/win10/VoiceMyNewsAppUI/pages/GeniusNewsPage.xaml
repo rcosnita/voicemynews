@@ -27,8 +27,10 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
+                        <Image Source="{Binding Converter={StaticResource jsonObjectConverter},
+                            ConverterParameter='images.small.url'}" Width="50" Height="50" />
                         <TextBlock Text="{Binding Converter={StaticResource jsonObjectConverter},
-                            ConverterParameter='headline'}" />
+                            ConverterParameter='headline'}" VerticalAlignment="Center" />
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>

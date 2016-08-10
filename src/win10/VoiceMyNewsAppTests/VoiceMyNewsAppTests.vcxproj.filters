@@ -32,6 +32,9 @@
     <Filter Include="components">
       <UniqueIdentifier>{61fcf8f4-8883-4e3c-9051-1275964d6ca5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="converters">
+      <UniqueIdentifier>{dc0a6a0e-c2b5-4ab6-ac0b-11d41e76ab6f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="UnitTestApp.xaml" />
@@ -77,6 +80,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\tests\unittests\win10\c++\components\CategoriesPreferencesTests.cpp">
       <Filter>components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\tests\unittests\win10\c++\converters\JsonObjectConverterTests.cpp">
+      <Filter>converters</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
