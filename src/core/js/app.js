@@ -20,7 +20,9 @@ eventLoop.on(EventNames.APP_SHUTDOWN, (evtData) => {
 eventLoop.emit(EventNames.APP_START, buildEventData(JSON.stringify("{}")));
 
 require("js/menu/menu_logic").init(eventLoop, buildEventData, new NavigationManager(undefined, buildEventData));
-require("js/news/categories_logic").init(eventLoop, buildEventData);
+const categoriesLogic = require("js/news/categories_logic").init(eventLoop, buildEventData);
+const preferencesLogic = require("js/users/preferences_logic").init(eventLoop, buildEventData, categoriesLogic);
+categoriesLogic.preferencesManager = preferencesLogic;
 
 while (isRunning) {
     eventLoop.processEvents();

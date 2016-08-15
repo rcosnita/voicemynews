@@ -32,6 +32,9 @@
     <Filter Include="components">
       <UniqueIdentifier>{61fcf8f4-8883-4e3c-9051-1275964d6ca5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="converters">
+      <UniqueIdentifier>{dc0a6a0e-c2b5-4ab6-ac0b-11d41e76ab6f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="UnitTestApp.xaml" />
@@ -60,9 +63,6 @@
     <ClCompile Include="..\..\..\tests\integrationtests\win10\c++\utils\TestRunnerUtils.cpp">
       <Filter>utils</Filter>
     </ClCompile>
-    <ClCompile Include="JsAppTests.cpp">
-      <Filter>core</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\tests\unittests\win10\c++\events\NavigationBindingTests.cpp">
       <Filter>events</Filter>
     </ClCompile>
@@ -72,11 +72,17 @@
     <ClCompile Include="..\..\..\tests\unittests\win10\c++\components\MainMenuItemTests.cpp">
       <Filter>components</Filter>
     </ClCompile>
-    <ClCompile Include="ConversionTests.cpp">
-      <Filter>utils</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\tests\unittests\win10\c++\components\CategoriesPreferencesTests.cpp">
       <Filter>components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\tests\unittests\win10\c++\converters\JsonObjectConverterTests.cpp">
+      <Filter>converters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\tests\unittests\win10\c++\pages\GeniusNewsPageTests.cpp">
+      <Filter>pages</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\tests\unittests\win10\c++\core\JsAppTests.cpp">
+      <Filter>core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

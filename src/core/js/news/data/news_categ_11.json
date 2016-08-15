@@ -1,0 +1,22 @@
+[{
+    "newsId": "07daf045-1228-41c4-a5d6-fe93289f7c09",
+    "headline": "Weblogs - Article 1.",
+    "images": {
+        "small": {
+            "url": "http://i2.cdn.turner.com/cnnnext/dam/assets/160809134936-faizan-patel-airplane-super-169.jpg",
+            "width": 1100,
+            "height": 619
+        }
+    }
+
+}, {
+    "newsId": "07daf045-1228-41c4-a5d6-fe93289f7c00",
+    "headline": "Weblogs - Article 2.",
+    "images": {
+        "small": {
+            "url": "http://i2.cdn.turner.com/cnnnext/dam/assets/160810115950-wandsworth-prison-t1-main.jpg",
+            "width": 250,
+            "height": 250
+        }
+    }
+}]

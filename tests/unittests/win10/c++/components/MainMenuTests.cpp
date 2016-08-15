@@ -11,6 +11,7 @@ using Platform::String;
 using voicemynews::app::win10::components::MainMenu;
 using voicemynews::app::win10::components::OnMenuExpanded;
 using voicemynews::app::win10::bindings::events::EventDataBinding;
+using voicemynews::app::win10::bindings::events::EventLoopBinding;
 using voicemynews::app::win10::bindings::events::EventHandler;
 using voicemynews::app::win10::js::JsApp;
 using voicemynews::app::win10::utils::ConvertStdStrToPlatform;
@@ -61,8 +62,8 @@ public:
     }
 
     TEST_METHOD(MainMenuTestsLoadMenuItemsOk) {
-        auto jsBackend = ref new JsApp();
-        auto eventLoop = jsBackend->GetEventLoop();
+        auto eventLoop = ref new EventLoopBinding();
+        auto jsBackend = ref new JsApp(eventLoop);
         auto menuLoadTriggered = false;
 
         MainMenu^ mainMenu;

@@ -19,7 +19,7 @@ using voicemynews::app::win10::bindings::events::EventLoopBinding;
  */
 public ref class JsApp sealed {
 public:
-    JsApp();
+    JsApp(EventLoopBinding^ eventLoop);
     virtual ~JsApp();
 
     /**
@@ -38,6 +38,7 @@ public:
     EventLoopBinding^ GetEventLoop();
 
 private:
+    EventLoopBinding^ eventLoop_;
     FileUtils fileUtils_;
     JsRuntimeHandle runtime_;
     JsContextRef context_;

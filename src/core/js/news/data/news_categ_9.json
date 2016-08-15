@@ -1,0 +1,21 @@
+[{
+    "newsId": "33e674f4-3b2f-40f2-8d6e-68231c05c310",
+    "headline": "Technology - Article 1.",
+    "images": {
+        "small": {
+            "url": "http://i2.cdn.turner.com/cnnnext/dam/assets/160803141428-02-emirates-plane-fire-0803-video-synd-2.jpg",
+            "width": 640,
+            "height": 480
+        }
+    }
+}, {
+    "newsId": "33e674f4-3b2f-40f2-8d6e-68231c05c311",
+    "headline": "Technology - Article 2.",
+    "images": {
+        "small": {
+            "url": "http://i2.cdn.turner.com/cnnnext/dam/assets/160807231547-caleb-schwab-live-video.jpg",
+            "width": 576,
+            "height": 324
+        }
+    }
+}]

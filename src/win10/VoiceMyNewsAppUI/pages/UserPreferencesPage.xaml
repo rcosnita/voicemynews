@@ -8,6 +8,6 @@
     mc:Ignorable="d">
 
     <StackPanel Orientation="Vertical">
-        <comps:CategoriesPreferences JsBackend="{Binding JsBackend}" Margin="20,0,20,0" />
+        <comps:CategoriesPreferences JsBackend="{x:Bind JsBackend}" Margin="20,0,20,0" />
     </StackPanel>
 </Page>

@@ -21,6 +21,7 @@ using namespace Windows::UI::Xaml::Navigation;
 
 using voicemynews::app::win10::MainPage;
 using voicemynews::app::win10::bindings::events::EventDataBinding;
+using voicemynews::app::win10::bindings::events::EventLoopBinding;
 using voicemynews::app::win10::utils::ConvertStdStrToPlatform;
 
 namespace VoiceMyNewsApp {
@@ -33,7 +34,7 @@ App::App()
     InitializeComponent();
     Suspending += ref new SuspendingEventHandler(this, &App::OnSuspending);
 
-    jsApp_ = ref new JsApp();
+    jsApp_ = JsApp::GetInstance();
     jsAppStarted_ = false;
 
     auto appStartEvt = ConvertStdStrToPlatform(voicemynews::core::events::kAppJsStart);

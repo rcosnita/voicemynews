@@ -59,6 +59,11 @@ public:
             void set(Windows::Foundation::Collections::IVector<IJsonObject^>^ value);
     }
 
+    /**
+     * \brief This method is invoked automatically once js backend property has changed.
+     */
+    static void OnJsBackendChanged(DependencyObject^ d, DependencyPropertyChangedEventArgs^ args);
+
 public:
     /**
      * \brief This event allows consumers of this component to determine the menu is expanded / collapsed.

@@ -40,26 +40,39 @@ namespace app {
 namespace win10 {
 namespace components {
 using EventHandler = voicemynews::app::win10::bindings::events::EventHandler;
-static DependencyProperty^ IsMenuExpandedProperty = DependencyProperty::RegisterAttached(
+static DependencyProperty^ IsMenuExpandedProperty = DependencyProperty::Register(
     "IsMenuExpanded",
     bool::typeid,
     MainMenu::typeid,
     ref new PropertyMetadata(nullptr)
 );
 
-static DependencyProperty^ JsBackendProperty = DependencyProperty::RegisterAttached(
+static DependencyProperty^ JsBackendProperty = DependencyProperty::Register(
     "JsBackend",
     JsApp::typeid,
     MainMenu::typeid,
-    ref new PropertyMetadata(nullptr)
+    ref new PropertyMetadata(nullptr,
+        ref new PropertyChangedCallback(&MainMenu::OnJsBackendChanged))
 );
 
-static DependencyProperty^ MenuItemsProperty = DependencyProperty::RegisterAttached(
+static DependencyProperty^ MenuItemsProperty = DependencyProperty::Register(
     "MenuItems",
     JsonArray::typeid,
     MainMenu::typeid,
     ref new PropertyMetadata(nullptr)
 );
+
+MainMenu::MainMenu()
+{
+    InitializeComponent();
+    DataContext = this;
+}
+
+MainMenu::MainMenu(JsApp^ jsApp) {
+    InitializeComponent();
+    JsBackend = jsApp;
+    DataContext = this;
+}
 
 bool MainMenu::IsMenuExpanded::get() {
     return static_cast<bool>(GetValue(IsMenuExpandedProperty));
@@ -79,30 +92,17 @@ void MainMenu::JsBackend::set(JsApp^ value) {
     SetValue(JsBackendProperty, value);
 }
 
+void MainMenu::OnJsBackendChanged(DependencyObject^ d, DependencyPropertyChangedEventArgs^ args) {
+    auto comp = safe_cast<MainMenu^>(d);
+    comp->WireJsMenuModel();
+}
+
 IVector<IJsonObject^>^ MainMenu::MenuItems::get() {
     return static_cast<IVector<IJsonObject^>^>(GetValue(MenuItemsProperty));
 }
 
 void MainMenu::MenuItems::set(IVector<IJsonObject^>^ value) {
     SetValue(MenuItemsProperty, value);
-}
-
-MainMenu::MainMenu()
-{
-    InitializeComponent();
-
-    WireJsMenuModel();
-
-    DataContext = this;
-}
-
-MainMenu::MainMenu(JsApp^ jsApp) {
-    InitializeComponent();
-
-    JsBackend = jsApp;
-    WireJsMenuModel();
-
-    DataContext = this;
 }
 
 void MainMenu::OpenMenu(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)

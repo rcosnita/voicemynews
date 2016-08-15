@@ -45,6 +45,16 @@ namespace events {
      * \brief This event is emitted by the business logic so that genius news page can be opened.
      */
     const std::string kMenuItemOpenGeniusNews = "js:menuitems:openGenius";
+
+    /**
+     * \brief This event is emitted by the business logic so that news from preferred categories can be fetched.
+     */
+    const std::string kNewsFetchFromPreferredCategories = "js:news:get:from_preferred_categories";
+
+    /**
+     * \brief This event is emitted by the business logic so that native part can display the news to the ui.
+     */
+    const std::string kNewsFetchFromPreferredCategoriesLoaded = "js:news:get:from_preferred_categories:loaded";
 }
 }
 }
