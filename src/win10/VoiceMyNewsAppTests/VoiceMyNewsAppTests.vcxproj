@@ -205,6 +205,7 @@
     <ClCompile Include="..\..\..\tests\unittests\win10\c++\components\MainMenuTests.cpp" />
     <ClCompile Include="..\..\..\tests\unittests\win10\c++\converters\JsonObjectConverterTests.cpp" />
     <ClCompile Include="..\..\..\tests\unittests\win10\c++\events\NavigationBindingTests.cpp" />
+    <ClCompile Include="..\..\..\tests\unittests\win10\c++\pages\GeniusNewsPageTests.cpp" />
     <ClCompile Include="..\..\..\tests\unittests\win10\c++\pages\MainPageTests.cpp" />
     <ClCompile Include="ConversionTests.cpp" />
     <ClCompile Include="JsAppTests.cpp" />

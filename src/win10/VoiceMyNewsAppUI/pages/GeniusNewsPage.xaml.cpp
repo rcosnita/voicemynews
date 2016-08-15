@@ -50,9 +50,17 @@ namespace win10 {
 namespace pages {
 GeniusNewsPage::GeniusNewsPage()
 {
+    InitPage(JsApp::GetInstance());
+}
+
+GeniusNewsPage::GeniusNewsPage(JsApp^ jsBackend) {
+    InitPage(jsBackend);
+}
+
+void GeniusNewsPage::InitPage(JsApp^ jsBackend) {
     InitializeComponent();
 
-    JsBackend = JsApp::GetInstance();
+    JsBackend = jsBackend;
 
     WireJsModel();
 

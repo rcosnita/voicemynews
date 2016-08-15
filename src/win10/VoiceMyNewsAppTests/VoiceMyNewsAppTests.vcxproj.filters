@@ -84,6 +84,9 @@
     <ClCompile Include="..\..\..\tests\unittests\win10\c++\converters\JsonObjectConverterTests.cpp">
       <Filter>converters</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\tests\unittests\win10\c++\pages\GeniusNewsPageTests.cpp">
+      <Filter>pages</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />

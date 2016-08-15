@@ -41,7 +41,14 @@ public:
 public:
     GeniusNewsPage();
 
+    GeniusNewsPage(JsApp^ jsBackend);
+
 private:
+    /**
+     * Initializes the page instance.
+     */
+    void InitPage(JsApp^ jsBackend);
+
     /**
      * \brief Wires js events necessary to load the preferred news from the business logic.
      */
