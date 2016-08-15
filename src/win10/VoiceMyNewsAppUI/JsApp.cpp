@@ -17,8 +17,8 @@ using Platform::String;
 
 static JsApp^ currInstance = nullptr;
 
-JsApp::JsApp() {
-    currInstance = this;
+JsApp::JsApp(EventLoopBinding^ eventLoop)
+    : eventLoop_(eventLoop) {
 }
 
 JsApp::~JsApp() {
@@ -27,6 +27,10 @@ JsApp::~JsApp() {
 }
 
 JsApp^ JsApp::GetInstance() {
+    if (currInstance == nullptr) {
+        currInstance = ref new JsApp(EventLoopBinding::GetInstance());
+    }
+
     return currInstance;
 }
 
@@ -51,7 +55,7 @@ void JsApp::Start() {
 }
 
 EventLoopBinding^ JsApp::GetEventLoop() {
-    return EventLoopBinding::GetInstance();
+    return eventLoop_;
 }
 
 JsErrorCode JsApp::BindRequireJs() {

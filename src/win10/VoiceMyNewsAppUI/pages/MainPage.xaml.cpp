@@ -25,17 +25,17 @@ using FrameAppNavigator = voicemynews::app::win10::bindings::events::FrameAppNav
 using JsApp = voicemynews::app::win10::js::JsApp;
 using NavigationBinding = voicemynews::app::win10::bindings::events::NavigationBinding;
 
-static DependencyProperty^ IsMenuVisibleProperty = DependencyProperty::RegisterAttached(
+static DependencyProperty^ IsMenuVisibleProperty = DependencyProperty::Register(
     "IsMenuVisible",
-    Interop::TypeName(bool::typeid),
-    Interop::TypeName(MainPage::typeid),
+    bool::typeid,
+    MainPage::typeid,
     ref new PropertyMetadata(nullptr)
 );
 
-static DependencyProperty^ JsBackendProperty = DependencyProperty::RegisterAttached(
+static DependencyProperty^ JsBackendProperty = DependencyProperty::Register(
     "JsBackend",
-    Interop::TypeName(JsApp::typeid),
-    Interop::TypeName(MainPage::typeid),
+    JsApp::typeid,
+    MainPage::typeid,
     ref new PropertyMetadata(nullptr)
 );
 

@@ -37,14 +37,15 @@ namespace pages {
 TEST_CLASS(GeniusNewsPageTests) {
 public:
     TEST_METHOD_INITIALIZE(GeniusNewsPageTestsSetUp) {
-        receivedNews_ = false;
-        jsBackend_ = ref new JsApp();
-        jsLoop_ = jsBackend_->GetEventLoop();
+        jsLoop_ = ref new EventLoopBinding();
+        jsBackend_ = ref new JsApp(jsLoop_);
         dispatcher_ = CoreApplication::CreateNewView()->Dispatcher;
 
-        jsLoop_->On(ConvertStdStrToPlatform(kNewsFetchFromPreferredCategoriesLoaded),
-            ref new EventHandler([this](EventDataBinding^ evtData) {
-            receivedNews_ = true;
+        bool receiveFetchEvent = false;
+
+        jsLoop_->On(ConvertStdStrToPlatform(kNewsFetchFromPreferredCategories),
+            ref new EventHandler([&receiveFetchEvent](EventDataBinding^ evtData) {
+            receiveFetchEvent = true;
         }));
 
         concurrency::create_task(dispatcher_->RunAsync(CoreDispatcherPriority::High,
@@ -54,18 +55,18 @@ public:
             jsLoop_->ProcessEvents();
         }).wait();
 
-        Assert::IsFalse(receivedNews_);
+        Assert::IsTrue(receiveFetchEvent);
     }
 
     TEST_METHOD(GeniusNewsPageTestsLoadedOk) {
         auto newsData = ref new JsonArray();
         auto news1 = ref new JsonObject();
         auto news2 = ref new JsonObject();
-        
+
         news1->SetNamedValue("headline", JsonValue::CreateStringValue("sample article"));
-        news1->SetNamedValue("images", ref new JsonObject());
+        news1->SetNamedValue("images", ref new JsonArray());
         news2->SetNamedValue("headline", JsonValue::CreateStringValue("sample article 2"));
-        news2->SetNamedValue("images", JsonObject::Parse("{\"small\": {\"url\":\"http://sample.com/img.jpg\",\"width\":300,\"height\":300}}"));
+        news2->SetNamedValue("images", JsonArray::Parse("[{\"small\": {\"url\":\"http://sample.com/img.jpg\",\"width\":300,\"height\":300}}]"));
 
         newsData->Append(news1);
         newsData->Append(news2);
@@ -74,7 +75,7 @@ public:
     }
 
     TEST_METHOD(GeniusNewsPageTestsEmptyDataOk) {
-        TestDisplayNewsTemplate(ref new JsonArray());
+       TestDisplayNewsTemplate(ref new JsonArray());
     }
 
 private:
@@ -82,11 +83,11 @@ private:
      * \brief This method provides a template which allows us to correctly test the display news action.
      */
     void TestDisplayNewsTemplate(JsonArray^ expectedData) {
+        bool newsOk = false;
+
         auto evtData = ref new EventDataBinding(expectedData->ToString());
         jsLoop_->Emit(ConvertStdStrToPlatform(kNewsFetchFromPreferredCategoriesLoaded), evtData);
         jsLoop_->ProcessEvents();
-
-        bool newsOk = false;
 
         concurrency::create_task(dispatcher_->RunAsync(CoreDispatcherPriority::High,
             ref new DispatchedHandler([&newsOk, expectedData, this]() {
@@ -97,20 +98,18 @@ private:
 
             for (auto it = fetchedCategories->First(); it->HasCurrent; it->MoveNext()) {
                 fetchedCategories->GetAt(idx)->ToString() == fetchedCategories->GetAt(idx)->ToString() &&
-                idx++;
+                    idx++;
             }
         }))).wait();
 
-        Assert::IsTrue(receivedNews_);
         Assert::IsTrue(newsOk);
     }
 
 private:
-    bool receivedNews_;
-    CoreDispatcher^ dispatcher_;
     EventLoopBinding^ jsLoop_;
     JsApp^ jsBackend_;
     GeniusNewsPage^ geniusPage_;
+    CoreDispatcher^ dispatcher_;
 };
 }
 }

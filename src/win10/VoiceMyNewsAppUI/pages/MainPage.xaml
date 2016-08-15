@@ -11,7 +11,7 @@
                IsPaneOpen="{Binding IsMenuVisible}">
         <SplitView.Pane>
             <StackPanel Orientation="Vertical" VerticalAlignment="Top">
-                <comps:MainMenu x:Name="AppMainMenu" JsBackend="{Binding JsBackend}" MenuExpanded="OnMenuExpanded" />
+                <comps:MainMenu x:Name="AppMainMenu" JsBackend="{x:Bind JsBackend}" MenuExpanded="OnMenuExpanded" />
             </StackPanel>
         </SplitView.Pane>
 

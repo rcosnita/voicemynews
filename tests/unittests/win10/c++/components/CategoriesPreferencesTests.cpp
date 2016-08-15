@@ -38,8 +38,8 @@ TEST_CLASS(CategoriesPreferencesTests) {
 public:
     TEST_METHOD_INITIALIZE(CategoriesPreferencesTestsSetUp) {
         receivedGetCategories_ = false;
-        jsBackend_ = ref new JsApp();
-        jsLoop_ = jsBackend_->GetEventLoop();
+        jsLoop_ = ref new EventLoopBinding();
+        jsBackend_ = ref new JsApp(jsLoop_);
         dispatcher_ = CoreApplication::CreateNewView()->Dispatcher;
 
         jsLoop_->On(ConvertStdStrToPlatform(kCategoriesGet),

@@ -28,15 +28,18 @@ namespace components {
 TEST_CLASS(MainMenuItemTests) {
 public:
     TEST_METHOD_INITIALIZE(MainMenuItemTestSetUp) {
-        dispatcher_ = CoreApplication::CreateNewView()->Dispatcher;
+        auto dispatcher_ = CoreApplication::CreateNewView()->Dispatcher;
 
-        jsBackend_ = ref new JsApp();
-        jsLoop_ = jsBackend_->GetEventLoop();
+        jsLoop_ = ref new EventLoopBinding();
+        jsBackend_ = ref new JsApp(jsLoop_);
 
         concurrency::create_task(dispatcher_->RunAsync(CoreDispatcherPriority::Normal, ref new DispatchedHandler([this] {
             menuItem_ = ref new MainMenuItem();
-            menuItem_->JsBackend = jsBackend_;
-        }))).wait();
+        }))).then([this]() {
+            concurrency::create_task(menuItem_->Dispatcher->RunAsync(CoreDispatcherPriority::Normal, ref new DispatchedHandler([this]() {
+                menuItem_->JsBackend = jsBackend_;
+            }))).wait();
+        }).wait();
     }
 
     TEST_METHOD(MainMenuItemTestsItemClickOk) {
@@ -54,7 +57,7 @@ public:
             receivedEvtData = evtData->EvtData;
         }));
 
-        concurrency::create_task(dispatcher_->RunAsync(CoreDispatcherPriority::Normal,
+        concurrency::create_task(menuItem_->Dispatcher->RunAsync(CoreDispatcherPriority::Normal,
             ref new DispatchedHandler([this, &model] {
             menuItem_->DataContext = model;
             menuItem_->OnMenuItemClicked(menuItem_, nullptr);
@@ -68,7 +71,6 @@ public:
     }
 
 private:
-    CoreDispatcher^ dispatcher_;
     EventLoopBinding^ jsLoop_;
     JsApp^ jsBackend_;
     MainMenuItem^ menuItem_;

@@ -42,6 +42,11 @@ public:
 
     CategoriesPreferences(JsApp^ jsBackend);
 
+    /**
+     * \brief This method is invoked automatically once js backend property has changed.
+     */
+    static void OnJsBackendChanged(DependencyObject^ d, DependencyPropertyChangedEventArgs^ args);
+
 private:
     /**
      * \brief Wires the events used for displaying the data. In addition, it also emits get categories events to business logic.

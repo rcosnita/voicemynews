@@ -41,7 +41,7 @@ static DependencyProperty^ JsBackendProperty = DependencyProperty::Register(
     "JsBackend",
     JsApp::typeid,
     voicemynews::app::win10::pages::GeniusNewsPage::typeid,
-    ref new PropertyMetadata(nullptr)
+    ref new PropertyMetadata(nullptr, ref new PropertyChangedCallback(voicemynews::app::win10::pages::GeniusNewsPage::OnJsBackendChanged))
 );
 
 namespace voicemynews {
@@ -59,12 +59,13 @@ GeniusNewsPage::GeniusNewsPage(JsApp^ jsBackend) {
 
 void GeniusNewsPage::InitPage(JsApp^ jsBackend) {
     InitializeComponent();
-
     JsBackend = jsBackend;
-
-    WireJsModel();
-
     DataContext = this;
+}
+
+void GeniusNewsPage::OnJsBackendChanged(DependencyObject^ d, DependencyPropertyChangedEventArgs^ args) {
+    auto page = safe_cast<GeniusNewsPage^>(d);
+    page->WireJsModel();
 }
 
 JsApp^ GeniusNewsPage::JsBackend::get() {
@@ -88,20 +89,19 @@ void GeniusNewsPage::WireJsModel() {
 
     concurrency::create_async([jsLoop, this]() {
         jsLoop->On(ConvertStdStrToPlatform(kNewsFetchFromPreferredCategoriesLoaded),
-            ref new voicemynews::app::win10::bindings::events::EventHandler([this](EventDataBinding^ evtData) {
-            auto modelData = JsonArray::Parse(evtData->EvtData);
-            DisplayNews(modelData);
-        }));
+            ref new voicemynews::app::win10::bindings::events::EventHandler(this, &GeniusNewsPage::DisplayNews));
 
         jsLoop->Emit(ConvertStdStrToPlatform(kNewsFetchFromPreferredCategories), ref new EventDataBinding(""));
     });
 }
 
-void GeniusNewsPage::DisplayNews(IJsonArray^ newsVector) {
-    concurrency::create_task(Dispatcher->RunAsync(Windows::UI::Core::CoreDispatcherPriority::High,
-        ref new Windows::UI::Core::DispatchedHandler([newsVector, this]() {
-        News = ConvertJsonArrayToVector(*newsVector);
-    })));
+void GeniusNewsPage::DisplayNews(EventDataBinding^ evtData) {
+    auto newsArray = JsonArray::Parse(evtData->EvtData);
+
+    concurrency::create_task(Dispatcher->RunAsync(Windows::UI::Core::CoreDispatcherPriority::Normal,
+        ref new Windows::UI::Core::DispatchedHandler([newsArray, this]() {
+        News = ConvertJsonArrayToVector(*newsArray);
+    }))).wait();
 }
 }
 }

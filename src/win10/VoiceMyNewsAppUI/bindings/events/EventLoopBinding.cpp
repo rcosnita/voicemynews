@@ -33,12 +33,12 @@ void EventLoopBinding::Emit(String^ evtName, EventDataBinding^ evtData) {
 
 void EventLoopBinding::On(String^ evtName, EventHandler^ handler) {
     auto evtNameStd = ConvertPlatformStrToStd(evtName);
-    std::function<void(std::shared_ptr<EventData<std::string>>)> fn = [handler](std::shared_ptr<EventData<std::string>> evtDataStd) {
+    eventLoop_.On(evtNameStd,
+        std::function<void(std::shared_ptr<EventData<std::string>>)>([handler](std::shared_ptr<EventData<std::string>> evtDataStd) {
         auto evtData = EventLoopPlatform::BuildEvent(ConvertStdStrToPlatform(evtDataStd->data()));
+        OutputDebugStringW(L"Invoking handler after data was built...");
         handler(evtData);
-    };
-
-    eventLoop_.On(evtNameStd, fn);
+    }));
 }
 
 void EventLoopBinding::ProcessEvents() {

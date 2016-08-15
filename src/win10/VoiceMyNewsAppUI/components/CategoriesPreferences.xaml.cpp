@@ -45,7 +45,8 @@ static DependencyProperty^ JsBackendProperty = DependencyProperty::Register(
     "JsBackend",
     JsApp::typeid,
     voicemynews::app::win10::components::CategoriesPreferences::typeid,
-    ref new PropertyMetadata(nullptr)
+    ref new PropertyMetadata(nullptr, 
+        ref new PropertyChangedCallback(&voicemynews::app::win10::components::CategoriesPreferences::OnJsBackendChanged))
 );
 
 namespace voicemynews {
@@ -55,9 +56,6 @@ namespace components {
 CategoriesPreferences::CategoriesPreferences()
 {
     InitializeComponent();
-
-    WireEvents();
-
     DataContext = this;
 }
 
@@ -65,8 +63,6 @@ CategoriesPreferences::CategoriesPreferences(JsApp^ jsBackend)
 {
     InitializeComponent();
     JsBackend = jsBackend;
-
-    WireEvents();
 
     DataContext = this;
 }
@@ -77,6 +73,11 @@ JsApp^ CategoriesPreferences::JsBackend::get() {
 
 void CategoriesPreferences::JsBackend::set(JsApp^ jsBackend) {
     SetValue(JsBackendProperty, jsBackend);
+}
+
+void CategoriesPreferences::OnJsBackendChanged(DependencyObject^ d, DependencyPropertyChangedEventArgs^ args) {
+    auto comp = safe_cast<CategoriesPreferences^>(d);
+    comp->WireEvents();
 }
 
 IVector<IJsonObject^>^ CategoriesPreferences::Categories::get() {
@@ -92,9 +93,7 @@ void CategoriesPreferences::WireEvents() {
 
     concurrency::create_async([this, jsEventLoop]() {
         jsEventLoop->On(ConvertStdStrToPlatform(kCategoriesGetLoaded),
-            ref new voicemynews::app::win10::bindings::events::EventHandler([this](EventDataBinding^ evtData) {
-            OnCategoriesLoaded(evtData);
-        }));
+            ref new voicemynews::app::win10::bindings::events::EventHandler(this, &CategoriesPreferences::OnCategoriesLoaded));
 
         jsEventLoop->Emit(ConvertStdStrToPlatform(kCategoriesGet), ref new EventDataBinding(""));
     });

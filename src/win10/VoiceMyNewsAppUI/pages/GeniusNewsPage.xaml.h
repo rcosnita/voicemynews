@@ -1,7 +1,8 @@
 ﻿#ifndef VoiceMyNewsAppUI_pages_GeniusNewsPage_H_
 #define VoiceMyNewsAppUI_pages_GeniusNewsPage_H_
 
-#include "pages\GeniusNewsPage.g.h"
+#include "bindings/events/EventDataBinding.h"
+#include "pages/GeniusNewsPage.g.h"
 #include "JsApp.h"
 
 namespace voicemynews {
@@ -15,16 +16,18 @@ namespace pages {
 [Windows::Foundation::Metadata::WebHostHidden]
 public ref class GeniusNewsPage sealed
 {
+using DependencyPropertyChangedEventArgs = Windows::UI::Xaml::DependencyPropertyChangedEventArgs;
+using EventDataBinding = voicemynews::app::win10::bindings::events::EventDataBinding;
 using IJsonArray = Windows::Data::Json::JsonArray;
 using IJsonObject = Windows::Data::Json::IJsonObject;
 using JsApp = voicemynews::app::win10::js::JsApp;
 using NewsVector = Windows::Foundation::Collections::IVector<IJsonObject^>;
 public:
     /**
-    * \brief This property allows the injection of JsBackend which can be used by the categories preferences.
-    *
-    * Genius news relies on the js backend to provide the list of available news currently available for the users.
-    */
+     * \brief This property allows the injection of JsBackend which can be used by the categories preferences.
+     *
+     * Genius news relies on the js backend to provide the list of available news currently available for the users.
+     */
     property JsApp^ JsBackend {
         JsApp^ get();
         void set(JsApp^ value);
@@ -43,6 +46,11 @@ public:
 
     GeniusNewsPage(JsApp^ jsBackend);
 
+    /**
+     * \brief This method is invoked automatically once js backend property has changed.
+     */
+    static void OnJsBackendChanged(DependencyObject^ d, DependencyPropertyChangedEventArgs^ args);
+
 private:
     /**
      * Initializes the page instance.
@@ -55,9 +63,9 @@ private:
     void WireJsModel();
 
     /**
-     * \brief This method displays the news vector into the page.
+     * \brief This method displays from an event to the page.
      */
-    void DisplayNews(IJsonArray^ newsVector);
+    void DisplayNews(EventDataBinding^ evtData);
 };
 }
 }
