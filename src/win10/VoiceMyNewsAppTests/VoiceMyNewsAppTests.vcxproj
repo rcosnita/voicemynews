@@ -254,6 +254,9 @@
     <AppxPackagePayload Include="..\..\..\node_modules\htmlparser\lib\htmlparser.js">
       <TargetPath>js\third_party\htmlparser\%(Filename)%(Extension)</TargetPath>
     </AppxPackagePayload>
+    <AppxPackagePayload Include="..\..\..\node_modules\lodash\lodash.js">
+      <TargetPath>js\third_party\lodash\%(Filename)%(Extension)</TargetPath>
+    </AppxPackagePayload>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
