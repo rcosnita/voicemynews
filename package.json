@@ -5,6 +5,7 @@
     "homepage": "https://github.com/rcosnita/voicemynews",
     "license" : "SEE LICENSE IN LICENSE",
     "dependencies": {
+        "htmlparser": "1.7.7",
         "q": "1.4.1"
     },
     "devDependencies": {
