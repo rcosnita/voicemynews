@@ -8,7 +8,7 @@
 const NotImplementedMethodException = require("js/exceptions/notimplemented").NotImplementedMethodException;
 
 /**
- * Provides a model which currently describes what an image from a news is.
+ * Provides a model which describes what an image from a news is.
  *
  * @alias module:voicemynews/js/news/news_datasource.NewsImageModel
  */
@@ -17,6 +17,19 @@ class NewsImageModel {
         this.url = url;
         this.width = width;
         this.height = height;
+    }
+}
+
+/**
+ * Provides a model which stores the attributes of a news paragraph.
+ *
+ * @alias module:voicemynews/js/news/news_datasource.NewsParagraphModel
+ */
+class NewsParagraphModel {
+    constructor(content, images) {
+        this.content = content;
+        this.images = images;
+
     }
 }
 
@@ -34,12 +47,14 @@ class NewsModel {
      * @param {String} headline the news headline extracted from rss.
      * @param {String} url The url from where we can extract more information. It usually points to the news html page.
      * @param {Array} images An array of images currently associated with the news. See {@link NewsImageModel} for more information.
+     * @param {Array} paragraphs An array of paragraphs. See {@link NewsParagraphModel} for more information. 
      */
-    constructor(newsId, headline, url, images) {
+    constructor(newsId, headline, url, images, paragraphs) {
         this.newsId = newsId;
         this.headline = headline;
         this.url = url;
-        this.images = images;
+        this.images = images || {};
+        this.paragraphs = paragraphs || {};
     }
 }
 
@@ -82,5 +97,6 @@ class NewsDataSourceAbstract {
 module.exports = {
     NewsDataSourceAbstract: NewsDataSourceAbstract,
     NewsImageModel: NewsImageModel,
+    NewsParagraphModel: NewsParagraphModel,
     NewsModel: NewsModel
 }
