@@ -87,6 +87,54 @@ let getDomText = (dom) => {
     return results;
 };
 
+/**
+ * Provides the algorithm for extracting all heading elements from the given tag. It scans from h1 till h6 tags.
+ *
+ * @param {Object} dom the dom fragment from which we want to extract the heading elements.
+ * @param {Function} callback the callback method which is invoked for every matched heading element.
+ * It receives the heading content as well as the heading level.
+ * @return {Boolean} true in case at least one heading was found and false otherwise.
+ * @alias module:voicemynews/js/news/datasources/html_helper.getHeadingElements
+ */
+let getHeadingElements = (dom, callback) => {
+    let headingsCount = 0;
+    
+    for(let idx = 1; idx <= 6; idx++) {
+        let headings = getDomText(getDomTag(dom.children, "h" + idx));
+
+        if (!headings) {
+            continue;
+        }
+
+        headingsCount += headings.length;
+        headings.forEach((content) => {
+            callback(content, idx);
+        });
+    }
+
+    return headingsCount > 0;
+};
+
+/**
+ * Provides the algorithm for extracting text content from all tags matching the given tag name and the filter.
+ * For every match it invokes the callback.
+ *
+ * @param {Object} dom
+ */
+let getTextContentFromTags = (dom, tag, tagFilter, manyMode, callback) => {
+    let tags = getDomTag(dom, tag, tagFilter, manyMode);
+
+    if (manyMode) {
+        tags.forEach((currTag) => {
+            getDomText(currTag).forEach((content) => callback(content));
+        });
+    } else {
+        getDomText(tags).forEach((content) => callback(content));
+    }
+
+    return tags;
+};
+
 module.exports = Object.freeze({
     /**
      * @constant
@@ -125,5 +173,7 @@ module.exports = Object.freeze({
     kSectionTag: "section",
 
     getDomTag: getDomTag,
-    getDomText: getDomText
+    getDomText: getDomText,
+    getHeadingElements: getHeadingElements,
+    getTextContentFromTags: getTextContentFromTags
 })

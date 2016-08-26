@@ -71,26 +71,23 @@ class CnnNewsDataSource extends newsDataSource.NewsDataSourceAbstract {
         containerTag = htmlhelper.getDomTag(containerTag.children, htmlhelper.kDivTag, kGenericContainerFilter);
 
         let paragraphTag = htmlhelper.getDomTag(containerTag.children, htmlhelper.kDivTag, {"class": "el__leafmedia el__leafmedia--sourced-paragraph"});
-        paragraphTag = htmlhelper.getDomTag(paragraphTag.children, htmlhelper.kPTag, kArticleParagraphFilter);
-        htmlhelper.getDomText(paragraphTag).forEach((p) => {
-            this._parsedArticle.paragraphs.push(new newsDataSource.NewsParagraphModel(p));
-        });
+        paragraphTag = htmlhelper.getTextContentFromTags(paragraphTag.children, htmlhelper.kPTag, kArticleParagraphFilter, false,
+            (content) => this._parsedArticle.paragraphs.push(new newsDataSource.NewsParagraphModel(content)));
 
-        let paragraphTags = htmlhelper.getDomTag(containerTag.children, htmlhelper.kDivTag, kArticleParagraphFilter, true);
-        paragraphTags.forEach((pTag) => {
-            htmlhelper.getDomText(pTag).forEach((p) => {
-                this._parsedArticle.paragraphs.push(new newsDataSource.NewsParagraphModel(p));
-            });
-        });
+        let paragraphTags = htmlhelper.getTextContentFromTags(containerTag.children, htmlhelper.kDivTag,
+                kArticleParagraphFilter, true,
+                (content) => this._parsedArticle.paragraphs.push(new newsDataSource.NewsParagraphModel(content)));
+
 
         let containerReadAllTag = htmlhelper.getDomTag(containerTag.children, htmlhelper.kDivTag, kArticleReadAllFilter);
-        paragraphTags = htmlhelper.getDomTag(containerReadAllTag.children, htmlhelper.kDivTag, kArticleParagraphFilter, true);
+        paragraphTags = htmlhelper.getDomTag(containerReadAllTag.children, htmlhelper.kDivTag, kArticleParagraphFilter,
+            true);
         paragraphTags.forEach((pTag) => {
-            let heading = htmlhelper.getDomText(htmlhelper.getDomTag(pTag.children, "h3"));
-            if (heading.length > 0) {
-                this._parsedArticle.paragraphs.push(new newsDataSource.NewsParagraphModel(heading[0], [], 3));
+            if (htmlhelper.getHeadingElements(pTag, (content, headingLevel) => {
+                this._parsedArticle.paragraphs.push(new newsDataSource.NewsParagraphModel(content, [], headingLevel));
+            })) {
                 return;
-            }
+            };
 
             htmlhelper.getDomText(pTag).forEach((p) => {
                 this._parsedArticle.paragraphs.push(new newsDataSource.NewsParagraphModel(p));
