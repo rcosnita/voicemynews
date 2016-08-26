@@ -5,6 +5,8 @@
  */
 "use strict";
 
+const Q = require("js/third_party/q/q");
+const exceptionsFactory = require("js/exceptions/exceptions_factory");
 const NotImplementedMethodException = require("js/exceptions/notimplemented").NotImplementedMethodException;
 
 /**
@@ -71,12 +73,16 @@ class NewsModel {
 /**
  * Provides an abstract news datasource model. Each concrete data source must inherit from this. In simple
  * terms we expect from a news data source to be able to represent news free format into voicemynews
- * specific format.
+ * specific domain model.
  * @alias module:voicemynews/js/news/news_datasource.NewsDataSourceAbstract
  */
 class NewsDataSourceAbstract {
+    constructor(httpClient) {
+        this._httpClient = httpClient;
+    }
+
     /**
-     * Obtains a news model from the given url. Internally, it should use the standard httpclient in order to
+     * Obtains a news model from the given url. Internally, it uses the standard httpclient in order to
      * fetch the data and parse it if everything is fine.
      *
      * @public
@@ -86,7 +92,25 @@ class NewsDataSourceAbstract {
      * @returns {Promise} which will be resolved to the actual news model {@link NewsModel} or an exception descriptor.
      */
     fetchNews(url, rssDesc) {
-        throw new NotImplementedMethodException("fetchNews(url,rssDesc) not implemented ...");
+        let loader = Q.defer(); 
+        let response = this._httpClient.get(url);
+
+        response.then((responseParsed) => {
+            if (responseParsed.getStatusCode() < 200 || responseParsed.getStatusCode() >= 300) {
+                loader.reject(exceptionsFactory.buildErrorDescriptor(exceptionsFactory.NEWS_ERR_URL_NOTFOUND,
+                    "Url not found."));
+            }
+
+            try {
+                let newsModel = this.parseContent(responseParsed.getContent(), rssDesc);
+                loader.resolve(newsModel);
+            } catch(err) {
+                loader.reject(exceptionsFactory.buildErrorDescriptor(exceptionsFactory.NEWS_ERR_PARSE_INVALIDARTICLE,
+                    err.toString(), err.stack));
+            }
+        });
+
+        return loader.promise;
     }
 
     /**

@@ -1,5 +1,8 @@
 "use strict";
 
+const Q = require("js/third_party/q/q");
+
+const exceptionsFactory = require("js/exceptions/exceptions_factory");
 const newsDataSource = require("js/news/news_datasource");
 const NewsDataSourceAbstract = newsDataSource.NewsDataSourceAbstract;
 const NewsImageModel = newsDataSource.NewsImageModel;
@@ -8,7 +11,8 @@ const NewsModel = newsDataSource.NewsModel;
 
 describe("Tests suite for guaranteeing data source contract correct implementation.", () => {
     beforeEach(() => {
-        this._newsSource = new NewsDataSourceAbstract();
+        this._httpClient = jasmine.createSpyObj("HttpClient", ["get"]);
+        this._newsSource = new NewsDataSourceAbstract(this._httpClient);
     });
 
     it("NewsImageModel correctly constructed.", () => {
@@ -86,13 +90,87 @@ describe("Tests suite for guaranteeing data source contract correct implementati
         expect(JSON.stringify(model1.contributedBy)).toBe("[]");
     });
 
-    it("fetchNews not implemented.", () => {
-        try {
-            this._newsSource.fetchNews("sample link.", {});
-            expect(true).toBeFalsy();
-        } catch(err) {
-            expect(true).toBeTruthy();
-        }
+    it("fetchNews article fetched correctly.", (done) => {
+        const articleBody = "Here is the article body";
+        const expectedNewsModel = new NewsModel();
+        const url = "http://www.cnn.com/2016/08/25/middleeast/muqawama-mosul-resistance-fighters/index.html";
+        const rssDesc = {};
+
+        const httpLoader = Q.defer();
+        const response = jasmine.createSpyObj("HttpResponse", ["getStatusCode", "getContent"]);
+        response.getStatusCode.and.returnValue(200);
+        response.getContent.and.returnValue(articleBody);
+
+        this._httpClient.get.and.returnValue(httpLoader.promise);
+        this._newsSource.parseContent = jasmine.createSpy();
+        this._newsSource.parseContent.and.returnValue(expectedNewsModel);
+
+        let newsLoader = this._newsSource.fetchNews(url, rssDesc);
+        httpLoader.resolve(response);
+
+        newsLoader.then((newsModel) => {
+            expect(newsModel).not.toBe(undefined);
+            expect(this._httpClient.get).toHaveBeenCalledWith(url);
+            expect(response.getStatusCode).toHaveBeenCalledWith();
+            expect(response.getContent).toHaveBeenCalledWith();
+            expect(this._newsSource.parseContent).toHaveBeenCalledWith(articleBody, rssDesc);
+            expect(newsModel).toBe(expectedNewsModel);
+
+            done();
+        });
+    });
+
+    it("fetchNews article not found.", (done) => {
+        const url = "http://not/found";
+
+        const httpLoader = Q.defer();
+        const response = jasmine.createSpyObj("HttpResponse", ["getStatusCode"]);
+        response.getStatusCode.and.returnValue(404);
+
+        this._httpClient.get.and.returnValue(httpLoader.promise);
+        let newsLoader = this._newsSource.fetchNews(url, undefined);
+        httpLoader.resolve(response);
+
+        newsLoader.then(undefined, (errData) => {
+            expect(this._httpClient.get).toHaveBeenCalledWith(url);
+            expect(response.getStatusCode).toHaveBeenCalledWith();
+            expect(errData).not.toBe(undefined);
+            expect(errData.errorCode).toBe(exceptionsFactory.NEWS_ERR_URL_NOTFOUND);
+            expect(errData.description).not.toBe(undefined);
+            done();
+        });
+    });
+
+    it("fetchNews article fetches ok, parse throws exception.", (done) => {
+        const url = "http://www.cnn.com/2016/08/25/middleeast/muqawama-mosul-resistance-fighters/index.html";
+        const rssDesc = {};
+        const articleBody = "Invalid article";
+
+        const originalErr = new Error("Unknown error occurred.");
+        const httpLoader = Q.defer();
+        const response = jasmine.createSpyObj("HttpResponse", ["getStatusCode", "getContent"]);
+        response.getStatusCode.and.returnValue(200);
+        response.getContent.and.returnValue(articleBody);
+
+        this._httpClient.get.and.returnValue(httpLoader.promise);
+        this._newsSource.parseContent = jasmine.createSpy();
+        this._newsSource.parseContent.and.throwError(originalErr);
+
+        let newsLoader = this._newsSource.fetchNews(url, rssDesc);
+        httpLoader.resolve(response);
+
+        newsLoader.then(undefined, (errData) => {
+            expect(errData).not.toBe(undefined);
+            expect(this._httpClient.get).toHaveBeenCalledWith(url);
+            expect(response.getStatusCode).toHaveBeenCalledWith();
+            expect(response.getContent).toHaveBeenCalledWith();
+            expect(this._newsSource.parseContent).toHaveBeenCalledWith(articleBody, rssDesc);
+            expect(errData.errorCode).toBe(exceptionsFactory.NEWS_ERR_PARSE_INVALIDARTICLE);
+            expect(errData.description).toBe(originalErr.toString());
+            expect(errData.stack).toBe(originalErr.stack);
+
+            done();
+        });
     });
 
     it("parseContent not implemented.", () => {
