@@ -6,77 +6,7 @@
 
 const newsDataSource = require("js/news/news_datasource");
 const htmlparser = require("js/third_party/htmlparser/lib/htmlparser");
-
-/**
- * Given a dom object obtained by htmlparser this method tries to extract the requested tag.
- */
-let getDomTag = (dom, tagName, tagAttribsFilter, manyMode) => {
-    if (!dom) {
-        return;
-    }
-
-    tagAttribsFilter = tagAttribsFilter || {};
-    let tag = undefined;
-    let results = [];
-
-    for (let idx = 0; idx < dom.length; idx++) {
-        let entry = dom[idx];
-
-        if (entry.type !== "tag" || entry.name !== tagName) {
-            continue;
-        }
-
-        if (Object.keys(tagAttribsFilter).length === 0) {
-            if (manyMode) {
-                results.push(entry);
-                continue;
-            }
-
-            return entry;
-        }
-
-        for (let filterKey in tagAttribsFilter) {
-            if (!entry.attribs[filterKey]) {
-                continue;
-            }
-
-            if (entry.attribs[filterKey].trim() === tagAttribsFilter[filterKey]) {
-                if (!manyMode) {
-                    return entry;
-                }
-
-                results.push(entry);
-            }
-        }
-    }
-
-    if (manyMode) {
-        return results;
-    }
-}
-
-/**
- * Provides the algorithm for extracting all text sections from the given dom fragment.
- *
- * @return {Array}
- */
-let getDomText = (dom) => {
-    let results = [];
-
-    if (!dom) {
-        return results;
-    }
-
-    dom.children.forEach((item) => {
-        if (!(item.type === "text")) {
-            return;
-        }
-
-        results.push(item.data);
-    });
-
-    return results;
-};
+const htmlhelper = require("js/news/datasources/html_helper");
 
 const kGenericContainerFilter = {"class": "l-container"};
 const kArticleFilter = {"itemtype": "http://schema.org/NewsArticle"};
@@ -122,53 +52,53 @@ class CnnNewsDataSource extends newsDataSource.NewsDataSourceAbstract {
             contributedBy: undefined
         }
 
-        let htmlTag = getDomTag(dom, "html");
-        let bodyTag = getDomTag(htmlTag.children, "body");
-        let containerTag = getDomTag(bodyTag.children, "div", {"class": "pg-right-rail-tall pg-wrapper"});
-        let article = getDomTag(containerTag.children, "article", kArticleFilter);
+        let htmlTag = htmlhelper.getDomTag(dom, htmlhelper.kHtmlTag);
+        let bodyTag = htmlhelper.getDomTag(htmlTag.children, htmlhelper.kBodyTag);
+        let containerTag = htmlhelper.getDomTag(bodyTag.children, htmlhelper.kDivTag, {"class": "pg-right-rail-tall pg-wrapper"});
+        let article = htmlhelper.getDomTag(containerTag.children, "article", kArticleFilter);
         
-        let urlMetaTag = getDomTag(article.children, "meta", kArticleUrlFilter);
+        let urlMetaTag = htmlhelper.getDomTag(article.children, htmlhelper.kMetaTag, kArticleUrlFilter);
         this._parsedArticle.url = urlMetaTag.attribs.content;
 
-        containerTag = getDomTag(article.children, "div", kGenericContainerFilter);
-        let headlineTag = getDomTag(containerTag.children, "h1", kArticleHeadlineFilter);
+        containerTag = htmlhelper.getDomTag(article.children, htmlhelper.kDivTag, kGenericContainerFilter);
+        let headlineTag = htmlhelper.getDomTag(containerTag.children, "h1", kArticleHeadlineFilter);
         this._parsedArticle.headline = headlineTag.children[0].data;
 
-        containerTag = getDomTag(containerTag.children, "div", {"class": "pg-rail-tall__wrapper"});
-        containerTag = getDomTag(containerTag.children, "div", {"class": "pg-side-of-rail pg-rail-tall__side"});
-        containerTag = getDomTag(containerTag.children, "div", kArticleBodyFilter);
-        containerTag = getDomTag(containerTag.children, "section", kArticleBodySectionFilter);
-        containerTag = getDomTag(containerTag.children, "div", kGenericContainerFilter);
+        containerTag = htmlhelper.getDomTag(containerTag.children, htmlhelper.kDivTag, {"class": "pg-rail-tall__wrapper"});
+        containerTag = htmlhelper.getDomTag(containerTag.children, htmlhelper.kDivTag, {"class": "pg-side-of-rail pg-rail-tall__side"});
+        containerTag = htmlhelper.getDomTag(containerTag.children, htmlhelper.kDivTag, kArticleBodyFilter);
+        containerTag = htmlhelper.getDomTag(containerTag.children, htmlhelper.kSectionTag, kArticleBodySectionFilter);
+        containerTag = htmlhelper.getDomTag(containerTag.children, htmlhelper.kDivTag, kGenericContainerFilter);
 
-        let paragraphTag = getDomTag(containerTag.children, "div", {"class": "el__leafmedia el__leafmedia--sourced-paragraph"});
-        paragraphTag = getDomTag(paragraphTag.children, "p", kArticleParagraphFilter);
-        getDomText(paragraphTag).forEach((p) => {
+        let paragraphTag = htmlhelper.getDomTag(containerTag.children, htmlhelper.kDivTag, {"class": "el__leafmedia el__leafmedia--sourced-paragraph"});
+        paragraphTag = htmlhelper.getDomTag(paragraphTag.children, htmlhelper.kPTag, kArticleParagraphFilter);
+        htmlhelper.getDomText(paragraphTag).forEach((p) => {
             this._parsedArticle.paragraphs.push(new newsDataSource.NewsParagraphModel(p));
         });
 
-        let paragraphTags = getDomTag(containerTag.children, "div", kArticleParagraphFilter, true);
+        let paragraphTags = htmlhelper.getDomTag(containerTag.children, htmlhelper.kDivTag, kArticleParagraphFilter, true);
         paragraphTags.forEach((pTag) => {
-            getDomText(pTag).forEach((p) => {
+            htmlhelper.getDomText(pTag).forEach((p) => {
                 this._parsedArticle.paragraphs.push(new newsDataSource.NewsParagraphModel(p));
             });
         });
 
-        let containerReadAllTag = getDomTag(containerTag.children, "div", kArticleReadAllFilter);
-        paragraphTags = getDomTag(containerReadAllTag.children, "div", kArticleParagraphFilter, true);
+        let containerReadAllTag = htmlhelper.getDomTag(containerTag.children, htmlhelper.kDivTag, kArticleReadAllFilter);
+        paragraphTags = htmlhelper.getDomTag(containerReadAllTag.children, htmlhelper.kDivTag, kArticleParagraphFilter, true);
         paragraphTags.forEach((pTag) => {
-            let heading = getDomText(getDomTag(pTag.children, "h3"));
+            let heading = htmlhelper.getDomText(htmlhelper.getDomTag(pTag.children, "h3"));
             if (heading.length > 0) {
                 this._parsedArticle.paragraphs.push(new newsDataSource.NewsParagraphModel(heading[0], [], 3));
                 return;
             }
 
-            getDomText(pTag).forEach((p) => {
+            htmlhelper.getDomText(pTag).forEach((p) => {
                 this._parsedArticle.paragraphs.push(new newsDataSource.NewsParagraphModel(p));
             });
         });
 
-        let footerTag = getDomTag(containerTag.children, "p", kArticleFooterFilter);
-        this._parsedArticle.contributedBy = getDomText(footerTag);
+        let footerTag = htmlhelper.getDomTag(containerTag.children, htmlhelper.kPTag, kArticleFooterFilter);
+        this._parsedArticle.contributedBy = htmlhelper.getDomText(footerTag);
     }
 }
 
