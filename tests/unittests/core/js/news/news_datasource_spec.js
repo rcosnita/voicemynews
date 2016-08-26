@@ -28,10 +28,21 @@ describe("Tests suite for guaranteeing data source contract correct implementati
             new NewsImageModel(),
             new NewsImageModel()
         ];
+        const subheadingLevel = 3;
 
-        let model1 = new NewsParagraphModel(content, images);
+        let model1 = new NewsParagraphModel(content, images, subheadingLevel);
         expect(model1.content).toBe(content);
         expect(model1.images).toBe(images);
+        expect(model1.subheadingLevel).toBe(subheadingLevel);
+    });
+
+    it("NewsParagraphModel correctly constructed with default values.", () => {
+        const content = "Sample paragraph.";
+
+        let model1 = new NewsParagraphModel(content);
+        expect(model1.content).toBe(content);
+        expect(JSON.stringify(model1.images)).toBe("[]");
+        expect(model1.subheadingLevel).toBe(undefined);
     });
 
     it("NewsModel correctly constructed.", () => {
@@ -47,13 +58,18 @@ describe("Tests suite for guaranteeing data source contract correct implementati
             new NewsParagraphModel(),
             new NewsParagraphModel()
         ];
+        const contributedBy = [
+            "Author 1",
+            "Extraordinary contribution by John Doe"
+        ];
 
-        let model1 = new NewsModel(newsId, headline, url, images, paragraphs);
+        let model1 = new NewsModel(newsId, headline, url, images, paragraphs, contributedBy);
         expect(model1.newsId).toBe(newsId);
         expect(model1.headline).toBe(headline);
         expect(model1.url).toBe(url);
         expect(model1.images).toBe(images);
         expect(model1.paragraphs).toBe(paragraphs);
+        expect(model1.contributedBy).toBe(contributedBy);
     });
 
     it("NewsModel correctly constructed with default values.", () => {
@@ -66,7 +82,8 @@ describe("Tests suite for guaranteeing data source contract correct implementati
         expect(model1.headline).toBe(headline);
         expect(model1.url).toBe(url);
         expect(JSON.stringify(model1.images)).toBe("{}");
-        expect(JSON.stringify(model1.paragraphs)).toBe("{}");
+        expect(JSON.stringify(model1.paragraphs)).toBe("[]");
+        expect(JSON.stringify(model1.contributedBy)).toBe("[]");
     });
 
     it("fetchNews not implemented.", () => {

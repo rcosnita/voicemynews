@@ -26,10 +26,18 @@ class NewsImageModel {
  * @alias module:voicemynews/js/news/news_datasource.NewsParagraphModel
  */
 class NewsParagraphModel {
-    constructor(content, images) {
+    /**
+     * Established what information needs to be known upfront in order to build a news paragraph.
+     *
+     * @param {String} content the paragraph content text.
+     * @param {Array} images the array of images belonging to this paragraph. See {@link NewsImageModel} for more information.
+     * @param {Number} subheadingLevel holds a numeric value which tells what kind of subheading this paragraph is.
+     * If the paragraph is regular, this will be undefined.
+     */
+    constructor(content, images, subheadingLevel) {
         this.content = content;
-        this.images = images;
-
+        this.images = images || [];
+        this.subheadingLevel = subheadingLevel;
     }
 }
 
@@ -47,14 +55,16 @@ class NewsModel {
      * @param {String} headline the news headline extracted from rss.
      * @param {String} url The url from where we can extract more information. It usually points to the news html page.
      * @param {Array} images An array of images currently associated with the news. See {@link NewsImageModel} for more information.
-     * @param {Array} paragraphs An array of paragraphs. See {@link NewsParagraphModel} for more information. 
+     * @param {Array} paragraphs An array of paragraphs. See {@link NewsParagraphModel} for more information.
+     * @param {Array} contributedBy An array of strings describing who contributed to the article.
      */
-    constructor(newsId, headline, url, images, paragraphs) {
+    constructor(newsId, headline, url, images, paragraphs, contributedBy) {
         this.newsId = newsId;
         this.headline = headline;
         this.url = url;
         this.images = images || {};
-        this.paragraphs = paragraphs || {};
+        this.paragraphs = paragraphs || [];
+        this.contributedBy = contributedBy || [];
     }
 }
 
@@ -72,7 +82,7 @@ class NewsDataSourceAbstract {
      * @public
      * @method
      * @param {String} url the url where the news is located.
-     * @param {JSON} rssDesc A json object containing the news descriptor as provided by rss page.     
+     * @param {JSON} rssDesc A json object containing the news descriptor as provided by rss page.
      * @returns {Promise} which will be resolved to the actual news model {@link NewsModel} or an exception descriptor.
      */
     fetchNews(url, rssDesc) {
