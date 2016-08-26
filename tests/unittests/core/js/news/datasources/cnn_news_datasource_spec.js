@@ -1,7 +1,10 @@
 "use strict";
 
 const cnnNewsDataSource = require("js/news/datasources/cnn_news_datasource");
+const newsExceptions = require("js/exceptions/invalidnews");
 const fs = require("fs");
+
+const InvalidNewsException = newsExceptions.InvalidNewsException;
 
 describe("Tests suite for ensuring correct functionality for cnn datasource.", () => {
     beforeEach(() => {
@@ -12,7 +15,7 @@ describe("Tests suite for ensuring correct functionality for cnn datasource.", (
     });
 
     it("CNN article parsed correctly.", () => {
-        var news = this._cnnDataSource.parseContent(this._sampleContent);
+        let news = this._cnnDataSource.parseContent(this._sampleContent);
 
         expect(news).not.toBe(undefined);
         expect(news.url).toBe("http://www.cnn.com/2016/08/25/middleeast/muqawama-mosul-resistance-fighters/index.html");
@@ -113,5 +116,23 @@ describe("Tests suite for ensuring correct functionality for cnn datasource.", (
         expect(news.paragraphs[43].subheadingLevel).toBeFalsy();
         expect(news.paragraphs[44].content.trim()).toBe('"We want people to know that we reject ISIS," he said.');
         expect(news.paragraphs[44].subheadingLevel).toBeFalsy();
+    });
+
+    it("CNN article parse empty.", () => {
+        expect(this._cnnDataSource.parseContent(undefined)).toBe(undefined);
+        expect(this._cnnDataSource.parseContent("")).toBe(undefined);
+        expect(this._cnnDataSource.parseContent("    ")).toBe(undefined);
+    });
+
+    it("CNN article parse incomplete.", () => {
+        try {
+            this._cnnDataSource.parseContent("invalid cnn article ...");
+            expect(true).toBeFalsy();
+        } catch(err) {
+            expect(err instanceof InvalidNewsException).toBeTruthy();
+            expect(err.cause).toBe("Invalid CNN article.");
+            expect(err.message).toBe(InvalidNewsException.kDefaultMessage);
+            expect(err.stack).not.toBe(undefined);
+        }
     });
 });

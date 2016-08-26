@@ -7,6 +7,9 @@
 const newsDataSource = require("js/news/news_datasource");
 const htmlparser = require("js/third_party/htmlparser/lib/htmlparser");
 const htmlhelper = require("js/news/datasources/html_helper");
+const newsExceptions = require("js/exceptions/invalidnews");
+
+const InvalidNewsException = newsExceptions.InvalidNewsException;
 
 const kGenericContainerFilter = {"class": "l-container"};
 const kArticleFilter = {"itemtype": "http://schema.org/NewsArticle"};
@@ -17,6 +20,8 @@ const kArticleBodySectionFilter = {"id": "body-text"};
 const kArticleParagraphFilter = {"class": "zn-body__paragraph"};
 const kArticleReadAllFilter = {"class": "zn-body__read-all"};
 const kArticleFooterFilter = {"class": "zn-body__paragraph zn-body__footer"};
+
+const kInvalidArticleMsg = "Invalid CNN article.";
 
 /**
  * CNN data source class which can fetch news and parse them into voicemynews domain objects.
@@ -35,7 +40,16 @@ class CnnNewsDataSource extends newsDataSource.NewsDataSourceAbstract {
      * voicemynews model objects.
      */
     parseContent(article, rssDesc) {
-        this._parser.parseComplete(article);
+        if (!article || article.trim().length === 0) {
+            return;
+        }
+
+        try {
+            this._parser.parseComplete(article);
+        } catch(err) {
+            throw new InvalidNewsException(undefined, kInvalidArticleMsg, err);
+        }
+        
         let newsModel = new newsDataSource.NewsModel("", this._parsedArticle.headline, this._parsedArticle.url, [],
             this._parsedArticle.paragraphs, this._parsedArticle.contributedBy);
 
@@ -44,10 +58,6 @@ class CnnNewsDataSource extends newsDataSource.NewsDataSourceAbstract {
     }
 
     _handleHtmlCallback(error, dom) {
-        if (error) {
-            throw new Error(error);
-        }
-
         this._parsedArticle = {
             url: undefined,
             headline: undefined,
