@@ -57,9 +57,9 @@ let request = (requestDesc) => {
  * @example
  * const http = require("js/networking/http");
  * const resp = http.get("http://www.google.ro", {"Content-Type": "text/html"}, {"q": "search this term"});
- * resp.then((respData, respDesc) => {
- *      console.log(respData);
- *      const isOk = respDesc.statusCode == 200;
+ * resp.then((responseParsed) => {
+ *      console.log(responseParsed.getContent());
+ *      const isOk = responseParsed.getStatusCode() == 200;
  * });
  */
 let get = (url, headers, queryParams) => {
@@ -83,9 +83,8 @@ let get = (url, headers, queryParams) => {
  * const http = require("js/networking/http");
  * const data = {"name": "John Doe"};
  * let resp = http.post("http://myapi.com/api/persons", {"Authorization": "XYZ oauth2 token"}, {}, data);
- * resp.then((respData, respDesc) => {
- *      console.log(respData);
- *      const isOk = respDesc.statusCode == 201;
+ * resp.then((responseParsed) => {
+ *      const isOk = responseParsed.getStatusCode() == 201;
  * });
  */
 let post = (url, headers, queryParams, data) => {
@@ -105,9 +104,8 @@ let post = (url, headers, queryParams, data) => {
  * const http = require("js/networking/http");
  * const data = {"name": "John Doe"};
  * let resp = http.put("http://myapi.com/api/persons", {"Authorization": "XYZ oauth2 token"}, {}, data);
- * resp.then((respData, respDesc) => {
- *      console.log(respData);
- *      const isOk = respDesc.statusCode == 204;
+ * resp.then((responseParsed) => {
+ *      const isOk = responseParsed.getStatusCode() == 204;
  * });
  */
 let put = (url, headers, queryParams, data) => {
@@ -125,9 +123,8 @@ let put = (url, headers, queryParams, data) => {
  * @example
  * const http = require("js/networking/http");
  * const resp = http.delete("http://www.google.ro", {"Accept": "text/html"}, {"q": "search this term"});
- * resp.then((respData, respDesc) => {
- *      console.log(respData);
- *      const isOk = respDesc.statusCode == 200;
+ * resp.then((responseParsed) => {
+ *      const isOk = responseParsed.getStatusCode() == 200;
  * });
  */
 let del = (url, headers, queryParams, data) => {

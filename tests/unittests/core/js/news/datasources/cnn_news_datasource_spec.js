@@ -1,22 +1,121 @@
 "use strict";
 
 const cnnNewsDataSource = require("js/news/datasources/cnn_news_datasource");
+const exceptionsFactory = require("js/exceptions/exceptions_factory");
 const newsExceptions = require("js/exceptions/invalidnews");
 const fs = require("fs");
+const Q = require("js/third_party/q/q");
 
 const InvalidNewsException = newsExceptions.InvalidNewsException;
 
 describe("Tests suite for ensuring correct functionality for cnn datasource.", () => {
     beforeEach(() => {
-        this._cnnDataSource = new cnnNewsDataSource.CnnNewsDataSource();
+        this._httpClient = jasmine.createSpyObj("HttpClient", ["get"]);
+        this._cnnDataSource = new cnnNewsDataSource.CnnNewsDataSource(this._httpClient);
         this._sampleContent = fs.readFileSync("tests/unittests/core/js/news/samples/cnn_sample_article.html").toString();
 
         expect(this._sampleContent).not.toBe(undefined);
     });
 
+    it("CNN article fetched correctly.", (done) => {
+        const url = "http://www.cnn.com/2016/08/25/middleeast/muqawama-mosul-resistance-fighters/index.html";
+
+        const httpLoader = Q.defer();
+        const response = jasmine.createSpyObj("HttpResponse", ["getStatusCode", "getContent"]);
+        response.getStatusCode.and.returnValue(200);
+        response.getContent.and.returnValue(this._sampleContent);
+
+        this._httpClient.get.and.returnValue(httpLoader.promise);
+
+        let newsLoader = this._cnnDataSource.fetchNews(url, undefined);
+        httpLoader.resolve(response);
+
+        newsLoader.then((newsModel) => {
+            expect(newsModel).not.toBe(undefined);
+            expect(this._httpClient.get).toHaveBeenCalledWith(url);
+            expect(response.getStatusCode).toHaveBeenCalledWith();
+            expect(response.getContent).toHaveBeenCalledWith();
+            assertNewsModel(newsModel);
+
+            done();
+        });
+    });
+
+    it("CNN article not found.", (done) => {
+        const url = "http://not/found";
+
+        const httpLoader = Q.defer();
+        const response = jasmine.createSpyObj("HttpResponse", ["getStatusCode"]);
+        response.getStatusCode.and.returnValue(404);
+
+        this._httpClient.get.and.returnValue(httpLoader.promise);
+        let newsLoader = this._cnnDataSource.fetchNews(url, undefined);
+        httpLoader.resolve(response);
+
+        newsLoader.then(undefined, (errData) => {
+            expect(this._httpClient.get).toHaveBeenCalledWith(url);
+            expect(response.getStatusCode).toHaveBeenCalledWith();
+            expect(errData).not.toBe(undefined);
+            expect(errData.errorCode).toBe(exceptionsFactory.NEWS_ERR_URL_NOTFOUND);
+            expect(errData.description).not.toBe(undefined);
+            done();
+        });
+    });
+
+    it("CNN article fetch ok parse throws exception.", (done) => {
+        const url = "http://www.cnn.com/2016/08/25/middleeast/muqawama-mosul-resistance-fighters/index.html";
+
+        const httpLoader = Q.defer();
+        const response = jasmine.createSpyObj("HttpResponse", ["getStatusCode", "getContent"]);
+        response.getStatusCode.and.returnValue(200);
+        response.getContent.and.returnValue("Invalid article");
+
+        this._httpClient.get.and.returnValue(httpLoader.promise);
+
+        let newsLoader = this._cnnDataSource.fetchNews(url, undefined);
+        httpLoader.resolve(response);
+
+        newsLoader.then(undefined, (errData) => {
+            expect(errData).not.toBe(undefined);
+            expect(this._httpClient.get).toHaveBeenCalledWith(url);
+            expect(response.getStatusCode).toHaveBeenCalledWith();
+            expect(response.getContent).toHaveBeenCalledWith();
+            expect(errData.errorCode).toBe(exceptionsFactory.NEWS_ERR_PARSE_INVALIDARTICLE);
+            expect(errData.description).not.toBe(undefined);
+            expect(errData.stack).not.toBe(undefined);
+
+            done();
+        });
+    });
+
     it("CNN article parsed correctly.", () => {
         let news = this._cnnDataSource.parseContent(this._sampleContent);
 
+        assertNewsModel(news);
+    });
+
+    it("CNN article parse empty.", () => {
+        expect(this._cnnDataSource.parseContent(undefined)).toBe(undefined);
+        expect(this._cnnDataSource.parseContent("")).toBe(undefined);
+        expect(this._cnnDataSource.parseContent("    ")).toBe(undefined);
+    });
+
+    it("CNN article parse incomplete.", () => {
+        try {
+            this._cnnDataSource.parseContent("invalid cnn article ...");
+            expect(true).toBeFalsy();
+        } catch(err) {
+            expect(err instanceof InvalidNewsException).toBeTruthy();
+            expect(err.cause).toBe("Invalid CNN article.");
+            expect(err.message).toBe(InvalidNewsException.kDefaultMessage);
+            expect(err.stack).not.toBe(undefined);
+        }
+    });
+
+    /**
+     * This function encapsulates the logic for correctly asserting the news logic against expected values.
+     */
+    let assertNewsModel = (news) => {
         expect(news).not.toBe(undefined);
         expect(news.url).toBe("http://www.cnn.com/2016/08/25/middleeast/muqawama-mosul-resistance-fighters/index.html");
         expect(news.headline).toBe("M for Muqawama: The secret resistance fighting ISIS with graffiti");
@@ -116,23 +215,5 @@ describe("Tests suite for ensuring correct functionality for cnn datasource.", (
         expect(news.paragraphs[43].subheadingLevel).toBeFalsy();
         expect(news.paragraphs[44].content.trim()).toBe('"We want people to know that we reject ISIS," he said.');
         expect(news.paragraphs[44].subheadingLevel).toBeFalsy();
-    });
-
-    it("CNN article parse empty.", () => {
-        expect(this._cnnDataSource.parseContent(undefined)).toBe(undefined);
-        expect(this._cnnDataSource.parseContent("")).toBe(undefined);
-        expect(this._cnnDataSource.parseContent("    ")).toBe(undefined);
-    });
-
-    it("CNN article parse incomplete.", () => {
-        try {
-            this._cnnDataSource.parseContent("invalid cnn article ...");
-            expect(true).toBeFalsy();
-        } catch(err) {
-            expect(err instanceof InvalidNewsException).toBeTruthy();
-            expect(err.cause).toBe("Invalid CNN article.");
-            expect(err.message).toBe(InvalidNewsException.kDefaultMessage);
-            expect(err.stack).not.toBe(undefined);
-        }
-    });
+    };
 });

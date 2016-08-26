@@ -4,6 +4,9 @@
  */
 "use strict";
 
+const Q = require("js/third_party/q/q");
+
+const exceptionsFactory = require("js/exceptions/exceptions_factory");
 const newsDataSource = require("js/news/news_datasource");
 const htmlparser = require("js/third_party/htmlparser/lib/htmlparser");
 const htmlhelper = require("js/news/datasources/html_helper");
@@ -28,11 +31,38 @@ const kInvalidArticleMsg = "Invalid CNN article.";
  * @alias module:voicemynews/js/news/datasources/cnn_news_datasource.CnnNewsDataSource
  */
 class CnnNewsDataSource extends newsDataSource.NewsDataSourceAbstract {
-    constructor() {
+    constructor(httpClient) {
         super();
+        this._httpClient = httpClient;
         this._handler = new htmlparser.DefaultHandler((error, dom) => this._handleHtmlCallback(error, dom));
         this._parser = new htmlparser.Parser(this._handler);
         this._parsedArticle = undefined;
+    }
+
+    /**
+     * Tries to fetch the news from the given url. If it succeeds it tries to transform the response to a voicemynews
+     * domain specific model.
+     */
+    fetchNews(url, rssDesc) {
+        let loader = Q.defer(); 
+        let response = this._httpClient.get(url);
+
+        response.then((responseParsed) => {
+            if (responseParsed.getStatusCode() < 200 || responseParsed.getStatusCode() >= 300) {
+                loader.reject(exceptionsFactory.buildErrorDescriptor(exceptionsFactory.NEWS_ERR_URL_NOTFOUND,
+                    "Url not found."));
+            }
+
+            try {
+                let newsModel = this.parseContent(responseParsed.getContent());
+                loader.resolve(newsModel);
+            } catch(err) {
+                loader.reject(exceptionsFactory.buildErrorDescriptor(exceptionsFactory.NEWS_ERR_PARSE_INVALIDARTICLE,
+                    err.toString()));
+            }
+        });
+
+        return loader.promise;
     }
 
     /**

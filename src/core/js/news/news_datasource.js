@@ -86,7 +86,7 @@ class NewsDataSourceAbstract {
      * @returns {Promise} which will be resolved to the actual news model {@link NewsModel} or an exception descriptor.
      */
     fetchNews(url, rssDesc) {
-        throw new NotImplementedMethodException("fetchNews(url) not implemented ...");
+        throw new NotImplementedMethodException("fetchNews(url,rssDesc) not implemented ...");
     }
 
     /**
