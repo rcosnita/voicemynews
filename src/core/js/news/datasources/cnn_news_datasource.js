@@ -36,8 +36,11 @@ class CnnNewsDataSource extends newsDataSource.NewsDataSourceAbstract {
      */
     parseContent(article, rssDesc) {
         this._parser.parseComplete(article);
-        return new newsDataSource.NewsModel("", this._parsedArticle.headline, this._parsedArticle.url, [],
+        let newsModel = new newsDataSource.NewsModel("", this._parsedArticle.headline, this._parsedArticle.url, [],
             this._parsedArticle.paragraphs, this._parsedArticle.contributedBy);
+
+        this._parsedArticle = undefined;
+        return newsModel;
     }
 
     _handleHtmlCallback(error, dom) {
