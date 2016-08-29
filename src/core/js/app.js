@@ -23,6 +23,7 @@ require("js/menu/menu_logic").init(eventLoop, buildEventData, new NavigationMana
 const categoriesLogic = require("js/news/categories_logic").init(eventLoop, buildEventData);
 const preferencesLogic = require("js/users/preferences_logic").init(eventLoop, buildEventData, categoriesLogic);
 categoriesLogic.preferencesManager = preferencesLogic;
+const newsLogic = require("js/news/news_logic").init(eventLoop, buildEventData);
 
 while (isRunning) {
     eventLoop.processEvents();
