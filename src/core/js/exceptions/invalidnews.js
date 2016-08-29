@@ -33,6 +33,28 @@ class InvalidNewsException extends Error {
     }
 }
 
+/**
+ * Provides a custom exception which can be used to notify users / code about a datasource
+ * which was requested but not found in the list of registered news.
+ *
+ * @alias module:voicemynews/js/exceptions/invalidnews.NewsProviderNotFoundException
+ */
+class NewsProviderNotFoundException extends Error {
+    static get kDefaultMessage() {
+        return "The requested news provider is not registered.";
+    }
+
+    get newsProviderId() {
+        return this._newsProviderId;
+    }
+
+    constructor(message, newsProviderId) {
+        super(message || NewsProviderNotFoundException.kDefaultMessage);
+        this._newsProviderId = newsProviderId;
+    }
+}
+
 module.exports = {
-    InvalidNewsException: InvalidNewsException
+    InvalidNewsException: InvalidNewsException,
+    NewsProviderNotFoundException: NewsProviderNotFoundException
 }
