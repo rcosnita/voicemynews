@@ -22,30 +22,15 @@ describe("Test suites for unit testing http.js implementation.", () => {
     };
 
     beforeAll(() => {
-        this._oldVoiceMyNewsCtx = global.voicemynews;
         this._httpRequired = false;
-        this._httpClient = jasmine.createSpyObj("HttpClient", ["getInstance", "get", "parseResponseWithStringContent"]);
-        this._httpClient.getInstance.and.returnValue(this._httpClient);
-
-        global.voicemynews = {
-            core: {
-                network: {
-                    HttpClient: this._httpClient
-                }
-            }
-        }
-
+        this._httpClient = jasmine.createSpyObj("HttpClient", ["get", "parseResponseWithStringContent"]);
         this._httpModule = require("js/networking/http");
-        expect(this._httpClient.getInstance.calls.count()).toBe(1);
+        this._httpModule.__setHttpNativeClient(this._httpClient);
     });
 
     afterEach(() => {
         this._httpClient.get.calls.reset();
         this._httpClient.parseResponseWithStringContent.calls.reset();
-    });
-
-    afterAll(() => {
-        global.voicemynews = this._oldVoiceMyNewsCtx;
     });
 
     it("http get for string content works as expected.", (done) => {

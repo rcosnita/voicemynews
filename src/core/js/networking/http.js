@@ -6,11 +6,11 @@
  */
 "use strict";
 
-const HttpNativeClient = voicemynews.core.network.HttpClient.getInstance();
-
 const NotImplemented = require("js/exceptions/notimplemented");
 const NotImplementedMethodException = NotImplemented.NotImplementedMethodException;
 const Q = require("js/third_party/q/q");
+
+var HttpNativeClient = voicemynews.core.network.HttpClient.getInstance();
 
 /**
  * This function provides a generic implementation for http request which supports all verbs and actions.
@@ -156,4 +156,7 @@ module.exports = {
     "post": post,
     "put": put,
     "del": del,
+    "__setHttpNativeClient": (httpClient) => {
+        HttpNativeClient = httpClient;
+    }
 };
