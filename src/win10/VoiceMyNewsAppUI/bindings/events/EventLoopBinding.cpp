@@ -36,7 +36,6 @@ void EventLoopBinding::On(String^ evtName, EventHandler^ handler) {
     eventLoop_.On(evtNameStd,
         std::function<void(std::shared_ptr<EventData<std::string>>)>([handler](std::shared_ptr<EventData<std::string>> evtDataStd) {
         auto evtData = EventLoopPlatform::BuildEvent(ConvertStdStrToPlatform(evtDataStd->data()));
-        OutputDebugStringW(L"Invoking handler after data was built...");
         handler(evtData);
     }));
 }
