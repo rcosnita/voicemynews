@@ -252,7 +252,7 @@
       <TargetPath>js\third_party\q\%(Filename)%(Extension)</TargetPath>
     </AppxPackagePayload>
     <AppxPackagePayload Include="..\..\..\node_modules\htmlparser\lib\htmlparser.js">
-      <TargetPath>js\third_party\htmlparser\%(Filename)%(Extension)</TargetPath>
+      <TargetPath>js\third_party\htmlparser\lib\%(Filename)%(Extension)</TargetPath>
     </AppxPackagePayload>
     <AppxPackagePayload Include="..\..\..\node_modules\lodash\lodash.js">
       <TargetPath>js\third_party\lodash\%(Filename)%(Extension)</TargetPath>
