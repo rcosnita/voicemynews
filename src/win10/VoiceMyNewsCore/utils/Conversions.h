@@ -71,6 +71,11 @@ using Windows::Foundation::Collections::IVector;
      * \brief Converts a given json array to a platform vector of json objects.
      */
     IVector<IJsonObject^>^ ConvertJsonArrayToVector(JsonArray% jsonArray);
+
+    /**
+     * \brief Converts a given json array to a platform vector of string objects.
+     */
+    IVector<Platform::String^>^ ConvertJsonArrayToStrVector(JsonArray% jsonArray);
 }
 }
 }

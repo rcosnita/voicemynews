@@ -21,6 +21,7 @@ public ref class IndividualNewsPage sealed
 using JsEventLoop = voicemynews::app::win10::bindings::events::EventLoopBinding;
 using NewsModel = Windows::Data::Json::IJsonObject;
 using ParagraphModel = Windows::Foundation::Collections::IVector<NewsModel^>;
+using ContributedByModel = Windows::Foundation::Collections::IVector<Platform::String^>;
 public:
     /**
      * \brief Stores the json representation of the news we want to display.
@@ -38,6 +39,15 @@ public:
         ParagraphModel^ get();
         private:
             void set(ParagraphModel^ paragraphModel);
+    }
+
+    /**
+     * \brief Stores an array of contributions which must be displayed.
+     */
+    property ContributedByModel^ ContributedBy {
+        ContributedByModel^ get();
+        private:
+            void set(ContributedByModel^ model);
     }
 
 public:

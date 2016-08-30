@@ -4,9 +4,50 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:converters="using:voicemynews.app.win10.converters"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <UserControl.Resources>
+        <converters:JsonObjectConverter x:Key="jsonObjectConverter" />
+    </UserControl.Resources>
 
-    </Grid>
+    <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <TextBlock Text="{Binding CurrNews, Converter={StaticResource jsonObjectConverter},
+                            ConverterParameter='headline'}"
+                   Margin="20,10,20,20"
+                   FontSize="30" FontWeight="Bold" TextWrapping="WrapWholeWords" />
+
+        <ItemsControl ItemsSource="{Binding ContributedBy}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel></StackPanel>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock HorizontalAlignment="Right"
+                               Text="{Binding}"
+                               Margin="0,10,20,0" 
+                               TextWrapping="WrapWholeWords"
+                               FontSize="10"
+                               FontStyle="Italic" />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        
+        <ItemsControl ItemsSource="{Binding Paragraphs}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel></StackPanel>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Converter={StaticResource jsonObjectConverter},
+                            ConverterParameter='content'}"
+                               Margin="20,20,20,0" TextWrapping="WrapWholeWords" />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </StackPanel>
 </Page>
