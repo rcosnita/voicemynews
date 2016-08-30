@@ -105,7 +105,7 @@ describe("Tests suite for ensuring news_logic works as expected.", () => {
             done();
         });
 
-        this._eventLoop.emit(EventNames.NEWS_FETCH_BY_URL, evtDataStr);
+        this._eventLoop.emit(EventNames.NEWS_FETCH_BY_URL, {"evtData": evtDataStr});
 
         newsLoader.resolve(actualNewsModel);
     });
@@ -148,7 +148,7 @@ describe("Tests suite for ensuring news_logic works as expected.", () => {
             done();
         });
 
-        this._eventLoop.emit(EventNames.NEWS_FETCH_BY_URL, evtDataStr);
+        this._eventLoop.emit(EventNames.NEWS_FETCH_BY_URL, {"evtData": evtDataStr});
 
         newsLoader.reject(actualErrDesc);
     });

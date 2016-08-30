@@ -5,6 +5,7 @@
 #include "events/EventLoop.h"
 
 #include <mutex>
+#include <queue>
 
 namespace voicemynews {
 namespace app {
@@ -18,6 +19,11 @@ using voicemynews::core::events::EventLoop;
  * \brief This delegate defines a winrt method which can be binded from javascript.
  */
 public delegate void EventHandler(EventDataBinding^);
+
+/**
+ * \brief This delegate defines the api for tasks which can be enqueued for deferred execution.
+ */
+public delegate void JsLoopEnqueuedTask();
 
 /**
  * \class EventLoopBinding
@@ -46,6 +52,11 @@ public:
      */
     void ProcessEvents();
 
+    /**
+     * \brief This method allows the app to enqueue deferred tasks which are going to be processed at the next process events loop.
+     */
+    void EnqueueTask(JsLoopEnqueuedTask^ task);
+
 public:
     /**
      * \brief This method obtains an event loop instance. It is a singleton event loop we can use in the application.
@@ -54,6 +65,7 @@ public:
 
 private:
     EventLoop eventLoop_;
+    std::queue<JsLoopEnqueuedTask^> deferredTasks_;
 };
 }
 }

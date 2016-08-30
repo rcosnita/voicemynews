@@ -1,14 +1,6 @@
 #include "pch.h"
 #include "JsApp.h"
 
-/**
- * \brief This method represent boiler plate code required by Chakra in order to be able to correctly handle promises continuation.
- */
-static void CALLBACK PromiseContinuationCallback(JsValueRef task, void *callbackState)
-{
-    *(void **)callbackState = task;
-}
-
 namespace voicemynews {
 namespace app {
 namespace win10 {
@@ -44,8 +36,6 @@ void JsApp::Start() {
     JsProjectWinRTNamespace(L"voicemynews.app.win10.bindings");
     JsProjectWinRTNamespace(L"voicemynews.core.network");
     JsProjectWinRTNamespace(L"voicemynews.core.events");
-
-    JsSetPromiseContinuationCallback(PromiseContinuationCallback, &promiseCallback_);
 #ifdef _DEBUG
     JsStartDebugging();
 #endif

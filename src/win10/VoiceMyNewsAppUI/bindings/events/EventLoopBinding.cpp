@@ -15,10 +15,12 @@ using voicemynews::core::events::EventLoopPlatform;
 
 static EventLoopBinding^ loopInstance = nullptr;
 
-EventLoopBinding::EventLoopBinding() {
+EventLoopBinding::EventLoopBinding()
+{
 }
 
-EventLoopBinding^ EventLoopBinding::GetInstance() {
+EventLoopBinding^ EventLoopBinding::GetInstance()
+{
     if (loopInstance == nullptr) {
         loopInstance = ref new EventLoopBinding();
     }
@@ -26,9 +28,15 @@ EventLoopBinding^ EventLoopBinding::GetInstance() {
     return loopInstance;
 }
 
-void EventLoopBinding::Emit(String^ evtName, EventDataBinding^ evtData) {
+void EventLoopBinding::Emit(String^ evtName, EventDataBinding^ evtData)
+{
     eventLoop_.Emit(ConvertPlatformStrToStd(evtName),
         std::make_shared<EventData<std::string>>(ConvertPlatformStrToStd(evtData->EvtData)));
+}
+
+void EventLoopBinding::EnqueueTask(JsLoopEnqueuedTask^ task)
+{
+    deferredTasks_.push(task);
 }
 
 void EventLoopBinding::On(String^ evtName, EventHandler^ handler) {
@@ -42,6 +50,12 @@ void EventLoopBinding::On(String^ evtName, EventHandler^ handler) {
 
 void EventLoopBinding::ProcessEvents() {
     eventLoop_.ProcessEvents();
+
+    while (!deferredTasks_.empty()) {
+        auto task = deferredTasks_.back();
+        task();
+        deferredTasks_.pop();
+    }
 }
 }
 }

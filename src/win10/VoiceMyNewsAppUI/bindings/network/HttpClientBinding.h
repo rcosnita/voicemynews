@@ -3,6 +3,7 @@
 
 #include "network/HttpClientInterface.h"
 #include "network/HttpClientNativeWin.h"
+#include "JsApp.h"
 
 #include <collection.h>
 
@@ -55,13 +56,26 @@ private:
 };
 
 /**
+ * \brief Provides the callback api which can be used to receive notification when a request is successful.
+ */
+public delegate void HttpClientBindingRequestOnSuccess(HttpResponseMessage^ responseMessage);
+
+/**
+ * \brief Provides the callback api which can be used to receive the parsed message of a http call when ready.
+ */
+public delegate void HttpClientBindingRequestOnParsed(HttpResponseMessageParsed^ messageParsed);
+
+/**
  * \class HttpClientWin
  * \brief This class provides the http client specific implementation for windows.
  *
  * The class relies the implementation on Windows::Web WinRT components and it can be automatically proejecte.
  */
 public ref class HttpClientBinding sealed {
+using EventLoopBinding = voicemynews::app::win10::bindings::events::EventLoopBinding;
 public:
+    HttpClientBinding();
+
     /**
      * \brief This method provides an implementation for http get which is async.
      *
@@ -73,17 +87,39 @@ public:
     IAsyncOperationWithProgress<HttpResponseMessage^, HttpProgress>^ Get(String^ uri, IMap<String^, String^>^ requestHeaders);
 
     /**
+     * \brief This method provides an implementation for http get which is async and executes the given callback on js thread.
+     * JavaScript business logic must always use this method in order to do get requests.
+     *
+     * \param uri the uri we want to get with this request.
+     * \param requestHeaders the request headers we want to send with the request.
+     * \param onSuccess the success callback which must be invoked for the http request.
+     */
+    void Get(String^ uri, IMap<String^, String^>^ requestHeaders, HttpClientBindingRequestOnSuccess^ onSuccess);
+
+    /**
      * \brief This method provides a helper method for parsing message and fetching the response payload as string.
      *
      * \param msg The message we want to parse.
      */
     IAsyncOperation<HttpResponseMessageParsed^>^ ParseResponseWithStringContent(HttpResponseMessage^ msg);
 
+    /**
+     * \brief This method provides a helper for parsing the response message object received after an http request.
+     * It guarantees that the given callback is executed on js thread.
+     *
+     * \param msg The response message received after a http request completed.
+     * \param onParsed The callback we want to executed once the message parsing is complete,
+     */
+    void ParseResponseWithStringContent(HttpResponseMessage^ msg, HttpClientBindingRequestOnParsed^ onParsed);
+
 private:
     /**
      * \brief This method copies the provided headers into request message.
      */
     void CopyHeadersToRequestMessage(IMap<String^, String^>% headers, HttpRequestMessage% requestMessage);
+
+private:
+    EventLoopBinding^ jsLoop_;
 };
 }
 }

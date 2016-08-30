@@ -34,7 +34,7 @@ class NewsLogic {
      * Provides the main entry point for wiring all events expected to be received from native part.
      */
     init() {
-        this._eventLoop.on(EventNames.NEWS_FETCH_BY_URL, (evtDataStr) => this._handleFetchNewsByUrlEvent(evtDataStr));
+        this._eventLoop.on(EventNames.NEWS_FETCH_BY_URL, (evtData) => this._handleFetchNewsByUrlEvent(evtData.evtData));
     }
 
     /**
@@ -73,6 +73,7 @@ class NewsLogic {
         const providerId = evtData.provider;
 
         this.fetchNewsByUrl(url, providerId, evtData).then((newsModel) => {
+            debugger;
             const loadedEvt = this._buildEventData(JSON.stringify(newsModel));
             this._eventLoop.emit(EventNames.NEWS_FETCH_BY_URL_LOADED, loadedEvt);
         }, (rejectionResult) => {
@@ -84,8 +85,8 @@ class NewsLogic {
 
 module.exports = {
     NewsLogic: NewsLogic,
-    init: (eventLoop, buildEventData) => {
-        const newsLogic = new NewsLogic(eventLoop, buildEventData);
+    init: (eventLoop, buildEventData, newsProviders) => {
+        const newsLogic = new NewsLogic(eventLoop, buildEventData, newsProviders);
         newsLogic.init();
         return newsLogic;
     }

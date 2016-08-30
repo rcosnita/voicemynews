@@ -4,6 +4,7 @@
 #include "events/EventNames.h"
 #include "utils/Conversions.h"
 #include "GeniusNewsPage.xaml.h"
+#include "IndividualNewsPage.xaml.h"
 
 using namespace voicemynews;
 
@@ -103,6 +104,13 @@ void GeniusNewsPage::DisplayNews(EventDataBinding^ evtData) {
         News = ConvertJsonArrayToVector(*newsArray);
     }))).wait();
 }
+
+void GeniusNewsPage::NewsLst_SelectionChanged(Platform::Object^ sender, Windows::UI::Xaml::Controls::SelectionChangedEventArgs^ e)
+{
+    auto selectedItem = NewsLst->SelectedItem;
+    Frame->Navigate(IndividualNewsPage::typeid, selectedItem);
+}
+
 }
 }
 }

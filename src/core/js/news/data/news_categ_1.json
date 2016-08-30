@@ -2,6 +2,7 @@
     "newsId": "574429b4-028e-4462-8cb8-f219fbd0e14e",
     "headline": "Breaking News - Article 1.",
     "url": "http://edition.cnn.com/2016/08/16/sport/rio-2016-nikki-hamblin-abbey-dagostino-olympic-spirit/index.html",
+    "provider": "cnn",
     "images": {
         "small": {
             "url": "http://i2.cdn.turner.com/cnnnext/dam/assets/160809155818-donald-trump-nc-rally-large-11.jpg",
@@ -12,6 +13,7 @@
 }, {
     "newsId": "574429b4-028e-4462-8cb8-f219fbd0e14f",
     "headline": "Breaking News - Article 2.",
+    "provider": "cnn",
     "images": {
         "small": {
             "url": "http://i2.cdn.turner.com/cnnnext/dam/assets/160809182959-02-rio-green-pool-story-body.jpg",

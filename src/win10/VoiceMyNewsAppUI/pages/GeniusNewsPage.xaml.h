@@ -66,6 +66,7 @@ private:
      * \brief This method displays from an event to the page.
      */
     void DisplayNews(EventDataBinding^ evtData);
+    void NewsLst_SelectionChanged(Platform::Object^ sender, Windows::UI::Xaml::Controls::SelectionChangedEventArgs^ e);
 };
 }
 }

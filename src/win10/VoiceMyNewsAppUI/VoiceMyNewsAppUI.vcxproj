@@ -229,6 +229,9 @@
     <ClInclude Include="pages\GeniusNewsPage.xaml.h">
       <DependentUpon>pages\GeniusNewsPage.xaml</DependentUpon>
     </ClInclude>
+    <ClInclude Include="pages\IndividualNewsPage.xaml.h">
+      <DependentUpon>pages\IndividualNewsPage.xaml</DependentUpon>
+    </ClInclude>
     <ClInclude Include="pages\MainPage.xaml.h">
       <DependentUpon>pages\MainPage.xaml</DependentUpon>
     </ClInclude>
@@ -256,6 +259,9 @@
     <ClCompile Include="JsApp.cpp" />
     <ClCompile Include="pages\GeniusNewsPage.xaml.cpp">
       <DependentUpon>pages\GeniusNewsPage.xaml</DependentUpon>
+    </ClCompile>
+    <ClCompile Include="pages\IndividualNewsPage.xaml.cpp">
+      <DependentUpon>pages\IndividualNewsPage.xaml</DependentUpon>
     </ClCompile>
     <ClCompile Include="pages\MainPage.xaml.cpp">
       <DependentUpon>pages\MainPage.xaml</DependentUpon>
@@ -286,6 +292,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="pages\GeniusNewsPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="pages\IndividualNewsPage.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Include="pages\MainPage.xaml" />

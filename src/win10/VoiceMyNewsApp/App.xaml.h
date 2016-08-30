@@ -1,8 +1,7 @@
 ﻿#pragma once
 
-#include <thread>
-
 #include "App.g.h"
+#include <ppltasks.h>
 
 namespace VoiceMyNewsApp {
 using voicemynews::app::win10::js::JsApp;
@@ -31,7 +30,7 @@ internal:
 private:
     JsApp^ jsApp_;
     bool jsAppStarted_;
-    std::thread jsAppRunner_;
+    concurrency::task<void> jsAppRunner_;
 
 private:
     void OnSuspending(Platform::Object^ sender, Windows::ApplicationModel::SuspendingEventArgs^ e);

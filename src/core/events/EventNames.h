@@ -55,6 +55,16 @@ namespace events {
      * \brief This event is emitted by the business logic so that native part can display the news to the ui.
      */
     const std::string kNewsFetchFromPreferredCategoriesLoaded = "js:news:get:from_preferred_categories:loaded";
+
+    /**
+     * \brief This event is emitted by the native part whenever it is needed to obtain the content of a news.
+     */
+    const std::string kNewsFetchByUrl = "js:news:get:byurl";
+
+    /**
+     * \brief This event is emitted by the business logic whenever the content of a news has been loaded.
+     */
+    const std::string kNewsFetchByUrlLoaded = "js:news:get:byurl:loaded";
 }
 }
 }

@@ -34,11 +34,9 @@ let request = (requestDesc) => {
     url += _encodeQueryParams(queryParams);
 
     const result = Q.defer()
-    const headers = requestDesc.headers || {}
-    const response = HttpNativeClient.get(url, headers);
-
-    response.done((responseData) => {
-        HttpNativeClient.parseResponseWithStringContent(responseData).done((responseParsed) => {
+    const headers = requestDesc.headers || {};
+    HttpNativeClient.get(url, undefined, (responseData) => {
+        HttpNativeClient.parseResponseWithStringContent(responseData, (responseParsed) => {
             result.resolve(responseParsed);
         });
     });

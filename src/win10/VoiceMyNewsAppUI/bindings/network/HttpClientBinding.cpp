@@ -1,23 +1,25 @@
 #include "pch.h"
-
 #include <ppltasks.h>
 
 #include "bindings/network/HttpClientBinding.h"
+
+using Windows::Foundation::Uri;
+using Windows::Web::Http::HttpClient;
+using Windows::Web::Http::HttpMethod;
+using voicemynews::app::win10::js::JsApp;
+using voicemynews::app::win10::bindings::events::JsLoopEnqueuedTask;
 
 namespace voicemynews {
 namespace app {
 namespace win10 {
 namespace bindings {
-using Windows::Foundation::Uri;
-using Windows::Web::Http::HttpClient;
-using Windows::Web::Http::HttpMethod;
-
 HttpResponseMessageParsed::HttpResponseMessageParsed(int statusCode, String^ reason, HttpContentHeaderCollection^ headers,
     String^ content)
     : statusCode_(statusCode),
       reason_(reason),
       headers_(headers),
-      content_(content) {
+      content_(content)
+{
 }
 
 int HttpResponseMessageParsed::GetStatusCode() {
@@ -36,6 +38,11 @@ HttpContentHeaderCollection^ HttpResponseMessageParsed::GetHeaders() {
     return headers_;
 }
 
+HttpClientBinding::HttpClientBinding()
+{
+    jsLoop_ = JsApp::GetInstance()->GetEventLoop();
+}
+
 IAsyncOperationWithProgress<HttpResponseMessage^, HttpProgress>^ HttpClientBinding::Get(Platform::String^ uri,
     IMap<String^, String^>^ requestHeaders) {
     auto httpClient = ref new HttpClient();
@@ -48,12 +55,32 @@ IAsyncOperationWithProgress<HttpResponseMessage^, HttpProgress>^ HttpClientBindi
     return httpClient->SendRequestAsync(requestMessage);
 }
 
+void HttpClientBinding::Get(String^ uri, IMap<String^, String^>^ requestHeaders, HttpClientBindingRequestOnSuccess^ onSuccess)
+{
+    concurrency::create_task(Get(uri, requestHeaders))
+        .then([this, onSuccess](HttpResponseMessage^ responseMessage) {
+        jsLoop_->EnqueueTask(ref new JsLoopEnqueuedTask([onSuccess, responseMessage]() {
+            onSuccess(responseMessage);
+        }));
+    });
+}
+
 IAsyncOperation<HttpResponseMessageParsed^>^ HttpClientBinding::ParseResponseWithStringContent(HttpResponseMessage^ msg) {
     return concurrency::create_async([msg]() {
         String^ content = concurrency::create_task(msg->Content->ReadAsStringAsync()).get();
 
         return ref new HttpResponseMessageParsed(static_cast<int>(msg->StatusCode), msg->ReasonPhrase, msg->Content->Headers,
             content);
+    });
+}
+
+void HttpClientBinding::ParseResponseWithStringContent(HttpResponseMessage^ msg, HttpClientBindingRequestOnParsed^ onParsed)
+{
+    concurrency::create_task(ParseResponseWithStringContent(msg))
+        .then([this, onParsed](HttpResponseMessageParsed^ messageParsed) {
+        jsLoop_->EnqueueTask(ref new JsLoopEnqueuedTask([onParsed, messageParsed] {
+            onParsed(messageParsed);
+        }));
     });
 }
 
