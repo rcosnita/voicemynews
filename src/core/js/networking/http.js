@@ -35,7 +35,14 @@ let request = (requestDesc) => {
 
     const result = Q.defer()
     const headers = requestDesc.headers || {};
-    HttpNativeClient.get(url, undefined, (responseData) => {
+    const headersNative = HttpNativeClient.getNewHeadersMap();
+
+    for (let key in headers)
+    {
+        headersNative.insert(key, headers[key]);
+    }
+
+    HttpNativeClient.get(url, headersNative, (responseData) => {
         HttpNativeClient.parseResponseWithStringContent(responseData, (responseParsed) => {
             result.resolve(responseParsed);
         });

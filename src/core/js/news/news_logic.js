@@ -73,7 +73,6 @@ class NewsLogic {
         const providerId = evtData.provider;
 
         this.fetchNewsByUrl(url, providerId, evtData).then((newsModel) => {
-            debugger;
             const loadedEvt = this._buildEventData(JSON.stringify(newsModel));
             this._eventLoop.emit(EventNames.NEWS_FETCH_BY_URL_LOADED, loadedEvt);
         }, (rejectionResult) => {

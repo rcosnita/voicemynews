@@ -73,6 +73,7 @@ public delegate void HttpClientBindingRequestOnParsed(HttpResponseMessageParsed^
  */
 public ref class HttpClientBinding sealed {
 using EventLoopBinding = voicemynews::app::win10::bindings::events::EventLoopBinding;
+using HeadersStorage = Windows::Foundation::Collections::IMap<Platform::String^, Platform::String^>;
 public:
     HttpClientBinding();
 
@@ -94,7 +95,7 @@ public:
      * \param requestHeaders the request headers we want to send with the request.
      * \param onSuccess the success callback which must be invoked for the http request.
      */
-    void Get(String^ uri, IMap<String^, String^>^ requestHeaders, HttpClientBindingRequestOnSuccess^ onSuccess);
+    void Get(String^ uri, HeadersStorage^ requestHeaders, HttpClientBindingRequestOnSuccess^ onSuccess);
 
     /**
      * \brief This method provides a helper method for parsing message and fetching the response payload as string.
@@ -111,6 +112,13 @@ public:
      * \param onParsed The callback we want to executed once the message parsing is complete,
      */
     void ParseResponseWithStringContent(HttpResponseMessage^ msg, HttpClientBindingRequestOnParsed^ onParsed);
+
+    /**
+     * \brief Intantiate a new map which can be used as headers storage.
+     *
+     * \returns the map instance which can store headers.
+     */
+    HeadersStorage^ GetNewHeadersMap();
 
 private:
     /**

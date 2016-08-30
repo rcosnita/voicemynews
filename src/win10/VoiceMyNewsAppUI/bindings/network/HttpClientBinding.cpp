@@ -6,6 +6,7 @@
 using Windows::Foundation::Uri;
 using Windows::Web::Http::HttpClient;
 using Windows::Web::Http::HttpMethod;
+using Platform::Collections::Map;
 using voicemynews::app::win10::js::JsApp;
 using voicemynews::app::win10::bindings::events::JsLoopEnqueuedTask;
 
@@ -44,7 +45,7 @@ HttpClientBinding::HttpClientBinding()
 }
 
 IAsyncOperationWithProgress<HttpResponseMessage^, HttpProgress>^ HttpClientBinding::Get(Platform::String^ uri,
-    IMap<String^, String^>^ requestHeaders) {
+    HttpClientBinding::HeadersStorage^ requestHeaders) {
     auto httpClient = ref new HttpClient();
     auto requestMessage = ref new HttpRequestMessage(HttpMethod::Get, ref new Uri(uri));
 
@@ -55,7 +56,7 @@ IAsyncOperationWithProgress<HttpResponseMessage^, HttpProgress>^ HttpClientBindi
     return httpClient->SendRequestAsync(requestMessage);
 }
 
-void HttpClientBinding::Get(String^ uri, IMap<String^, String^>^ requestHeaders, HttpClientBindingRequestOnSuccess^ onSuccess)
+void HttpClientBinding::Get(String^ uri, HttpClientBinding::HeadersStorage^ requestHeaders, HttpClientBindingRequestOnSuccess^ onSuccess)
 {
     concurrency::create_task(Get(uri, requestHeaders))
         .then([this, onSuccess](HttpResponseMessage^ responseMessage) {
@@ -82,6 +83,11 @@ void HttpClientBinding::ParseResponseWithStringContent(HttpResponseMessage^ msg,
             onParsed(messageParsed);
         }));
     });
+}
+
+HttpClientBinding::HeadersStorage^ HttpClientBinding::GetNewHeadersMap()
+{
+    return ref new Map<String^, String^>();
 }
 
 void HttpClientBinding::CopyHeadersToRequestMessage(IMap<String^, String^>% headers,

@@ -23,9 +23,17 @@ describe("Test suites for unit testing http.js implementation.", () => {
 
     beforeAll(() => {
         this._httpRequired = false;
-        this._httpClient = jasmine.createSpyObj("HttpClient", ["get", "parseResponseWithStringContent"]);
+        this._httpClient = jasmine.createSpyObj("HttpClient", ["get", "parseResponseWithStringContent", "getNewHeadersMap"]);
         this._httpModule = require("js/networking/http");
         this._httpModule.__setHttpNativeClient(this._httpClient);
+    });
+
+    beforeEach(() => {
+        this._httpClient.getNewHeadersMap.and.returnValue({
+            "insert": function(key, value) {
+                this[key] = value;
+            }
+        });
     });
 
     afterEach(() => {
@@ -86,29 +94,18 @@ describe("Test suites for unit testing http.js implementation.", () => {
         expectedReason, expectedContent, expectedHeaders, doneCb) => {
         let url = "http://www.google.ro";
 
-        const result = Q.defer();
-        const getParser = Q.defer();
-
-        this._httpClient.parseResponseWithStringContent.and.callFake((responseData) => {
+        this._httpClient.parseResponseWithStringContent.and.callFake((responseData, callback) => {
             expect(responseData).toBe(okResponse);
-            
-            setTimeout(() => {
-                getParser.resolve(responseData);
-            });
 
-            return getParser.promise;
+            callback(responseData);
         });
 
-        this._httpClient.get.and.callFake((urlArg, headersArg) => {
+        this._httpClient.get.and.callFake((urlArg, headersArg, callback) => {
             const expectedUrl = url + (expectedQueryParamsStr.length === 0 ? "" : ("?" + expectedQueryParamsStr));
             expect(urlArg).toBe(expectedUrl);
             expect(JSON.stringify(headersArg)).toBe(JSON.stringify(requestHeaders || {}));
 
-            setTimeout(() => {
-                result.resolve(okResponse);
-            });
-
-            return result.promise;
+            callback(okResponse);
         });
 
         this._httpModule.get(url, requestHeaders, queryParams).done((responseParsed) => {
