@@ -114,7 +114,7 @@ public:
     void ParseResponseWithStringContent(HttpResponseMessage^ msg, HttpClientBindingRequestOnParsed^ onParsed);
 
     /**
-     * \brief Intantiate a new map which can be used as headers storage.
+     * \brief Instantiates a new map which can be used as headers storage.
      *
      * \returns the map instance which can store headers.
      */
