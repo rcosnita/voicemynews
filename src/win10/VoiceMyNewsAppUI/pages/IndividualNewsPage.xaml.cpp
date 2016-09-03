@@ -96,7 +96,7 @@ void IndividualNewsPage::OnNavigatedTo(Windows::UI::Xaml::Navigation::Navigation
 {
     newsRssDesc_ = static_cast<IndividualNewsPage::NewsModel^>(e->Parameter);
     concurrency::create_task([this]() {
-        jsEventLoop_->On(ConvertStdStrToPlatform(voicemynews::core::events::kNewsFetchByUrlLoaded),
+        onNewsLoadedId = jsEventLoop_->On(ConvertStdStrToPlatform(voicemynews::core::events::kNewsFetchByUrlLoaded),
             ref new voicemynews::app::win10::bindings::events::EventHandler([this](EventDataBinding^ evtData) {
             auto newsModelStr = evtData->EvtData;
             auto newsModel = JsonObject::Parse(newsModelStr);
@@ -113,6 +113,12 @@ void IndividualNewsPage::OnNavigatedTo(Windows::UI::Xaml::Navigation::Navigation
 
         jsEventLoop_->Emit(ConvertStdStrToPlatform(voicemynews::core::events::kNewsFetchByUrl),
             ref new EventDataBinding(newsRssDesc_->ToString()));
+    });
+}
+
+void IndividualNewsPage::OnNavigatedFrom(Windows::UI::Xaml::Navigation::NavigationEventArgs ^e) {
+    concurrency::create_task([this]() {
+        jsEventLoop_->Off(onNewsLoadedId);
     });
 }
 }

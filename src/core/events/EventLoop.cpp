@@ -30,7 +30,7 @@ void EventLoop::Off(std::string evtName, void* fnPointer) {
 int EventLoop::GetListenersCount(std::string evtName) const {
     auto listenersPos = listeners_.find(evtName);
 
-    return listenersPos == listeners_.end() ? 0 : listenersPos->second->size();
+    return listenersPos == listeners_.end() ? 0 : static_cast<int>(listenersPos->second->size());
 }
 
 void EventLoop::ProcessEvents() {

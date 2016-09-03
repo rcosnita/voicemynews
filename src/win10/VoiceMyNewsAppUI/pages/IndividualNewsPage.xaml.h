@@ -59,9 +59,15 @@ protected:
      */
     void OnNavigatedTo(Windows::UI::Xaml::Navigation::NavigationEventArgs ^e) override;
 
+    /**
+     * \brief When user navigates away from this page we clean all listeners.
+     */
+    void OnNavigatedFrom(Windows::UI::Xaml::Navigation::NavigationEventArgs ^e) override;
+
 private:
     NewsModel^ newsRssDesc_;
     JsEventLoop^ jsEventLoop_;
+    Platform::String^ onNewsLoadedId;
 };
 }
 }
