@@ -12,7 +12,7 @@
     </UserControl.Resources>
     
     <StackPanel Orientation="Vertical">
-        <ListView Name="NewsLst" ItemsSource="{Binding News}" SelectionChanged="NewsLst_SelectionChanged">
+        <ListView Name="NewsLst" ItemsSource="{Binding News}" IsItemClickEnabled="True" ItemClick="NewsLst_ItemClick">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="Template">

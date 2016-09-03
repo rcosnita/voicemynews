@@ -105,9 +105,9 @@ void GeniusNewsPage::DisplayNews(EventDataBinding^ evtData) {
     }))).wait();
 }
 
-void GeniusNewsPage::NewsLst_SelectionChanged(Platform::Object^ sender, Windows::UI::Xaml::Controls::SelectionChangedEventArgs^ e)
+void voicemynews::app::win10::pages::GeniusNewsPage::NewsLst_ItemClick(Platform::Object^ sender, Windows::UI::Xaml::Controls::ItemClickEventArgs^ e)
 {
-    auto selectedItem = NewsLst->SelectedItem;
+    auto selectedItem = e->ClickedItem;
     Frame->Navigate(IndividualNewsPage::typeid, selectedItem);
 }
 
