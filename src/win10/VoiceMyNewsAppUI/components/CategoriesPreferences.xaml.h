@@ -49,6 +49,18 @@ public:
 
 private:
     /**
+     * Holds the identifier of the last registered listener which handles categories loaded events coming from js.
+     * It can be used to unregister the listener once the user navigates away from the page.
+     */
+    Platform::String^ onCategoriesLoadedId;
+
+private:
+    /**
+     * \brief Initializes the control and correctly configures the data context.
+     */
+    void InitControl(JsApp^ jsBackend);
+
+    /**
      * \brief Wires the events used for displaying the data. In addition, it also emits get categories events to business logic.
      */
     void WireEvents();
@@ -57,6 +69,11 @@ private:
      * \brief Handles the event which tells that categories have been loaded.
      */
     void OnCategoriesLoaded(EventDataBinding^ evtData);
+
+    /**
+     * \brief This method cleans up all callbacks registered to js backend.
+     */
+    void OnUnloaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 };
 }
 }
