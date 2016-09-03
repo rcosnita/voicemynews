@@ -89,7 +89,7 @@ void GeniusNewsPage::WireJsModel() {
     auto jsLoop = JsBackend->GetEventLoop();
 
     concurrency::create_async([jsLoop, this]() {
-        jsLoop->On(ConvertStdStrToPlatform(kNewsFetchFromPreferredCategoriesLoaded),
+        onNewsLoadedId = jsLoop->On(ConvertStdStrToPlatform(kNewsFetchFromPreferredCategoriesLoaded),
             ref new voicemynews::app::win10::bindings::events::EventHandler(this, &GeniusNewsPage::DisplayNews));
 
         jsLoop->Emit(ConvertStdStrToPlatform(kNewsFetchFromPreferredCategories), ref new EventDataBinding(""));
@@ -105,10 +105,19 @@ void GeniusNewsPage::DisplayNews(EventDataBinding^ evtData) {
     }))).wait();
 }
 
-void voicemynews::app::win10::pages::GeniusNewsPage::NewsLst_ItemClick(Platform::Object^ sender, Windows::UI::Xaml::Controls::ItemClickEventArgs^ e)
+void GeniusNewsPage::NewsLst_ItemClick(Platform::Object^ sender, Windows::UI::Xaml::Controls::ItemClickEventArgs^ e)
 {
     auto selectedItem = e->ClickedItem;
     Frame->Navigate(IndividualNewsPage::typeid, selectedItem);
+}
+
+void GeniusNewsPage::OnNavigatedFrom(Windows::UI::Xaml::Navigation::NavigationEventArgs^ e)
+{
+    auto jsLoop = JsBackend->GetEventLoop();
+
+    concurrency::create_task([this, jsLoop]() {
+        jsLoop->Off(onNewsLoadedId);
+    });
 }
 
 }
