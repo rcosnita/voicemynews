@@ -49,8 +49,8 @@ namespace utils {
             return result;
         }
 
-        for (auto first = jsonArray.First(); first->HasCurrent; first->MoveNext()) {
-            result->Append(first->Current->GetObject());
+        for (auto curr = jsonArray.First(); curr->HasCurrent; curr->MoveNext()) {
+            result->Append(curr->Current->GetObject());
         }
 
         return result;
