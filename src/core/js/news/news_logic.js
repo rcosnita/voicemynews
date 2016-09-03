@@ -28,6 +28,7 @@ class NewsLogic {
         this._eventLoop = eventLoop;
         this._buildEventData = buildEventData;
         this._newsProviders = newsProviders;
+        this._cachedArticles = {};
     }
 
     /**
@@ -54,7 +55,13 @@ class NewsLogic {
             throw new newsException.NewsProviderNotFoundException(undefined, newsProviderId);
         }
 
+        if (this._cachedArticles[url]) {
+            loader.resolve(this._cachedArticles[url]);
+            return loader.promise;
+        }
+
         datasource.fetchNews(url, rssDesc).then((newsModel) => {
+            this._cachedArticles[url] = newsModel;
             loader.resolve(newsModel);
         }, (rejectionResult) => {
             loader.reject(rejectionResult);

@@ -21,6 +21,14 @@ describe("Tests suite for ensuring correct functionality for cnn datasource.", (
         assertNewsModel(news);
     });
 
+    it("CNN article parsed same result multiple parses.", () => {
+        for (let idx = 0; idx < 10; idx++) {
+            let news = this._cnnDataSource.parseContent(this._sampleContent);
+
+            assertNewsModel(news);
+        }
+    });
+
     it("CNN article parse empty.", () => {
         expect(this._cnnDataSource.parseContent(undefined)).toBe(undefined);
         expect(this._cnnDataSource.parseContent("")).toBe(undefined);
