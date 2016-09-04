@@ -208,6 +208,7 @@
     <ClCompile Include="..\..\..\tests\unittests\win10\c++\events\NavigationBindingTests.cpp" />
     <ClCompile Include="..\..\..\tests\unittests\win10\c++\pages\GeniusNewsPageTests.cpp" />
     <ClCompile Include="..\..\..\tests\unittests\win10\c++\pages\MainPageTests.cpp" />
+    <ClCompile Include="IndividualNewsPageTests.cpp" />
     <ClCompile Include="UnitTestApp.xaml.cpp">
       <DependentUpon>UnitTestApp.xaml</DependentUpon>
     </ClCompile>

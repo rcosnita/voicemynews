@@ -56,11 +56,24 @@ namespace win10 {
 namespace pages {
 IndividualNewsPage::IndividualNewsPage()
 {
+    InitPage(JsApp::GetInstance());
+}
+
+IndividualNewsPage::IndividualNewsPage(JsApp^ jsBackend)
+{
+    InitPage(jsBackend);
+}
+
+void IndividualNewsPage::InitPage(JsApp^ jsBackend)
+{
     InitializeComponent();
 
-    jsEventLoop_ = JsApp::GetInstance()->GetEventLoop();
+    jsEventLoop_ = jsBackend->GetEventLoop();
     DataContext = this;
+
+    WireJsEvents();
 }
+
 
 void IndividualNewsPage::CurrNews::set(IndividualNewsPage::NewsModel^ model)
 {
@@ -96,24 +109,33 @@ void IndividualNewsPage::OnNavigatedTo(Windows::UI::Xaml::Navigation::Navigation
 {
     newsRssDesc_ = static_cast<IndividualNewsPage::NewsModel^>(e->Parameter);
     concurrency::create_task([this]() {
-        onNewsLoadedId = jsEventLoop_->On(ConvertStdStrToPlatform(voicemynews::core::events::kNewsFetchByUrlLoaded),
-            ref new voicemynews::app::win10::bindings::events::EventHandler([this](EventDataBinding^ evtData) {
-            auto newsModelStr = evtData->EvtData;
-            auto newsModel = JsonObject::Parse(newsModelStr);
-            auto paragraphs = ConvertJsonArrayToVector(*(newsModel->GetNamedArray("paragraphs")));
-            auto contributedBy = ConvertJsonArrayToStrVector(*(newsModel->GetNamedArray("contributedBy")));
-
-            concurrency::create_task(Dispatcher->RunAsync(Windows::UI::Core::CoreDispatcherPriority::Normal,
-                ref new Windows::UI::Core::DispatchedHandler([this, contributedBy, newsModel, paragraphs]() {
-                CurrNews = newsModel;
-                Paragraphs = paragraphs;
-                ContributedBy = contributedBy;
-            })));
-        }));
-
         jsEventLoop_->Emit(ConvertStdStrToPlatform(voicemynews::core::events::kNewsFetchByUrl),
             ref new EventDataBinding(newsRssDesc_->ToString()));
     });
+}
+
+void IndividualNewsPage::WireJsEvents()
+{
+    onNewsLoadedId = jsEventLoop_->On(ConvertStdStrToPlatform(voicemynews::core::events::kNewsFetchByUrlLoaded),
+        ref new voicemynews::app::win10::bindings::events::EventHandler([this](EventDataBinding^ evtData) {
+        DisplayNews(evtData);
+    }));
+}
+
+void IndividualNewsPage::DisplayNews(EventDataBinding^ evtData)
+{
+    auto newsModelStr = evtData->EvtData;
+    auto newsModel = JsonObject::Parse(newsModelStr);
+    auto paragraphs = ConvertJsonArrayToVector(*(newsModel->GetNamedArray("paragraphs")));
+    auto contributedBy = ConvertJsonArrayToStrVector(*(newsModel->GetNamedArray("contributedBy")));
+
+    concurrency::create_task(Dispatcher->RunAsync(Windows::UI::Core::CoreDispatcherPriority::Normal,
+        ref new Windows::UI::Core::DispatchedHandler([this, contributedBy, newsModel, paragraphs]() {
+        CurrNews = newsModel;
+        Paragraphs = paragraphs;
+        ContributedBy = contributedBy;
+    }))).wait();
+
 }
 
 void IndividualNewsPage::OnNavigatedFrom(Windows::UI::Xaml::Navigation::NavigationEventArgs ^e) {

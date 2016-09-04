@@ -18,6 +18,8 @@ namespace pages {
 [Windows::Foundation::Metadata::WebHostHidden]
 public ref class IndividualNewsPage sealed
 {
+using EventDataBinding = voicemynews::app::win10::bindings::events::EventDataBinding;
+using JsApp = voicemynews::app::win10::js::JsApp;
 using JsEventLoop = voicemynews::app::win10::bindings::events::EventLoopBinding;
 using NewsModel = Windows::Data::Json::IJsonObject;
 using ParagraphModel = Windows::Foundation::Collections::IVector<NewsModel^>;
@@ -53,6 +55,8 @@ public:
 public:
     IndividualNewsPage();
 
+    IndividualNewsPage(JsApp^ jsBackend);
+
 protected:
     /**
      * \brief This method is invoked automatically whenever the page is opened through navigation.
@@ -68,6 +72,22 @@ private:
     NewsModel^ newsRssDesc_;
     JsEventLoop^ jsEventLoop_;
     Platform::String^ onNewsLoadedId;
+
+private:
+    /**
+     * \brief Once the js business logic correctly loads the news this method is solely responsible for pushing it to screen.
+     */
+    void DisplayNews(EventDataBinding^ evtData);
+
+    /**
+     * \brief This method initializes the page and correctly configures the data context.
+     */
+    void InitPage(JsApp^ jsBackend);
+
+    /**
+     * \brief We use this method to wire the callbacks required for handling individual news related events.
+     */
+    void WireJsEvents();
 };
 }
 }
