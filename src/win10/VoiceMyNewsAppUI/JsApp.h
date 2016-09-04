@@ -42,7 +42,6 @@ private:
     FileUtils fileUtils_;
     JsRuntimeHandle runtime_;
     JsContextRef context_;
-    JsValueRef promiseCallback_;
     unsigned int currentSourceContext_;
 
 private:

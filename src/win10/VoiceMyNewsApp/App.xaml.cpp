@@ -1,7 +1,5 @@
 ﻿#include "pch.h"
 
-#include <ppltasks.h>
-
 #include "events/EventNames.h"
 #include "utils/Conversions.h"
 
@@ -34,16 +32,17 @@ App::App()
     InitializeComponent();
     Suspending += ref new SuspendingEventHandler(this, &App::OnSuspending);
 
-    jsApp_ = JsApp::GetInstance();
     jsAppStarted_ = false;
 
-    auto appStartEvt = ConvertStdStrToPlatform(voicemynews::core::events::kAppJsStart);
-    jsApp_->GetEventLoop()->On(appStartEvt,
-        ref new voicemynews::app::win10::bindings::events::EventHandler([this](EventDataBinding^ evtData) {
-        jsAppStarted_ = true;
-    }));
+    jsAppRunner_ = concurrency::create_task([this]() {
+        jsApp_ = JsApp::GetInstance();
 
-    jsAppRunner_ = std::thread([this]() {
+        auto appStartEvt = ConvertStdStrToPlatform(voicemynews::core::events::kAppJsStart);
+        jsApp_->GetEventLoop()->On(appStartEvt,
+            ref new voicemynews::app::win10::bindings::events::EventHandler([this](EventDataBinding^ evtData) {
+            jsAppStarted_ = true;
+        }));
+
         jsApp_->Start();
     });
 }

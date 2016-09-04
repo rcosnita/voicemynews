@@ -70,7 +70,7 @@ public:
      * \param evtHandler the event handler function we want to register.
      */
     template<typename T>
-    void On(std::string evtName, std::function<void(std::shared_ptr<EventData<T>>)>& evtHandler) {
+    void* On(std::string evtName, std::function<void(std::shared_ptr<EventData<T>>)>& evtHandler) {
         std::unique_lock<std::mutex> lock(listenersMutex_);
         if (listeners_.find(evtName) == listeners_.end()) {
             listeners_[evtName] = std::make_unique<std::vector<InternalRegisteredMethod*>>();
@@ -90,10 +90,12 @@ public:
         }
 
         if (listenersRegisteredAssoc_.at(evtName)->find(evtHandlerLocation) != listenersRegisteredAssoc_.at(evtName)->end()) {
-            return;
+            return nullptr;
         }
 
         listenersRegisteredAssoc_.at(evtName)->emplace(evtHandlerLocation, registeredMethod);
+
+        return evtHandlerLocation;
     }
 
     /**

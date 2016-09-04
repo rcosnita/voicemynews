@@ -53,12 +53,18 @@ describe("Test suites for unit testing app.js implementation.", () => {
         this._eventLoopPlatform = jasmine.createSpyObj("EventLoopPlatform", ["getInstance", "buildEvent"]);
         this._navigationManagerPlatform = jasmine.createSpyObj("NavigationBinding", ["getInstance"]);
         this._eventLoopPlatform.getInstance.and.returnValue(this._eventLoop);
+        this._httpClient = jasmine.createSpyObj("HttpClient", ["get"]);
 
         global.voicemynews = {
             core: {
                 events: {
                     EventLoopPlatform: this._eventLoopPlatform,
                     NavigationManagerPlatform: this._navigationManagerPlatform
+                },
+                network: {
+                    HttpClient: {
+                        getInstance: () => this._httpClient
+                    }
                 }
             }
         }

@@ -42,7 +42,7 @@ class CategoriesLogic {
      */
     init() {
         this._eventLoop.on(EventNames.CATEGORIES_GET, () => this._handleGetCategories());
-        this._eventLoop.on(EventNames.NEWS_FETCH_FROM_PREFERRED_CATEGORIES, () => this._handleGetPreferredCategories());
+        this._eventLoop.on(EventNames.NEWS_FETCH_FROM_PREFERRED_CATEGORIES, () => this._handleFetchNewsPreferredCategories());
     }
 
     /**
@@ -142,9 +142,9 @@ class CategoriesLogic {
     }
 
     /**
-     * This method get preferred categories and emit loaded events when everything is in place.
+     * This method get news from preferred categories and emit loaded events when everything is in place.
      */
-    _handleGetPreferredCategories() {
+    _handleFetchNewsPreferredCategories() {
         const newsLoader = this.fetchNewsFromPreferredCategories();
 
         newsLoader.then((newsData) => {

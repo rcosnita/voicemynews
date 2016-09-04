@@ -19,6 +19,7 @@
         }
 
         moduleName = enforceJsExt(moduleName);
+        setNodeEnvironment(moduleName);
 
         const cachedModule = getFromCache(moduleName);
 
@@ -82,6 +83,24 @@
         }
 
         return moduleName;
+    };
+
+    /**
+     * This method sets all required global variables required to simulate node.
+     *
+     * @param {String} moduleName the moduleName from which we infer __filename and __dirname.
+     */
+    let setNodeEnvironment = (moduleName) => {
+        let slashPos = moduleName.lastIndexOf("/");
+
+        if (slashPos < 0) {
+            globalCtx.__dirname = "./";
+            globalCtx.__filename = moduleName;
+            return;
+        }
+
+        globalCtx.__dirname = moduleName.substr(0, slashPos);
+        globalCtx.__filename = moduleName.substr(slashPos + 1);
     };
 
     /**

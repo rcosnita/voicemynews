@@ -53,6 +53,7 @@
     <ClCompile Include="bindings\events\NavigationBinding.cpp">
       <Filter>bindings\events</Filter>
     </ClCompile>
+    <ClCompile Include="components\CategoriesPreferences.xaml.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -83,6 +84,7 @@
     <ClInclude Include="bindings\events\NavigationBinding.h">
       <Filter>bindings\events</Filter>
     </ClInclude>
+    <ClInclude Include="components\CategoriesPreferences.xaml.h" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="pages\MainPage.xaml">
@@ -102,6 +104,9 @@
     </Page>
     <Page Include="components\CategoriesPreferences.xaml">
       <Filter>components</Filter>
+    </Page>
+    <Page Include="pages\IndividualNewsPage.xaml">
+      <Filter>pages</Filter>
     </Page>
   </ItemGroup>
 </Project>

@@ -55,51 +55,67 @@ namespace win10 {
 namespace components {
 CategoriesPreferences::CategoriesPreferences()
 {
-    InitializeComponent();
-    DataContext = this;
+    InitControl(nullptr);
 }
 
 CategoriesPreferences::CategoriesPreferences(JsApp^ jsBackend)
 {
-    InitializeComponent();
-    JsBackend = jsBackend;
-
-    DataContext = this;
+    InitControl(jsBackend);
 }
 
-JsApp^ CategoriesPreferences::JsBackend::get() {
+void CategoriesPreferences::InitControl(JsApp^ jsBackend)
+{
+    InitializeComponent();
+
+    if (jsBackend != nullptr) {
+        JsBackend = jsBackend;
+    }
+
+    DataContext = this;
+
+    Unloaded += ref new Windows::UI::Xaml::RoutedEventHandler(this, &CategoriesPreferences::OnUnloaded);
+}
+
+JsApp^ CategoriesPreferences::JsBackend::get()
+{
     return static_cast<JsApp^>(GetValue(JsBackendProperty));
 }
 
-void CategoriesPreferences::JsBackend::set(JsApp^ jsBackend) {
+void CategoriesPreferences::JsBackend::set(JsApp^ jsBackend)
+{
     SetValue(JsBackendProperty, jsBackend);
 }
 
-void CategoriesPreferences::OnJsBackendChanged(DependencyObject^ d, DependencyPropertyChangedEventArgs^ args) {
+void CategoriesPreferences::OnJsBackendChanged(DependencyObject^ d, DependencyPropertyChangedEventArgs^ args)
+{
     auto comp = safe_cast<CategoriesPreferences^>(d);
     comp->WireEvents();
 }
 
-IVector<IJsonObject^>^ CategoriesPreferences::Categories::get() {
+IVector<IJsonObject^>^ CategoriesPreferences::Categories::get()
+{
     return static_cast<IVector<IJsonObject^>^>(GetValue(CategoriesProperty));
 }
 
-void CategoriesPreferences::Categories::set(IVector<IJsonObject^>^ categories) {
+void CategoriesPreferences::Categories::set(IVector<IJsonObject^>^ categories)
+{
     SetValue(CategoriesProperty, categories);
 }
 
-void CategoriesPreferences::WireEvents() {
+void CategoriesPreferences::WireEvents()
+{
     auto jsEventLoop = JsBackend->GetEventLoop();
 
     concurrency::create_async([this, jsEventLoop]() {
-        jsEventLoop->On(ConvertStdStrToPlatform(kCategoriesGetLoaded),
+        onCategoriesLoadedId = jsEventLoop->On(ConvertStdStrToPlatform(kCategoriesGetLoaded),
             ref new voicemynews::app::win10::bindings::events::EventHandler(this, &CategoriesPreferences::OnCategoriesLoaded));
 
         jsEventLoop->Emit(ConvertStdStrToPlatform(kCategoriesGet), ref new EventDataBinding(""));
     });
 }
 
-void CategoriesPreferences::OnCategoriesLoaded(EventDataBinding^ evtData) {
+void CategoriesPreferences::OnCategoriesLoaded(EventDataBinding^ evtData)
+{
     auto categoriesData = JsonArray::Parse(evtData->EvtData);
 
     concurrency::create_task(Dispatcher->RunAsync(CoreDispatcherPriority::High,
@@ -107,6 +123,16 @@ void CategoriesPreferences::OnCategoriesLoaded(EventDataBinding^ evtData) {
         Categories = ConvertJsonArrayToVector(*categoriesData);
     }))).wait();
 }
+
+void CategoriesPreferences::OnUnloaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
+{
+    auto jsEventLoop = JsBackend->GetEventLoop();
+
+    concurrency::create_async([this, jsEventLoop]() {
+        jsEventLoop->Off(onCategoriesLoadedId);
+    });
+}
+
 }
 }
 }

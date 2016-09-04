@@ -84,6 +84,9 @@
     <ClCompile Include="..\..\..\tests\unittests\win10\c++\core\JsAppTests.cpp">
       <Filter>core</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\tests\unittests\win10\c++\pages\IndividualNewsPageTests.cpp">
+      <Filter>pages</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />

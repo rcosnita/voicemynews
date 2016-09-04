@@ -6,11 +6,11 @@
  */
 "use strict";
 
-const HttpNativeClient = voicemynews.core.network.HttpClient.getInstance();
-
 const NotImplemented = require("js/exceptions/notimplemented");
 const NotImplementedMethodException = NotImplemented.NotImplementedMethodException;
 const Q = require("js/third_party/q/q");
+
+var HttpNativeClient = voicemynews.core.network.HttpClient.getInstance();
 
 /**
  * This function provides a generic implementation for http request which supports all verbs and actions.
@@ -34,11 +34,16 @@ let request = (requestDesc) => {
     url += _encodeQueryParams(queryParams);
 
     const result = Q.defer()
-    const headers = requestDesc.headers || {}
-    const response = HttpNativeClient.get(url, headers);
+    const headers = requestDesc.headers || {};
+    const headersNative = HttpNativeClient.getNewHeadersMap();
 
-    response.done((responseData) => {
-        HttpNativeClient.parseResponseWithStringContent(responseData).done((responseParsed) => {
+    for (let key in headers)
+    {
+        headersNative.insert(key, headers[key]);
+    }
+
+    HttpNativeClient.get(url, headersNative, (responseData) => {
+        HttpNativeClient.parseResponseWithStringContent(responseData, (responseParsed) => {
             result.resolve(responseParsed);
         });
     });
@@ -57,9 +62,9 @@ let request = (requestDesc) => {
  * @example
  * const http = require("js/networking/http");
  * const resp = http.get("http://www.google.ro", {"Content-Type": "text/html"}, {"q": "search this term"});
- * resp.then((respData, respDesc) => {
- *      console.log(respData);
- *      const isOk = respDesc.statusCode == 200;
+ * resp.then((responseParsed) => {
+ *      console.log(responseParsed.getContent());
+ *      const isOk = responseParsed.getStatusCode() == 200;
  * });
  */
 let get = (url, headers, queryParams) => {
@@ -83,9 +88,8 @@ let get = (url, headers, queryParams) => {
  * const http = require("js/networking/http");
  * const data = {"name": "John Doe"};
  * let resp = http.post("http://myapi.com/api/persons", {"Authorization": "XYZ oauth2 token"}, {}, data);
- * resp.then((respData, respDesc) => {
- *      console.log(respData);
- *      const isOk = respDesc.statusCode == 201;
+ * resp.then((responseParsed) => {
+ *      const isOk = responseParsed.getStatusCode() == 201;
  * });
  */
 let post = (url, headers, queryParams, data) => {
@@ -105,9 +109,8 @@ let post = (url, headers, queryParams, data) => {
  * const http = require("js/networking/http");
  * const data = {"name": "John Doe"};
  * let resp = http.put("http://myapi.com/api/persons", {"Authorization": "XYZ oauth2 token"}, {}, data);
- * resp.then((respData, respDesc) => {
- *      console.log(respData);
- *      const isOk = respDesc.statusCode == 204;
+ * resp.then((responseParsed) => {
+ *      const isOk = responseParsed.getStatusCode() == 204;
  * });
  */
 let put = (url, headers, queryParams, data) => {
@@ -125,9 +128,8 @@ let put = (url, headers, queryParams, data) => {
  * @example
  * const http = require("js/networking/http");
  * const resp = http.delete("http://www.google.ro", {"Accept": "text/html"}, {"q": "search this term"});
- * resp.then((respData, respDesc) => {
- *      console.log(respData);
- *      const isOk = respDesc.statusCode == 200;
+ * resp.then((responseParsed) => {
+ *      const isOk = responseParsed.getStatusCode() == 200;
  * });
  */
 let del = (url, headers, queryParams, data) => {
@@ -159,4 +161,7 @@ module.exports = {
     "post": post,
     "put": put,
     "del": del,
+    "__setHttpNativeClient": (httpClient) => {
+        HttpNativeClient = httpClient;
+    }
 };

@@ -6,6 +6,9 @@ describe("Tests suite for unit testing require.js global functions.", () => {
         this._oldRequire = global.require;
         this._requireInstance = jasmine.createSpyObj("RequireBinding", ["load", "loadRaw"]);
 
+        this.__dirname = global.__dirname;
+        this.__filename = global.__filename;
+
         global.voicemynews = {
             core: {
                 RequireFactory: {
@@ -26,6 +29,8 @@ describe("Tests suite for unit testing require.js global functions.", () => {
 
     afterEach(() => {
         _clearRequireCache();
+        global.__filename = this.__filename;
+        global.__dirname = this.__dirname;
         this._requireInstance.loadRaw.calls.reset();
     });
 
@@ -43,6 +48,21 @@ describe("Tests suite for unit testing require.js global functions.", () => {
     });
 
     it("require no cache no export ok.", () => {
+        const dirName = "a/b";
+        const moduleName = "testModule";
+        const moduleSource = "";
+
+        this._requireInstance.load.and.returnValue(moduleSource);
+
+        let result = global.require(dirName + "/" + moduleName);
+
+        expect(JSON.stringify(result)).toBe("{}");
+        expect(this._requireInstance.load).toHaveBeenCalledWith(moduleName + ".js");
+        expect(global.__filename).toBe(moduleName + ".js");
+        expect(global.__dirname).toBe(dirName);
+    });
+
+    it("require no cache no export simple module name.", () => {
         const moduleName = "testModule";
         const moduleSource = "";
 
@@ -52,6 +72,8 @@ describe("Tests suite for unit testing require.js global functions.", () => {
 
         expect(JSON.stringify(result)).toBe("{}");
         expect(this._requireInstance.load).toHaveBeenCalledWith(moduleName + ".js");
+        expect(global.__filename).toBe(moduleName + ".js");
+        expect(global.__dirname).toBe("./");
     });
 
     it("require no cache explicit undefined export.", () => {

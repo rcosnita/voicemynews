@@ -51,6 +51,19 @@ public:
      */
     static void OnJsBackendChanged(DependencyObject^ d, DependencyPropertyChangedEventArgs^ args);
 
+protected:
+    /**
+     * \brief We override this method in order to do some cleanup. We remove all listenered registered to js backend.
+     */
+    void OnNavigatedFrom(Windows::UI::Xaml::Navigation::NavigationEventArgs^ e) override;
+
+private:
+    /**
+     * This member keeps the reference identifier of the last listener registered to handle news loaded. It is removed
+     * when user navigates to a new page.
+     */
+    Platform::String^ onNewsLoadedId;
+
 private:
     /**
      * Initializes the page instance.
@@ -66,6 +79,11 @@ private:
      * \brief This method displays from an event to the page.
      */
     void DisplayNews(EventDataBinding^ evtData);
+
+    /**
+     * \brief This methods obtains the selected item and navigate to the page which can display the news.
+     */
+    void NewsLst_ItemClick(Platform::Object^ sender, Windows::UI::Xaml::Controls::ItemClickEventArgs^ e);
 };
 }
 }

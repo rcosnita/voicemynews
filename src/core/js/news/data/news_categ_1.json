@@ -1,6 +1,8 @@
 [{
     "newsId": "574429b4-028e-4462-8cb8-f219fbd0e14e",
-    "headline": "Breaking News - Article 1.",
+    "headline": "M for Muqawama: The secret resistance fighting ISIS with graffiti and guns",
+    "url": "http://edition.cnn.com/2016/08/25/middleeast/muqawama-mosul-resistance-fighters/index.html",
+    "provider": "cnn",
     "images": {
         "small": {
             "url": "http://i2.cdn.turner.com/cnnnext/dam/assets/160809155818-donald-trump-nc-rally-large-11.jpg",
@@ -11,6 +13,7 @@
 }, {
     "newsId": "574429b4-028e-4462-8cb8-f219fbd0e14f",
     "headline": "Breaking News - Article 2.",
+    "provider": "cnn",
     "images": {
         "small": {
             "url": "http://i2.cdn.turner.com/cnnnext/dam/assets/160809182959-02-rio-green-pool-story-body.jpg",

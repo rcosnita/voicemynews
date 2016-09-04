@@ -2,22 +2,26 @@
 #define VoiceMyNewsAppUI_bindings_events_EventLoopBinding_H_
 
 #include "EventDataBinding.h"
+#include "events/EventData.h"
 #include "events/EventLoop.h"
 
 #include <mutex>
+#include <queue>
 
 namespace voicemynews {
 namespace app {
 namespace win10 {
 namespace bindings {
 namespace events {
-using Platform::String;
-using voicemynews::core::events::EventLoop;
-
 /**
  * \brief This delegate defines a winrt method which can be binded from javascript.
  */
 public delegate void EventHandler(EventDataBinding^);
+
+/**
+ * \brief This delegate defines the api for tasks which can be enqueued for deferred execution.
+ */
+public delegate void JsLoopEnqueuedTask();
 
 /**
  * \class EventLoopBinding
@@ -25,6 +29,10 @@ public delegate void EventHandler(EventDataBinding^);
  * The application relies on the event loop in order to have a bridge between native XAML world and js business logic.
  */
 public ref class EventLoopBinding sealed {
+using String = Platform::String;
+using EventLoop = voicemynews::core::events::EventLoop;
+using EventData = voicemynews::core::events::EventData<std::string>;
+
 public:
     EventLoopBinding();
 
@@ -38,13 +46,26 @@ public:
 
     /**
      * \brief This method allows developers to register for the specified event.
+     *
+     * If the developer intends to remove the newly added handler, he must save the handler id and
+     * pass it to off method when necessary.
      */
-    void On(String^ evtName, EventHandler^ handler);
+    String^ On(String^ evtName, EventHandler^ handler);
+
+    /**
+     * \brief This method allows developers to unregister a handler from the specified event.
+     */
+    void Off(String^ handlerId);
 
     /**
      * \brief This method allows the app to process the latest queued events.
      */
     void ProcessEvents();
+
+    /**
+     * \brief This method allows the app to enqueue deferred tasks which are going to be processed at the next process events loop.
+     */
+    void EnqueueTask(JsLoopEnqueuedTask^ task);
 
 public:
     /**
@@ -53,7 +74,25 @@ public:
     static EventLoopBinding^ GetInstance();
 
 private:
+    struct ListenerModel
+    {
+        String^ evtName;
+        void* handlerPtr;
+
+        ListenerModel() { }
+
+        ListenerModel(String^ evtName_, void* handlerPtr_)
+            : evtName(evtName_),
+            handlerPtr(handlerPtr_)
+        {
+        }
+    };
+
+private:
     EventLoop eventLoop_;
+    std::mutex registeredListenersMutex_;
+    std::map<std::string, ListenerModel> registeredListeners_;
+    std::queue<JsLoopEnqueuedTask^> deferredTasks_;
 };
 }
 }
