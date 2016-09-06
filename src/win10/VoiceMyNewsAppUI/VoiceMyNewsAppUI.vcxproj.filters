@@ -26,6 +26,9 @@
     <Filter Include="converters">
       <UniqueIdentifier>{8b42e004-e8af-47c1-9ba4-2b5038fbb910}</UniqueIdentifier>
     </Filter>
+    <Filter Include="bindings\news">
+      <UniqueIdentifier>{6ee3e0ec-54bc-485c-85d5-c260f02faf70}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -54,6 +57,10 @@
       <Filter>bindings\events</Filter>
     </ClCompile>
     <ClCompile Include="components\CategoriesPreferences.xaml.cpp" />
+    <ClCompile Include="pages\IndividualNewsPage.xaml.cpp" />
+    <ClCompile Include="bindings\news\VoiceBinding.cpp">
+      <Filter>bindings\news</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -85,6 +92,10 @@
       <Filter>bindings\events</Filter>
     </ClInclude>
     <ClInclude Include="components\CategoriesPreferences.xaml.h" />
+    <ClInclude Include="pages\IndividualNewsPage.xaml.h" />
+    <ClInclude Include="bindings\news\VoiceBinding.h">
+      <Filter>bindings\news</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Page Include="pages\MainPage.xaml">

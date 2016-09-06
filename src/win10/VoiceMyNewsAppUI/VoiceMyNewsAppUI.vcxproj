@@ -34,8 +34,8 @@
     <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
     <AppContainerApplication>true</AppContainerApplication>
     <ApplicationType>Windows Store</ApplicationType>
-    <WindowsTargetPlatformVersion>10.0.10586.0</WindowsTargetPlatformVersion>
-    <WindowsTargetPlatformMinVersion>10.0.10240.0</WindowsTargetPlatformMinVersion>
+    <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformMinVersion>10.0.14393.0</WindowsTargetPlatformMinVersion>
     <ApplicationTypeRevision>10.0</ApplicationTypeRevision>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -213,6 +213,7 @@
     <ClInclude Include="bindings\events\EventLoopBinding.h" />
     <ClInclude Include="bindings\events\NavigationBinding.h" />
     <ClInclude Include="bindings\network\HttpClientBinding.h" />
+    <ClInclude Include="bindings\news\VoiceBinding.h" />
     <ClInclude Include="bindings\RequireBinding.h" />
     <ClInclude Include="components\CategoriesPreferences.xaml.h">
       <DependentUpon>components\CategoriesPreferences.xaml</DependentUpon>
@@ -245,6 +246,7 @@
     <ClCompile Include="bindings\events\EventLoopBinding.cpp" />
     <ClCompile Include="bindings\events\NavigationBinding.cpp" />
     <ClCompile Include="bindings\network\HttpClientBinding.cpp" />
+    <ClCompile Include="bindings\news\VoiceBinding.cpp" />
     <ClCompile Include="bindings\RequireBinding.cpp" />
     <ClCompile Include="components\CategoriesPreferences.xaml.cpp">
       <DependentUpon>components\CategoriesPreferences.xaml</DependentUpon>

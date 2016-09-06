@@ -65,6 +65,11 @@ namespace events {
      * \brief This event is emitted by the business logic whenever the content of a news has been loaded.
      */
     const std::string kNewsFetchByUrlLoaded = "js:news:get:byurl:loaded";
+
+    /**
+     * \brief This event is emitted by the native app in order to tell the business logic to start read the given news.
+     */
+    const std::string kNewsVoiceRead = "js:news:voice:read";
 }
 }
 }

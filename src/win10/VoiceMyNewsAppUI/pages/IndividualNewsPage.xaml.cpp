@@ -143,6 +143,17 @@ void IndividualNewsPage::OnNavigatedFrom(Windows::UI::Xaml::Navigation::Navigati
         jsEventLoop_->Off(onNewsLoadedId);
     });
 }
+
+void IndividualNewsPage::btnReadNews_Tapped(Platform::Object^ sender, Windows::UI::Xaml::Input::TappedRoutedEventArgs^ e)
+{
+    btnReadNews->IsEnabled = false;
+    auto newsModel = CurrNews->ToString();
+
+    concurrency::create_task([this, newsModel]() {
+        jsEventLoop_->Emit(ConvertStdStrToPlatform(voicemynews::core::events::kNewsVoiceRead),
+            ref new EventDataBinding(newsModel));
+    });
+}
 }
 }
 }
