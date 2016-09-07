@@ -201,7 +201,6 @@
     <ClInclude Include="utils\Conversions.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\core\events\EventLoop.cpp" />
     <ClCompile Include="..\..\core\io\fs\exceptions\FileNotFoundException.cpp" />
     <ClCompile Include="..\..\core\io\fs\FileUtils.cpp" />
     <ClCompile Include="..\..\core\io\fs\Require.cpp" />

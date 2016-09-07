@@ -133,7 +133,4 @@
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="VoiceMyNewsAppTests_TemporaryKey.pfx" />
-  </ItemGroup>
 </Project>
