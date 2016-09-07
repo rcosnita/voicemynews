@@ -59,14 +59,6 @@ void EventLoop::ProcessEvents() {
     pendingEventsTemp_.clear();
     pendingEventsNotifier_.notify_all();
 }
-
-bool EventLoop::InternalRegisteredMethod::operator==(const InternalRegisteredMethod& obj) {
-    return id_ == obj.id_;
-}
-
-void EventLoop::InternalRegisteredMethod::operator()(void* dataPtr) const {
-    fn_(dataPtr);
-}
 }
 }
 }

@@ -108,10 +108,10 @@ public:
 
 private:
     /**
-     * \brief Internal class used to store information about registered listeners.
-     *
-     * It can be used as a functor class so that it makes things convenient when processing events.
-     */
+    * \brief Internal class used to store information about registered listeners.
+    *
+    * It can be used as a functor class so that it makes things convenient when processing events.
+    */
     class InternalRegisteredMethod {
     public:
         template<typename T>
@@ -119,8 +119,15 @@ private:
             fn_ = fn;
         }
 
-        bool operator==(const InternalRegisteredMethod& obj);
-        void operator()(void* dataPtr) const;
+        bool operator==(const InternalRegisteredMethod& obj)
+        {
+            return id_ == obj.id_;
+        }
+
+        void operator()(void* dataPtr) const
+        {
+            fn_(dataPtr);
+        }
 
     private:
         uintptr_t id_;
