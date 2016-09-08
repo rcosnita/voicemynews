@@ -182,6 +182,8 @@
       <CompileAsWinRT>true</CompileAsWinRT>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(ProjectDir);$(GeneratedFilesDir);$(IntDir);$(SolutionDir)..\core;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RemoveUnreferencedCodeData>true</RemoveUnreferencedCodeData>
+      <Optimization>MaxSpeed</Optimization>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

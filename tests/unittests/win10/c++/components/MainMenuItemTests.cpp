@@ -60,7 +60,7 @@ public:
         concurrency::create_task(menuItem_->Dispatcher->RunAsync(CoreDispatcherPriority::Normal,
             ref new DispatchedHandler([this, &model] {
             menuItem_->DataContext = model;
-            menuItem_->OnMenuItemClicked(menuItem_, nullptr);
+            menuItem_->DoClick();
         }))).then([&eventTriggered, &receivedEvtData, &modelStr, this]() {
             jsLoop_->ProcessEvents();
         }).wait();

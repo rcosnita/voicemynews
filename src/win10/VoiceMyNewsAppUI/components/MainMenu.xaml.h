@@ -75,11 +75,12 @@ public:
 
     MainMenu(JsApp^ jsApp);
 
-#ifndef _DEBUG
+    /**
+     * \brief Programmatically click on the expand / collapse button from the main menu. It comes handy in tests.
+     */
+    void DoClickExpandButton();
+
 private:
-#else
-public:
-#endif
     /**
      * \brief This method expands / collapses menu. It simply negates the current expanded state.
      */
