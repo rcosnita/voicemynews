@@ -118,4 +118,9 @@
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="VoiceMyNewsApp_TemporaryKey.cer" />
+    <None Include="VoiceMyNewsApp_TemporaryKey.pfx" />
+    <None Include="VoiceMyNewsApp_TemporaryKey.pvk" />
+  </ItemGroup>
 </Project>

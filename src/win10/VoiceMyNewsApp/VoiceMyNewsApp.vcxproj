@@ -144,6 +144,11 @@
       <TargetPath>js\third_party\lodash\%(Filename)%(Extension)</TargetPath>
     </AppxPackagePayload>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="VoiceMyNewsApp_TemporaryKey.cer" />
+    <None Include="VoiceMyNewsApp_TemporaryKey.pfx" />
+    <None Include="VoiceMyNewsApp_TemporaryKey.pvk" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
