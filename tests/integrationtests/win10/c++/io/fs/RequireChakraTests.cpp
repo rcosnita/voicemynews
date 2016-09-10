@@ -84,7 +84,7 @@ public:
             startTime = std::chrono::system_clock().now();
             CheckRequireChakraEmbeddedOkTemplate("js/samples/dummymodule");
             endTime = std::chrono::system_clock().now();
-            duration += (endTime - startTime).count();
+            duration += static_cast<long>((endTime - startTime).count());
         }
 
         Assert::IsTrue((duration / kSubsequentIterations) < (firstDuration.count() / kCacheExpectedBoost));

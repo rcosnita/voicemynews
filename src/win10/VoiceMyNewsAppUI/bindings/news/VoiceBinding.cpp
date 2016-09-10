@@ -7,6 +7,7 @@
 
 using Platform::String;
 using Windows::Foundation::TypedEventHandler;
+using Windows::Media::Core::MediaSource;
 using Windows::Media::Playback::MediaPlayerAudioDeviceType;
 
 using voicemynews::app::win10::bindings::events::JsLoopEnqueuedTask;
@@ -83,7 +84,7 @@ void VoiceBinding::ReadText(Platform::String^ paragraph, VoiceReadingNotificatio
 
 void VoiceBinding::PlayStream(VoiceBinding::SpeechStream^ speechStream)
 {
-    player_->SetStreamSource(speechStream);
+    player_->Source = MediaSource::CreateFromStream(speechStream, speechStream->ContentType);
     player_->Play();
 }
 
