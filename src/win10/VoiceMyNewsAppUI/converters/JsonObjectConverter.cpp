@@ -32,9 +32,9 @@ static Object^ ConvertTo(T value, TypeName targetType) {
  */
 static IJsonObject^ GetFromCompoundParameter(IJsonObject^ master, String^& parameter) {
     std::wstring paramName = parameter->Data();
-    size_t dotPos = -1;
+    size_t dotPos = std::wstring::npos;
 
-    while ((dotPos = paramName.find('.')) > 0) {
+    while ((dotPos = paramName.find('.')) != std::wstring::npos) {
         String^ currKey = ref new String(paramName.substr(0, dotPos).data());
         paramName = paramName.substr(dotPos + 1);
 
