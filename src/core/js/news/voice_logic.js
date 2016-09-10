@@ -19,10 +19,13 @@ class VoiceLogic {
     constructor(eventLoop, buildEventData) {
         this._eventLoop = eventLoop;
         this._buildEventData = buildEventData;
-        this._voiceBinding = new voicemynews.app.win10.bindings.news.VoiceBinding();
+        this._voiceBinding = voicemynews.core.voice.VoiceSupport.getInstance();
         this._remainingParagraphs = [];
-        this._playerNotifications = new voicemynews.app.win10.bindings.news.VoiceNotifications(
-            () => this._whenParagraphRead()
+        this._playerNotifications = voicemynews.core.voice.VoiceSupport.getNotificationsInstance(
+            (currPos) => this._whenParagraphReadInProgress(currPos),
+            (currPos) => this._whenParagraphReadPaused(currPos),
+            (currPos) => this._whenParagraphReadResumed(currPos),
+            () => this._whenParagraphReadDone()
         );
     }
 
@@ -83,7 +86,37 @@ class VoiceLogic {
         this.readNews(newsModel);
     }
 
-    _whenParagraphRead() {
+    /**
+     * Handles read in progress events coming from voice support.
+     *
+     * @param {Number} currPos the current position inside the reading stream.
+     */
+    _whenParagraphReadInProgress(currPos) {
+
+    }
+
+    /**
+     * Handles read paused events coming from voice support.
+     *
+     * @param {Number} currPos the current position inside the reading stream.
+     */
+    _whenParagraphReadPaused(currPos) {
+
+    }
+
+    /**
+     * Handles read resumed events coming from voice support.
+     *
+     * @param {Number} currPos the current position inside the reading stream.
+     */
+    _whenParagraphReadResumed(currPos) {
+
+    }
+
+    /**
+     * Handles read completed events coming from voice support.
+     */
+    _whenParagraphReadDone() {
         this._readParagraphs(this._remainingPagraphs);
     }
 }

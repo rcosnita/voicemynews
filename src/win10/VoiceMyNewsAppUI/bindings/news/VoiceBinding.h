@@ -2,6 +2,7 @@
 #define VoiceMyNewsAppUI_bindings_news_VoiceBinding
 
 #include "bindings/events/EventLoopBinding.h"
+#include "voice/VoiceSupport.h"
 
 namespace voicemynews {
 namespace app {
@@ -9,24 +10,58 @@ namespace win10 {
 namespace bindings {
 namespace news {
 /**
- * This delegate can be used when triggering read in order to receive notifications about when the reading is done.
+ * This delegate can be used when triggering read in order to receive notifications when the reading is done.
  */
-public delegate void ReadingDone();
+public delegate void ReadingDoneHandler();
 
 /**
- * Provides a unified model of notifications which can be received by consumers of voice logic.
+ * This delegate can be used when triggering read in order to receive notifications when the reading is paused.
  */
-public ref class VoiceNotifications sealed
+public delegate void ReadingPausedHandler(int64 currPos);
+
+/**
+ * This delegate can be used when triggering read in order to receive notifications when the reading is resumed.
+ */
+public delegate void ReadingResumedHandler(int64 currPos);
+
+/**
+ * This delegate can be used when triggering read in order to receive notifications when the reading is in progress.
+ */
+public delegate void ReadingProgressHandler(int64 currPos);
+
+/**
+ * \brief Provides a unified model of notifications which can be received by consumers of voice logic.
+ */
+public ref class VoiceReadingNotifications sealed
 {
 public:
-    property ReadingDone^ WhenDone {
-        ReadingDone^ get();
+    property ReadingDoneHandler^ WhenDone {
+        ReadingDoneHandler^ get();
     }
+
+    property ReadingProgressHandler^ WhenProgress {
+        ReadingProgressHandler^ get();
+    }
+
+    property ReadingPausedHandler^ WhenPaused {
+        ReadingPausedHandler^ get();
+    }
+
+    property ReadingResumedHandler^ WhenResumed {
+        ReadingResumedHandler^ get();
+    }
+
 public:
-    VoiceNotifications(ReadingDone^ whenDone);
+    VoiceReadingNotifications(ReadingProgressHandler^ whenProgress,
+        ReadingPausedHandler^ whenPaused,
+        ReadingResumedHandler^ whenResumed,
+        ReadingDoneHandler^ whenDone);
 
 private:
-    ReadingDone^ whenDone_;
+    ReadingProgressHandler^ whenProgress_;
+    ReadingPausedHandler^ whenPaused_;
+    ReadingResumedHandler^ whenResumed_;
+    ReadingDoneHandler^ whenDone_;
 };
 
 /**
@@ -47,7 +82,7 @@ public:
      * This is the most basic api and consumers will usually do some processing / aggregation between invoking
      * this method.
      */
-    void ReadText(Platform::String^ paragraph, VoiceNotifications^ notifications);
+    void ReadText(Platform::String^ paragraph, VoiceReadingNotifications^ notifications);
 
 private:
     /**
@@ -61,6 +96,24 @@ private:
     voicemynews::app::win10::bindings::events::EventLoopBinding^ jsEventLoop_;
 
     Windows::Foundation::EventRegistrationToken mediaEndedToken_;
+};
+
+/**
+ * \brief Provides the windows implementation for voice support contract.
+ *
+ * The implementation relies on the VoiceBinding projection.
+ */
+class VoiceSupportWin : public voicemynews::core::voice::VoiceSupportAbstract {
+using VoiceReadingNotifications = voicemynews::core::voice::VoiceReadingNotifications;
+public:
+    VoiceSupportWin(VoiceBinding^ voiceBinding);
+
+    virtual void ReadText(std::string text, std::shared_ptr<VoiceReadingNotifications> readingCallbacks);
+
+    virtual void ReadSsml(std::string ssmlText, std::shared_ptr<VoiceReadingNotifications> readingCallbacks);
+
+private:
+    VoiceBinding^ voiceBinding_;
 };
 
 }

@@ -90,12 +90,14 @@
     <ClInclude Include="..\..\core\io\fs\FileUtils.h" />
     <ClInclude Include="..\..\core\io\fs\Require.h" />
     <ClInclude Include="..\..\core\network\HttpClientInterface.h" />
+    <ClInclude Include="..\..\core\voice\VoiceSupport.h" />
     <ClInclude Include="utils\Conversions.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\core\io\fs\exceptions\FileNotFoundException.cpp" />
     <ClCompile Include="..\..\core\io\fs\FileUtils.cpp" />
     <ClCompile Include="..\..\core\io\fs\Require.cpp" />
+    <ClCompile Include="..\..\core\voice\VoiceSupport.cpp" />
     <ClCompile Include="utils\Conversions.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
