@@ -54,6 +54,9 @@ describe("Test suites for unit testing app.js implementation.", () => {
         this._navigationManagerPlatform = jasmine.createSpyObj("NavigationBinding", ["getInstance"]);
         this._eventLoopPlatform.getInstance.and.returnValue(this._eventLoop);
         this._httpClient = jasmine.createSpyObj("HttpClient", ["get"]);
+        this._voiceSupport = jasmine.createSpyObj("VoiceSupport", ["readText", "readSsmlText"]);
+        this._voicePlayerNotifications = jasmine.createSpyObj("VoicePlayerNotifications", ["whenProgress", "whenPaused",
+            "whenResumed", "whenDone"]);
 
         global.voicemynews = {
             core: {
@@ -64,6 +67,12 @@ describe("Test suites for unit testing app.js implementation.", () => {
                 network: {
                     HttpClient: {
                         getInstance: () => this._httpClient
+                    }
+                },
+                voice: {
+                    VoiceSupport: {
+                        getInstance: () => this._voiceSupport,
+                        getNotificationsInstance: () => this._voicePlayerNotifications
                     }
                 }
             }

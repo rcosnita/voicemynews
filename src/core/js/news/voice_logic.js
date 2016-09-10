@@ -19,7 +19,7 @@ class VoiceLogic {
     constructor(eventLoop, buildEventData) {
         this._eventLoop = eventLoop;
         this._buildEventData = buildEventData;
-        this._voiceBinding = voicemynews.core.voice.VoiceSupport.getInstance();
+        this._voiceSupport = voicemynews.core.voice.VoiceSupport.getInstance();
         this._remainingParagraphs = [];
         this._playerNotifications = voicemynews.core.voice.VoiceSupport.getNotificationsInstance(
             (currPos) => this._whenParagraphReadInProgress(currPos),
@@ -52,7 +52,7 @@ class VoiceLogic {
      */
     readNews(newsModel) {
         this._remainingPagraphs = newsModel.paragraphs;
-        this._voiceBinding.readText(newsModel.headline, this._playerNotifications);
+        this._voiceSupport.readText(newsModel.headline, this._playerNotifications);
     }
 
     /**
@@ -70,7 +70,7 @@ class VoiceLogic {
         const currParagraph = paragraphs[0]
         this._remainingPagraphs = paragraphs.slice(1, paragraphs.length);
 
-        this._voiceBinding.readText(currParagraph.content, this._playerNotifications);
+        this._voiceSupport.readText(currParagraph.content, this._playerNotifications);
     }
 
     /**
