@@ -94,8 +94,11 @@ class VoiceLogic {
      * @param {Event} evt a native event which provides access to evtData property.
      */
     _handleReadNews(evt) {
-        const newsModel = JSON.parse(evt.evtData);
+        if (!evt.evtData || evt.evtData.trim().length === 0) {
+            return;
+        }
 
+        const newsModel = JSON.parse(evt.evtData);
         this.readNews(newsModel);
     }
 

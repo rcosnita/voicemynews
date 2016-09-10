@@ -144,6 +144,19 @@ describe("Tests suite for making sure voice reading business logic works as expe
         expect(JSON.stringify(this._voiceLogic.pendingParagraphs[1])).toBe(JSON.stringify(newsModel.paragraphs[1]));
     });
 
+    it("Test read news corrupted event ok.", () => {
+        this._voiceLogic.init();
+        
+        this._eventLoop.emit(EventNames.NEWS_VOICE_READ, {"evtData": undefined});
+        expect(this._voiceSupport.readText).not.toHaveBeenCalled();
+
+        this._eventLoop.emit(EventNames.NEWS_VOICE_READ, {"evtData": ""});
+        expect(this._voiceSupport.readText).not.toHaveBeenCalled();
+
+        this._eventLoop.emit(EventNames.NEWS_VOICE_READ, {"evtData": "     "});
+        expect(this._voiceSupport.readText).not.toHaveBeenCalled();
+    });
+
     it("Test readProgress callback not implemented.", () => {
         try {
             this._playerNotifications.whenProgress(1);
