@@ -8,6 +8,7 @@
 "use strict";
 
 const EventNames = require("js/events/event_names");
+const NotImplementedMethodException = require("js/exceptions/notimplemented").NotImplementedMethodException;
 
 /**
  * This class provides all the logic for transforming a news model into audio and internally relies on platform
@@ -27,6 +28,14 @@ class VoiceLogic {
             (currPos) => this._whenParagraphReadResumed(currPos),
             () => this._whenParagraphReadDone()
         );
+    }
+
+    /**
+     * @property
+     * Obtains currently pending paragraphs which are going to be read by voice logic.
+     */
+    get pendingParagraphs() {
+        return this._remainingParagraphs;
     }
 
     /**
@@ -51,7 +60,11 @@ class VoiceLogic {
      * to audio.
      */
     readNews(newsModel) {
-        this._remainingPagraphs = newsModel.paragraphs;
+        if (!newsModel || !newsModel.headline) {
+            return;
+        }
+
+        this._remainingParagraphs = newsModel.paragraphs;
         this._voiceSupport.readText(newsModel.headline, this._playerNotifications);
     }
 
@@ -68,7 +81,7 @@ class VoiceLogic {
         }
 
         const currParagraph = paragraphs[0]
-        this._remainingPagraphs = paragraphs.slice(1, paragraphs.length);
+        this._remainingParagraphs = paragraphs.slice(1, paragraphs.length);
 
         this._voiceSupport.readText(currParagraph.content, this._playerNotifications);
     }
@@ -92,7 +105,7 @@ class VoiceLogic {
      * @param {Number} currPos the current position inside the reading stream.
      */
     _whenParagraphReadInProgress(currPos) {
-
+        throw new NotImplementedMethodException();
     }
 
     /**
@@ -101,7 +114,7 @@ class VoiceLogic {
      * @param {Number} currPos the current position inside the reading stream.
      */
     _whenParagraphReadPaused(currPos) {
-
+        throw new NotImplementedMethodException();
     }
 
     /**
@@ -110,14 +123,14 @@ class VoiceLogic {
      * @param {Number} currPos the current position inside the reading stream.
      */
     _whenParagraphReadResumed(currPos) {
-
+        throw new NotImplementedMethodException();
     }
 
     /**
      * Handles read completed events coming from voice support.
      */
     _whenParagraphReadDone() {
-        this._readParagraphs(this._remainingPagraphs);
+        this._readParagraphs(this._remainingParagraphs);
     }
 }
 
