@@ -35,6 +35,9 @@
     <Filter Include="converters">
       <UniqueIdentifier>{dc0a6a0e-c2b5-4ab6-ac0b-11d41e76ab6f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="voice">
+      <UniqueIdentifier>{537d19d8-6d5f-4694-ac2d-60d1fb85a41e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="UnitTestApp.xaml" />
@@ -86,6 +89,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\tests\unittests\win10\c++\pages\IndividualNewsPageTests.cpp">
       <Filter>pages</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\tests\unittests\win10\c++\voice\VoiceSupportTests.cpp">
+      <Filter>voice</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

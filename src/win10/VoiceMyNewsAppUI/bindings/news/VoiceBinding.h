@@ -98,26 +98,41 @@ private:
     Windows::Foundation::EventRegistrationToken mediaEndedToken_;
 };
 
+}
+}
+}
+}
+}
+
+namespace voicemynews {
+namespace core {
+namespace voice {
 /**
- * \brief Provides the windows implementation for voice support contract.
- *
- * The implementation relies on the VoiceBinding projection.
- */
-class VoiceSupportWin : public voicemynews::core::voice::VoiceSupportAbstract {
-using VoiceReadingNotifications = voicemynews::core::voice::VoiceReadingNotifications;
+* \brief Provides a factory implementation for obtaining voice providers and notification objects.
+*/
+public ref class VoiceSupport sealed
+{
+using ReadingProgressHandler = voicemynews::app::win10::bindings::news::ReadingProgressHandler;
+using ReadingPausedHandler = voicemynews::app::win10::bindings::news::ReadingPausedHandler;
+using ReadingResumedHandler = voicemynews::app::win10::bindings::news::ReadingResumedHandler;
+using ReadingDoneHandler = voicemynews::app::win10::bindings::news::ReadingDoneHandler;
+using VoiceBinding = voicemynews::app::win10::bindings::news::VoiceBinding;
+
 public:
-    VoiceSupportWin(VoiceBinding^ voiceBinding);
+    /**
+    * \brief Obtains an instance of voice class which provides TTS algorithm.
+    */
+    static VoiceBinding^ GetInstance();
 
-    virtual void ReadText(std::string text, std::shared_ptr<VoiceReadingNotifications> readingCallbacks);
-
-    virtual void ReadSsml(std::string ssmlText, std::shared_ptr<VoiceReadingNotifications> readingCallbacks);
-
-private:
-    VoiceBinding^ voiceBinding_;
+    /**
+    * \brief Obtains an instance of notifications class which allows js logic to receive playback events.
+    */
+    static voicemynews::app::win10::bindings::news::VoiceReadingNotifications^ GetNotificationsInstance(
+        VoiceSupport::ReadingProgressHandler^ progressCallback,
+        VoiceSupport::ReadingPausedHandler^ pausedCallback,
+        VoiceSupport::ReadingResumedHandler^ resumedCallback,
+        VoiceSupport::ReadingDoneHandler^ doneCallback);
 };
-
-}
-}
 }
 }
 }
