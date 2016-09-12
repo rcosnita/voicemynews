@@ -144,6 +144,11 @@ void IndividualNewsPage::OnNavigatedFrom(Windows::UI::Xaml::Navigation::Navigati
     });
 }
 
+void IndividualNewsPage::ReadNews()
+{
+    btnReadNews_Tapped(btnReadNews, nullptr);
+}
+
 void IndividualNewsPage::btnReadNews_Tapped(Platform::Object^ sender, Windows::UI::Xaml::Input::TappedRoutedEventArgs^ e)
 {
     btnReadNews->IsEnabled = false;

@@ -37,6 +37,11 @@ public:
     EventLoopBinding();
 
     /**
+     * \brief This method enforces each new emitted event to trigger a process event invocation. Extremely useful in tests.
+     */
+    EventLoopBinding(bool processImmediate);
+
+    /**
      * \brief This method queues a new event under evtName space.
      *
      * \param evtName The event name emitted.
@@ -90,6 +95,7 @@ private:
 
 private:
     EventLoop eventLoop_;
+    bool processImmediate_ = false;
     std::mutex registeredListenersMutex_;
     std::map<std::string, ListenerModel> registeredListeners_;
     std::queue<JsLoopEnqueuedTask^> deferredTasks_;

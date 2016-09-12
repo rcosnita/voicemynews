@@ -57,6 +57,11 @@ public:
 
     IndividualNewsPage(JsApp^ jsBackend);
 
+    /**
+     * \brief provides a programmatic way to start reading the displayed news.
+     */
+    void ReadNews();
+
 protected:
     /**
      * \brief This method is invoked automatically whenever the page is opened through navigation.

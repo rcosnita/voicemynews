@@ -3,6 +3,8 @@
 #include "events/EventNames.h"
 #include "utils/Conversions.h"
 
+#include <chrono>
+#include <mutex>
 #include <ppltasks.h>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
@@ -15,6 +17,7 @@ using voicemynews::app::win10::bindings::events::EventLoopBinding;
 using voicemynews::app::win10::js::JsApp;
 using voicemynews::app::win10::utils::ConvertStdStrToPlatform;
 using voicemynews::core::events::kNewsFetchByUrlLoaded;
+using voicemynews::core::events::kNewsVoiceRead;
 
 using Windows::ApplicationModel::Core::CoreApplication;
 using Windows::Data::Json::JsonArray;
@@ -25,6 +28,7 @@ using Windows::Foundation::Collections::IVector;
 using Windows::UI::Core::CoreDispatcher;
 using Windows::UI::Core::CoreDispatcherPriority;
 using Windows::UI::Core::DispatchedHandler;
+using Windows::UI::Xaml::Controls::Control;
 
 namespace voicemynews {
 namespace tests {
@@ -38,7 +42,7 @@ TEST_CLASS(IndividualNewsPageTests) {
 public:
     TEST_METHOD_INITIALIZE(IndividualNewsPageTestsSetUp)
     {
-        jsLoop_ = ref new EventLoopBinding();
+        jsLoop_ = ref new EventLoopBinding(true);
         jsBackend_ = ref new JsApp(jsLoop_);
         dispatcher_ = CoreApplication::CreateNewView()->Dispatcher;
 
@@ -59,7 +63,6 @@ public:
 
         jsLoop_->Emit(ConvertStdStrToPlatform(kNewsFetchByUrlLoaded),
             ref new EventDataBinding(newsModel->ToString()));
-        jsLoop_->ProcessEvents();
 
         IJsonObject^ actualNewsModel = nullptr;
         IVector<IJsonObject^>^ actualParagrahsModel = nullptr;
@@ -89,7 +92,6 @@ public:
 
         jsLoop_->Emit(ConvertStdStrToPlatform(kNewsFetchByUrlLoaded),
             ref new EventDataBinding(newsModel->ToString()));
-        jsLoop_->ProcessEvents();
 
         IJsonObject^ actualNewsModel = nullptr;
         IVector<IJsonObject^>^ actualParagrahsModel = nullptr;
@@ -118,6 +120,47 @@ public:
         for (auto it = actualContributedByModel->First(); it->HasCurrent; it->MoveNext()) {
             Assert::AreEqual(it->Current->ToString(), actualContributedByModel->GetAt(idx++)->ToString());
         }
+    }
+
+    TEST_METHOD(IndividualNewsPageTestsReadOk)
+    {
+        std::mutex eventHandlerMutex;
+        std::unique_lock<std::mutex> eventHandlerLock(eventHandlerMutex);
+        std::condition_variable eventHandlerNotifier;
+        bool eventReceived = false;
+
+        String^ receivedNews = nullptr;
+        bool btnReadEnabled = true;
+
+        auto newsModel = ref new JsonObject();
+        newsModel->SetNamedValue("headline", JsonValue::CreateStringValue("sample article"));
+        newsModel->SetNamedValue("paragraphs", JsonValue::Parse("[]"));
+        newsModel->SetNamedValue("contributedBy", JsonValue::Parse("[]"));
+
+        jsLoop_->On(ConvertStdStrToPlatform(kNewsVoiceRead),
+            ref new EventHandler([this, &eventHandlerMutex, &eventHandlerNotifier, &eventReceived,
+                &receivedNews](EventDataBinding^ evt) {
+            std::lock_guard<std::mutex> lk(eventHandlerMutex);
+            receivedNews = evt->EvtData;
+            eventReceived = true;
+            eventHandlerNotifier.notify_all();
+        }));
+
+        jsLoop_->Emit(ConvertStdStrToPlatform(kNewsFetchByUrlLoaded),
+            ref new EventDataBinding(newsModel->ToString()));
+
+        concurrency::create_task(dispatcher_->RunAsync(CoreDispatcherPriority::High,
+            ref new DispatchedHandler([this, &btnReadEnabled, newsModel]() {
+            newsPage_->ReadNews();
+            btnReadEnabled = safe_cast<Control^>(newsPage_->FindName("btnReadNews"))->IsEnabled;
+        }))).wait();
+
+        eventHandlerNotifier.wait_for(eventHandlerLock, std::chrono::milliseconds{20000},
+            [&eventReceived] { return eventReceived; });
+
+        Assert::IsNotNull(receivedNews);
+        Assert::AreEqual(newsModel->ToString(), receivedNews);
+        Assert::IsFalse(btnReadEnabled);
     }
 
 private:
