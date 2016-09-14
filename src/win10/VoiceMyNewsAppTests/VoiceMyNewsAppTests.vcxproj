@@ -110,6 +110,7 @@
     <ClCompile Include="..\..\..\tests\integrationtests\win10\c++\utils\ChakraRunner.cpp" />
     <ClCompile Include="..\..\..\tests\integrationtests\win10\c++\utils\CommonAssertions.cpp" />
     <ClCompile Include="..\..\..\tests\integrationtests\win10\c++\utils\TestRunnerUtils.cpp" />
+    <ClCompile Include="..\..\..\tests\integrationtests\win10\c++\voice\VoiceSupportChakraTests.cpp" />
     <ClCompile Include="..\..\..\tests\unittests\win10\c++\components\CategoriesPreferencesTests.cpp" />
     <ClCompile Include="..\..\..\tests\unittests\win10\c++\components\MainMenuItemTests.cpp" />
     <ClCompile Include="..\..\..\tests\unittests\win10\c++\components\MainMenuTests.cpp" />
