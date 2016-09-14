@@ -68,41 +68,54 @@ MainMenu::MainMenu()
     DataContext = this;
 }
 
-MainMenu::MainMenu(JsApp^ jsApp) {
+MainMenu::MainMenu(JsApp^ jsApp)
+{
     InitializeComponent();
     JsBackend = jsApp;
     DataContext = this;
 }
 
-bool MainMenu::IsMenuExpanded::get() {
+bool MainMenu::IsMenuExpanded::get()
+{
     return static_cast<bool>(GetValue(IsMenuExpandedProperty));
 }
 
-void MainMenu::IsMenuExpanded::set(bool value) {
+void MainMenu::IsMenuExpanded::set(bool value)
+{
     SetValue(IsMenuExpandedProperty, value);
 
     MenuExpanded(value);
 }
 
-JsApp^ MainMenu::JsBackend::get() {
+JsApp^ MainMenu::JsBackend::get()
+{
     return static_cast<JsApp^>(GetValue(JsBackendProperty));
 }
 
-void MainMenu::JsBackend::set(JsApp^ value) {
+void MainMenu::JsBackend::set(JsApp^ value)
+{
     SetValue(JsBackendProperty, value);
 }
 
-void MainMenu::OnJsBackendChanged(DependencyObject^ d, DependencyPropertyChangedEventArgs^ args) {
+void MainMenu::OnJsBackendChanged(DependencyObject^ d, DependencyPropertyChangedEventArgs^ args)
+{
     auto comp = safe_cast<MainMenu^>(d);
     comp->WireJsMenuModel();
 }
 
-IVector<IJsonObject^>^ MainMenu::MenuItems::get() {
+IVector<IJsonObject^>^ MainMenu::MenuItems::get()
+{
     return static_cast<IVector<IJsonObject^>^>(GetValue(MenuItemsProperty));
 }
 
-void MainMenu::MenuItems::set(IVector<IJsonObject^>^ value) {
+void MainMenu::MenuItems::set(IVector<IJsonObject^>^ value)
+{
     SetValue(MenuItemsProperty, value);
+}
+
+void MainMenu::DoClickExpandButton()
+{
+    OpenMenu(this, nullptr);
 }
 
 void MainMenu::OpenMenu(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)

@@ -26,6 +26,7 @@ using voicemynews::tests::app::win10::utils::assertions::AssertNoJsError;
         JsProjectWinRTNamespace(L"voicemynews.app.win10.bindings");
         JsProjectWinRTNamespace(L"voicemynews.core.network");
         JsProjectWinRTNamespace(L"voicemynews.core.events");
+        JsProjectWinRTNamespace(L"voicemynews.core.voice");
 
         JsSetPromiseContinuationCallback(PromiseContinuationCallback, &promiseCallback_);
 #ifdef _DEBUG

@@ -31,6 +31,11 @@ EventLoopBinding::EventLoopBinding()
 {
 }
 
+EventLoopBinding::EventLoopBinding(bool processImmediate)
+    : processImmediate_(processImmediate)
+{
+}
+
 EventLoopBinding^ EventLoopBinding::GetInstance()
 {
     if (loopInstance == nullptr) {
@@ -44,6 +49,10 @@ void EventLoopBinding::Emit(String^ evtName, EventDataBinding^ evtData)
 {
     eventLoop_.Emit(ConvertPlatformStrToStd(evtName),
         std::make_shared<EventLoopBinding::EventData>(ConvertPlatformStrToStd(evtData->EvtData)));
+
+    if (processImmediate_) {
+        ProcessEvents();
+    }
 }
 
 void EventLoopBinding::EnqueueTask(JsLoopEnqueuedTask^ task)

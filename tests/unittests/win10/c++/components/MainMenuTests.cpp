@@ -49,11 +49,11 @@ public:
             Assert::IsFalse(mainMenu->IsMenuExpanded);
             Assert::AreEqual(mainMenu->IsMenuExpanded, menuExpanded);
 
-            mainMenu->OpenMenu(mainMenu, nullptr);
+            mainMenu->DoClickExpandButton();
             Assert::IsTrue(mainMenu->IsMenuExpanded);
             Assert::AreEqual(mainMenu->IsMenuExpanded, menuExpanded);
 
-            mainMenu->OpenMenu(mainMenu, nullptr);
+            mainMenu->DoClickExpandButton();
             Assert::IsFalse(mainMenu->IsMenuExpanded);
             Assert::AreEqual(mainMenu->IsMenuExpanded, menuExpanded);
         }))).wait();

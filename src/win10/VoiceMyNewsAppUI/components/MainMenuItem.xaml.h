@@ -30,13 +30,14 @@ public:
 public:
     MainMenuItem();
 
-#ifndef _DEBUG
-private:
-#else
-public:
-#endif
     /**
-     * This method is invoked when user clicks on a menu item. Internally, it delegates an event to the js backend.
+     * \brief Programmatically click on the current menu item. It is extremely useful in tests but it might come handy in other scenarios as well.
+     */
+    void DoClick();
+
+private:
+    /**
+     * \brief This method is invoked when user clicks on a menu item. Internally, it delegates an event to the js backend.
      */
     void OnMenuItemClicked(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 };

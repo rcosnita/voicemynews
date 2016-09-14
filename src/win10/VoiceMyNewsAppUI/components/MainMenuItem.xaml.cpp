@@ -51,6 +51,11 @@ void MainMenuItem::JsBackend::set(JsApp^ value) {
     SetValue(JsBackendProperty, value);
 }
 
+void MainMenuItem::DoClick()
+{
+    OnMenuItemClicked(this, nullptr);
+}
+
 void MainMenuItem::OnMenuItemClicked(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
     auto jsonModel = static_cast<IJsonObject^>(DataContext);
