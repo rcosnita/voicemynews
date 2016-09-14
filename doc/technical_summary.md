@@ -49,8 +49,8 @@ JS Engine is a generic name for the actual engine we are going to use on each pl
 | **Win10 surface**| Chakra | - |
 | **Android**| V8 | - |
 | **Chromebook OS** | V8 | - |
-| **MacOS** | V8 | - |
-| **iOS** | V8 | We might have to change the engine for iOS as there is a big chance of store rejecting the app. |
+| **MacOS** | JavaScriptCore | - |
+| **iOS** | JavaScriptCore | - |
 
 ## C++ code
 
@@ -84,3 +84,4 @@ Each OS specific deliverable must pass store certification. There is no intentio
 | **Version** | **Date** | **Author** | **Description** |
 |-------------|----------|------------|-----------------|
 | 1.0 | 25.05.2016 | Radu Viorel Cosnita | This revision contains the initial technical specification for **VoiceMyNews** platform. |
+| 1.1 | 15.09.2016 | Radu Viorel Cosnita | I updated the js engine we are going to use on Apple devices and improved the deployment diagram. |
