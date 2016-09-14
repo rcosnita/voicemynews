@@ -102,5 +102,11 @@ module.exports = Object.freeze({
      * It contains the voicemynews news model.
      * @constant
      */
-    NEWS_FETCH_BY_URL_LOADED: "js:news:get:byurl:loaded"
+    NEWS_FETCH_BY_URL_LOADED: "js:news:get:byurl:loaded",
+
+    /**
+     * This event is emitted by the native app and requests the business logic to start reading the given news model.
+     * @constant
+     */
+    NEWS_VOICE_READ: "js:news:voice:read"
 });

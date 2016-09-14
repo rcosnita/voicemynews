@@ -14,12 +14,16 @@
 namespace voicemynews {
 namespace core {
 namespace events {
+
 /**
  * \brief This class provides an event loop mechanism which queue events and process them on demand.
  */
 class EventLoop {
 public:
-    EventLoop() = default;
+    EventLoop()
+    {
+        kPendingTimeout = std::chrono::milliseconds(1);
+    }
 
     virtual ~EventLoop() = default;
 
@@ -54,14 +58,40 @@ public:
     *
     * \param evtName the name of the event for which we count the listeners.
     */
-    int GetListenersCount(std::string evtName) const;
+    int GetListenersCount(std::string evtName) const
+    {
+        auto listenersPos = listeners_.find(evtName);
+
+        return listenersPos == listeners_.end() ? 0 : static_cast<int>(listenersPos->second->size());
+    }
 
     /**
     * \brief This method removes the given function pointer from the list of active listeners for the specified event.
     *
     * \param fnPointer a pointer to the listener we want to unregister.
     */
-    void Off(std::string evtName, void* fnPointer);
+    void Off(std::string evtName, void* fnPointer)
+    {
+        std::lock_guard<std::mutex> lock(listenersMutex_);
+
+        auto listenersPos = listeners_.find(evtName);
+        if (listenersPos == listeners_.end()) {
+            return;
+        }
+
+        auto fnPointerPos = listenersRegisteredAssoc_.find(evtName)->second->find(fnPointer);
+        if (fnPointerPos == listenersRegisteredAssoc_.find(evtName)->second->end()) {
+            return;
+        }
+
+        auto listenerPos = std::find(listeners_.find(evtName)->second->begin(),
+            listeners_.find(evtName)->second->end(),
+            fnPointerPos->second);
+
+        delete *listenerPos;
+        listeners_.find(evtName)->second->erase(listenerPos);
+        listenersRegisteredAssoc_.at(evtName)->erase(fnPointerPos);
+    }
 
     /**
      * \brief This method provides a way to register handlers for specific events.
@@ -104,14 +134,40 @@ public:
      * Internally it uses a notification based mechanism and becomes blocking till events are available. Like this,
      * we can avoid polling intervals and other mechanism which are killers for performance.
      */
-    void ProcessEvents();
+    void ProcessEvents()
+    {
+        std::unique_lock<std::mutex> lock(pendingEventsMutex_);
+        auto checkNonZeroSize = [this]() {
+            return pendingEvents_.size() > 0;
+        };
+
+        if (!pendingEventsNotifier_.wait_for(lock, kPendingTimeout, checkNonZeroSize)) {
+            return;
+        }
+
+        std::lock_guard<std::mutex> lockListeners(listenersMutex_);
+
+        for (auto curr = pendingEvents_.begin(); curr != pendingEvents_.end(); curr++) {
+            (*curr)();
+        }
+
+        pendingEvents_.clear();
+
+        std::lock_guard<std::mutex> lockEmmiter(emitterMutex_);
+        for (auto curr = pendingEventsTemp_.begin(); curr != pendingEventsTemp_.end(); curr++) {
+            pendingEvents_.push_back(*curr);
+        }
+
+        pendingEventsTemp_.clear();
+        pendingEventsNotifier_.notify_all();
+    }
 
 private:
     /**
-     * \brief Internal class used to store information about registered listeners.
-     *
-     * It can be used as a functor class so that it makes things convenient when processing events.
-     */
+    * \brief Internal class used to store information about registered listeners.
+    *
+    * It can be used as a functor class so that it makes things convenient when processing events.
+    */
     class InternalRegisteredMethod {
     public:
         template<typename T>
@@ -119,8 +175,15 @@ private:
             fn_ = fn;
         }
 
-        bool operator==(const InternalRegisteredMethod& obj);
-        void operator()(void* dataPtr) const;
+        bool operator==(const InternalRegisteredMethod& obj)
+        {
+            return id_ == obj.id_;
+        }
+
+        void operator()(void* dataPtr) const
+        {
+            fn_(dataPtr);
+        }
 
     private:
         uintptr_t id_;
@@ -128,7 +191,7 @@ private:
     };
 
 private:
-    static const std::chrono::duration<float> kPendingTimeout;
+    std::chrono::duration<float> kPendingTimeout;
 
     std::mutex listenersMutex_;
     std::mutex pendingEventsMutex_;

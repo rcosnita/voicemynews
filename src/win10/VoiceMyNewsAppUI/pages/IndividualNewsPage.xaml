@@ -12,6 +12,7 @@
     </UserControl.Resources>
 
     <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Button Name="btnReadNews" Content="Read news" Tapped="btnReadNews_Tapped" />
         <TextBlock Text="{Binding CurrNews, Converter={StaticResource jsonObjectConverter},
                             ConverterParameter='headline'}"
                    Margin="20,10,20,20"

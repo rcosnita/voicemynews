@@ -57,6 +57,11 @@ public:
 
     IndividualNewsPage(JsApp^ jsBackend);
 
+    /**
+     * \brief provides a programmatic way to start reading the displayed news.
+     */
+    void ReadNews();
+
 protected:
     /**
      * \brief This method is invoked automatically whenever the page is opened through navigation.
@@ -88,6 +93,11 @@ private:
      * \brief We use this method to wire the callbacks required for handling individual news related events.
      */
     void WireJsEvents();
+
+    /**
+     * \brief This method triggers the read news action for the current displayed news.
+     */
+    void btnReadNews_Tapped(Platform::Object^ sender, Windows::UI::Xaml::Input::TappedRoutedEventArgs^ e);
 };
 }
 }

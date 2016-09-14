@@ -11,11 +11,17 @@
     <Filter Include="core\network">
       <UniqueIdentifier>{29fd206b-7d74-46fe-b1ad-873a49e0ec8b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="core\voice">
+      <UniqueIdentifier>{dfde59dd-abb5-469b-9024-907b9e89d4d9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="core\network\HttpClientInterfaceFactory.cpp">
       <Filter>core\network</Filter>
+    </ClCompile>
+    <ClCompile Include="core\voice\VoiceSupportFactory.cpp">
+      <Filter>core\voice</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

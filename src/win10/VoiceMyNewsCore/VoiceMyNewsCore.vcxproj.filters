@@ -29,6 +29,9 @@
     <Filter Include="events">
       <UniqueIdentifier>{814d5e20-93d0-4cb0-b063-f531409f3c50}</UniqueIdentifier>
     </Filter>
+    <Filter Include="voice">
+      <UniqueIdentifier>{f9304c7d-776a-4f45-94f6-b83865170751}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\core\io\fs\Require.cpp">
@@ -43,8 +46,8 @@
     <ClCompile Include="utils\Conversions.cpp">
       <Filter>utils</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\core\events\EventLoop.cpp">
-      <Filter>events</Filter>
+    <ClCompile Include="..\..\core\voice\VoiceSupport.cpp">
+      <Filter>voice</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -74,6 +77,9 @@
     </ClInclude>
     <ClInclude Include="..\..\core\events\EventNames.h">
       <Filter>events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\core\voice\VoiceSupport.h">
+      <Filter>voice</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

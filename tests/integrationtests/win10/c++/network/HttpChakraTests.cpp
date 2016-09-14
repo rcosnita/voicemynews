@@ -8,7 +8,7 @@
 
 namespace voicemynews {
 namespace tests {
-namespace unittesting {
+namespace integrationtesting {
 namespace app {
 using Microsoft::VisualStudio::CppUnitTestFramework::Assert;
 using Platform::String;
