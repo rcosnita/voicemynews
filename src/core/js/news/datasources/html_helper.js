@@ -72,7 +72,7 @@ let getDomTag = (dom, tagName, tagAttribsFilter, manyMode) => {
 let getDomText = (dom) => {
     let results = [];
 
-    if (!dom) {
+    if (!dom || !dom.children) {
         return results;
     }
 
