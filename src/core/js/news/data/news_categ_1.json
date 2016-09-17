@@ -5,15 +5,16 @@
     "provider": "cnn",
     "images": {
         "small": {
-            "url": "http://i2.cdn.turner.com/cnnnext/dam/assets/160809155818-donald-trump-nc-rally-large-11.jpg",
+            "url": "http://i2.cdn.turner.com/cnnnext/dam/assets/160824105542-03-muqawama-iraq-resistance-small-169.jpg",
             "width": 300,
             "height": 300
         }
     }
 }, {
     "newsId": "574429b4-028e-4462-8cb8-f219fbd0e14f",
-    "headline": "Breaking News - Article 2.",
+    "headline": "Syria claims coalition airstrike hit regime forces",
     "provider": "cnn",
+    "url": "http://edition.cnn.com/2016/09/17/middleeast/syria-claims-coalition-airstrike-hit-regime-forces/index.html",
     "images": {
         "small": {
             "url": "http://i2.cdn.turner.com/cnnnext/dam/assets/160809182959-02-rio-green-pool-story-body.jpg",

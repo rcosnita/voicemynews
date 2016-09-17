@@ -5,7 +5,35 @@
 "use strict";
 
 /**
- * Given a dom object obtained by htmlparser this method tries to extract the requested tag.
+ * Given the dom element and an object holding all filters this method tells if the dom element matches requested
+ * filters.
+ *
+ * @param {JSON} domElement a json representation of the parsed dom element.
+ * @param {JSON} tagAttribsFilter a json object describing all filters which must be matched.
+ * @return {Boolean} true if all filters are matched and false otherwise.
+ */
+let _isMatchingFilters = (domElement, filters) => {
+    if (!filters || filters.length === 0) {
+        return true;
+    }
+
+    const attribs = domElement.attribs || {};
+    let matchedFilters = 0;
+    for (let filterKey in filters) {
+        if (!attribs[filterKey]) {
+            return false;
+        }
+
+        if (attribs[filterKey].trim() === filters[filterKey]) {
+            matchedFilters++;
+        }
+    }
+
+    return matchedFilters === Object.keys(filters).length;
+}
+
+/**
+ * Given a dom object children obtained by htmlparser this method tries to extract the requested tag.
  *
  * @param {Object} dom a parsed representation of html text built by htmlparser.
  * @param {String} tagName the tag we want to extract from the given dom.
@@ -33,27 +61,12 @@ let getDomTag = (dom, tagName, tagAttribsFilter, manyMode) => {
             continue;
         }
 
-        if (Object.keys(tagAttribsFilter).length === 0) {
-            if (manyMode) {
-                results.push(entry);
-                continue;
+        if (_isMatchingFilters(entry, tagAttribsFilter)) {
+            if (!manyMode) {
+                return entry;
             }
 
-            return entry;
-        }
-
-        for (let filterKey in tagAttribsFilter) {
-            if (!entry.attribs[filterKey]) {
-                continue;
-            }
-
-            if (entry.attribs[filterKey].trim() === tagAttribsFilter[filterKey]) {
-                if (!manyMode) {
-                    return entry;
-                }
-
-                results.push(entry);
-            }
+            results.push(entry);
         }
     }
 
@@ -72,7 +85,7 @@ let getDomTag = (dom, tagName, tagAttribsFilter, manyMode) => {
 let getDomText = (dom) => {
     let results = [];
 
-    if (!dom) {
+    if (!dom || !dom.children) {
         return results;
     }
 
@@ -97,6 +110,10 @@ let getDomText = (dom) => {
  * @alias module:voicemynews/js/news/datasources/html_helper.getHeadingElements
  */
 let getHeadingElements = (dom, callback) => {
+    if (!dom || !callback || typeof callback !== "function") {
+        return false;
+    }
+
     let headingsCount = 0;
     
     for(let idx = 1; idx <= 6; idx++) {
@@ -119,9 +136,20 @@ let getHeadingElements = (dom, callback) => {
  * Provides the algorithm for extracting text content from all tags matching the given tag name and the filter.
  * For every match it invokes the callback.
  *
- * @param {Object} dom
+ * @param {Object} dom The current children of a dom element parsed with htmlparser.
+ * @param {String} tag the tag name we want to extract text from.
+ * @param {JSON} tagFilter the tag filters we want to use for filtering matching tags.
+ * @param {Boolean} manyMode a flag telling if we want to match multiple tags or a single one.
+ * @param {function} callback the callback we want to invoke for every match. The callback receives
+ * a string which represents the text from each tag.
+ * @returns {Object} an array of matching tags if manyMode is true or in case input parameters are invalid.
+ * Otherwise it returns the specific tag.
  */
 let getTextContentFromTags = (dom, tag, tagFilter, manyMode, callback) => {
+    if (!dom || !callback || typeof callback !== "function") {
+        return [];
+    }
+
     let tags = getDomTag(dom, tag, tagFilter, manyMode);
 
     if (manyMode) {
