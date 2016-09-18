@@ -33,6 +33,13 @@ private:
     * \brief Provides the logic for obtaining the font size from the given json descriptor.
     */
     double ObtainFontSize(Object^ jsonDesc, String^ language);
+
+    /**
+     * \brief Provides the logic for obtaining the heading level from the given json descriptor.
+     *
+     * If the heading level is not found it returns -1.
+     */
+    int GetSubHeadingLevel(Object^ jsonDesc);
 };
 }
 }

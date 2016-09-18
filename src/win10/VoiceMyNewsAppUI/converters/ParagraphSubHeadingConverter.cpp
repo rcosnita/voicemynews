@@ -12,8 +12,22 @@ using Windows::UI::Text::FontWeights;
 
 using voicemynews::app::win10::utils::ConvertPlatformStrToStd;
 
+/**
+ * Holds the value of the parameter passed to converter which tells the converter to calculate font weight.
+ */
 const std::string kFontWeightParameter = "fontWeight";
+
+/**
+ * Holds the value of the parameter passed to converter which tells the converter to calculate font size.
+ */
 const std::string kFontSizeParameter = "fontSize";
+
+/// TODO [rcosnita] Instead of using a hardcoded value use a platform api to obtain it.
+const int kDefaultFontSize = 15;
+
+/**
+ * Holds the subheading level property name which is available for json descriptor.
+ */
 static Platform::String^ kSubHeadingPropertyName = "subheadingLevel";
 
 static voicemynews::app::win10::converters::JsonObjectConverter^ s_jsonConverter =
@@ -44,32 +58,21 @@ Object^ ParagraphSubHeadingConverter::ConvertBack(Object^ value, TypeName target
 
 Windows::UI::Text::FontWeight ParagraphSubHeadingConverter::ObtainFontWeight(Object^ jsonDesc, String^ language)
 {
-    int headingLevel = -1;
-
-    try {
-        auto value = static_cast<double>(s_jsonConverter->Convert(jsonDesc, double::typeid, kSubHeadingPropertyName,
-            language));
-        headingLevel = static_cast<int>(value);
-    } catch (Platform::Exception^) {
-        return FontWeights::Normal;
-    }
-
-    return headingLevel <= 3 ? FontWeights::Bold : FontWeights::Normal;
+    int headingLevel = GetSubHeadingLevel(jsonDesc);
+    return headingLevel <= 3 && headingLevel > 0 ? FontWeights::Bold : FontWeights::Normal;
 }
 
 double ParagraphSubHeadingConverter::ObtainFontSize(Object^ jsonDesc, String^ language)
 {
-    int headingLevel = -1;
+    int headingLevel = GetSubHeadingLevel(jsonDesc);
+    return headingLevel <= 3 && headingLevel > 0 ? kDefaultFontSize / headingLevel + kDefaultFontSize : kDefaultFontSize;
+}
 
-    try {
-        auto value = static_cast<double>(s_jsonConverter->Convert(jsonDesc, double::typeid, kSubHeadingPropertyName,
-            language));
-        headingLevel = static_cast<int>(value);
-    } catch (Platform::Exception^) {
-        return 20;
-    }
-
-    return headingLevel <= 3 ? 30 : 20;
+int ParagraphSubHeadingConverter::GetSubHeadingLevel(Object^ jsonDesc)
+{
+    auto value = static_cast<double>(s_jsonConverter->Convert(jsonDesc, double::typeid, kSubHeadingPropertyName,
+            nullptr));
+    return static_cast<int>(value);
 }
 }
 }
