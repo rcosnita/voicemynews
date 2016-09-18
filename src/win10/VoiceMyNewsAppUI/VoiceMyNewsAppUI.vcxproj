@@ -106,6 +106,7 @@
       <DependentUpon>components\MainMenuItem.xaml</DependentUpon>
     </ClInclude>
     <ClInclude Include="converters\JsonObjectConverter.h" />
+    <ClInclude Include="converters\ParagraphSubHeadingConverter.h" />
     <ClInclude Include="JsApp.h" />
     <ClInclude Include="network\HttpClientNativeWin.h" />
     <ClInclude Include="pages\GeniusNewsPage.xaml.h">
@@ -139,6 +140,7 @@
       <DependentUpon>components\MainMenuItem.xaml</DependentUpon>
     </ClCompile>
     <ClCompile Include="converters\JsonObjectConverter.cpp" />
+    <ClCompile Include="converters\ParagraphSubHeadingConverter.cpp" />
     <ClCompile Include="JsApp.cpp" />
     <ClCompile Include="pages\GeniusNewsPage.xaml.cpp">
       <DependentUpon>pages\GeniusNewsPage.xaml</DependentUpon>

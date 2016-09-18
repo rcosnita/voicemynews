@@ -9,6 +9,7 @@
 
     <UserControl.Resources>
         <converters:JsonObjectConverter x:Key="jsonObjectConverter" />
+        <converters:ParagraphSubHeadingConverter x:Key="ParagraphSubHeadingConverter" />
     </UserControl.Resources>
 
     <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -45,8 +46,12 @@
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Converter={StaticResource jsonObjectConverter},
-                            ConverterParameter='content'}"
-                               Margin="20,20,20,0" TextWrapping="WrapWholeWords" />
+                                        ConverterParameter='content'}"
+                            FontWeight="{Binding Converter={StaticResource ParagraphSubHeadingConverter},
+                                            ConverterParameter='fontWeight'}"
+                            FontSize="{Binding Converter={StaticResource ParagraphSubHeadingConverter},
+                                            ConverterParameter='fontSize'}"
+                            Margin="20,20,20,0" TextWrapping="WrapWholeWords" />
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
