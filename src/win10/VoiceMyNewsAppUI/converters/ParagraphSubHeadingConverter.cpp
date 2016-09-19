@@ -3,6 +3,7 @@
 #include "converters/ParagraphSubHeadingConverter.h"
 #include "utils/Conversions.h"
 
+#include <math.h>
 #include <string>
 
 using Platform::Object;
@@ -23,7 +24,7 @@ const std::string kFontWeightParameter = "fontWeight";
 const std::string kFontSizeParameter = "fontSize";
 
 /// TODO [rcosnita] Instead of using a hardcoded value use a platform api to obtain it.
-const int kDefaultFontSize = 15;
+const double kDefaultFontSize = 15;
 
 /**
  * Holds the subheading level property name which is available for json descriptor.
@@ -65,7 +66,8 @@ Windows::UI::Text::FontWeight ParagraphSubHeadingConverter::ObtainFontWeight(Obj
 double ParagraphSubHeadingConverter::ObtainFontSize(Object^ jsonDesc, String^ language)
 {
     int headingLevel = GetSubHeadingLevel(jsonDesc);
-    return headingLevel <= 3 && headingLevel > 0 ? kDefaultFontSize / headingLevel + kDefaultFontSize : kDefaultFontSize;
+    double fontSize = headingLevel <= 3 && headingLevel > 0 ? kDefaultFontSize / headingLevel + kDefaultFontSize : kDefaultFontSize;
+    return std::floor(fontSize);
 }
 
 int ParagraphSubHeadingConverter::GetSubHeadingLevel(Object^ jsonDesc)
