@@ -46,7 +46,7 @@ describe("Tests suite for guaranteeing data source contract correct implementati
         let model1 = new NewsParagraphModel(content);
         expect(model1.content).toBe(content);
         expect(JSON.stringify(model1.images)).toBe("[]");
-        expect(model1.subheadingLevel).toBe(undefined);
+        expect(model1.subheadingLevel).toBe(-1);
     });
 
     it("NewsModel correctly constructed.", () => {

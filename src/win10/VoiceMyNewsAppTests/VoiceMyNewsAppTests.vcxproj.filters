@@ -96,6 +96,9 @@
     <ClCompile Include="..\..\..\tests\integrationtests\win10\c++\voice\VoiceSupportChakraTests.cpp">
       <Filter>voice</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\tests\unittests\win10\c++\converters\ParagraphSubHeadingConverterTests.cpp">
+      <Filter>converters</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />

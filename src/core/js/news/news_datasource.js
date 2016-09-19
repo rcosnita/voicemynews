@@ -39,7 +39,7 @@ class NewsParagraphModel {
     constructor(content, images, subheadingLevel) {
         this.content = content;
         this.images = images || [];
-        this.subheadingLevel = subheadingLevel;
+        this.subheadingLevel = subheadingLevel || -1;
     }
 }
 

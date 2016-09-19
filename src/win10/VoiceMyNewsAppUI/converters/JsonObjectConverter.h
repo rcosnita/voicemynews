@@ -11,7 +11,8 @@ namespace converters {
  * It does this by accepting an attribute name which will be extracted from the json object.
  */
 [Windows::Foundation::Metadata::WebHostHiddenAttribute]
-public ref class JsonObjectConverter sealed : public Windows::UI::Xaml::Data::IValueConverter {
+public ref class JsonObjectConverter sealed : public Windows::UI::Xaml::Data::IValueConverter
+{
 using Object = Platform::Object;
 using String = Platform::String;
 using TypeName = Windows::UI::Xaml::Interop::TypeName;

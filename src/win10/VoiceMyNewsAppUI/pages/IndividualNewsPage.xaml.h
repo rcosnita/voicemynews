@@ -6,7 +6,8 @@
 #pragma once
 
 #include "JsApp.h"
-#include "pages\IndividualNewsPage.g.h"
+#include "converters/ParagraphSubHeadingConverter.h"
+#include "pages/IndividualNewsPage.g.h"
 
 namespace voicemynews {
 namespace app {
