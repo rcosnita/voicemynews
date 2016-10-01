@@ -108,5 +108,11 @@ module.exports = Object.freeze({
      * This event is emitted by the native app and requests the business logic to start reading the given news model.
      * @constant
      */
-    NEWS_VOICE_READ: "js:news:voice:read"
+    NEWS_VOICE_READ: "js:news:voice:read",
+
+    /**
+     * This event is emitted by the native app and requests the business logic to read a given playlist of news.
+     * @constant
+     */
+    NEWS_VOICE_READ_PLAYLIST: "js:news:voice:read:playlist"
 });

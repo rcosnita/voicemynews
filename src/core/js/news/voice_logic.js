@@ -9,6 +9,7 @@
 
 const EventNames = require("js/events/event_names");
 const NotImplementedMethodException = require("js/exceptions/notimplemented").NotImplementedMethodException;
+const Q = require("js/third_party/q/q");
 
 /**
  * This class provides all the logic for transforming a news model into audio and internally relies on platform
@@ -28,11 +29,12 @@ class VoiceLogic {
             (currPos) => this._whenParagraphReadResumed(currPos),
             () => this._whenParagraphReadDone()
         );
+        this._doneNotifier = undefined;
     }
 
     /**
-     * @property
      * Obtains currently pending paragraphs which are going to be read by voice logic.
+     * @property
      */
     get pendingParagraphs() {
         return this._remainingParagraphs;
@@ -60,12 +62,16 @@ class VoiceLogic {
      * to audio.
      */
     readNews(newsModel) {
+        this._doneNotifier = Q.defer();
+
         if (!newsModel || !newsModel.headline) {
             return;
         }
 
         this._remainingParagraphs = newsModel.paragraphs;
         this._voiceSupport.readText(newsModel.headline, this._playerNotifications);
+
+        return this._doneNotifier.promise;
     }
 
     /**
@@ -77,6 +83,11 @@ class VoiceLogic {
      */
     _readParagraphs(paragraphs) {
         if (!paragraphs || paragraphs.length === 0) {
+            if (this._doneNotifier) {
+                this._doneNotifier.resolve();
+                this._doneNotifier = undefined;
+            }
+
             return;
         }
 
