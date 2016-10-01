@@ -2,6 +2,7 @@
 
 const EventEmitter = require("events").EventEmitter;
 const EventNames = require("js/events/event_names");
+const invalidPlayback = require("js/exceptions/invalid_playback");
 const newsModel = require("js/news/news_datasource");
 const Q = require("js/third_party/q/q");
 const VoicePlaylistLogic = require("js/news/voice_playlist_logic");
@@ -94,5 +95,17 @@ describe("Tests suite for making sure voice playlist logic is correctly implemen
             expect(this._playlistLogic.doneNotifier).toBe(undefined);
             done();
         });
+    });
+
+    it("Read news while play in progress fails.", () => {
+        const evtData = this._sampleEvtData;
+        this._eventLoop.emit(EventNames.NEWS_VOICE_READ_PLAYLIST, JSON.stringify(evtData));
+
+        try {
+            this._eventLoop.emit(EventNames.NEWS_VOICE_READ_PLAYLIST, JSON.stringify(evtData));
+            expect(true).toBeFalsy("Method should have raised an exception ...");
+        } catch(err) {
+            expect(err instanceof invalidPlayback.MultiplePlaybackStreamsNotSupported).toBeTruthy();
+        }
     });
 });

@@ -8,6 +8,7 @@
 "use strict";
 
 const EventNames = require("js/events/event_names");
+const invalidPlayback = require("js/exceptions/invalid_playback");
 const Q = require("js/third_party/q/q");
 
 /**
@@ -55,6 +56,10 @@ class VoicePlaylistLogic {
      * @returns {Promise} a promise which can be used to determine when all the news were read.
      */
     _readAllNews(news) {
+        if (this._doneNotifier) {
+            throw new invalidPlayback.MultiplePlaybackStreamsNotSupported();
+        }
+
         this._doneNotifier = Q.defer();
         const articleLoaders = [];
         const articles = [];
