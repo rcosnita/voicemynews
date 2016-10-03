@@ -83,8 +83,12 @@ class VoicePlaylistLogic {
      * Pauses the voice reading of the current playlist.
      */
     _handlePausePlaylist() {
-        const pauseEvt = this._buildEventData("{}");
+        if (!this.doneNotifier) {
+            throw new invalidPlayback.PlaybackStreamNotPlaying();
+        }
+
         this._voiceLogic.pause().then(() => {
+            const pauseEvt = this._buildEventData("{}");
             this._eventLoop.emit(EventNames.NEWS_VOICE_READ_PLAYLIST_PAUSED, pauseEvt);
         });
     }

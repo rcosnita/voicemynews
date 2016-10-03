@@ -107,13 +107,23 @@ describe("Tests suite for making sure voice playlist logic is correctly implemen
         });
 
         this._eventLoop.on(EventNames.NEWS_VOICE_READ_PLAYLIST_PAUSED, (pausedEvt) => {
-            expect(this._buildEventData).toHaveBeenCalledWith("{}");
             expect(pausedEvt).toBe(expectedPausedEvt);
-            expect(this._voiceLogic.pause).toHaveBeenCalledWith();
             done();
         });
 
         this._eventLoop.emit(EventNames.NEWS_VOICE_READ_PLAYLIST, JSON.stringify(evtData));
+    });
+
+    it("Pause news while play not in progress fails.", () => {
+        try {
+            this._eventLoop.emit(EventNames.NEWS_VOICE_READ_PLAYLIST_PAUSE, JSON.stringify("{}"));
+            expect(true).toBeFalsy();
+        } catch(err) {
+            expect(err instanceof invalidPlayback.PlaybackStreamNotPlaying).toBeTruthy();
+            expect(err.message).toBe(invalidPlayback.PlaybackStreamNotPlaying.kDefaultMessage);
+            expect(err.cause).toBe(invalidPlayback.PlaybackStreamNotPlaying.kDefaultCause);
+            expect(err.stack).not.toBe(undefined);
+        }
     });
 
     /**
