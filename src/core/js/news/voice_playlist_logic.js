@@ -87,8 +87,8 @@ class VoicePlaylistLogic {
             throw new invalidPlayback.PlaybackStreamNotPlaying();
         }
 
+        const pauseEvt = this._buildEventData("{}");
         this._voiceLogic.pause().then(() => {
-            const pauseEvt = this._buildEventData("{}");
             this._eventLoop.emit(EventNames.NEWS_VOICE_READ_PLAYLIST_PAUSED, pauseEvt);
         });
     }

@@ -118,8 +118,13 @@ module.exports = Object.freeze({
 
     /**
      * This event is emitted by native part in order to tell
+     * @constant
      */
     NEWS_VOICE_READ_PLAYLIST_PAUSE: "js:news:voice:read:playlist:pause",
 
+    /**
+     * This event is emitted by native part in order to tell
+     * @constant
+     */
     NEWS_VOICE_READ_PLAYLIST_PAUSED: "js:news:voice:read:playlist:paused"
 });

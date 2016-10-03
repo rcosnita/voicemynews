@@ -57,7 +57,7 @@ describe("Tests suite for making sure voice playlist logic is correctly implemen
         const readNewsNotifiers = [];
         this._voiceLogic.readNews.and.callFake((currArticle) => {
             const currNotifier = Q.defer();
-            setTimeout(() => {
+            process.nextTick(() => {
                 const currIdx = readNewsNotifiers.length;
                 readNewsNotifiers.push(currNotifier);
                 assertResultModel(currArticle, currIdx === 0 ? newsModel1 : newsModel2, currNotifier);
@@ -94,20 +94,26 @@ describe("Tests suite for making sure voice playlist logic is correctly implemen
         const evtData = this._sampleEvtData;
         const expectedPausedEvt = {};
         const pauseNotifier = Q.defer();
+        let resolvePauseIdx = 0;
 
         this._buildEventData.and.returnValue(expectedPausedEvt);
         this._voiceLogic.pause.and.returnValue(pauseNotifier.promise);
 
         _mockReadNews(() => {
+            if (resolvePauseIdx++ > 0) {
+                return;
+            }
+            
             this._eventLoop.emit(EventNames.NEWS_VOICE_READ_PLAYLIST_PAUSE, JSON.stringify({}));
-
-            setTimeout(() => {
+            process.nextTick(() => {
                 pauseNotifier.resolve();
-            }, 10);
+            });
         });
 
         this._eventLoop.on(EventNames.NEWS_VOICE_READ_PLAYLIST_PAUSED, (pausedEvt) => {
+            expect(this._buildEventData).toHaveBeenCalledWith("{}");
             expect(pausedEvt).toBe(expectedPausedEvt);
+            expect(this._voiceLogic.pause).toHaveBeenCalledWith();
             done();
         });
 
@@ -154,7 +160,7 @@ describe("Tests suite for making sure voice playlist logic is correctly implemen
         this._newsLogic.fetchNewsByUrl.and.callFake((url, newsProviderId, rssDesc) => {
             const newsLoader = Q.defer();
 
-            setTimeout(() => {
+            process.nextTick(() => {
                 fnMock(url, newsProviderId, rssDesc, newsLoader);
             });
 
