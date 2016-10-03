@@ -114,5 +114,12 @@ module.exports = Object.freeze({
      * This event is emitted by the native app and requests the business logic to read a given playlist of news.
      * @constant
      */
-    NEWS_VOICE_READ_PLAYLIST: "js:news:voice:read:playlist"
+    NEWS_VOICE_READ_PLAYLIST: "js:news:voice:read:playlist",
+
+    /**
+     * This event is emitted by native part in order to tell
+     */
+    NEWS_VOICE_READ_PLAYLIST_PAUSE: "js:news:voice:read:playlist:pause",
+
+    NEWS_VOICE_READ_PLAYLIST_PAUSED: "js:news:voice:read:playlist:paused"
 });

@@ -65,26 +65,7 @@ describe("Tests suite for making sure voice playlist logic is correctly implemen
             return currNotifier.promise;
         });
 
-        this._newsLogic.fetchNewsByUrl.and.callFake((url, newsProviderId, rssDesc) => {
-            const newsLoader = Q.defer();
-
-            setTimeout(() => {
-                if (url === evtData.evtData.news[0].newsId && newsProviderId === evtData.evtData.news[0].provider &&
-                    JSON.stringify(rssDesc) === JSON.stringify(evtData.evtData.news[0].rssDesc)) {
-                    newsLoader.resolve(newsModel1);
-                    return;
-                }
-                else if (url === evtData.evtData.news[1].newsId && newsProviderId === evtData.evtData.news[1].provider &&
-                    JSON.stringify(rssDesc) === JSON.stringify(evtData.evtData.news[1].rssDesc)) {
-                    newsLoader.resolve(newsModel2);
-                    return;
-                }
-
-                throw new Error("Not implemented ...");
-            });
-
-            return newsLoader.promise;
-        });
+        _mockReadNews();
 
         this._eventLoop.emit(EventNames.NEWS_VOICE_READ_PLAYLIST, JSON.stringify(evtData));
 
@@ -108,4 +89,66 @@ describe("Tests suite for making sure voice playlist logic is correctly implemen
             expect(err instanceof invalidPlayback.MultiplePlaybackStreamsNotSupported).toBeTruthy();
         }
     });
+
+    it("Pause news while play in progress ok.", (done) => {
+        const evtData = this._sampleEvtData;
+        const expectedPausedEvt = {};
+        const pauseNotifier = Q.defer();
+
+        this._buildEventData.and.returnValue(expectedPausedEvt);
+        this._voiceLogic.pause.and.returnValue(pauseNotifier.promise);
+
+        _mockReadNews(() => {
+            this._eventLoop.emit(EventNames.NEWS_VOICE_READ_PLAYLIST_PAUSE, JSON.stringify({}));
+
+            setTimeout(() => {
+                pauseNotifier.resolve();
+            }, 10);
+        });
+
+        this._eventLoop.on(EventNames.NEWS_VOICE_READ_PLAYLIST_PAUSED, (pausedEvt) => {
+            expect(this._buildEventData).toHaveBeenCalledWith("{}");
+            expect(pausedEvt).toBe(expectedPausedEvt);
+            expect(this._voiceLogic.pause).toHaveBeenCalledWith();
+            done();
+        });
+
+        this._eventLoop.emit(EventNames.NEWS_VOICE_READ_PLAYLIST, JSON.stringify(evtData));
+    });
+
+    /**
+     * Provides an elegant way to mock readNews behavior without copy and pasting boilerplate code.
+     */
+    let _mockReadNews = (fnMock) => {
+        if (!fnMock) {
+            fnMock = (url, newsProviderId, rssDesc, newsLoader) => {
+                const evtData = this._sampleEvtData;
+                const newsModel1 = this._sampleNewsModel1;
+                const newsModel2 = this._sampleNewsModel2;
+
+                if (url === evtData.evtData.news[0].newsId && newsProviderId === evtData.evtData.news[0].provider &&
+                    JSON.stringify(rssDesc) === JSON.stringify(evtData.evtData.news[0].rssDesc)) {
+                    newsLoader.resolve(newsModel1);
+                    return;
+                }
+                else if (url === evtData.evtData.news[1].newsId && newsProviderId === evtData.evtData.news[1].provider &&
+                    JSON.stringify(rssDesc) === JSON.stringify(evtData.evtData.news[1].rssDesc)) {
+                    newsLoader.resolve(newsModel2);
+                    return;
+                }
+
+                throw new Error("Not implemented ...");
+            }
+        }
+
+        this._newsLogic.fetchNewsByUrl.and.callFake((url, newsProviderId, rssDesc) => {
+            const newsLoader = Q.defer();
+
+            setTimeout(() => {
+                fnMock(url, newsProviderId, rssDesc, newsLoader);
+            });
+
+            return newsLoader.promise;
+        });
+    }
 });

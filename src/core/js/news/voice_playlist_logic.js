@@ -44,6 +44,7 @@ class VoicePlaylistLogic {
      */
     init() {
         this._eventLoop.on(EventNames.NEWS_VOICE_READ_PLAYLIST, (evt) => this._handleReadPlaylist(evt));
+        this._eventLoop.on(EventNames.NEWS_VOICE_READ_PLAYLIST_PAUSE, (evt) => this._handlePausePlaylist());
     }
 
     /**
@@ -75,6 +76,16 @@ class VoicePlaylistLogic {
                 this._doneNotifier.resolve();
                 this._doneNotifier = undefined;
             });
+        });
+    }
+
+    /**
+     * Pauses the voice reading of the current playlist.
+     */
+    _handlePausePlaylist() {
+        const pauseEvt = this._buildEventData("{}");
+        this._voiceLogic.pause().then(() => {
+            this._eventLoop.emit(EventNames.NEWS_VOICE_READ_PLAYLIST_PAUSED, pauseEvt);
         });
     }
 
