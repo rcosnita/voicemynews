@@ -84,6 +84,13 @@ public:
      */
     void ReadText(Platform::String^ paragraph, VoiceReadingNotifications^ notifications);
 
+    /**
+     * \brief Provides the logic for pausing the current running stream.
+     *
+     * This is a basic interruption based operation which can be invoked by consumers.
+     */
+    void Pause(VoiceReadingNotifications^ notifications);
+
 private:
     /**
      * \brief Plays the given stream on the hidden media element binded to the instance.

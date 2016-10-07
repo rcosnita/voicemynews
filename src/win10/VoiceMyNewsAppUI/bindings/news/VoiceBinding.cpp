@@ -86,6 +86,12 @@ void VoiceBinding::PlayStream(VoiceBinding::SpeechStream^ speechStream)
     player_->Play();
 }
 
+void VoiceBinding::Pause(VoiceReadingNotifications^ notifications)
+{
+    player_->Pause();
+    notifications->WhenPaused(player_->PlaybackSession->Position.Duration);
+}
+
 }
 }
 }
