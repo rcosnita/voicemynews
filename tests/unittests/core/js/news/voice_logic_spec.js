@@ -186,8 +186,9 @@ describe("Tests suite for making sure voice reading business logic works as expe
     });
 
     it("Test pause reading ok.", (done) => {
-        this._voiceSupport.pause.and.callFake(() => {
-            process.nextTick(() => this._playerNotifications.whenPause(50));
+        this._voiceSupport.pause.and.callFake((playerNotifications) => {
+            expect(playerNotifications).toBe(this._playerNotifications);
+            process.nextTick(() => playerNotifications.whenPause(50));
         });
 
         let pauseResolver = this._voiceLogic.pause();

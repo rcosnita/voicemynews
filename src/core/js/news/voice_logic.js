@@ -63,7 +63,7 @@ class VoiceLogic {
         }
 
         this._pauseNotifier = Q.defer();
-        this._voiceSupport.pause();
+        this._voiceSupport.pause(this._playerNotifications);
 
         return this._pauseNotifier.promise;
     }
