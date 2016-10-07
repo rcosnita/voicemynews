@@ -32,6 +32,7 @@ using voicemynews::app::win10::utils::ConvertStdStrToPlatform;
 using voicemynews::core::events::kNewsFetchFromPreferredCategories;
 using voicemynews::core::events::kNewsFetchFromPreferredCategoriesLoaded;
 using voicemynews::core::events::kNewsVoiceReadPlaylist;
+using voicemynews::core::events::kNewsVoiceReadPlaylistPause;
 
 static DependencyProperty^ NewsModelProperty = DependencyProperty::Register(
     L"News",
@@ -131,6 +132,15 @@ void GeniusNewsPage::BtnRead_Click(Platform::Object^ sender, Windows::UI::Xaml::
 
     concurrency::create_task([this, evtData, jsLoop]() {
         jsLoop->Emit(ConvertStdStrToPlatform(kNewsVoiceReadPlaylist), ref new EventDataBinding(evtData->ToString()));
+    });
+}
+
+void GeniusNewsPage::BtnPause_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
+{
+    auto jsLoop = JsBackend->GetEventLoop();
+
+    concurrency::create_task([this, jsLoop]() {
+        jsLoop->Emit(ConvertStdStrToPlatform(kNewsVoiceReadPlaylistPause), ref new EventDataBinding(""));
     });
 }
 

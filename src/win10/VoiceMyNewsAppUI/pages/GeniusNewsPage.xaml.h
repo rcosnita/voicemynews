@@ -97,6 +97,9 @@ private:
      * requesting a new reading session.
      */
     void BtnRead_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
+
+
+    void BtnPause_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 };
 }
 }
