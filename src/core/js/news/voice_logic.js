@@ -8,6 +8,7 @@
 "use strict";
 
 const EventNames = require("js/events/event_names");
+const invalidPlayback = require("js/exceptions/invalid_playback");
 const NotImplementedMethodException = require("js/exceptions/notimplemented").NotImplementedMethodException;
 const Q = require("js/third_party/q/q");
 
@@ -29,7 +30,9 @@ class VoiceLogic {
             (currPos) => this._whenParagraphReadResumed(currPos),
             () => this._whenParagraphReadDone()
         );
+
         this._doneNotifier = undefined;
+        this._pauseNotifier = undefined;
     }
 
     /**
@@ -48,6 +51,21 @@ class VoiceLogic {
      */
     init() {
         this._eventLoop.on(EventNames.NEWS_VOICE_READ, (evt) => this._handleReadNews(evt));
+    }
+
+    /**
+     * Pause the current reading stream. It returns a promise which resolves once the pause
+     * action has been executed.
+     */
+    pause() {
+        if (this._pauseNotifier) {
+            throw new invalidPlayback.PlaybackStreamNotPlaying();
+        }
+
+        this._pauseNotifier = Q.defer();
+        this._voiceSupport.pause();
+
+        return this._pauseNotifier.promise;
     }
 
     /**
@@ -128,7 +146,8 @@ class VoiceLogic {
      * @param {Number} currPos the current position inside the reading stream.
      */
     _whenParagraphReadPaused(currPos) {
-        throw new NotImplementedMethodException();
+        this._pauseNotifier.resolve();
+        this._pauseNotifier = undefined;
     }
 
     /**
