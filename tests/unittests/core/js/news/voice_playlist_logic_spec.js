@@ -44,7 +44,7 @@ describe("Tests suite for making sure voice playlist logic is correctly implemen
         expect(this._playlistLogic).not.toBe(undefined);
     });
 
-    it("Read news work as expected.", (done) => {
+    it("Read news works as expected.", (done) => {
         const evtData = this._sampleEvtData;
         const newsModel1 = this._sampleNewsModel1;
         const newsModel2 = this._sampleNewsModel2;
@@ -67,7 +67,7 @@ describe("Tests suite for making sure voice playlist logic is correctly implemen
 
         _mockReadNews();
 
-        this._eventLoop.emit(EventNames.NEWS_VOICE_READ_PLAYLIST, JSON.stringify(evtData));
+        this._eventLoop.emit(EventNames.NEWS_VOICE_READ_PLAYLIST, {"evtData": JSON.stringify(evtData.evtData)});
 
         expect(this._playlistLogic.doneNotifier).not.toBe(undefined);
 
@@ -80,10 +80,11 @@ describe("Tests suite for making sure voice playlist logic is correctly implemen
 
     it("Read news while play in progress fails.", () => {
         const evtData = this._sampleEvtData;
-        this._eventLoop.emit(EventNames.NEWS_VOICE_READ_PLAYLIST, JSON.stringify(evtData));
+        const evt = {"evtData": JSON.stringify(evtData.evtData)};
+        this._eventLoop.emit(EventNames.NEWS_VOICE_READ_PLAYLIST, evt);
 
         try {
-            this._eventLoop.emit(EventNames.NEWS_VOICE_READ_PLAYLIST, JSON.stringify(evtData));
+            this._eventLoop.emit(EventNames.NEWS_VOICE_READ_PLAYLIST, evt);
             expect(true).toBeFalsy("Method should have raised an exception ...");
         } catch(err) {
             expect(err instanceof invalidPlayback.MultiplePlaybackStreamsNotSupported).toBeTruthy();
@@ -117,7 +118,7 @@ describe("Tests suite for making sure voice playlist logic is correctly implemen
             done();
         });
 
-        this._eventLoop.emit(EventNames.NEWS_VOICE_READ_PLAYLIST, JSON.stringify(evtData));
+        this._eventLoop.emit(EventNames.NEWS_VOICE_READ_PLAYLIST, {"evtData": JSON.stringify(evtData.evtData)});
     });
 
     it("Pause news while play not in progress fails.", () => {

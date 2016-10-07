@@ -70,6 +70,16 @@ namespace events {
      * \brief This event is emitted by the native app in order to tell the business logic to start read the given news.
      */
     const std::string kNewsVoiceRead = "js:news:voice:read";
+
+    /**
+    * \brief This event is emitted by the native app in order to tell the business logic to start read the given playlist.
+    */
+    const std::string kNewsVoiceReadPlaylist = "js:news:voice:read:playlist";
+
+    /**
+     * \brief This event is emitted by the native app in order to tell the business logic to pause the reading.
+     */
+    const std::string kNewsVoiceReadPlaylistPause = "js:news:voice:read:playlist:pause";
 }
 }
 }

@@ -22,6 +22,7 @@ using namespace Windows::UI::Xaml::Navigation;
 using Windows::Data::Json::IJsonArray;
 using Windows::Data::Json::IJsonObject;
 using Windows::Data::Json::JsonArray;
+using Windows::Data::Json::JsonObject;
 using voicemynews::app::win10::js::JsApp;
 using NewsVector = Windows::Foundation::Collections::IVector<IJsonObject^>;
 
@@ -30,6 +31,7 @@ using voicemynews::app::win10::utils::ConvertJsonArrayToVector;
 using voicemynews::app::win10::utils::ConvertStdStrToPlatform;
 using voicemynews::core::events::kNewsFetchFromPreferredCategories;
 using voicemynews::core::events::kNewsFetchFromPreferredCategoriesLoaded;
+using voicemynews::core::events::kNewsVoiceReadPlaylist;
 
 static DependencyProperty^ NewsModelProperty = DependencyProperty::Register(
     L"News",
@@ -89,7 +91,7 @@ void GeniusNewsPage::WireJsModel() {
     auto jsLoop = JsBackend->GetEventLoop();
 
     concurrency::create_async([jsLoop, this]() {
-        onNewsLoadedId = jsLoop->On(ConvertStdStrToPlatform(kNewsFetchFromPreferredCategoriesLoaded),
+        onNewsLoadedId_ = jsLoop->On(ConvertStdStrToPlatform(kNewsFetchFromPreferredCategoriesLoaded),
             ref new voicemynews::app::win10::bindings::events::EventHandler(this, &GeniusNewsPage::DisplayNews));
 
         jsLoop->Emit(ConvertStdStrToPlatform(kNewsFetchFromPreferredCategories), ref new EventDataBinding(""));
@@ -97,7 +99,8 @@ void GeniusNewsPage::WireJsModel() {
 }
 
 void GeniusNewsPage::DisplayNews(EventDataBinding^ evtData) {
-    auto newsArray = JsonArray::Parse(evtData->EvtData);
+    jsonNewsStr_ = evtData->EvtData;
+    auto newsArray = JsonArray::Parse(jsonNewsStr_);
 
     concurrency::create_task(Dispatcher->RunAsync(Windows::UI::Core::CoreDispatcherPriority::Normal,
         ref new Windows::UI::Core::DispatchedHandler([newsArray, this]() {
@@ -116,7 +119,18 @@ void GeniusNewsPage::OnNavigatedFrom(Windows::UI::Xaml::Navigation::NavigationEv
     auto jsLoop = JsBackend->GetEventLoop();
 
     concurrency::create_task([this, jsLoop]() {
-        jsLoop->Off(onNewsLoadedId);
+        jsLoop->Off(onNewsLoadedId_);
+    });
+}
+
+void GeniusNewsPage::BtnRead_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
+{
+    auto evtData = ref new JsonObject();
+    evtData->SetNamedValue("news", JsonArray::Parse(jsonNewsStr_));
+    auto jsLoop = JsBackend->GetEventLoop();
+
+    concurrency::create_task([this, evtData, jsLoop]() {
+        jsLoop->Emit(ConvertStdStrToPlatform(kNewsVoiceReadPlaylist), ref new EventDataBinding(evtData->ToString()));
     });
 }
 

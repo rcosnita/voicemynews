@@ -59,10 +59,15 @@ protected:
 
 private:
     /**
-     * This member keeps the reference identifier of the last listener registered to handle news loaded. It is removed
+     * \brief This member keeps the reference identifier of the last listener registered to handle news loaded. It is removed
      * when user navigates to a new page.
      */
-    Platform::String^ onNewsLoadedId;
+    Platform::String^ onNewsLoadedId_;
+
+    /**
+     * This member keeps the json representation of the news currently listed.
+     */
+    Platform::String^ jsonNewsStr_;
 
 private:
     /**
@@ -84,6 +89,14 @@ private:
      * \brief This methods obtains the selected item and navigate to the page which can display the news.
      */
     void NewsLst_ItemClick(Platform::Object^ sender, Windows::UI::Xaml::Controls::ItemClickEventArgs^ e);
+
+    /**
+     * \brief Provides the logic for playing the currently loaded genius news playlist.
+     *
+     * All the hard part is implemented in javascript. Here we just dispatch an event to the app business logic
+     * requesting a new reading session.
+     */
+    void BtnRead_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 };
 }
 }

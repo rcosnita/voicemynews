@@ -13,10 +13,10 @@
     
     <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
         <StackPanel Orientation="Horizontal">
-            <Button Content="Read" Margin="10,0,10,0"/>
-            <Button Content="Skip" Margin="10,0,10,0"/>
-            <Button Content="Pause" Margin="10,0,10,0"/>
-            <Button Content="Resume" Margin="10,0,10,0"/>
+            <Button Name="btnRead" Content="Read" Margin="10,0,10,0" Click="BtnRead_Click"/>
+            <Button Name="btnSkip" Content="Skip" Margin="10,0,10,0"/>
+            <Button Name="btnPause" Content="Pause" Margin="10,0,10,0"/>
+            <Button Name="btnResume" Content="Resume" Margin="10,0,10,0"/>
         </StackPanel>
         <ListView Name="NewsLst" ItemsSource="{Binding News}" IsItemClickEnabled="True" ItemClick="NewsLst_ItemClick">
             <ListView.ItemContainerStyle>

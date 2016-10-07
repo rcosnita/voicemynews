@@ -77,7 +77,7 @@ protected:
 private:
     NewsModel^ newsRssDesc_;
     JsEventLoop^ jsEventLoop_;
-    Platform::String^ onNewsLoadedId;
+    Platform::String^ onNewsLoadedId_;
 
 private:
     /**

@@ -100,7 +100,7 @@ class VoicePlaylistLogic {
      * @method
      */
     _handleReadPlaylist(evt) {
-        const evtData = JSON.parse(evt).evtData;
+        const evtData = JSON.parse(evt.evtData);
         this._readAllNews(evtData.news);
     }
 
