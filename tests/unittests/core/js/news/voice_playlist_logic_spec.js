@@ -133,6 +133,42 @@ describe("Tests suite for making sure voice playlist logic is correctly implemen
         }
     });
 
+    it("Resume news works ok.", (done) => {
+        const evtData = this._sampleEvtData;
+        const resumeResolver = Q.defer(); 
+        const expectedEvt = {};
+
+        this._buildEventData.and.returnValue(expectedEvt);
+        this._voiceLogic.resume.and.returnValue(resumeResolver.promise);
+
+        this._eventLoop.on(EventNames.NEWS_VOICE_READ_PLAYLIST_RESUMED, (resumedEvt) => {
+            expect(this._buildEventData).toHaveBeenCalledWith("{}");
+            expect(resumedEvt).toBe(expectedEvt);
+            done();
+        });
+
+        this._eventLoop.emit(EventNames.NEWS_VOICE_READ_PLAYLIST, {"evtData": JSON.stringify(evtData.evtData)});
+        this._eventLoop.emit(EventNames.NEWS_VOICE_READ_PLAYLIST_RESUME, {});
+
+        expect(this._voiceLogic.resume).toHaveBeenCalled();
+        process.nextTick(() => {
+            resumeResolver.resolve();
+        });
+    });
+
+    it("Resume news fails if no stream is playing.", () => {
+        try {
+            this._eventLoop.emit(EventNames.NEWS_VOICE_READ_PLAYLIST_RESUME, {});
+            expect(true).toBeFalsy();
+        } catch(err) {
+            expect(err instanceof invalidPlayback.PlaybackStreamNotPlaying);
+            expect(err.message).toBe(invalidPlayback.PlaybackStreamNotPlaying.kDefaultMessage);
+            expect(err.cause).toBe(invalidPlayback.PlaybackStreamNotPlaying.kDefaultCause);
+            expect(err.stack).not.toBe(undefined);
+        }
+
+    });
+
     /**
      * Provides an elegant way to mock readNews behavior without copy and pasting boilerplate code.
      */

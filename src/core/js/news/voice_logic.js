@@ -33,6 +33,7 @@ class VoiceLogic {
 
         this._doneNotifier = undefined;
         this._pauseNotifier = undefined;
+        this._resumeNotifier = undefined;
     }
 
     /**
@@ -64,7 +65,6 @@ class VoiceLogic {
 
         this._pauseNotifier = Q.defer();
         try {
-            debugger;
             return this._pauseNotifier.promise;
         } finally {
             this._voiceSupport.pause(this._playerNotifications);
@@ -93,6 +93,17 @@ class VoiceLogic {
         this._voiceSupport.readText(newsModel.headline, this._playerNotifications);
 
         return this._doneNotifier.promise;
+    }
+
+    /**
+     * Provides the algorithm for resuming playing the current loaded stream.
+     */
+    resume() {
+        this._resumeNotifier = Q.defer();
+
+        this._voiceSupport.resume(this._playerNotifications);
+
+        return this._resumeNotifier.promise;
     }
 
     /**
@@ -159,7 +170,8 @@ class VoiceLogic {
      * @param {Number} currPos the current position inside the reading stream.
      */
     _whenParagraphReadResumed(currPos) {
-        throw new NotImplementedMethodException();
+        this._resumeNotifier.resolve();
+        this._resumeNotifier = undefined;
     }
 
     /**

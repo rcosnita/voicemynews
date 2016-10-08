@@ -117,6 +117,18 @@ module.exports = Object.freeze({
     NEWS_VOICE_READ_PLAYLIST: "js:news:voice:read:playlist",
 
     /**
+     * This event is emitted by the native app and requests the business logic to resume reading the current playlist.
+     * @constant
+     */
+    NEWS_VOICE_READ_PLAYLIST_RESUME: "js:news:voice:read:playlist:resume",
+
+    /**
+     * This event is emitted by the business logic and tells the native app the resume operation ended.
+     * @constant
+     */
+    NEWS_VOICE_READ_PLAYLIST_RESUMED: "js:news:voice:read:playlist:resumed",
+
+    /**
      * This event is emitted by native part in order to tell
      * @constant
      */

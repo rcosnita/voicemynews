@@ -12,7 +12,7 @@ describe("Tests suite for making sure voice reading business logic works as expe
         this._buildEventData = jasmine.createSpy();
         this._eventLoop = new EventEmitter();
         this._voiceSupportBuilder = jasmine.createSpy();
-        this._voiceSupport = jasmine.createSpyObj("VoiceSupport", ["readText", "readTextSsml", "pause"]);
+        this._voiceSupport = jasmine.createSpyObj("VoiceSupport", ["readText", "readTextSsml", "pause", "resume"]);
         this._playerNotifications = undefined;
 
         this._voiceSupportBuilder.and.returnValue(this._voiceSupport);
@@ -213,5 +213,22 @@ describe("Tests suite for making sure voice reading business logic works as expe
             expect(err.cause).toBe(invalidPlayback.PlaybackStreamNotPlaying.kDefaultCause);
             expect(err.stack).not.toBe(undefined);
         }
+    });
+
+    it("Test resume reading ok.", (done) => {
+        this._voiceSupport.resume.and.callFake((playerNotifications) => {
+            expect(playerNotifications).toBe(this._playerNotifications);
+            process.nextTick(() => playerNotifications.whenResume(50));
+        });
+
+        let resumeResolver = this._voiceLogic.resume();
+
+        expect(resumeResolver).not.toBe(undefined);
+        expect(resumeResolver.then).not.toBe(undefined);
+
+        resumeResolver.then(() => {
+            expect(this._voiceSupport.resume).toHaveBeenCalled();
+            done();
+        });
     });
 });

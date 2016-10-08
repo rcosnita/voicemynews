@@ -45,6 +45,7 @@ class VoicePlaylistLogic {
     init() {
         this._eventLoop.on(EventNames.NEWS_VOICE_READ_PLAYLIST, (evt) => this._handleReadPlaylist(evt));
         this._eventLoop.on(EventNames.NEWS_VOICE_READ_PLAYLIST_PAUSE, (evt) => this._handlePausePlaylist());
+        this._eventLoop.on(EventNames.NEWS_VOICE_READ_PLAYLIST_RESUME, (evt) => this._handleResumePlaylist());
     }
 
     /**
@@ -102,6 +103,20 @@ class VoicePlaylistLogic {
     _handleReadPlaylist(evt) {
         const evtData = JSON.parse(evt.evtData);
         this._readAllNews(evtData.news);
+    }
+
+    /**
+     * Resumes reading the current news playlist stream.
+     */
+    _handleResumePlaylist() {
+        if(!this.doneNotifier) {
+            throw new invalidPlayback.PlaybackStreamNotPlaying();
+        }
+
+        const evt = this._buildEventData("{}");
+        this._voiceLogic.resume().then(() => {
+            this._eventLoop.emit(EventNames.NEWS_VOICE_READ_PLAYLIST_RESUMED, evt);
+        });
     }
 
     /**
