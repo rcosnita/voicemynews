@@ -91,6 +91,13 @@ public:
      */
     void Pause(VoiceReadingNotifications^ notifications);
 
+    /**
+     * \brief Provides the logic for resuming the current loaded stream.
+     *
+     * This is a basic resume operation on the underlying MediaPlayer.
+     */
+    void Resume(VoiceReadingNotifications^ notifications);
+
 private:
     /**
      * \brief Plays the given stream on the hidden media element binded to the instance.

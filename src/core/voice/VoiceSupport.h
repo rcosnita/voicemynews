@@ -82,6 +82,13 @@ public:
      * \param readingCallbacks the reading callbacks used for being notified about playback progress.
      */
     virtual void Pause(std::shared_ptr<VoiceReadingNotifications> readingCallbacks) = 0;
+
+    /**
+     * \brief Resume the current stream and notifies consumer about the progress.
+     *
+     * \param readingCallbacks the reading callbacks used for being notified about playback progress.
+     */
+    virtual void Resume(std::shared_ptr<VoiceReadingNotifications> readingCallbacks) = 0;
 };
 
 /**

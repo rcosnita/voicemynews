@@ -25,6 +25,7 @@ namespace voice {
  */
 class VoiceSupportWin : public voicemynews::core::voice::VoiceSupportAbstract {
     using VoiceReadingNotifications = voicemynews::core::voice::VoiceReadingNotifications;
+    using VoiceReadingNotificationsBinding = voicemynews::app::win10::bindings::news::VoiceReadingNotifications;
 public:
     VoiceSupportWin(VoiceBinding^ voiceBinding)
         : voiceBinding_(voiceBinding)
@@ -53,16 +54,21 @@ public:
 
     virtual void Pause(std::shared_ptr<VoiceReadingNotifications> readingCallbacks)
     {
-        voiceBinding_->Pause(ConvertTo(readingCallbacks));
+        voiceBinding_->Pause(ConvertToCallbacksBinding(readingCallbacks));
+    }
+
+    virtual void Resume(std::shared_ptr<VoiceReadingNotifications> readingCallbacks)
+    {
+        voiceBinding_->Resume(ConvertToCallbacksBinding(readingCallbacks));
     }
 
 private:
     /**
      * \brief Provides a conversion method between the native callbacks holder and the winrt ref class.
      */
-    voicemynews::app::win10::bindings::news::VoiceReadingNotifications^ ConvertTo(std::shared_ptr<VoiceReadingNotifications> readingCallbacks)
+    VoiceReadingNotificationsBinding^ ConvertToCallbacksBinding(std::shared_ptr<VoiceReadingNotifications> readingCallbacks)
     {
-        return ref new voicemynews::app::win10::bindings::news::VoiceReadingNotifications(
+        return ref new VoiceReadingNotificationsBinding(
             ref new ReadingProgressHandler([&readingCallbacks](int64 currPos) {
             readingCallbacks->whenPlayheadChanged()(static_cast<long>(currPos));
         }), ref new ReadingPausedHandler([&readingCallbacks](int64 currPos) {

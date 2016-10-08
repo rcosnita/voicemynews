@@ -92,6 +92,12 @@ void VoiceBinding::Pause(VoiceReadingNotifications^ notifications)
     notifications->WhenPaused(player_->PlaybackSession->Position.Duration);
 }
 
+void VoiceBinding::Resume(VoiceReadingNotifications^ notifications)
+{
+    player_->Play();
+    notifications->WhenResumed(player_->PlaybackSession->Position.Duration);
+}
+
 }
 }
 }
