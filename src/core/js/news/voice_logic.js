@@ -101,9 +101,11 @@ class VoiceLogic {
     resume() {
         this._resumeNotifier = Q.defer();
 
-        this._voiceSupport.resume(this._playerNotifications);
-
-        return this._resumeNotifier.promise;
+        try {
+            return this._resumeNotifier.promise;
+        } finally {
+            this._voiceSupport.resume(this._playerNotifications);
+        }
     }
 
     /**

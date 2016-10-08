@@ -98,8 +98,21 @@ private:
      */
     void BtnRead_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 
-
+    /**
+     * \brief Provides the logic for pausing the current stream playback.
+     *
+     * All the hard part is implemented in the javascript business logic. Here we just dispatch an event to the
+     * business logic request a pause.
+     */
     void BtnPause_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
+
+    /**
+     * \brief Provides the logic for resuming the current stream playback.
+     *
+     * All the hard part is implemented in the javascript business logic. Here we just dispatch an event to the
+     * business logic request a resume.
+     */
+    void BtnResume_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 };
 }
 }

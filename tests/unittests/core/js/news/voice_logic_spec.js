@@ -188,7 +188,7 @@ describe("Tests suite for making sure voice reading business logic works as expe
     it("Test pause reading ok.", (done) => {
         this._voiceSupport.pause.and.callFake((playerNotifications) => {
             expect(playerNotifications).toBe(this._playerNotifications);
-            process.nextTick(() => playerNotifications.whenPause(50));
+            playerNotifications.whenPause(50);
         });
 
         let pauseResolver = this._voiceLogic.pause();
@@ -218,7 +218,7 @@ describe("Tests suite for making sure voice reading business logic works as expe
     it("Test resume reading ok.", (done) => {
         this._voiceSupport.resume.and.callFake((playerNotifications) => {
             expect(playerNotifications).toBe(this._playerNotifications);
-            process.nextTick(() => playerNotifications.whenResume(50));
+            playerNotifications.whenResume(50);
         });
 
         let resumeResolver = this._voiceLogic.resume();
