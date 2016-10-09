@@ -70,6 +70,7 @@ private:
 public ref class VoiceBinding sealed
 {
 using MediaPlayer = Windows::Media::Playback::MediaPlayer;
+using PlayheadLocation = long long;
 using SpeechSynthesizer = Windows::Media::SpeechSynthesis::SpeechSynthesizer;
 using SpeechStream = Windows::Media::SpeechSynthesis::SpeechSynthesisStream;
 public:
@@ -103,6 +104,11 @@ private:
      * \brief Plays the given stream on the hidden media element binded to the instance.
      */
     void PlayStream(SpeechStream^ speechStream);
+
+    /**
+     * \brief Obtains the current playhead location in milliseconds.
+     */
+    PlayheadLocation GetCurrentLocation();
 
 private:
     MediaPlayer^ player_;

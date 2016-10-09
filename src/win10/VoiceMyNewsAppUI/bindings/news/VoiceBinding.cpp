@@ -2,6 +2,7 @@
 #include "bindings/news/VoiceBinding.h"
 #include "JsApp.h"
 
+#include <cmath>
 #include <ppltasks.h>
 
 using Platform::String;
@@ -89,13 +90,19 @@ void VoiceBinding::PlayStream(VoiceBinding::SpeechStream^ speechStream)
 void VoiceBinding::Pause(VoiceReadingNotifications^ notifications)
 {
     player_->Pause();
-    notifications->WhenPaused(player_->PlaybackSession->Position.Duration);
+    notifications->WhenPaused(GetCurrentLocation());
 }
 
 void VoiceBinding::Resume(VoiceReadingNotifications^ notifications)
 {
     player_->Play();
-    notifications->WhenResumed(player_->PlaybackSession->Position.Duration);
+    notifications->WhenResumed(GetCurrentLocation());
+}
+
+VoiceBinding::PlayheadLocation VoiceBinding::GetCurrentLocation()
+{
+    auto currPositionMs = player_->PlaybackSession->Position.Duration / long(std::pow(10, 4));
+    return currPositionMs;
 }
 
 }
