@@ -110,7 +110,7 @@ class VoicePlaylistLogic {
      * Resumes reading the current news playlist stream.
      */
     _handleResumePlaylist() {
-        if(!this.doneNotifier) {
+        if (!this.doneNotifier) {
             throw new invalidPlayback.PlaybackStreamNotPlaying();
         }
 
@@ -125,6 +125,10 @@ class VoicePlaylistLogic {
      * telling the native part that skip operation was executed.
      */
     _handleSkipPlaylistNews() {
+        if (!this._doneNotifier) {
+            throw new invalidPlayback.PlaybackStreamNotPlaying();
+        }
+
         this._voiceLogic.pause().then(() => {
             this._voiceLogic.skip().then(() => {
                 const evtData = this._buildEventData("{}");

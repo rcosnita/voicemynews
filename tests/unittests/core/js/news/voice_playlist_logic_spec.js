@@ -208,6 +208,18 @@ describe("Tests suite for making sure voice playlist logic is correctly implemen
         process.nextTick(() => this._eventLoop.emit(EventNames.NEWS_VOICE_READ_PLAYLIST_SKIP, {}));
     });
 
+    it("Skip news throws exception if no stream is active.", () => {
+        try {
+            this._eventLoop.emit(EventNames.NEWS_VOICE_READ_PLAYLIST_SKIP);
+            expect(true).toBeFalsy();
+        } catch(err) {
+            expect(err instanceof invalidPlayback.PlaybackStreamNotPlaying);
+            expect(err.message).toBe(invalidPlayback.PlaybackStreamNotPlaying.kDefaultMessage);
+            expect(err.cause).toBe(invalidPlayback.PlaybackStreamNotPlaying.kDefaultCause);
+            expect(err.stack).not.toBe(undefined);
+        }
+    });
+
     /**
      * Provides an elegant way to mock readNews behavior without copy and pasting boilerplate code.
      */
