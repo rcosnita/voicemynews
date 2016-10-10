@@ -99,6 +99,12 @@ void VoiceBinding::Resume(VoiceReadingNotifications^ notifications)
     notifications->WhenResumed(GetCurrentLocation());
 }
 
+void VoiceBinding::Skip()
+{
+    player_->Pause();
+    player_->Source = nullptr;
+}
+
 VoiceBinding::PlayheadLocation VoiceBinding::GetCurrentLocation()
 {
     auto currPositionMs = player_->PlaybackSession->Position.Duration / long(std::pow(10, 4));

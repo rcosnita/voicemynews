@@ -89,6 +89,13 @@ public:
      * \param readingCallbacks the reading callbacks used for being notified about playback progress.
      */
     virtual void Resume(std::shared_ptr<VoiceReadingNotifications> readingCallbacks) = 0;
+
+    /**
+     * \brief Skips the current stream into a synchronous maner.
+     *
+     * Once invoked and finished, developers can safely assume that they can play a new stream.
+     */
+    virtual void Skip() = 0;
 };
 
 /**

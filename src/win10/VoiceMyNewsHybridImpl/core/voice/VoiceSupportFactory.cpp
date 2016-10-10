@@ -62,6 +62,11 @@ public:
         voiceBinding_->Resume(ConvertToCallbacksBinding(readingCallbacks));
     }
 
+    virtual void Skip()
+    {
+        voiceBinding_->Skip();
+    }
+
 private:
     /**
      * \brief Provides a conversion method between the native callbacks holder and the winrt ref class.

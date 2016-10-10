@@ -99,6 +99,11 @@ public:
      */
     void Resume(VoiceReadingNotifications^ notifications);
 
+    /**
+     * \brief Provides the logic for skipping the remaining part of the active stream.
+     */
+    void Skip();
+
 private:
     /**
      * \brief Plays the given stream on the hidden media element binded to the instance.
