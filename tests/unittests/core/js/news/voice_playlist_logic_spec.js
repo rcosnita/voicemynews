@@ -11,7 +11,7 @@ describe("Tests suite for making sure voice playlist logic is correctly implemen
     beforeEach(() => {
         this._eventLoop = new EventEmitter();
         this._buildEventData = jasmine.createSpy();
-        this._voiceLogic = jasmine.createSpyObj("VoiceLogic", ["readNews", "pause", "resume"]);
+        this._voiceLogic = jasmine.createSpyObj("VoiceLogic", ["readNews", "pause", "resume", "skip"]);
         this._newsLogic = jasmine.createSpyObj("NewsLogic", ["fetchNewsByUrl"]);
         this._playlistLogic = VoicePlaylistLogic.init(this._eventLoop, this._buildEventData, this._voiceLogic,
             this._newsLogic);
@@ -167,6 +167,45 @@ describe("Tests suite for making sure voice playlist logic is correctly implemen
             expect(err.stack).not.toBe(undefined);
         }
 
+    });
+
+    it("Skip news works as expected when stream is playing.", (done) => {
+        const evtData = this._sampleEvtData;
+        const pauseNotifier = Q.defer();
+        const skipNotifier = Q.defer();
+        const skippedEvt = {};
+        const readNewsNotifier = Q.defer();
+        let resolvePauseIdx = 0;
+
+        _mockReadNews();
+
+        this._buildEventData.and.returnValue(skippedEvt);
+        this._voiceLogic.pause.and.callFake(() => {
+            process.nextTick(() => {
+                pauseNotifier.resolve();
+            });
+
+            return pauseNotifier.promise;
+        });
+
+        this._voiceLogic.readNews.and.callFake(() => {
+            process.nextTick(() => {
+                skipNotifier.resolve();
+            });
+            return readNewsNotifier.promise;
+        });
+        this._voiceLogic.skip.and.returnValue(skipNotifier.promise);
+
+        this._eventLoop.on(EventNames.NEWS_VOICE_READ_PLAYLIST_SKIPPED, (evtData) => {
+            expect(evtData).toBe(skippedEvt);
+            expect(this._voiceLogic.pause).toHaveBeenCalled();
+            expect(this._voiceLogic.skip).toHaveBeenCalled();
+            expect(this._voiceLogic.readNews).toHaveBeenCalled();
+            done();
+        });
+
+        this._eventLoop.emit(EventNames.NEWS_VOICE_READ_PLAYLIST, {"evtData": JSON.stringify(evtData.evtData)});
+        process.nextTick(() => this._eventLoop.emit(EventNames.NEWS_VOICE_READ_PLAYLIST_SKIP, {}));
     });
 
     /**

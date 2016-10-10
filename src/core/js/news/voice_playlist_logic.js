@@ -46,6 +46,7 @@ class VoicePlaylistLogic {
         this._eventLoop.on(EventNames.NEWS_VOICE_READ_PLAYLIST, (evt) => this._handleReadPlaylist(evt));
         this._eventLoop.on(EventNames.NEWS_VOICE_READ_PLAYLIST_PAUSE, (evt) => this._handlePausePlaylist());
         this._eventLoop.on(EventNames.NEWS_VOICE_READ_PLAYLIST_RESUME, (evt) => this._handleResumePlaylist());
+        this._eventLoop.on(EventNames.NEWS_VOICE_READ_PLAYLIST_SKIP, (evt) => this._handleSkipPlaylistNews());
     }
 
     /**
@@ -95,7 +96,7 @@ class VoicePlaylistLogic {
     }
 
     /**
-     * Parses the event received from antive side and starts reading the playlist described in the event.
+     * Parses the event received from native side and starts reading the playlist described in the event.
      *
      * @private
      * @method
@@ -116,6 +117,19 @@ class VoicePlaylistLogic {
         const evt = this._buildEventData("{}");
         this._voiceLogic.resume().then(() => {
             this._eventLoop.emit(EventNames.NEWS_VOICE_READ_PLAYLIST_RESUMED, evt);
+        });
+    }
+
+    /**
+     * Skips the current news which is read by TTS. Once everything is done it emits an event
+     * telling the native part that skip operation was executed.
+     */
+    _handleSkipPlaylistNews() {
+        this._voiceLogic.pause().then(() => {
+            this._voiceLogic.skip().then(() => {
+                const evtData = this._buildEventData("{}");
+                this._eventLoop.emit(EventNames.NEWS_VOICE_READ_PLAYLIST_SKIPPED, evtData);
+            });
         });
     }
 

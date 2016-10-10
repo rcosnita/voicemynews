@@ -129,14 +129,26 @@ module.exports = Object.freeze({
     NEWS_VOICE_READ_PLAYLIST_RESUMED: "js:news:voice:read:playlist:resumed",
 
     /**
-     * This event is emitted by native part in order to tell
+     * This event is emitted by native part in order to tell the business logic to pause reading the playlist.
      * @constant
      */
     NEWS_VOICE_READ_PLAYLIST_PAUSE: "js:news:voice:read:playlist:pause",
 
     /**
-     * This event is emitted by native part in order to tell
+     * This event is emitted by the business logic in order to tell the native part that playlist has been paused.
      * @constant
      */
-    NEWS_VOICE_READ_PLAYLIST_PAUSED: "js:news:voice:read:playlist:paused"
+    NEWS_VOICE_READ_PLAYLIST_PAUSED: "js:news:voice:read:playlist:paused",
+
+    /**
+     * This event is emitted by the native part in order to tell the business logic to skip the current article.
+     * @constant
+     */
+    NEWS_VOICE_READ_PLAYLIST_SKIP: "js:news:voice:read:playlist:skip",
+
+    /**
+     * This event is emitted by the business logic in order to tell the native part that the reading skipped an article.
+     * @constant
+     */
+    NEWS_VOICE_READ_PLAYLIST_SKIPPED: "js:news:voice:read:playlist:skipped"
 });
