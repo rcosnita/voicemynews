@@ -85,6 +85,11 @@ namespace events {
      * \brief This event is emitted by the native app in order to tell the business logic to resume the reading.
      */
     const std::string kNewsVoiceReadPlaylistResume = "js:news:voice:read:playlist:resume";
+
+    /**
+     * \brief This event is emitted by the native app in order to tell the business logic to skip the current stream.
+     */
+    const std::string kNewsVoiceReadPlaylistSkip = "js:news:voice:read:playlist:skip";
 }
 }
 }

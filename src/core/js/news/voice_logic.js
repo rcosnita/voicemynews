@@ -37,11 +37,19 @@ class VoiceLogic {
     }
 
     /**
-     * Obtains currently pending paragraphs which are going to be read by voice logic.
+     * Obtains current pending paragraphs which are going to be read by voice logic.
      * @property
      */
     get pendingParagraphs() {
         return this._remainingParagraphs;
+    }
+
+    /**
+     * Obtains current stream done notifier. In case no stream is playing this will return undefined.
+     * @property
+     */
+    get doneNotifier() {
+        return !this._doneNotifier ? undefined : this._doneNotifier.promise;
     }
 
     /**
@@ -83,11 +91,11 @@ class VoiceLogic {
      * to audio.
      */
     readNews(newsModel) {
-        this._doneNotifier = Q.defer();
-
         if (!newsModel || !newsModel.headline) {
             return;
         }
+
+        this._doneNotifier = Q.defer();
 
         this._remainingParagraphs = newsModel.paragraphs;
         this._voiceSupport.readText(newsModel.headline, this._playerNotifications);
@@ -118,6 +126,7 @@ class VoiceLogic {
             return skipNotifier.promise;
         } finally {
             this._voiceSupport.skip();
+            this._doneNotifier.resolve();
             skipNotifier.resolve();
         }
     }

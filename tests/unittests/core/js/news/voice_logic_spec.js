@@ -233,11 +233,20 @@ describe("Tests suite for making sure voice reading business logic works as expe
     });
 
     it("Test skip reading ok.", (done) => {
+        this._voiceLogic.readNews({
+            "headline": "Simple paragraph",
+            "paragraphs": []
+        });
+
         let skipResolver = this._voiceLogic.skip();
 
         skipResolver.then(() => {
             expect(this._voiceSupport.skip).toHaveBeenCalled();
-            done();
+            expect(this._voiceLogic.doneNotifier).not.toBe(undefined);
+
+            this._voiceLogic.doneNotifier.then(() => {
+                done();
+            });
         });
     });
 });
