@@ -109,6 +109,20 @@ class VoiceLogic {
     }
 
     /**
+     * Provides the algorithm for skipping the current playback stream.
+     */
+    skip() {
+        const skipNotifier = Q.defer();
+
+        try {
+            return skipNotifier.promise;
+        } finally {
+            this._voiceSupport.skip();
+            skipNotifier.resolve();
+        }
+    }
+
+    /**
      * Provides the logic for transforming the given array of paragraphs into audio.
      *
      * @private

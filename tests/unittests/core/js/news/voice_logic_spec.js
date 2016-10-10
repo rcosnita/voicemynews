@@ -12,7 +12,7 @@ describe("Tests suite for making sure voice reading business logic works as expe
         this._buildEventData = jasmine.createSpy();
         this._eventLoop = new EventEmitter();
         this._voiceSupportBuilder = jasmine.createSpy();
-        this._voiceSupport = jasmine.createSpyObj("VoiceSupport", ["readText", "readTextSsml", "pause", "resume"]);
+        this._voiceSupport = jasmine.createSpyObj("VoiceSupport", ["readText", "readTextSsml", "pause", "resume", "skip"]);
         this._playerNotifications = undefined;
 
         this._voiceSupportBuilder.and.returnValue(this._voiceSupport);
@@ -228,6 +228,15 @@ describe("Tests suite for making sure voice reading business logic works as expe
 
         resumeResolver.then(() => {
             expect(this._voiceSupport.resume).toHaveBeenCalled();
+            done();
+        });
+    });
+
+    it("Test skip reading ok.", (done) => {
+        let skipResolver = this._voiceLogic.skip();
+
+        skipResolver.then(() => {
+            expect(this._voiceSupport.skip).toHaveBeenCalled();
             done();
         });
     });
