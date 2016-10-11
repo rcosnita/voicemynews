@@ -1,6 +1,7 @@
 "use strict";
 
 const EventNames = require("js/events/event_names");
+const invalidPlayback = require("js/exceptions/invalid_playback");
 const voiceLogic = require("js/news/voice_logic");
 
 const EventEmitter = require("events").EventEmitter;
@@ -11,7 +12,7 @@ describe("Tests suite for making sure voice reading business logic works as expe
         this._buildEventData = jasmine.createSpy();
         this._eventLoop = new EventEmitter();
         this._voiceSupportBuilder = jasmine.createSpy();
-        this._voiceSupport = jasmine.createSpyObj("VoiceSupport", ["readText", "readTextSsml"]);
+        this._voiceSupport = jasmine.createSpyObj("VoiceSupport", ["readText", "readTextSsml", "pause", "resume", "skip"]);
         this._playerNotifications = undefined;
 
         this._voiceSupportBuilder.and.returnValue(this._voiceSupport);
@@ -182,5 +183,70 @@ describe("Tests suite for making sure voice reading business logic works as expe
         } catch(err) {
             expect(err).not.toBe(undefined);
         }
+    });
+
+    it("Test pause reading ok.", (done) => {
+        this._voiceSupport.pause.and.callFake((playerNotifications) => {
+            expect(playerNotifications).toBe(this._playerNotifications);
+            playerNotifications.whenPause(50);
+        });
+
+        let pauseResolver = this._voiceLogic.pause();
+
+        expect(pauseResolver).not.toBe(undefined);
+        expect(pauseResolver.then).not.toBe(undefined);
+
+        pauseResolver.then(() => {
+            expect(this._voiceSupport.pause).toHaveBeenCalled();
+            done();
+        });
+    });
+
+    it("Test multiple pause fails.", () => {
+        try {
+            this._voiceLogic.pause();
+            this._voiceLogic.pause();
+            expect(true).toBeFalsy();
+        } catch(err) {
+            expect(err instanceof invalidPlayback.PlaybackStreamNotPlaying).toBeTruthy();
+            expect(err.message).toBe(invalidPlayback.PlaybackStreamNotPlaying.kDefaultMessage);
+            expect(err.cause).toBe(invalidPlayback.PlaybackStreamNotPlaying.kDefaultCause);
+            expect(err.stack).not.toBe(undefined);
+        }
+    });
+
+    it("Test resume reading ok.", (done) => {
+        this._voiceSupport.resume.and.callFake((playerNotifications) => {
+            expect(playerNotifications).toBe(this._playerNotifications);
+            playerNotifications.whenResume(50);
+        });
+
+        let resumeResolver = this._voiceLogic.resume();
+
+        expect(resumeResolver).not.toBe(undefined);
+        expect(resumeResolver.then).not.toBe(undefined);
+
+        resumeResolver.then(() => {
+            expect(this._voiceSupport.resume).toHaveBeenCalled();
+            done();
+        });
+    });
+
+    it("Test skip reading ok.", (done) => {
+        this._voiceLogic.readNews({
+            "headline": "Simple paragraph",
+            "paragraphs": []
+        });
+
+        let skipResolver = this._voiceLogic.skip();
+
+        skipResolver.then(() => {
+            expect(this._voiceSupport.skip).toHaveBeenCalled();
+            expect(this._voiceLogic.doneNotifier).not.toBe(undefined);
+
+            this._voiceLogic.doneNotifier.then(() => {
+                done();
+            });
+        });
     });
 });

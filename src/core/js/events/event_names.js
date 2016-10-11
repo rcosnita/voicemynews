@@ -108,5 +108,47 @@ module.exports = Object.freeze({
      * This event is emitted by the native app and requests the business logic to start reading the given news model.
      * @constant
      */
-    NEWS_VOICE_READ: "js:news:voice:read"
+    NEWS_VOICE_READ: "js:news:voice:read",
+
+    /**
+     * This event is emitted by the native app and requests the business logic to read a given playlist of news.
+     * @constant
+     */
+    NEWS_VOICE_READ_PLAYLIST: "js:news:voice:read:playlist",
+
+    /**
+     * This event is emitted by the native app and requests the business logic to resume reading the current playlist.
+     * @constant
+     */
+    NEWS_VOICE_READ_PLAYLIST_RESUME: "js:news:voice:read:playlist:resume",
+
+    /**
+     * This event is emitted by the business logic and tells the native app the resume operation ended.
+     * @constant
+     */
+    NEWS_VOICE_READ_PLAYLIST_RESUMED: "js:news:voice:read:playlist:resumed",
+
+    /**
+     * This event is emitted by native part in order to tell the business logic to pause reading the playlist.
+     * @constant
+     */
+    NEWS_VOICE_READ_PLAYLIST_PAUSE: "js:news:voice:read:playlist:pause",
+
+    /**
+     * This event is emitted by the business logic in order to tell the native part that playlist has been paused.
+     * @constant
+     */
+    NEWS_VOICE_READ_PLAYLIST_PAUSED: "js:news:voice:read:playlist:paused",
+
+    /**
+     * This event is emitted by the native part in order to tell the business logic to skip the current article.
+     * @constant
+     */
+    NEWS_VOICE_READ_PLAYLIST_SKIP: "js:news:voice:read:playlist:skip",
+
+    /**
+     * This event is emitted by the business logic in order to tell the native part that the reading skipped an article.
+     * @constant
+     */
+    NEWS_VOICE_READ_PLAYLIST_SKIPPED: "js:news:voice:read:playlist:skipped"
 });

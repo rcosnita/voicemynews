@@ -116,7 +116,7 @@ void IndividualNewsPage::OnNavigatedTo(Windows::UI::Xaml::Navigation::Navigation
 
 void IndividualNewsPage::WireJsEvents()
 {
-    onNewsLoadedId = jsEventLoop_->On(ConvertStdStrToPlatform(voicemynews::core::events::kNewsFetchByUrlLoaded),
+    onNewsLoadedId_ = jsEventLoop_->On(ConvertStdStrToPlatform(voicemynews::core::events::kNewsFetchByUrlLoaded),
         ref new voicemynews::app::win10::bindings::events::EventHandler([this](EventDataBinding^ evtData) {
         DisplayNews(evtData);
     }));
@@ -140,7 +140,7 @@ void IndividualNewsPage::DisplayNews(EventDataBinding^ evtData)
 
 void IndividualNewsPage::OnNavigatedFrom(Windows::UI::Xaml::Navigation::NavigationEventArgs ^e) {
     concurrency::create_task([this]() {
-        jsEventLoop_->Off(onNewsLoadedId);
+        jsEventLoop_->Off(onNewsLoadedId_);
     });
 }
 

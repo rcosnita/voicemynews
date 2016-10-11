@@ -15,6 +15,10 @@ using voicemynews::app::win10::bindings::events::EventLoopBinding;
 using voicemynews::app::win10::js::JsApp;
 using voicemynews::core::events::kNewsFetchFromPreferredCategories;
 using voicemynews::core::events::kNewsFetchFromPreferredCategoriesLoaded;
+using voicemynews::core::events::kNewsVoiceReadPlaylist;
+using voicemynews::core::events::kNewsVoiceReadPlaylistPause;
+using voicemynews::core::events::kNewsVoiceReadPlaylistResume;
+using voicemynews::core::events::kNewsVoiceReadPlaylistSkip;
 using voicemynews::app::win10::utils::ConvertStdStrToPlatform;
 using Windows::ApplicationModel::Core::CoreApplication;
 using Windows::Data::Json::IJsonObject;
@@ -36,7 +40,8 @@ namespace pages {
  */
 TEST_CLASS(GeniusNewsPageTests) {
 public:
-    TEST_METHOD_INITIALIZE(GeniusNewsPageTestsSetUp) {
+    TEST_METHOD_INITIALIZE(GeniusNewsPageTestsSetUp)
+    {
         jsLoop_ = ref new EventLoopBinding();
         jsBackend_ = ref new JsApp(jsLoop_);
         dispatcher_ = CoreApplication::CreateNewView()->Dispatcher;
@@ -58,24 +63,96 @@ public:
         Assert::IsTrue(receiveFetchEvent);
     }
 
-    TEST_METHOD(GeniusNewsPageTestsLoadedOk) {
-        auto newsData = ref new JsonArray();
-        auto news1 = ref new JsonObject();
-        auto news2 = ref new JsonObject();
-
-        news1->SetNamedValue("headline", JsonValue::CreateStringValue("sample article"));
-        news1->SetNamedValue("images", ref new JsonArray());
-        news2->SetNamedValue("headline", JsonValue::CreateStringValue("sample article 2"));
-        news2->SetNamedValue("images", JsonArray::Parse("[{\"small\": {\"url\":\"http://sample.com/img.jpg\",\"width\":300,\"height\":300}}]"));
-
-        newsData->Append(news1);
-        newsData->Append(news2);
-
+    TEST_METHOD(GeniusNewsPageTestsLoadedOk)
+    {
+        auto newsData = GetSampleData();
         TestDisplayNewsTemplate(newsData);
     }
 
-    TEST_METHOD(GeniusNewsPageTestsEmptyDataOk) {
+    TEST_METHOD(GeniusNewsPageTestsEmptyDataOk)
+    {
        TestDisplayNewsTemplate(ref new JsonArray());
+    }
+
+    TEST_METHOD(GeniusNewsPageTestsReadOk)
+    {
+        auto newsData = GetSampleData();
+        EventDataBinding^ readEvt = nullptr;
+
+        jsLoop_->On(ConvertStdStrToPlatform(kNewsVoiceReadPlaylist),
+            ref new EventHandler([&readEvt](EventDataBinding^ evtData) {
+            readEvt = evtData;
+        }));
+
+        auto evtData = ref new EventDataBinding(newsData->ToString());
+        jsLoop_->Emit(ConvertStdStrToPlatform(kNewsFetchFromPreferredCategoriesLoaded), evtData);
+        jsLoop_->ProcessEvents();
+
+        concurrency::create_task(dispatcher_->RunAsync(CoreDispatcherPriority::High, ref new DispatchedHandler([this, newsData]() {
+            geniusPage_->Read();
+        }))).then([this]() {
+            jsLoop_->ProcessEvents();
+        }).wait();
+
+        Assert::IsNotNull(readEvt);
+        Assert::AreEqual(newsData->ToString(), JsonObject::Parse(readEvt->EvtData)->GetNamedArray("news")->ToString());
+    }
+
+    TEST_METHOD(GeniusNewsPageTestsPauseOk)
+    {
+        EventDataBinding^ pauseEvt = nullptr;
+
+        jsLoop_->On(ConvertStdStrToPlatform(kNewsVoiceReadPlaylistPause),
+            ref new EventHandler([&pauseEvt](EventDataBinding^ evtData) {
+            pauseEvt = evtData;
+        }));
+
+        concurrency::create_task(dispatcher_->RunAsync(CoreDispatcherPriority::High, ref new DispatchedHandler([this]() {
+            geniusPage_->Pause();
+        }))).then([this]() {
+            jsLoop_->ProcessEvents();
+        }).wait();
+
+        Assert::IsNotNull(pauseEvt);
+        Assert::IsTrue(pauseEvt->EvtData->IsEmpty());
+    }
+
+    TEST_METHOD(GeniusNewsPageTestsResumeOk)
+    {
+        EventDataBinding^ resumeEvt = nullptr;
+
+        jsLoop_->On(ConvertStdStrToPlatform(kNewsVoiceReadPlaylistResume),
+            ref new EventHandler([&resumeEvt](EventDataBinding^ evtData) {
+            resumeEvt = evtData;
+        }));
+
+        concurrency::create_task(dispatcher_->RunAsync(CoreDispatcherPriority::High, ref new DispatchedHandler([this]() {
+            geniusPage_->Resume();
+        }))).then([this]() {
+            jsLoop_->ProcessEvents();
+        }).wait();
+
+        Assert::IsNotNull(resumeEvt);
+        Assert::IsTrue(resumeEvt->EvtData->IsEmpty());
+    }
+
+    TEST_METHOD(GeniusNewsPageTestsSkipOk)
+    {
+        EventDataBinding^ skipEvt = nullptr;
+
+        jsLoop_->On(ConvertStdStrToPlatform(kNewsVoiceReadPlaylistSkip),
+            ref new EventHandler([&skipEvt](EventDataBinding^ evtData) {
+            skipEvt = evtData;
+        }));
+
+        concurrency::create_task(dispatcher_->RunAsync(CoreDispatcherPriority::High, ref new DispatchedHandler([this]() {
+            geniusPage_->Skip();
+        }))).then([this]() {
+            jsLoop_->ProcessEvents();
+        }).wait();
+
+        Assert::IsNotNull(skipEvt);
+        Assert::IsTrue(skipEvt->EvtData->IsEmpty());
     }
 
 private:
@@ -103,6 +180,26 @@ private:
         }))).wait();
 
         Assert::IsTrue(newsOk);
+    }
+
+    /**
+     * \brief Builds a json object which can be used for testing genius news positive scenarios.
+     */
+    JsonArray^ GetSampleData()
+    {
+        auto newsData = ref new JsonArray();
+        auto news1 = ref new JsonObject();
+        auto news2 = ref new JsonObject();
+
+        news1->SetNamedValue("headline", JsonValue::CreateStringValue("sample article"));
+        news1->SetNamedValue("images", ref new JsonArray());
+        news2->SetNamedValue("headline", JsonValue::CreateStringValue("sample article 2"));
+        news2->SetNamedValue("images", JsonArray::Parse("[{\"small\": {\"url\":\"http://sample.com/img.jpg\",\"width\":300,\"height\":300}}]"));
+
+        newsData->Append(news1);
+        newsData->Append(news2);
+
+        return newsData;
     }
 
 private:

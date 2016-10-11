@@ -11,7 +11,13 @@
         <converters:JsonObjectConverter x:Key="jsonObjectConverter" />
     </UserControl.Resources>
     
-    <StackPanel Orientation="Vertical">
+    <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+        <StackPanel Orientation="Horizontal">
+            <Button Name="btnRead" Content="Read" Margin="10,0,10,0" Click="BtnRead_Click"/>
+            <Button Name="btnSkip" Content="Skip" Margin="10,0,10,0" Click="BtnSkip_Click"/>
+            <Button Name="btnPause" Content="Pause" Margin="10,0,10,0" Click="BtnPause_Click"/>
+            <Button Name="btnResume" Content="Resume" Margin="10,0,10,0" Click="BtnResume_Click"/>
+        </StackPanel>
         <ListView Name="NewsLst" ItemsSource="{Binding News}" IsItemClickEnabled="True" ItemClick="NewsLst_ItemClick">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">

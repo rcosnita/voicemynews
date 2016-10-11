@@ -25,6 +25,7 @@ namespace voice {
  */
 class VoiceSupportWin : public voicemynews::core::voice::VoiceSupportAbstract {
     using VoiceReadingNotifications = voicemynews::core::voice::VoiceReadingNotifications;
+    using VoiceReadingNotificationsBinding = voicemynews::app::win10::bindings::news::VoiceReadingNotifications;
 public:
     VoiceSupportWin(VoiceBinding^ voiceBinding)
         : voiceBinding_(voiceBinding)
@@ -49,6 +50,39 @@ public:
     virtual void ReadSsml(std::string ssmlText, std::shared_ptr<VoiceReadingNotifications> readingCallbacks)
     {
         throw ref new Platform::NotImplementedException("SSML support not implemented yet ...");
+    }
+
+    virtual void Pause(std::shared_ptr<VoiceReadingNotifications> readingCallbacks)
+    {
+        voiceBinding_->Pause(ConvertToCallbacksBinding(readingCallbacks));
+    }
+
+    virtual void Resume(std::shared_ptr<VoiceReadingNotifications> readingCallbacks)
+    {
+        voiceBinding_->Resume(ConvertToCallbacksBinding(readingCallbacks));
+    }
+
+    virtual void Skip()
+    {
+        voiceBinding_->Skip();
+    }
+
+private:
+    /**
+     * \brief Provides a conversion method between the native callbacks holder and the winrt ref class.
+     */
+    VoiceReadingNotificationsBinding^ ConvertToCallbacksBinding(std::shared_ptr<VoiceReadingNotifications> readingCallbacks)
+    {
+        return ref new VoiceReadingNotificationsBinding(
+            ref new ReadingProgressHandler([&readingCallbacks](int64 currPos) {
+            readingCallbacks->whenPlayheadChanged()(static_cast<long>(currPos));
+        }), ref new ReadingPausedHandler([&readingCallbacks](int64 currPos) {
+            readingCallbacks->whenResumed()(static_cast<long>(currPos));
+        }), ref new ReadingResumedHandler([&readingCallbacks](int64 currPos) {
+            readingCallbacks->whenResumed()(static_cast<long>(currPos));
+        }), ref new ReadingDoneHandler([&readingCallbacks]() {
+            readingCallbacks->whenDone()();
+        }));
     }
 
 private:

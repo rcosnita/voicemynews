@@ -8,7 +8,9 @@
 "use strict";
 
 const EventNames = require("js/events/event_names");
+const invalidPlayback = require("js/exceptions/invalid_playback");
 const NotImplementedMethodException = require("js/exceptions/notimplemented").NotImplementedMethodException;
+const Q = require("js/third_party/q/q");
 
 /**
  * This class provides all the logic for transforming a news model into audio and internally relies on platform
@@ -28,14 +30,26 @@ class VoiceLogic {
             (currPos) => this._whenParagraphReadResumed(currPos),
             () => this._whenParagraphReadDone()
         );
+
+        this._doneNotifier = undefined;
+        this._pauseNotifier = undefined;
+        this._resumeNotifier = undefined;
     }
 
     /**
+     * Obtains current pending paragraphs which are going to be read by voice logic.
      * @property
-     * Obtains currently pending paragraphs which are going to be read by voice logic.
      */
     get pendingParagraphs() {
         return this._remainingParagraphs;
+    }
+
+    /**
+     * Obtains current stream done notifier. In case no stream is playing this will return undefined.
+     * @property
+     */
+    get doneNotifier() {
+        return !this._doneNotifier ? undefined : this._doneNotifier.promise;
     }
 
     /**
@@ -46,6 +60,23 @@ class VoiceLogic {
      */
     init() {
         this._eventLoop.on(EventNames.NEWS_VOICE_READ, (evt) => this._handleReadNews(evt));
+    }
+
+    /**
+     * Pause the current reading stream. It returns a promise which resolves once the pause
+     * action has been executed.
+     */
+    pause() {
+        if (this._pauseNotifier) {
+            throw new invalidPlayback.PlaybackStreamNotPlaying();
+        }
+
+        this._pauseNotifier = Q.defer();
+        try {
+            return this._pauseNotifier.promise;
+        } finally {
+            this._voiceSupport.pause(this._playerNotifications);
+        }
     }
 
     /**
@@ -64,8 +95,40 @@ class VoiceLogic {
             return;
         }
 
+        this._doneNotifier = Q.defer();
+
         this._remainingParagraphs = newsModel.paragraphs;
         this._voiceSupport.readText(newsModel.headline, this._playerNotifications);
+
+        return this._doneNotifier.promise;
+    }
+
+    /**
+     * Provides the algorithm for resuming playing the current loaded stream.
+     */
+    resume() {
+        this._resumeNotifier = Q.defer();
+
+        try {
+            return this._resumeNotifier.promise;
+        } finally {
+            this._voiceSupport.resume(this._playerNotifications);
+        }
+    }
+
+    /**
+     * Provides the algorithm for skipping the current playback stream.
+     */
+    skip() {
+        const skipNotifier = Q.defer();
+
+        try {
+            return skipNotifier.promise;
+        } finally {
+            this._voiceSupport.skip();
+            this._doneNotifier.resolve();
+            skipNotifier.resolve();
+        }
     }
 
     /**
@@ -77,6 +140,11 @@ class VoiceLogic {
      */
     _readParagraphs(paragraphs) {
         if (!paragraphs || paragraphs.length === 0) {
+            if (this._doneNotifier) {
+                this._doneNotifier.resolve();
+                this._doneNotifier = undefined;
+            }
+
             return;
         }
 
@@ -117,7 +185,8 @@ class VoiceLogic {
      * @param {Number} currPos the current position inside the reading stream.
      */
     _whenParagraphReadPaused(currPos) {
-        throw new NotImplementedMethodException();
+        this._pauseNotifier.resolve();
+        this._pauseNotifier = undefined;
     }
 
     /**
@@ -126,7 +195,8 @@ class VoiceLogic {
      * @param {Number} currPos the current position inside the reading stream.
      */
     _whenParagraphReadResumed(currPos) {
-        throw new NotImplementedMethodException();
+        this._resumeNotifier.resolve();
+        this._resumeNotifier = undefined;
     }
 
     /**

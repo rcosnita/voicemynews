@@ -47,6 +47,27 @@ public:
     GeniusNewsPage(JsApp^ jsBackend);
 
     /**
+     * \brief Start reading the current news. It is equivalent to pressing read button from UI.
+     */
+    void Read();
+
+    /**
+     * \brief Pause the current stream. It is equivalent to pressing pause button from UI.
+     */
+    void Pause();
+
+    /**
+     * \brief Resume the current playback. It is equivalent to pressing resume button from UI.
+     */
+    void Resume();
+
+    /**
+     * \brief Skip the current playback. It is equivalent to pressing skip button from UI.
+     */
+    void Skip();
+
+public:
+    /**
      * \brief This method is invoked automatically once js backend property has changed.
      */
     static void OnJsBackendChanged(DependencyObject^ d, DependencyPropertyChangedEventArgs^ args);
@@ -59,10 +80,15 @@ protected:
 
 private:
     /**
-     * This member keeps the reference identifier of the last listener registered to handle news loaded. It is removed
+     * \brief This member keeps the reference identifier of the last listener registered to handle news loaded. It is removed
      * when user navigates to a new page.
      */
-    Platform::String^ onNewsLoadedId;
+    Platform::String^ onNewsLoadedId_;
+
+    /**
+     * This member keeps the json representation of the news currently listed.
+     */
+    Platform::String^ jsonNewsStr_;
 
 private:
     /**
@@ -84,6 +110,38 @@ private:
      * \brief This methods obtains the selected item and navigate to the page which can display the news.
      */
     void NewsLst_ItemClick(Platform::Object^ sender, Windows::UI::Xaml::Controls::ItemClickEventArgs^ e);
+
+    /**
+     * \brief Provides the logic for playing the currently loaded genius news playlist.
+     *
+     * All the hard part is implemented in javascript. Here we just dispatch an event to the app business logic
+     * requesting a new reading session.
+     */
+    void BtnRead_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
+
+    /**
+     * \brief Provides the logic for pausing the current stream playback.
+     *
+     * All the hard part is implemented in the javascript business logic. Here we just dispatch an event to the
+     * business logic requesting a pause.
+     */
+    void BtnPause_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
+
+    /**
+     * \brief Provides the logic for resuming the current stream playback.
+     *
+     * All the hard part is implemented in the javascript business logic. Here we just dispatch an event to the
+     * business logic requesting a resume.
+     */
+    void BtnResume_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
+
+    /**
+     * \brief Provides the logic for skipping the current news being read.
+     *
+     * All the hard part is implemented in the javascript business logic. Here we just dispatch an event to the
+     * business logic requesting a skip.
+     */
+    void BtnSkip_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 };
 }
 }

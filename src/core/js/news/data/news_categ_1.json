@@ -1,5 +1,5 @@
 [{
-    "newsId": "574429b4-028e-4462-8cb8-f219fbd0e14e",
+    "newsId": "http://edition.cnn.com/2016/08/25/middleeast/muqawama-mosul-resistance-fighters/index.html",
     "headline": "M for Muqawama: The secret resistance fighting ISIS with graffiti and guns",
     "url": "http://edition.cnn.com/2016/08/25/middleeast/muqawama-mosul-resistance-fighters/index.html",
     "provider": "cnn",
@@ -11,7 +11,7 @@
         }
     }
 }, {
-    "newsId": "574429b4-028e-4462-8cb8-f219fbd0e14f",
+    "newsId": "http://edition.cnn.com/2016/09/17/middleeast/syria-claims-coalition-airstrike-hit-regime-forces/index.html",
     "headline": "Syria claims coalition airstrike hit regime forces",
     "provider": "cnn",
     "url": "http://edition.cnn.com/2016/09/17/middleeast/syria-claims-coalition-airstrike-hit-regime-forces/index.html",

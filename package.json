@@ -11,10 +11,11 @@
     },
     "devDependencies": {
         "fs-extra": "0.30.0",
-        "jasmine": "2.4.1"
+        "jasmine": "2.4.1",
+        "node-inspector": "0.12.8"
     },
     "scripts": {
         "pretest": "node tests/unittests/core/js/pretest.js",
-        "test": "node_modules/.bin/jasmine.cmd JASMINE_CONFIG_PATH=tests/unittests/core/js/support/jasmine.json"
+        "test": "node node_modules/jasmine/bin/jasmine.js JASMINE_CONFIG_PATH=tests/unittests/core/js/support/jasmine.json"
     }
 }

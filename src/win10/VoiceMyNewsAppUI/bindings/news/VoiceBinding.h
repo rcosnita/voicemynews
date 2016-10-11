@@ -70,6 +70,7 @@ private:
 public ref class VoiceBinding sealed
 {
 using MediaPlayer = Windows::Media::Playback::MediaPlayer;
+using PlayheadLocation = long long;
 using SpeechSynthesizer = Windows::Media::SpeechSynthesis::SpeechSynthesizer;
 using SpeechStream = Windows::Media::SpeechSynthesis::SpeechSynthesisStream;
 public:
@@ -84,11 +85,35 @@ public:
      */
     void ReadText(Platform::String^ paragraph, VoiceReadingNotifications^ notifications);
 
+    /**
+     * \brief Provides the logic for pausing the current running stream.
+     *
+     * This is a basic interruption based operation which can be invoked by consumers.
+     */
+    void Pause(VoiceReadingNotifications^ notifications);
+
+    /**
+     * \brief Provides the logic for resuming the current loaded stream.
+     *
+     * This is a basic resume operation on the underlying MediaPlayer.
+     */
+    void Resume(VoiceReadingNotifications^ notifications);
+
+    /**
+     * \brief Provides the logic for skipping the remaining part of the active stream.
+     */
+    void Skip();
+
 private:
     /**
      * \brief Plays the given stream on the hidden media element binded to the instance.
      */
     void PlayStream(SpeechStream^ speechStream);
+
+    /**
+     * \brief Obtains the current playhead location in milliseconds.
+     */
+    PlayheadLocation GetCurrentLocation();
 
 private:
     MediaPlayer^ player_;

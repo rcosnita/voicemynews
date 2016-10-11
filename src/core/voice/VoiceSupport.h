@@ -75,6 +75,27 @@ public:
      * \param readingCallbacks the reading callbacks used for being notified about playback progress.
      */
     virtual void ReadSsml(std::string ssmlText, std::shared_ptr<VoiceReadingNotifications> readingCallbacks) = 0;
+
+    /**
+     * \brief Pause the current stream and notifies consumer about the progress.
+     *
+     * \param readingCallbacks the reading callbacks used for being notified about playback progress.
+     */
+    virtual void Pause(std::shared_ptr<VoiceReadingNotifications> readingCallbacks) = 0;
+
+    /**
+     * \brief Resume the current stream and notifies consumer about the progress.
+     *
+     * \param readingCallbacks the reading callbacks used for being notified about playback progress.
+     */
+    virtual void Resume(std::shared_ptr<VoiceReadingNotifications> readingCallbacks) = 0;
+
+    /**
+     * \brief Skips the current stream into a synchronous maner.
+     *
+     * Once invoked and finished, developers can safely assume that they can play a new stream.
+     */
+    virtual void Skip() = 0;
 };
 
 /**
