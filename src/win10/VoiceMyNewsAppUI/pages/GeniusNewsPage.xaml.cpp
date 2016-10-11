@@ -90,6 +90,26 @@ void GeniusNewsPage::News::set(NewsVector^ model) {
     SetValue(NewsModelProperty, model);
 }
 
+void GeniusNewsPage::Pause()
+{
+    BtnPause_Click(nullptr, nullptr);
+}
+
+void GeniusNewsPage::Read()
+{
+    BtnRead_Click(nullptr, nullptr);
+}
+
+void GeniusNewsPage::Resume()
+{
+    BtnResume_Click(nullptr, nullptr);
+}
+
+void GeniusNewsPage::Skip()
+{
+    BtnSkip_Click(nullptr, nullptr);
+}
+
 void GeniusNewsPage::WireJsModel() {
     auto jsLoop = JsBackend->GetEventLoop();
 

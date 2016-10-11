@@ -47,6 +47,27 @@ public:
     GeniusNewsPage(JsApp^ jsBackend);
 
     /**
+     * \brief Start reading the current news. It is equivalent to pressing read button from UI.
+     */
+    void Read();
+
+    /**
+     * \brief Pause the current stream. It is equivalent to pressing pause button from UI.
+     */
+    void Pause();
+
+    /**
+     * \brief Resume the current playback. It is equivalent to pressing resume button from UI.
+     */
+    void Resume();
+
+    /**
+     * \brief Skip the current playback. It is equivalent to pressing skip button from UI.
+     */
+    void Skip();
+
+public:
+    /**
      * \brief This method is invoked automatically once js backend property has changed.
      */
     static void OnJsBackendChanged(DependencyObject^ d, DependencyPropertyChangedEventArgs^ args);
