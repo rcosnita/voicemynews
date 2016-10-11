@@ -155,7 +155,7 @@ void IndividualNewsPage::btnReadNews_Tapped(Platform::Object^ sender, Windows::U
     auto newsModel = CurrNews->ToString();
 
     concurrency::create_task([this, newsModel]() {
-        jsEventLoop_->Emit(ConvertStdStrToPlatform(voicemynews::core::events::kNewsVoiceReadPlaylist),
+        jsEventLoop_->Emit(ConvertStdStrToPlatform(voicemynews::core::events::kNewsVoiceRead),
             ref new EventDataBinding(newsModel));
     });
 }
