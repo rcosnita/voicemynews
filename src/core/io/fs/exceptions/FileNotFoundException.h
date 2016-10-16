@@ -4,6 +4,10 @@
 #include <exception>
 #include <string>
 
+#ifndef _GLIBCXX_USE_NOEXCEPT
+#define _GLIBCXX_USE_NOEXCEPT
+#endif
+
 namespace voicemynews {
 namespace core {
 namespace io {
@@ -21,7 +25,7 @@ public:
     /**
      * \brief The current implementation builds a friendly error message for the current instance.
      */
-    virtual const char* what() const;
+    virtual const char* what() const _GLIBCXX_USE_NOEXCEPT;
 
     virtual const std::string FileName() const;
 private:
