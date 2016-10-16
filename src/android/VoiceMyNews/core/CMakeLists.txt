@@ -7,6 +7,7 @@ include(../../../core/CMakeLists.txt)
 
 include_directories(
   ${VOICEMYNEWS_ANDROID}
+  ${VOICEMYNEWS_CORE}
 )
 
 add_library(

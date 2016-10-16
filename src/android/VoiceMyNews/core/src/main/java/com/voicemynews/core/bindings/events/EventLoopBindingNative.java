@@ -45,8 +45,18 @@ public class EventLoopBindingNative implements EventLoopBinding {
     public native void off(String listenerId);
 
     /**
-     * Provides a factory method for obtaining new instances of event loop.
+     * Provides a singleton factory method for obtaining an event loop. The whole app is allowed to
+     * use one EventLoop.
+     * @return The event loop which can be used by the application.
+     */
+    public static EventLoopBinding getInstance() throws Exception {
+        throw new Exception("Not implemented yet ...");
+    }
+
+    /**
+     * Provides a factory method for obtaining new instances of event loop. It is provided by a native
+     * implementation.
      * @return
      */
-    public static native EventLoopBindingNative getInstance();
+    protected static native EventLoopBinding getInstanceNative();
 }
