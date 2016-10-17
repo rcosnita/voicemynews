@@ -3,7 +3,9 @@
 
 #include "EventData.h"
 
+#include <algorithm>
 #include <chrono>
+#include <condition_variable>
 #include <functional>
 #include <map>
 #include <memory>

@@ -1,5 +1,5 @@
 #include "EventLoopBinding.h"
-//#include "events/EventLoop.h"
+#include "events/EventLoop.h"
 
 #include <exception>
 
