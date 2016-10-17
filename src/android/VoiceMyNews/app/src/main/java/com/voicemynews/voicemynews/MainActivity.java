@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.voicemynews.core.bindings.events.EventLoopBinding;
+import com.voicemynews.core.bindings.events.EventLoopBindingNative;
+
 public class MainActivity extends Activity {
 
     static {
@@ -19,5 +22,7 @@ public class MainActivity extends Activity {
         // Example of a call to a native method
         TextView tv = (TextView) findViewById(R.id.sample_text);
         tv.setText("Hello world ...");
+
+        EventLoopBinding eventLoop = EventLoopBindingNative.getInstance();
     }
 }

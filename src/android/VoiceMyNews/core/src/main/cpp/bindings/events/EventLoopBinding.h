@@ -11,17 +11,22 @@ extern "C" {
  * \brief Provides the implementation for EventLoopBindingNative emit method.
  *
  * Internally, it relies on the native event emitter implementation. See EventLoop.h for more details.
+ *
+ * \param evtName the event name we want to emit.
+ * \param evtData the event data we want to pass to all listeners. This has com.voicemynews.core.bindings.events.EventDataBinding type.
  */
-JNICALL void JNIEXPORT Java_com_voicemynews_core_bindings_events_EventLoopBindingNative_emit(
+JNIEXPORT void JNICALL Java_com_voicemynews_core_bindings_events_EventLoopBindingNative_emit(
     JNIEnv* env,
-    jobject thisObj);
+    jobject thisObj,
+    jstring evtName,
+    jobject evtData);
 
 /**
  * \brief Provides the implementation for EventLoopBindingNative on method.
  *
  * Internally, it relies on the native event emitter implementation. See EventLoop.h for mor details.
  */
-JNICALL void JNIEXPORT Java_com_voicemynews_core_bindings_events_EventLoopBindingNative_on(
+JNIEXPORT void JNICALL Java_com_voicemynews_core_bindings_events_EventLoopBindingNative_on(
     JNIEnv* env,
     jobject thisObj,
     jstring evtName,
@@ -32,7 +37,7 @@ JNICALL void JNIEXPORT Java_com_voicemynews_core_bindings_events_EventLoopBindin
  *
  * Internally, it relies on the native event emitter implementation. See EventLoop.h for mor details.
  */
-JNICALL void JNIEXPORT Java_com_voicemynews_core_bindings_events_EventLoopBindingNative_off(
+JNIEXPORT void JNICALL Java_com_voicemynews_core_bindings_events_EventLoopBindingNative_off(
     JNIEnv* env,
     jobject thisObj,
     jstring listenerId);
@@ -42,9 +47,17 @@ JNICALL void JNIEXPORT Java_com_voicemynews_core_bindings_events_EventLoopBindin
  *
  * Internally, it relies on the native event emitter implementation. See EventLoop.h for mor details.
  */
-JNICALL jobject JNIEXPORT Java_com_voicemynews_core_bindings_events_EventLoopBindingNative_getInstanceNative(
+JNIEXPORT jobject JNICALL Java_com_voicemynews_core_bindings_events_EventLoopBindingNative_getInstanceNative(
+    JNIEnv *env,
+    jclass objCls);
+
+/**
+ * \brief Provides the implementation for EventLoopBindingNative destroyNative method.
+ */
+JNIEXPORT void JNICALL Java_com_voicemynews_core_bindings_events_EventLoopBindingNative_destroyNative(
     JNIEnv* env,
-    jobject thisObj);
+    jclass objCls,
+    jlong emitterPtr);
 
 #ifdef __cplusplus
 }

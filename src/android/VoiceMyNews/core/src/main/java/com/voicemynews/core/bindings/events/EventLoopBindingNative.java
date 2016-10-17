@@ -49,8 +49,8 @@ public class EventLoopBindingNative implements EventLoopBinding {
      * use one EventLoop.
      * @return The event loop which can be used by the application.
      */
-    public static EventLoopBinding getInstance() throws Exception {
-        throw new Exception("Not implemented yet ...");
+    public static EventLoopBinding getInstance() {
+        return getInstanceNative();
     }
 
     /**
@@ -58,5 +58,16 @@ public class EventLoopBindingNative implements EventLoopBinding {
      * implementation.
      * @return
      */
-    protected static native EventLoopBinding getInstanceNative();
+    private native static EventLoopBinding getInstanceNative();
+
+    /**
+     * Provides a helper method destroying the native event emitter.
+     * @param nativeEmitterPtr the memory address of the native event emitter.
+     */
+    public native static void destroyNative(long nativeEmitterPtr);
+
+    @Override
+    protected void finalize() {
+        this.destroyNative(nativeEmitterPtr);
+    }
 }
