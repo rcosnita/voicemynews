@@ -38,12 +38,13 @@ JNIEXPORT jobject JNICALL Java_com_voicemynews_core_bindings_events_EventLoopBin
 {
     if (EmitterCls == nullptr)
     {
-        EmitterCls = objCls;
-        EmitterConstructorId = env->GetMethodID(objCls, "<init>", "(J)V");
+        EmitterCls = static_cast<jclass>(env->NewGlobalRef(objCls));
+        EmitterConstructorId = env->GetMethodID(EmitterCls, "<init>", "(J)V");
     }
 
     auto eventLoop = new voicemynews::core::events::EventLoop();
-    auto javaLoop = env->CallObjectMethod(objCls, EmitterConstructorId, reinterpret_cast<uintptr_t>(eventLoop));
+    jlong eventLoopPtr = reinterpret_cast<uintptr_t>(eventLoop);
+    auto javaLoop = env->NewObject(EmitterCls, EmitterConstructorId, eventLoopPtr);
 
     return javaLoop;
 }

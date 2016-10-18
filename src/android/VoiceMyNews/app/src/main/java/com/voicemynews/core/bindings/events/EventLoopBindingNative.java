@@ -67,7 +67,8 @@ public class EventLoopBindingNative implements EventLoopBinding {
     public native static void destroyNative(long nativeEmitterPtr);
 
     @Override
-    protected void finalize() {
+    protected void finalize() throws Throwable {
+        super.finalize();
         this.destroyNative(nativeEmitterPtr);
-    }
+    };
 }
