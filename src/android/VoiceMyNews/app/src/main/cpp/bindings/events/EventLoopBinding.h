@@ -26,7 +26,7 @@ JNIEXPORT void JNICALL Java_com_voicemynews_core_bindings_events_EventLoopBindin
  *
  * Internally, it relies on the native event emitter implementation. See EventLoop.h for mor details.
  */
-JNIEXPORT void JNICALL Java_com_voicemynews_core_bindings_events_EventLoopBindingNative_on(
+JNIEXPORT jstring JNICALL Java_com_voicemynews_core_bindings_events_EventLoopBindingNative_on(
     JNIEnv* env,
     jobject thisObj,
     jstring evtName,
