@@ -26,7 +26,7 @@ std::shared_ptr<EventLoopPlatform> EventLoopPlatform::GetInstance()
 jobject EventLoopPlatform::BuildEvent(JNIEnv* env, std::string data)
 {
     if (EventDataBindingNativeCls == nullptr) {
-        EventDataBindingNativeCls = env->FindClass("com/voicemynews/core/bindings/events/EventDataBindingNative");
+        EventDataBindingNativeCls = (jclass)env->NewGlobalRef(env->FindClass("com/voicemynews/core/bindings/events/EventDataBindingNative"));
     }
 
     jstring evtDataJNI = env->NewStringUTF(data.c_str());
