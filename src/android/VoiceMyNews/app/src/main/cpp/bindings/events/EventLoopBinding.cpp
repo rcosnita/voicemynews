@@ -1,43 +1,25 @@
 #include <string>
 #include "EventLoopBinding.h"
-#include "events/EventLoop.h"
-#include "utils/StringHelpers.h"
+#include "EventLoopPlatform.h"
 
-#include <exception>
+#include <string>
 
-using voicemynews::app::android::utils::StringHelpers;
+using voicemynews::core::events::EventLoop;
+using voicemynews::core::events::EventLoopPlatform;
 
 static JavaVM* CurrVM = nullptr;
 static jclass EmitterCls = nullptr;
 static jmethodID EmitterConstructorId = nullptr;
+static jfieldID  EmitterPtrFieldId = nullptr;
 
 /**
- * \brief This method constructs a unique string identifier for the given event handler pointer.
+ * \brief Provides the logic for obtaining the native event loop from a java event loop binding class.
  */
-static std::string GetStrForEventHandlerPtr(JNIEnv *env,
-    std::string evtName,
-    jclass handlerClass,
-    jobject evtHandler)
+static EventLoopPlatform* GetEventLoopFromObject(JNIEnv* env, jobject loop)
 {
-    jmethodID getClassId = env->GetMethodID(handlerClass, "getClass", "()Ljava/lang/Class;");
-    jobject handlerClassRefl = env->CallObjectMethod(evtHandler, getClassId);
-    jclass handlerClassReflCls = env->GetObjectClass(handlerClassRefl);
-
-    jmethodID getNameId = env->GetMethodID(handlerClassReflCls, "getName", "()Ljava/lang/String;");
-    jstring classFullName = reinterpret_cast<jstring>(env->CallObjectMethod(handlerClassRefl, getNameId));
-    jmethodID hashCodeId = env->GetMethodID(handlerClass, "hashCode", "()I");
-    jint hashCode = env->CallIntMethod(evtHandler, hashCodeId);
-
-    std::string fullName = env->GetStringUTFChars(classFullName, NULL);
-    auto hashCodeStr = StringHelpers::to_string(hashCode);
-    std::string key;
-    key.append(evtName);
-    key.append(":");
-    key.append(fullName);
-    key.append(":");
-    key.append(hashCodeStr);
-
-    return key;
+    auto emitterPtr = env->GetLongField(loop, EmitterPtrFieldId);
+    auto emitter = reinterpret_cast<EventLoopPlatform*>(emitterPtr);
+    return emitter;
 }
 
 JNIEXPORT void JNICALL Java_com_voicemynews_core_bindings_events_EventLoopBindingNative_emit(
@@ -46,7 +28,8 @@ JNIEXPORT void JNICALL Java_com_voicemynews_core_bindings_events_EventLoopBindin
     jstring evtName,
     jobject evtData)
 {
-    throw std::exception();
+    auto eventLoop = GetEventLoopFromObject(env, thisObj);
+    eventLoop->Emit(env, evtName, evtData);
 }
 
 JNIEXPORT jstring JNICALL Java_com_voicemynews_core_bindings_events_EventLoopBindingNative_on(
@@ -55,19 +38,8 @@ JNIEXPORT jstring JNICALL Java_com_voicemynews_core_bindings_events_EventLoopBin
     jstring evtName,
     jobject evtHandler)
 {
-    std::unique_lock<std::mutex> listenersLock;
-    jclass handlerClass = env->GetObjectClass(evtHandler);
-    std::string evtNameStd = env->GetStringUTFChars(evtName, NULL);
-    auto handlerKey = GetStrForEventHandlerPtr(env, evtNameStd, handlerClass, evtHandler);
-
-    /*auto evtHandlerPtr = eventLoop_.On(evtNameStd, std::function<void(std::shared_ptr<EventLoopBinding::EventData>)>([handler](std::shared_ptr<EventLoopBinding::EventData> evtDataStd) {
-        auto evtData = EventLoopPlatform::BuildEvent(ConvertStdStrToPlatform(evtDataStd->data()));
-        handler(evtData);
-    }));
-
-    registeredListeners_[handlerKey] = ListenerModel(evtName, evtHandlerPtr);*/
-
-    return env->NewStringUTF(handlerKey.c_str());
+    auto eventLoop = GetEventLoopFromObject(env, thisObj);
+    return eventLoop->On(env, evtName, evtHandler);
 }
 
 JNIEXPORT void JNICALL Java_com_voicemynews_core_bindings_events_EventLoopBindingNative_off(
@@ -75,7 +47,9 @@ JNIEXPORT void JNICALL Java_com_voicemynews_core_bindings_events_EventLoopBindin
     jobject thisObj,
     jstring listenerId)
 {
-    throw std::exception();
+    auto eventLoop = GetEventLoopFromObject(env, thisObj);
+    std::string handlerKey = env->GetStringUTFChars(listenerId, nullptr);
+    eventLoop->Off(handlerKey);
 }
 
 JNIEXPORT jobject JNICALL Java_com_voicemynews_core_bindings_events_EventLoopBindingNative_getInstanceNative(
@@ -89,10 +63,11 @@ JNIEXPORT jobject JNICALL Java_com_voicemynews_core_bindings_events_EventLoopBin
     if (EmitterCls == nullptr) {
         EmitterCls = static_cast<jclass>(env->NewGlobalRef(objCls));
         EmitterConstructorId = env->GetMethodID(EmitterCls, "<init>", "(J)V");
+        EmitterPtrFieldId = env->GetFieldID(EmitterCls, "nativeEmitterPtr", "J");
     }
 
-    auto eventLoop = new voicemynews::core::events::EventLoop();
-    jlong eventLoopPtr = reinterpret_cast<uintptr_t>(eventLoop);
+    auto eventLoop = EventLoopPlatform::GetInstance();
+    jlong eventLoopPtr = reinterpret_cast<uintptr_t>(eventLoop.get());
     auto javaLoop = env->NewObject(EmitterCls, EmitterConstructorId, eventLoopPtr);
 
     return javaLoop;

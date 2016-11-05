@@ -1,7 +1,5 @@
 package com.voicemynews.core.bindings.events;
 
-import java.util.Objects;
-
 /**
  * Provides a native event loop which can be used by app java code to listen and emit events for
  * the native app business logic. This layer provides interoperability with JS business logic. In
@@ -29,7 +27,7 @@ public class EventLoopBindingNative implements EventLoopBinding {
      * @param evtName The event name we want to emit.
      * @param evtData The event data we want to send to all listeners.
      */
-    public native void emit(String evtName, EventDataBinding evtData);
+    public native void emit(String evtName, EventDataBindingNative evtData);
 
     /**
      * Provides the logic for adding a new listener to the specified event name.
@@ -73,7 +71,7 @@ public class EventLoopBindingNative implements EventLoopBinding {
      * Provides a helper method destroying the native event emitter.
      * @param nativeEmitterPtr the memory address of the native event emitter.
      */
-    public native static void destroyNative(long nativeEmitterPtr);
+    private native static void destroyNative(long nativeEmitterPtr);
 
     @Override
     protected void finalize() throws Throwable {

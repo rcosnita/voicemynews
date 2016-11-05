@@ -13,7 +13,7 @@ public interface EventLoopBinding {
      * @param evtName The event name we want to emit.
      * @param evtData The event data we want to send to all listeners.
      */
-    void emit(String evtName, EventDataBinding evtData);
+    void emit(String evtName, EventDataBindingNative evtData);
 
     /**
      * Provides the logic for adding a new listener to the specified event name.

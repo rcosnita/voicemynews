@@ -1,8 +1,10 @@
-#ifndef VOICEMYNEWS_EVENTEMITTERJNI_H
-#define VOICEMYNEWS_EVENTEMITTERJNI_H
+#ifndef VoiceMyNewsAndroid_events_EventLoopBinding_H_
+#define VoiceMyNewsAndroid_events_EventLoopBinding_H_
 
 #include <jni.h>
-
+#include <memory>
+#include "events/EventLoop.h"
+#include "bindings/events/EventDataBinding.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -13,7 +15,7 @@ extern "C" {
  * Internally, it relies on the native event emitter implementation. See EventLoop.h for more details.
  *
  * \param evtName the event name we want to emit.
- * \param evtData the event data we want to pass to all listeners. This has com.voicemynews.core.bindings.events.EventDataBinding type.
+ * \param evtData the event data we want to pass to all listeners. This has com.voicemynews.core.bindings.events.EventDataBindingNative type.
  */
 JNIEXPORT void JNICALL Java_com_voicemynews_core_bindings_events_EventLoopBindingNative_emit(
     JNIEnv* env,
@@ -63,4 +65,4 @@ JNIEXPORT void JNICALL Java_com_voicemynews_core_bindings_events_EventLoopBindin
 }
 #endif
 
-#endif //VOICEMYNEWS_EVENTEMITTERJNI_H
+#endif /* VoiceMyNewsAndroid_events_EventLoopBinding_H_ */

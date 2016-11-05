@@ -10,5 +10,5 @@ public interface EventHandler {
      *
      * @param evtData The event data received from event.
      */
-    void handleEvent(EventDataBinding evtData);
+    void handleEvent(EventDataBindingNative evtData);
 }

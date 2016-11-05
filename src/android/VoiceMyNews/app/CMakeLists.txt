@@ -14,8 +14,12 @@ add_library(
   voicemynews-android
   SHARED
 
+  ${VOICEMYNEWS_ANDROID}/src/main/cpp/bindings/events/EventDataBinding.h
+  ${VOICEMYNEWS_ANDROID}/src/main/cpp/bindings/events/EventDataBinding.cpp
   ${VOICEMYNEWS_ANDROID}/src/main/cpp/bindings/events/EventLoopBinding.h
   ${VOICEMYNEWS_ANDROID}/src/main/cpp/bindings/events/EventLoopBinding.cpp
+  ${VOICEMYNEWS_ANDROID}/src/main/cpp/bindings/events/EventLoopPlatform.h
+  ${VOICEMYNEWS_ANDROID}/src/main/cpp/bindings/events/EventLoopPlatform.cpp
   ${VOICEMYNEWS_ANDROID}/src/main/cpp/utils/StringHelpers.h
   ${VOICEMYNEWS_ANDROID}/src/main/cpp/utils/StringHelpers.cpp
 )

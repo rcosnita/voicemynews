@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import com.voicemynews.core.bindings.events.EventDataBinding;
+import com.voicemynews.core.bindings.events.EventDataBindingNative;
 import com.voicemynews.core.bindings.events.EventHandler;
 import com.voicemynews.core.bindings.events.EventLoopBinding;
 import com.voicemynews.core.bindings.events.EventLoopBindingNative;
@@ -26,11 +26,14 @@ public class MainActivity extends Activity {
         tv.setText("Hello world ...");
 
         EventLoopBinding eventLoop = EventLoopBindingNative.getInstance();
-        eventLoop.on("custom:evt", new EventHandler() {
+        String handlerKey = eventLoop.on("custom:evt", new EventHandler() {
             @Override
-            public void handleEvent(EventDataBinding evtData) {
+            public void handleEvent(EventDataBindingNative evtData) {
                 System.out.println(evtData.toString());
             }
         });
+
+        eventLoop.emit("custom:evt", EventDataBindingNative.getInstanceNative("hello world"));
+        eventLoop.emit("custom:evt", EventDataBindingNative.getInstanceNative("hello world"));
     }
 }
