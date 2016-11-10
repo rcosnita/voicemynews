@@ -19,11 +19,11 @@ EventLoopPlatform::EventLoopPlatform(bool processImmediate)
 {
 }
 
-std::shared_ptr<EventLoopPlatform> EventLoopPlatform::GetInstance()
+EventLoopPlatform* EventLoopPlatform::GetInstance()
 {
     auto resultStr = voicemynews::app::android::RunV8HelloWorld();
     // TODO [rcosnita] Make sure we do not process events immediately.
-    return std::make_shared<EventLoopPlatform>(true);
+    return new EventLoopPlatform(true);
 }
 
 jobject EventLoopPlatform::BuildEvent(JNIEnv* env, std::string data)

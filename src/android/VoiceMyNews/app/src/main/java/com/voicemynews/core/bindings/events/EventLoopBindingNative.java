@@ -9,15 +9,9 @@ public class EventLoopBindingNative implements EventLoopBinding {
     private static Object currInstanceLock = new Object();
     private static EventLoopBinding currInstance;
     private long nativeEmitterPtr;
-    private boolean processImmediate;
 
     private EventLoopBindingNative(long nativeEmitterPtr) {
-        this(nativeEmitterPtr, false);
-    }
-
-    private EventLoopBindingNative(long nativeEmitterPtr, boolean processImmediate) {
         this.nativeEmitterPtr = nativeEmitterPtr;
-        this.processImmediate = processImmediate;
     }
 
     /**

@@ -6,52 +6,87 @@
 #include "v8.h"
 using namespace v8;
 
+static Isolate::CreateParams createParams_ = Isolate::CreateParams();
+static Platform* platform_;
+
+
 namespace voicemynews {
 namespace app {
 namespace android {
-char* RunV8HelloWorld()
+class V8WrapperHelper
 {
-    char* resultStr = nullptr;
+private:
+    Isolate* isolate_;
+    Persistent<Context> *persistentContext_;
+    Context::Scope *contextScope_;
 
-    // Initialize V8.
-    V8::InitializeICUDefaultLocation("./");
-    V8::InitializeExternalStartupData("./");
-    Platform* platform = platform::CreateDefaultPlatform();
-    V8::InitializePlatform(platform);
-    V8::Initialize();
-    // Create a new Isolate and make it the current one.
-    Isolate::CreateParams create_params;
-    create_params.array_buffer_allocator =
-        v8::ArrayBuffer::Allocator::NewDefaultAllocator();
-    Isolate* isolate = Isolate::New(create_params);
+public:
+    V8WrapperHelper()
     {
-        Isolate::Scope isolate_scope(isolate);
-        // Create a stack-allocated handle scope.
-        HandleScope handle_scope(isolate);
-        // Create a new context.
-        Local<Context> context = Context::New(isolate);
-        // Enter the context for compiling and running the hello world script.
-        Context::Scope context_scope(context);
-        // Create a string containing the JavaScript source code.
+        isolate_ = Isolate::New(createParams_);
+        Isolate::Scope isolateScope(isolate_);
+        HandleScope handleScope(isolate_);
+        auto context_ = Context::New(isolate_);
+        persistentContext_ = new Persistent<Context>(isolate_, context_);
+        contextScope_ = new Context::Scope(context_);
+    }
+
+    char* SayHello()
+    {
+        Isolate::Scope isolateScope(isolate_);
+        HandleScope handleScope(isolate_);
+        Local<Context> context = persistentContext_->Get(isolate_);
         Local<String> source =
-            String::NewFromUtf8(isolate, "'Hello' + ', World!'",
+            String::NewFromUtf8(isolate_, "'Hello' + ', World!'",
                                 NewStringType::kNormal).ToLocalChecked();
-        // Compile the source code.
         Local<Script> script = Script::Compile(context, source).ToLocalChecked();
-        // Run the script to get the result.
         Local<Value> result = script->Run(context).ToLocalChecked();
-        // Convert the result to an UTF8 string and print it.
+
         String::Utf8Value utf8(result);
         auto tmp = *utf8;
-        resultStr = new char[strlen(tmp) + 1];
+        char* resultStr = new char[strlen(tmp) + 1];
         strncpy(resultStr, tmp, strlen(tmp) + 1);
+        return resultStr;
     }
-    // Dispose the isolate and tear down V8.
-    isolate->Dispose();
-    V8::Dispose();
-    V8::ShutdownPlatform();
-    delete platform;
-    delete create_params.array_buffer_allocator;
+
+    virtual ~V8WrapperHelper()
+    {
+        persistentContext_->Reset();
+        isolate_->Dispose();
+
+        contextScope_ = nullptr;
+        persistentContext_ = nullptr;
+        isolate_ = nullptr;
+    }
+
+    static void Initialize()
+    {
+        V8::InitializeICUDefaultLocation("./");
+        V8::InitializeExternalStartupData("./");
+        platform_ = platform::CreateDefaultPlatform();
+        V8::InitializePlatform(platform_);
+        V8::Initialize();
+
+        createParams_.array_buffer_allocator = v8::ArrayBuffer::Allocator::NewDefaultAllocator();
+    }
+
+    static void Shutdown()
+    {
+        V8::Dispose();
+        V8::ShutdownPlatform();
+
+        delete platform_;
+        delete createParams_.array_buffer_allocator;
+    }
+};
+
+char* RunV8HelloWorld()
+{
+    V8WrapperHelper::Initialize();
+    auto wrapper = new V8WrapperHelper();
+    char* resultStr = wrapper->SayHello();
+    delete wrapper;
+    V8WrapperHelper::Shutdown();
 
     return resultStr;
 }

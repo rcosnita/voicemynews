@@ -22,7 +22,7 @@ public:
     /**
      * \brief Provides the logic for obtaining an event loop instance.
      */
-    static std::shared_ptr<EventLoopPlatform> GetInstance();
+    static EventLoopPlatform* GetInstance();
 
     /**
      * \brief Provides the logic for obtaining an event instance which carries data around.

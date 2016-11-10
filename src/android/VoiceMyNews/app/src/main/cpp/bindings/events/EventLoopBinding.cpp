@@ -67,8 +67,8 @@ JNIEXPORT jobject JNICALL Java_com_voicemynews_core_bindings_events_EventLoopBin
     }
 
     auto eventLoop = EventLoopPlatform::GetInstance();
-    jlong eventLoopPtr = reinterpret_cast<uintptr_t>(eventLoop.get());
-    auto javaLoop = env->NewObject(EmitterCls, EmitterConstructorId, eventLoopPtr);
+    jlong eventLoopPtr = reinterpret_cast<uintptr_t>(eventLoop);
+    jobject javaLoop = env->NewObject(objCls, EmitterConstructorId, eventLoopPtr);
 
     return javaLoop;
 }
