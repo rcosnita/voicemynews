@@ -40,6 +40,8 @@ if(${CMAKE_ANDROID_ARCH_ABI} STREQUAL "arm64-v8a")
     set(V8-ARCH arm64)
 elseif(${CMAKE_ANDROID_ARCH_ABI} STREQUAL "x86_64")
     set(V8-ARCH x86_64)
+elseif(${CMAKE_ANDROID_ARCH_ABI} STREQUAL "x86")
+    set(V8-ARCH ia32)
 endif(${CMAKE_ANDROID_ARCH_ABI} STREQUAL "arm64-v8a")
 
 set_target_properties(v8-android-libplatform PROPERTIES IMPORTED_LOCATION "/Users/cosnita/work-personal/voicemynews-deps/release/${V8-ARCH}/libv8_libplatform.a")
@@ -48,7 +50,7 @@ set_target_properties(v8-android-libbase PROPERTIES IMPORTED_LOCATION "/Users/co
 set_target_properties(v8-android-snapshot PROPERTIES IMPORTED_LOCATION "/Users/cosnita/work-personal/voicemynews-deps/release/${V8-ARCH}/libv8_nosnapshot.a")
 set_target_properties(v8-android-libsampler PROPERTIES IMPORTED_LOCATION "/Users/cosnita/work-personal/voicemynews-deps/release/${V8-ARCH}/libv8_libsampler.a")
 
-if(${CMAKE_ANDROID_ARCH_ABI} STREQUAL "arm64-v8a" OR ${CMAKE_ANDROID_ARCH_ABI} STREQUAL "x86_64")
+if(${CMAKE_ANDROID_ARCH_ABI} STREQUAL "arm64-v8a" OR ${CMAKE_ANDROID_ARCH_ABI} STREQUAL "x86_64" OR ${CMAKE_ANDROID_ARCH_ABI} STREQUAL "x86")
     list(APPEND VOICEMYNEWS_TARGET_LIBS
         "-Wl,--whole-archive"
         v8-android-libplatform
@@ -57,7 +59,7 @@ if(${CMAKE_ANDROID_ARCH_ABI} STREQUAL "arm64-v8a" OR ${CMAKE_ANDROID_ARCH_ABI} S
         v8-android-snapshot
         v8-android-libsampler
         "-Wl,--no-whole-archive")
-endif(${CMAKE_ANDROID_ARCH_ABI} STREQUAL "arm64-v8a" OR ${CMAKE_ANDROID_ARCH_ABI} STREQUAL "x86_64")
+endif(${CMAKE_ANDROID_ARCH_ABI} STREQUAL "arm64-v8a" OR ${CMAKE_ANDROID_ARCH_ABI} STREQUAL "x86_64" OR ${CMAKE_ANDROID_ARCH_ABI} STREQUAL "x86")
 
 target_link_libraries(
   voicemynews-android
