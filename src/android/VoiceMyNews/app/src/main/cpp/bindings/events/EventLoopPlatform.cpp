@@ -1,6 +1,7 @@
 #include "EventLoopBinding.h"
 #include "EventLoopPlatform.h"
 #include "utils/StringHelpers.h"
+#include "V8HelloWorld.h"
 
 using voicemynews::app::android::bindings::events::EventDataBinding;
 using voicemynews::app::android::utils::StringHelpers;
@@ -20,6 +21,8 @@ EventLoopPlatform::EventLoopPlatform(bool processImmediate)
 
 std::shared_ptr<EventLoopPlatform> EventLoopPlatform::GetInstance()
 {
+    auto resultStr = voicemynews::app::android::RunV8HelloWorld();
+    // TODO [rcosnita] Make sure we do not process events immediately.
     return std::make_shared<EventLoopPlatform>(true);
 }
 

@@ -12,6 +12,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
             cmake {
+                arguments "-DANDROID_TOOLCHAIN=gcc", "-DANDROID_STL=c++_static"
                 cppFlags "-std=c++14 -frtti -fexceptions"
             }
         }
@@ -20,20 +21,27 @@ android {
         release {
             externalNativeBuild {
                 cmake {
-                    targets "voicemynews-core", "voicemynews-android"
+                    targets "voicemynews-core", "voicemynews-android", "v8-android-libplatform", "v8-android-base", "v8-android-libbase", "v8-android-snapshot"
                 }
             }
             minifyEnabled false
+            ndk {
+                abiFilters "x86_64"
+            }
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
             externalNativeBuild {
                 cmake {
-                    targets "voicemynews-core", "voicemynews-android"
+                    targets "voicemynews-core", "voicemynews-android", "v8-android-libplatform", "v8-android-base", "v8-android-libbase", "v8-android-snapshot"
                 }
             }
             debuggable true
             jniDebuggable true
+            minifyEnabled false
+            ndk {
+                abiFilters "x86_64"
+            }
         }
     }
     compileOptions {
@@ -43,6 +51,14 @@ android {
     externalNativeBuild {
         cmake {
             path 'CMakeLists.txt'
+        }
+    }
+    splits {
+        abi {
+            enable true
+            reset()
+            include "x86_64"
+            universalApk false
         }
     }
 }

@@ -25,7 +25,7 @@ public:
     /**
      * \brief The current implementation builds a friendly error message for the current instance.
      */
-    virtual const char* what() const _GLIBCXX_USE_NOEXCEPT;
+    virtual const char* what() const _NOEXCEPT;
 
     virtual const std::string FileName() const;
 private:
