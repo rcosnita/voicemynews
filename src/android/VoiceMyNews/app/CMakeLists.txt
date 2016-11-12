@@ -39,6 +39,8 @@ add_library(v8-android-libsampler STATIC IMPORTED GLOBAL)
 
 if(${CMAKE_ANDROID_ARCH_ABI} STREQUAL "arm64-v8a")
     set(V8-ARCH arm64)
+elseif(${CMAKE_ANDROID_ARCH_ABI} STREQUAL "armeabi-v7a")
+    set(V8-ARCH arm)
 elseif(${CMAKE_ANDROID_ARCH_ABI} STREQUAL "x86_64")
     set(V8-ARCH x86_64)
 elseif(${CMAKE_ANDROID_ARCH_ABI} STREQUAL "x86")
@@ -54,9 +56,9 @@ set_target_properties(v8-android-libsampler PROPERTIES IMPORTED_LOCATION "/Users
 if(${CMAKE_ANDROID_ARCH_ABI} IN_LIST VOICEMYNEWS_SUPPORTED_ARCHS)
     list(APPEND VOICEMYNEWS_TARGET_LIBS
         "-Wl,--whole-archive"
-        v8-android-libplatform
         v8-android-base
         v8-android-libbase
+        v8-android-libplatform
         v8-android-snapshot
         v8-android-libsampler
         "-Wl,--no-whole-archive")
