@@ -13,7 +13,7 @@ android {
         externalNativeBuild {
             cmake {
                 arguments "-DANDROID_TOOLCHAIN=gcc", "-DANDROID_STL=c++_static"
-                cppFlags "-std=c++14 -frtti -fexceptions -funwind-tables"
+                cppFlags "-std=c++14 -frtti -fexceptions"
             }
         }
     }

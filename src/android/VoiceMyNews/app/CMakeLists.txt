@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.4.1)
 
-set(VOICEMYNEWS_SUPPORTED_ARCHS x86 x86_64 arm64-v8a)
+set(VOICEMYNEWS_SUPPORTED_ARCHS x86 x86_64 arm64-v8a armeabi-v7a)
 set(VOICEMYNEWS_TARGET_LIBS "")
 
 set(VOICEMYNEWS_ANDROID ./)
@@ -56,12 +56,13 @@ set_target_properties(v8-android-libsampler PROPERTIES IMPORTED_LOCATION "/Users
 if(${CMAKE_ANDROID_ARCH_ABI} IN_LIST VOICEMYNEWS_SUPPORTED_ARCHS)
     list(APPEND VOICEMYNEWS_TARGET_LIBS
         "-Wl,--whole-archive"
+        v8-android-libplatform
         v8-android-base
         v8-android-libbase
-        v8-android-libplatform
         v8-android-snapshot
         v8-android-libsampler
-        "-Wl,--no-whole-archive")
+        "-Wl,--no-whole-archive"
+    )
 endif()
 
 target_link_libraries(
