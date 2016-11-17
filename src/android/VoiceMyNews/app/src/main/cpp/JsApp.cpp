@@ -1,15 +1,10 @@
 #include "JsApp.h"
-#include "io/fs/Require.h"
-#include "io/fs/FileUtilsPlatform.h"
+#include "bindings/RequireBinding.h"
 
 #include <android/asset_manager_jni.h>
 #include <codecvt>
-#include <memory>
 
 using namespace v8;
-
-using voicemynews::core::io::fs::FileUtilsPlatform;
-using voicemynews::core::io::fs::Require;
 
 static Isolate::CreateParams createParams_ = Isolate::CreateParams();
 static Platform* V8Platform = nullptr;
@@ -36,54 +31,6 @@ JNIEXPORT void JNICALL Java_com_voicemynews_voicemynews_JsApp_shutdownPlatform(
     jclass objClass)
 {
     voicemynews::app::android::js::JsApp::ShutdownPlatform();
-}
-
-/**
- * \brief Provides a thin wrapper over load method from require.
- *
- * It can be used from javascript.
- */
-static void LoadRequire(const FunctionCallbackInfo<Value>& info)
-{
-    auto isolate = info.GetIsolate();
-    std::shared_ptr<FileUtilsPlatform> fileUtils = std::make_shared<FileUtilsPlatform>();
-    std::shared_ptr<Require> require = std::make_shared<Require>(fileUtils);
-
-    Local<String> moduleName = info[0]->ToString();
-    String::Utf8Value moduleNameUtf8(moduleName);
-    std::string fileName = *moduleNameUtf8;
-
-    auto sourceWide = require->Load(fileName);
-    using convert_type = std::codecvt_utf8<wchar_t>;
-    std::wstring_convert<convert_type, wchar_t> converter;
-    std::string source = converter.to_bytes(sourceWide);
-
-    auto fnResult = String::NewFromUtf8(isolate, source.c_str(), NewStringType::kNormal).ToLocalChecked();
-    info.GetReturnValue().Set(fnResult);
-}
-
-/**
- * \brief Provides a thin wrapper over loadRaw method from require.
- *
- * It can be used from javascript.
- */
-static void LoadRawRequire(const FunctionCallbackInfo<Value>& info)
-{
-    throw std::exception();
-}
-
-/**
- * \brief Provides the algorithm for obtaining a new instance of require native object.
- */
-static void GetRequireInstance(const FunctionCallbackInfo<Value>& info)
-{
-    auto isolate = info.GetIsolate();
-
-    Local<ObjectTemplate> requireBinding = ObjectTemplate::New(isolate);
-    requireBinding->Set(isolate, "load", FunctionTemplate::New(isolate, LoadRequire));
-    requireBinding->Set(isolate, "loadRaw", FunctionTemplate::New(isolate, LoadRawRequire));
-
-    info.GetReturnValue().Set(requireBinding->NewInstance());
 }
 
 namespace voicemynews {
@@ -185,7 +132,7 @@ void JsApp::BindRequireJsNativeSupport()
     Local<ObjectTemplate> voicemynewsCore = voicemynewsCoreObj->Get(isolate_);
     Local<ObjectTemplate> requireFactory = ObjectTemplate::New(isolate_);
 
-    requireFactory->Set(isolate_, "getInstance", FunctionTemplate::New(isolate_, GetRequireInstance));
+    requireFactory->Set(isolate_, "getInstance", FunctionTemplate::New(isolate_, voicemynews::app::android::bindings::require::GetRequireInstance));
     voicemynewsCore->Set(isolate_, "RequireFactory", requireFactory);
 }
 

@@ -26,6 +26,8 @@ add_library(
 
   ${VOICEMYNEWS_ANDROID}/src/main/cpp/JsApp.h
   ${VOICEMYNEWS_ANDROID}/src/main/cpp/JsApp.cpp
+  ${VOICEMYNEWS_ANDROID}/src/main/cpp/bindings/RequireBinding.h
+  ${VOICEMYNEWS_ANDROID}/src/main/cpp/bindings/RequireBinding.cpp
   ${VOICEMYNEWS_ANDROID}/src/main/cpp/bindings/events/EventDataBinding.h
   ${VOICEMYNEWS_ANDROID}/src/main/cpp/bindings/events/EventDataBinding.cpp
   ${VOICEMYNEWS_ANDROID}/src/main/cpp/bindings/events/EventLoopBinding.h
