@@ -15,6 +15,16 @@ public class EventLoopBindingNative implements EventLoopBinding {
     }
 
     /**
+     * Obtains the native emmiter memory location. This is useful during bootstrap and communication
+     * with C++ native methods / classes.
+     * @return
+     */
+    public long getNativeEmitterPtr()
+    {
+        return nativeEmitterPtr;
+    }
+
+    /**
      * Enqueue an action which will notify all event listeners about the newly available data.
      * The event loop we are currently using is mainly controlled from app business logic (js).
      *

@@ -15,10 +15,17 @@ include_directories(
   ${VOICEMYNEWS_CORE}
 )
 
+find_library(
+  android-lib
+  android
+)
+
 add_library(
   voicemynews-android
   SHARED
 
+  ${VOICEMYNEWS_ANDROID}/src/main/cpp/JsApp.h
+  ${VOICEMYNEWS_ANDROID}/src/main/cpp/JsApp.cpp
   ${VOICEMYNEWS_ANDROID}/src/main/cpp/V8HelloWorld.h
   ${VOICEMYNEWS_ANDROID}/src/main/cpp/V8HelloWorld.cpp
   ${VOICEMYNEWS_ANDROID}/src/main/cpp/bindings/events/EventDataBinding.h
@@ -27,6 +34,8 @@ add_library(
   ${VOICEMYNEWS_ANDROID}/src/main/cpp/bindings/events/EventLoopBinding.cpp
   ${VOICEMYNEWS_ANDROID}/src/main/cpp/bindings/events/EventLoopPlatform.h
   ${VOICEMYNEWS_ANDROID}/src/main/cpp/bindings/events/EventLoopPlatform.cpp
+  ${VOICEMYNEWS_ANDROID}/src/main/cpp/io/fs/FileUtilsPlatform.h
+  ${VOICEMYNEWS_ANDROID}/src/main/cpp/io/fs/FileUtilsPlatform.cpp
   ${VOICEMYNEWS_ANDROID}/src/main/cpp/utils/StringHelpers.h
   ${VOICEMYNEWS_ANDROID}/src/main/cpp/utils/StringHelpers.cpp
 )
@@ -69,4 +78,5 @@ target_link_libraries(
   voicemynews-android
   voicemynews-core
   ${VOICEMYNEWS_TARGET_LIBS}
+  ${android-lib}
 )

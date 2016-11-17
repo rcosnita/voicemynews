@@ -20,6 +20,11 @@ std::wstring FileUtils::ReadFile(const std::string& fileName) {
 
     return str;
 }
+
+std::wstring FileUtils::ReadFilePlatform(const std::string& fileName)
+{
+    return ReadFile(fileName);
+}
 }
 }
 }
