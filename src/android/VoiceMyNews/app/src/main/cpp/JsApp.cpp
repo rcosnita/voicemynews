@@ -1,9 +1,15 @@
 #include "JsApp.h"
+#include "io/fs/Require.h"
+#include "io/fs/FileUtilsPlatform.h"
 
 #include <android/asset_manager_jni.h>
 #include <codecvt>
+#include <memory>
 
 using namespace v8;
+
+using voicemynews::core::io::fs::FileUtilsPlatform;
+using voicemynews::core::io::fs::Require;
 
 static Isolate::CreateParams createParams_ = Isolate::CreateParams();
 static Platform* V8Platform = nullptr;
@@ -30,6 +36,54 @@ JNIEXPORT void JNICALL Java_com_voicemynews_voicemynews_JsApp_shutdownPlatform(
     jclass objClass)
 {
     voicemynews::app::android::js::JsApp::ShutdownPlatform();
+}
+
+/**
+ * \brief Provides a thin wrapper over load method from require.
+ *
+ * It can be used from javascript.
+ */
+static void LoadRequire(const FunctionCallbackInfo<Value>& info)
+{
+    auto isolate = info.GetIsolate();
+    std::shared_ptr<FileUtilsPlatform> fileUtils = std::make_shared<FileUtilsPlatform>();
+    std::shared_ptr<Require> require = std::make_shared<Require>(fileUtils);
+
+    Local<String> moduleName = info[0]->ToString();
+    String::Utf8Value moduleNameUtf8(moduleName);
+    std::string fileName = *moduleNameUtf8;
+
+    auto sourceWide = require->Load(fileName);
+    using convert_type = std::codecvt_utf8<wchar_t>;
+    std::wstring_convert<convert_type, wchar_t> converter;
+    std::string source = converter.to_bytes(sourceWide);
+
+    auto fnResult = String::NewFromUtf8(isolate, source.c_str(), NewStringType::kNormal).ToLocalChecked();
+    info.GetReturnValue().Set(fnResult);
+}
+
+/**
+ * \brief Provides a thin wrapper over loadRaw method from require.
+ *
+ * It can be used from javascript.
+ */
+static void LoadRawRequire(const FunctionCallbackInfo<Value>& info)
+{
+    throw std::exception();
+}
+
+/**
+ * \brief Provides the algorithm for obtaining a new instance of require native object.
+ */
+static void GetRequireInstance(const FunctionCallbackInfo<Value>& info)
+{
+    auto isolate = info.GetIsolate();
+
+    Local<ObjectTemplate> requireBinding = ObjectTemplate::New(isolate);
+    requireBinding->Set(isolate, "load", FunctionTemplate::New(isolate, LoadRequire));
+    requireBinding->Set(isolate, "loadRaw", FunctionTemplate::New(isolate, LoadRawRequire));
+
+    info.GetReturnValue().Set(requireBinding->NewInstance());
 }
 
 namespace voicemynews {
@@ -99,7 +153,19 @@ void JsApp::Start()
     Isolate::Scope isolateScope(isolate_);
     HandleScope handleScope(isolate_);
     Local<ObjectTemplate> global = ObjectTemplate::New(isolate_);
+    Local<ObjectTemplate> voicemynewsLocal = ObjectTemplate::New(isolate_);
+    Local<ObjectTemplate> voicemynewsCoreLocal = ObjectTemplate::New(isolate_);
+
     global->Set(isolate_, "global", ObjectTemplate::New(isolate_));
+    global->Set(isolate_, "voicemynews", voicemynewsLocal);
+
+    voicemynewsLocal->Set(isolate_, "core", voicemynewsCoreLocal);
+
+    voicemynewsObj = new Persistent<ObjectTemplate>(isolate_, voicemynewsLocal);
+    voicemynewsCoreObj = new Persistent<ObjectTemplate>(isolate_, voicemynewsCoreLocal);
+
+    BindRequireJsNativeSupport();
+
     auto context_ = Context::New(isolate_, nullptr, global);
     persistentContext_ = new Persistent<Context>(isolate_, context_);
     contextScope_ = new Context::Scope(context_);
@@ -110,6 +176,17 @@ void JsApp::Start()
     BindVoiceSupport();
 
     StartApp();
+}
+
+void JsApp::BindRequireJsNativeSupport()
+{
+    Isolate::Scope isolateScope(isolate_);
+    HandleScope handleScope(isolate_);
+    Local<ObjectTemplate> voicemynewsCore = voicemynewsCoreObj->Get(isolate_);
+    Local<ObjectTemplate> requireFactory = ObjectTemplate::New(isolate_);
+
+    requireFactory->Set(isolate_, "getInstance", FunctionTemplate::New(isolate_, GetRequireInstance));
+    voicemynewsCore->Set(isolate_, "RequireFactory", requireFactory);
 }
 
 void JsApp::BindRequireJsSupport()
@@ -159,13 +236,7 @@ void JsApp::StartApp()
     Local<Script> script = Script::Compile(context, scriptSource).ToLocalChecked();
     MaybeLocal<Value> result = script->Run(context);
 
-    if (result.IsEmpty()) {
-        Local<Value> exception = tryCatch.Exception();
-        String::Utf8Value exceptionStr(exception);
-        std::string exceptionMessage = *exceptionStr;
-
-        std::cout << exceptionMessage << std::endl;
-    }
+    HandleJsException(tryCatch, result);
 }
 
 JsApp::EventLoopPlatform* JsApp::GetEventLoop()

@@ -12,14 +12,14 @@ Require::Require(std::shared_ptr<FileUtils> fileUtils)
 }
 
 std::wstring Require::Load(const std::string& fileName) {
-    auto content = fileUtils_->ReadFile(fileName);
+    auto content = fileUtils_->ReadFilePlatform(fileName);
     DecorateWithAnonymousFunction(content);
 
     return content;
 }
 
 std::wstring Require::LoadRaw(const std::string& fileName) {
-    return fileUtils_->ReadFile(fileName);
+    return fileUtils_->ReadFilePlatform(fileName);
 }
 
 void Require::DecorateWithAnonymousFunction(std::wstring& moduleScript) {

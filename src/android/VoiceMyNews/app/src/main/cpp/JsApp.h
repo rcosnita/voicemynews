@@ -69,8 +69,15 @@ private:
     v8::Isolate* isolate_ = nullptr;
     v8::Persistent<v8::Context> *persistentContext_ = nullptr;
     v8::Context::Scope *contextScope_ = nullptr;
+    v8::Persistent<v8::ObjectTemplate> *voicemynewsObj = nullptr;
+    v8::Persistent<v8::ObjectTemplate> *voicemynewsCoreObj = nullptr;
 
 private:
+    /**
+     * \brief Binds the namespace which can provide the native requirejs support methods.
+     */
+    void BindRequireJsNativeSupport();
+
     /**
      * \brief Binds the require js support methods to v8 engine.
      */
