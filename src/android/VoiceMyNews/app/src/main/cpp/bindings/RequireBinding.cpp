@@ -21,13 +21,13 @@ void LoadRequire(const v8::FunctionCallbackInfo<v8::Value>& info)
 {
     auto isolate = info.GetIsolate();
     std::shared_ptr<FileUtilsPlatform> fileUtils = std::make_shared<FileUtilsPlatform>();
-    std::shared_ptr<Require> require = std::make_shared<Require>(fileUtils);
+    Require require(fileUtils);
 
     Local<String> moduleName = info[0]->ToString();
     String::Utf8Value moduleNameUtf8(moduleName);
     std::string fileName = *moduleNameUtf8;
 
-    auto sourceWide = require->Load(fileName);
+    auto sourceWide = require.Load(fileName);
     using convert_type = std::codecvt_utf8<wchar_t>;
     std::wstring_convert<convert_type, wchar_t> converter;
     std::string source = converter.to_bytes(sourceWide);
@@ -38,7 +38,21 @@ void LoadRequire(const v8::FunctionCallbackInfo<v8::Value>& info)
 
 void LoadRawRequire(const v8::FunctionCallbackInfo<v8::Value>& info)
 {
-    throw std::exception();
+    auto isolate = info.GetIsolate();
+    std::shared_ptr<FileUtilsPlatform> fileUtils = std::make_shared<FileUtilsPlatform>();
+    Require require(fileUtils);
+
+    Local<String> moduleName = info[0]->ToString();
+    String::Utf8Value moduleNameUtf8(moduleName);
+    std::string fileName = *moduleNameUtf8;
+
+    auto sourceWide = require.LoadRaw(fileName);
+    using convert_type = std::codecvt_utf8<wchar_t>;
+    std::wstring_convert<convert_type, wchar_t> converter;
+    std::string source = converter.to_bytes(sourceWide);
+
+    auto fnResult = String::NewFromUtf8(isolate, source.c_str(), NewStringType::kNormal).ToLocalChecked();
+    info.GetReturnValue().Set(fnResult);
 }
 
 void GetRequireInstance(const v8::FunctionCallbackInfo<v8::Value>& info)
