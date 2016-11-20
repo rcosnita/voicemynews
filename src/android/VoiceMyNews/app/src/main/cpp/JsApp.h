@@ -71,6 +71,7 @@ private:
     v8::Context::Scope *contextScope_ = nullptr;
     v8::Persistent<v8::ObjectTemplate> *voicemynewsObj = nullptr;
     v8::Persistent<v8::ObjectTemplate> *voicemynewsCoreObj = nullptr;
+    v8::Persistent<v8::ObjectTemplate> *voicemynewsEventsObj = nullptr;
 
 private:
     /**
@@ -82,6 +83,11 @@ private:
      * \brief Binds the require js support methods to v8 engine.
      */
     void BindRequireJsSupport();
+
+    /**
+     * \brief Binds the event loop specific for Android platform.
+     */
+    void BindEventPlatformSupport();
 
     /**
      * \brief Binds the http client support methods to v8 engine.

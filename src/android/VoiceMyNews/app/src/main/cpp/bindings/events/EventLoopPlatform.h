@@ -6,6 +6,7 @@
 #include <jni.h>
 
 #include "events/EventLoop.h"
+#include "v8.h"
 
 namespace voicemynews {
 namespace core {
@@ -18,6 +19,13 @@ public:
     using EventData = voicemynews::core::events::EventData<std::string>;
 
     EventLoopPlatform(bool processImmediate);
+
+    /**
+     * \brief Provides the logic for wiring the event loop platform to javascript engine.
+     *
+     * We need this in order to have a communication channel between java vm and app business logic.
+     */
+    static void WireToJs(v8::Isolate* isolate, v8::Local<v8::ObjectTemplate> obj);
 
     /**
      * \brief Provides the logic for obtaining an event loop instance.

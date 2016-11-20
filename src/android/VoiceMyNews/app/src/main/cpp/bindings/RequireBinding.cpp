@@ -2,7 +2,6 @@
 #include "io/fs/Require.h"
 #include "io/fs/FileUtilsPlatform.h"
 
-#include <codecvt>
 #include <memory>
 #include <iostream>
 #include <string>
@@ -19,6 +18,7 @@ namespace bindings {
 namespace require {
 void LoadRequire(const v8::FunctionCallbackInfo<v8::Value>& info)
 {
+    // TODO [rcosnita] validate js input parameters.
     auto isolate = info.GetIsolate();
     std::shared_ptr<FileUtilsPlatform> fileUtils = std::make_shared<FileUtilsPlatform>();
     Require require(fileUtils);
@@ -28,9 +28,7 @@ void LoadRequire(const v8::FunctionCallbackInfo<v8::Value>& info)
     std::string fileName = *moduleNameUtf8;
 
     auto sourceWide = require.Load(fileName);
-    using convert_type = std::codecvt_utf8<wchar_t>;
-    std::wstring_convert<convert_type, wchar_t> converter;
-    std::string source = converter.to_bytes(sourceWide);
+    std::string source(sourceWide.begin(), sourceWide.end());
 
     auto fnResult = String::NewFromUtf8(isolate, source.c_str(), NewStringType::kNormal).ToLocalChecked();
     info.GetReturnValue().Set(fnResult);
@@ -38,6 +36,7 @@ void LoadRequire(const v8::FunctionCallbackInfo<v8::Value>& info)
 
 void LoadRawRequire(const v8::FunctionCallbackInfo<v8::Value>& info)
 {
+    // TODO [rcosnita] validate js input parameters.
     auto isolate = info.GetIsolate();
     std::shared_ptr<FileUtilsPlatform> fileUtils = std::make_shared<FileUtilsPlatform>();
     Require require(fileUtils);
@@ -47,9 +46,7 @@ void LoadRawRequire(const v8::FunctionCallbackInfo<v8::Value>& info)
     std::string fileName = *moduleNameUtf8;
 
     auto sourceWide = require.LoadRaw(fileName);
-    using convert_type = std::codecvt_utf8<wchar_t>;
-    std::wstring_convert<convert_type, wchar_t> converter;
-    std::string source = converter.to_bytes(sourceWide);
+    std::string source(sourceWide.begin(), sourceWide.end());
 
     auto fnResult = String::NewFromUtf8(isolate, source.c_str(), NewStringType::kNormal).ToLocalChecked();
     info.GetReturnValue().Set(fnResult);

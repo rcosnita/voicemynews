@@ -2,7 +2,6 @@
 #include "bindings/RequireBinding.h"
 
 #include <android/asset_manager_jni.h>
-#include <codecvt>
 
 using namespace v8;
 
@@ -102,26 +101,30 @@ void JsApp::Start()
     Local<ObjectTemplate> global = ObjectTemplate::New(isolate_);
     Local<ObjectTemplate> voicemynewsLocal = ObjectTemplate::New(isolate_);
     Local<ObjectTemplate> voicemynewsCoreLocal = ObjectTemplate::New(isolate_);
+    Local<ObjectTemplate> voicemynewsEventsLocal = ObjectTemplate::New(isolate_);
 
     global->Set(isolate_, "global", ObjectTemplate::New(isolate_));
     global->Set(isolate_, "voicemynews", voicemynewsLocal);
 
     voicemynewsLocal->Set(isolate_, "core", voicemynewsCoreLocal);
+    voicemynewsCoreLocal->Set(isolate_, "events", voicemynewsEventsLocal);
 
+    // TODO [rcosnita] cleanup all resources during destruction phase.
     voicemynewsObj = new Persistent<ObjectTemplate>(isolate_, voicemynewsLocal);
     voicemynewsCoreObj = new Persistent<ObjectTemplate>(isolate_, voicemynewsCoreLocal);
+    voicemynewsEventsObj = new Persistent<ObjectTemplate>(isolate_, voicemynewsEventsLocal);
 
     BindRequireJsNativeSupport();
+    BindEventPlatformSupport();
+    BindHttpClientSupport();
+    BindNavigationManagerSupport();
+    BindVoiceSupport();
 
     auto context_ = Context::New(isolate_, nullptr, global);
     persistentContext_ = new Persistent<Context>(isolate_, context_);
     contextScope_ = new Context::Scope(context_);
 
     BindRequireJsSupport();
-    BindHttpClientSupport();
-    BindNavigationManagerSupport();
-    BindVoiceSupport();
-
     StartApp();
 }
 
@@ -136,12 +139,19 @@ void JsApp::BindRequireJsNativeSupport()
     voicemynewsCore->Set(isolate_, "RequireFactory", requireFactory);
 }
 
+void JsApp::BindEventPlatformSupport()
+{
+    Isolate::Scope isolateScope(isolate_);
+    EscapableHandleScope handleScope(isolate_);
+    Local<ObjectTemplate> voicemynewsEvents = voicemynewsEventsObj->Get(isolate_);
+
+    EventLoopPlatform::WireToJs(isolate_, handleScope.Escape(voicemynewsEvents));
+}
+
 void JsApp::BindRequireJsSupport()
 {
     auto requireSource = fileUtils_.ReadFilePlatform("js/require.js");
-    using convert_type = std::codecvt_utf8<wchar_t>;
-    std::wstring_convert<convert_type, wchar_t> converter;
-    std::string requireSourceUtf8 = converter.to_bytes(requireSource);
+    std::string requireSourceUtf8(requireSource.begin(), requireSource.end());
 
     Isolate::Scope isolateScope(isolate_);
     HandleScope handleScope(isolate_);
