@@ -82,6 +82,7 @@ static void OffJsLoop(const FunctionCallbackInfo<Value>& info)
 static void EmitJsLoop(const FunctionCallbackInfo<Value>& info)
 {
     // TODO [rcosnita] validate input parameters.
+    // TODO [rcosnita] implement this when necessary.
     throw std::exception();
 }
 
@@ -91,6 +92,8 @@ static void EmitJsLoop(const FunctionCallbackInfo<Value>& info)
 static void ProcessEventsJsLoop(const FunctionCallbackInfo<Value>& info)
 {
     // TODO [rcosnita] validate input parameters.
+    // TODO [rcosnita] implement this when necessary.
+    throw std::exception();
 }
 
 /**
