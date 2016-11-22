@@ -1,6 +1,7 @@
 #ifndef VoiceMyNewsAndroid_JsApp_H_
 #define VoiceMyNewsAndroid_JsApp_H_
 
+#include "bindings/RequireBinding.h"
 #include "bindings/events/EventLoopPlatform.h"
 #include "io/fs/FileUtilsPlatform.h"
 
@@ -125,6 +126,8 @@ private:
         v8::Local<v8::Value> exception = tryCatch.Exception();
         v8::String::Utf8Value exceptionStr(exception);
         std::string exceptionMessage = *exceptionStr;
+        auto lastModuleName = voicemynews::app::android::bindings::require::GetLastLoadedModuleName();
+        auto lastRawFileName = voicemynews::app::android::bindings::require::GetLastLoadedRawFileName();
 
         std::cout << exceptionMessage << std::endl;
         throw std::exception();

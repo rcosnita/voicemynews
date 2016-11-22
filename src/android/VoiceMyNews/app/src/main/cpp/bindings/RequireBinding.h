@@ -9,6 +9,16 @@ namespace android {
 namespace bindings {
 namespace require {
     /**
+     * \brief Returns the name of the last module we tried to require.
+     */
+    std::string GetLastLoadedModuleName();
+
+    /**
+     * \brief Returns the name of the last raw file we tried to require.
+     */
+    std::string GetLastLoadedRawFileName();
+
+    /**
      * \brief Provides a thin wrapper over load method from require.
      *
      * It can be used from javascript.

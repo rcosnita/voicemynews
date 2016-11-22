@@ -1,5 +1,4 @@
 #include "JsApp.h"
-#include "bindings/RequireBinding.h"
 #include "bindings/network/HttpClientBinding.h"
 
 #include <android/asset_manager_jni.h>
