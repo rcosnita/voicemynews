@@ -1,4 +1,5 @@
 #include "JsApp.h"
+#include "bindings/events/NavigationBinding.h"
 #include "bindings/network/HttpClientBinding.h"
 
 #include <android/asset_manager_jni.h>
@@ -196,6 +197,11 @@ void JsApp::BindHttpClientSupport()
 
 void JsApp::BindNavigationManagerSupport()
 {
+    Isolate::Scope isolateScope(isolate_);
+    EscapableHandleScope handleScope(isolate_);
+    Local<ObjectTemplate> voicemynewsEventsLocal = voicemynewsEventsObj->Get(isolate_);
+
+    voicemynews::app::android::bindings::events::NavigationBinding::WireToJs(isolate_, handleScope.Escape(voicemynewsEventsLocal));
 }
 
 void JsApp::BindVoiceSupport()

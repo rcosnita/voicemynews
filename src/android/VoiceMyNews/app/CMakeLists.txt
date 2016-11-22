@@ -33,6 +33,8 @@ add_library(
   ${VOICEMYNEWS_ANDROID}/src/main/cpp/bindings/events/EventLoopBinding.h
   ${VOICEMYNEWS_ANDROID}/src/main/cpp/bindings/events/EventLoopBinding.cpp
   ${VOICEMYNEWS_ANDROID}/src/main/cpp/bindings/events/EventLoopPlatform.h
+  ${VOICEMYNEWS_ANDROID}/src/main/cpp/bindings/events/NavigationBinding.h
+  ${VOICEMYNEWS_ANDROID}/src/main/cpp/bindings/events/NavigationBinding.cpp
   ${VOICEMYNEWS_ANDROID}/src/main/cpp/bindings/events/EventLoopPlatform.cpp
   ${VOICEMYNEWS_ANDROID}/src/main/cpp/bindings/network/HttpClientBinding.h
   ${VOICEMYNEWS_ANDROID}/src/main/cpp/bindings/network/HttpClientBinding.cpp
