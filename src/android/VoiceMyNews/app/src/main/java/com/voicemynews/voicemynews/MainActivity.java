@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.voicemynews.core.bindings.events.EventLoopBinding;
 import com.voicemynews.core.bindings.events.EventLoopBindingNative;
+import com.voicemynews.core.bindings.network.HttpClientBinding;
 import com.voicemynews.voicemynews.JsApp;
 
 public class MainActivity extends Activity {
@@ -44,6 +45,7 @@ public class MainActivity extends Activity {
     {
         if (eventLoop == null) {
             eventLoop = EventLoopBindingNative.getInstance();
+            HttpClientBinding.initializeNative(new HttpClientBinding());
             JsApp.startPlatform(((EventLoopBindingNative) eventLoop).getNativeEmitterPtr(),
                     this.getAssets());
         }

@@ -1,20 +1,27 @@
-#ifndef VoiceMyNewsAndroid_events_EventLoopPlatform_H_
-#define VoiceMyNewsAndroid_events_EventLoopPlatform_H_
-
-#include <map>
-#include <mutex>
-#include <jni.h>
+#ifndef VoiceMyNewsAndroid_bindings_events_EventLoopPlatform_H_
+#define VoiceMyNewsAndroid_bindings_events_EventLoopPlatform_H_
 
 #include "events/EventLoop.h"
 #include "v8.h"
+
+#include <jni.h>
+#include <functional>
+#include <map>
+#include <mutex>
+#include <queue>
 
 namespace voicemynews {
 namespace core {
 namespace events {
 /**
+ * \brief Provides the signature for deferred tasks queued in the event loop.
+ */
+typedef std::function<void()> EventLoopJsTask;
+
+/**
  * \brief Provides the logic for obtaining specifc instances of event loop for the android platform.
  */
-class EventLoopPlatform : EventLoop {
+class EventLoopPlatform : public EventLoop {
 public:
     using EventData = voicemynews::core::events::EventData<std::string>;
 
@@ -66,6 +73,11 @@ public:
      */
     virtual void ProcessEvents() override;
 
+    /**
+     * \brief Provides the mechanism for enqueueing tasks which are executed during next process events loop.
+     */
+    void EnqueueTask(EventLoopJsTask task);
+
 private:
     struct ListenerModel
     {
@@ -95,9 +107,10 @@ private:
     JavaVM* javaVM_ = nullptr;
     std::mutex registeredListenersMutex_;
     std::map<std::string, ListenerModel> registeredListeners_;
+    std::queue<EventLoopJsTask> deferredTasks_;
 };
 }
 }
 }
 
-#endif /* VoiceMyNewsAndroid_events_EventLoopPlatform_H_ */
+#endif /* VoiceMyNewsAndroid_bindings_events_EventLoopPlatform_H_ */

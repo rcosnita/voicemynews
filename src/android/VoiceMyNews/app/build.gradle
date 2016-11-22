@@ -5,9 +5,14 @@ task copyJsCoreFiles(type: Copy) {
     into "src/main/assets/js"
 }
 
-task copyJsThirdParties(type: Copy) {
+task copyJsThirdPartiesQ(type: Copy) {
     from "../../../../node_modules/q"
     into "src/main/assets/js/third_party/q"
+}
+
+task copyJsThirdPartiesHtmlParser(type: Copy) {
+    from "../../../../node_modules/htmlparser"
+    into "src/main/assets/js/third_party/htmlparser"
 }
 
 task cleanupJsFolder(type: Delete) {
@@ -86,5 +91,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
 }
 
-preBuild {}.dependsOn(cleanupJsFolder, copyJsCoreFiles, copyJsThirdParties)
-clean.dependsOn(cleanupJsFolder, copyJsCoreFiles, copyJsThirdParties)
+preBuild {}.dependsOn(cleanupJsFolder, copyJsCoreFiles, copyJsThirdPartiesQ, copyJsThirdPartiesHtmlParser)
+clean.dependsOn(cleanupJsFolder, copyJsCoreFiles, copyJsThirdPartiesQ, copyJsThirdPartiesHtmlParser)

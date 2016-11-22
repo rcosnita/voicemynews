@@ -22,6 +22,7 @@ add_library(
   ${VOICEMYNEWS_CORE}/io/fs/FileUtils.cpp
   ${VOICEMYNEWS_CORE}/io/fs/Require.h
   ${VOICEMYNEWS_CORE}/io/fs/Require.cpp
+  ${VOICEMYNEWS_CORE}/network/HttpClientInterface.h
   ${VOICEMYNEWS_CORE}/voice/VoiceSupport.h
   ${VOICEMYNEWS_CORE}/voice/VoiceSupport.cpp
 )

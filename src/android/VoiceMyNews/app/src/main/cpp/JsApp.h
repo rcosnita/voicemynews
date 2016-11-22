@@ -72,6 +72,7 @@ private:
     v8::Persistent<v8::ObjectTemplate> *voicemynewsObj = nullptr;
     v8::Persistent<v8::ObjectTemplate> *voicemynewsCoreObj = nullptr;
     v8::Persistent<v8::ObjectTemplate> *voicemynewsEventsObj = nullptr;
+    v8::Persistent<v8::ObjectTemplate> *voicemynewsNetworkObj = nullptr;
 
 private:
     /**

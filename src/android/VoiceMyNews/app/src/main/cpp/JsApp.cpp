@@ -1,7 +1,9 @@
 #include "JsApp.h"
 #include "bindings/RequireBinding.h"
+#include "bindings/network/HttpClientBinding.h"
 
 #include <android/asset_manager_jni.h>
+#include <thread>
 
 using namespace v8;
 
@@ -10,19 +12,32 @@ static Platform* V8Platform = nullptr;
 
 static voicemynews::app::android::js::JsApp* JsAppCurrInstance = nullptr;
 
+static std::thread* V8Thread = nullptr;
+static JavaVM* CurrJavaVM = nullptr;
+
 JNIEXPORT void JNICALL Java_com_voicemynews_voicemynews_JsApp_startPlatform(
     JNIEnv* env,
     jclass objClass,
     jlong nativeEmitterPtr,
     jobject assetManager)
 {
-    assetManager = env->NewGlobalRef(assetManager);
-    voicemynews::core::io::fs::FileUtilsPlatform::Initialize(AAssetManager_fromJava(env, assetManager));
-    auto eventLoop = reinterpret_cast<voicemynews::app::android::js::JsApp::EventLoopPlatform*>(nativeEmitterPtr);
-    voicemynews::app::android::js::JsApp::StartPlatform();
+    if (V8Thread != nullptr) {
+        return;
+    }
 
-    auto jsApp = voicemynews::app::android::js::JsApp::GetInstance(eventLoop);
-    jsApp->Start();
+    env->GetJavaVM(&CurrJavaVM);
+
+    assetManager = env->NewGlobalRef(assetManager);
+    V8Thread = new std::thread([assetManager, nativeEmitterPtr]() {
+        JNIEnv* env = nullptr;
+        CurrJavaVM->AttachCurrentThread(&env, nullptr);
+        voicemynews::core::io::fs::FileUtilsPlatform::Initialize(AAssetManager_fromJava(env, assetManager));
+        auto eventLoop = reinterpret_cast<voicemynews::app::android::js::JsApp::EventLoopPlatform*>(nativeEmitterPtr);
+        voicemynews::app::android::js::JsApp::StartPlatform();
+
+        auto jsApp = voicemynews::app::android::js::JsApp::GetInstance(eventLoop);
+        jsApp->Start();
+    });
 }
 
 JNIEXPORT void JNICALL Java_com_voicemynews_voicemynews_JsApp_shutdownPlatform(
@@ -102,17 +117,20 @@ void JsApp::Start()
     Local<ObjectTemplate> voicemynewsLocal = ObjectTemplate::New(isolate_);
     Local<ObjectTemplate> voicemynewsCoreLocal = ObjectTemplate::New(isolate_);
     Local<ObjectTemplate> voicemynewsEventsLocal = ObjectTemplate::New(isolate_);
+    Local<ObjectTemplate> voicemynewsNetworkLocal = ObjectTemplate::New(isolate_);
 
     global->Set(isolate_, "global", ObjectTemplate::New(isolate_));
     global->Set(isolate_, "voicemynews", voicemynewsLocal);
 
     voicemynewsLocal->Set(isolate_, "core", voicemynewsCoreLocal);
     voicemynewsCoreLocal->Set(isolate_, "events", voicemynewsEventsLocal);
+    voicemynewsCoreLocal->Set(isolate_, "network", voicemynewsNetworkLocal);
 
     // TODO [rcosnita] cleanup all resources during destruction phase.
     voicemynewsObj = new Persistent<ObjectTemplate>(isolate_, voicemynewsLocal);
     voicemynewsCoreObj = new Persistent<ObjectTemplate>(isolate_, voicemynewsCoreLocal);
     voicemynewsEventsObj = new Persistent<ObjectTemplate>(isolate_, voicemynewsEventsLocal);
+    voicemynewsNetworkObj = new Persistent<ObjectTemplate>(isolate_, voicemynewsNetworkLocal);
 
     BindRequireJsNativeSupport();
     BindEventPlatformSupport();
@@ -170,6 +188,11 @@ void JsApp::BindRequireJsSupport()
 
 void JsApp::BindHttpClientSupport()
 {
+    Isolate::Scope isolateScope(isolate_);
+    EscapableHandleScope handleScope(isolate_);
+    Local<ObjectTemplate> voicemynewsNetworkLocal = voicemynewsNetworkObj->Get(isolate_);
+
+    voicemynews::app::android::bindings::HttpClientBinding::WireToJs(isolate_, handleScope.Escape(voicemynewsNetworkLocal));
 }
 
 void JsApp::BindNavigationManagerSupport()

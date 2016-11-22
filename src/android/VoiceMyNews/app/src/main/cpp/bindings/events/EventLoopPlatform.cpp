@@ -7,6 +7,7 @@
 
 using namespace v8;
 
+using voicemynews::core::events::EventData;
 using voicemynews::app::android::bindings::events::EventDataBinding;
 using voicemynews::app::android::utils::StringHelpers;
 
@@ -15,14 +16,24 @@ static const char* EventHandlerActionMethodName = "handleEvent";
 
 static jclass EventDataBindingNativeCls = nullptr;
 
+static voicemynews::core::events::EventLoopPlatform* EventLoopInstance = nullptr;
 static Persistent<Object> *JsLoopInstance = nullptr;
 
 /**
  * \brief Provides the js wrapper which can obtain js events wrapped around native events.
  */
-static void BuildLoopEvent(const FunctionCallbackInfo<Value>& info)
+static void BuildJsLoopEvent(const FunctionCallbackInfo<Value> &info)
 {
+    // TODO [rcosnita] validate input parameters.
+    Isolate* isolate = info.GetIsolate();
 
+    Local<ObjectTemplate> obj = ObjectTemplate::New(isolate);
+    obj->SetInternalFieldCount(1);
+
+    Local<Object> objInstance = obj->NewInstance();
+    auto evtData = new EventData<std::string>(*String::Utf8Value(info[0]->ToString()));
+    objInstance->SetInternalField(0, External::New(isolate, evtData));
+    info.GetReturnValue().Set(objInstance);
 }
 
 /**
@@ -31,7 +42,7 @@ static void BuildLoopEvent(const FunctionCallbackInfo<Value>& info)
 static void GetJsEvtData(Local<String> property, const PropertyCallbackInfo<Value>& info)
 {
     auto self = info.Holder();
-    auto evtData = *static_cast<std::shared_ptr<voicemynews::core::events::EventData<std::string>>*>(Local<External>::Cast(self->GetInternalField(0))->Value());
+    auto evtData = reinterpret_cast<EventData<std::string>*>(Local<External>::Cast(self->GetInternalField(0))->Value());
     auto jsEvtData = String::NewFromUtf8(info.GetIsolate(), evtData->data().c_str());
     info.GetReturnValue().Set(jsEvtData);
 }
@@ -45,9 +56,10 @@ static void OnJsLoop(const FunctionCallbackInfo<Value>& info)
     Isolate* isolate = info.GetIsolate();
     Local<Object> self = info.Holder();
     std::string evtName = *(String::Utf8Value(info[0]->ToString()));
-    auto callback = Local<Function>::Cast(info[0]);
+    auto callback = Local<Function>::Cast(info[1]);
     auto callbackPersistent = new Persistent<Function>(isolate, callback);
-    auto eventLoop = static_cast<voicemynews::core::events::EventLoopPlatform*>(Local<External>::Cast(self->GetInternalField(0))->Value());
+    auto eventLoopPtr = Local<External>::Cast(self->GetInternalField(0))->Value();
+    auto eventLoop = reinterpret_cast<voicemynews::core::events::EventLoopPlatform*>(eventLoopPtr);
 
     auto evtHandler = std::function<void(std::shared_ptr<voicemynews::core::events::EventData<std::string>>)>(
         [&callbackPersistent, &isolate](std::shared_ptr<voicemynews::core::events::EventData<std::string>> evtData) {
@@ -58,13 +70,14 @@ static void OnJsLoop(const FunctionCallbackInfo<Value>& info)
         objEvtData->SetAccessor(String::NewFromUtf8(isolate, "evtData"), GetJsEvtData);
 
         Local<Object> evt = objEvtData->NewInstance();
-        evt->SetInternalField(0, External::New(isolate, &evtData));
+        evt->SetInternalField(0, External::New(isolate, evtData.get()));
         args[0] = evt;
 
         callback->Call(callback, 1, args);
     });
 
-    ((voicemynews::core::events::EventLoop*)eventLoop)->On(evtName, evtHandler);
+    auto eventLoopCasted = dynamic_cast<voicemynews::core::events::EventLoop*>(eventLoop);
+    eventLoopCasted->On(evtName, evtHandler);
 }
 
 /**
@@ -82,8 +95,15 @@ static void OffJsLoop(const FunctionCallbackInfo<Value>& info)
 static void EmitJsLoop(const FunctionCallbackInfo<Value>& info)
 {
     // TODO [rcosnita] validate input parameters.
-    // TODO [rcosnita] implement this when necessary.
-    throw std::exception();
+    Local<Object> self = info.Holder();
+    std::string evtName = *String::Utf8Value(info[0]->ToString());
+    auto evtDataPtr = Local<External>::Cast(info[1]->ToObject()->GetInternalField(0))->Value();
+    auto evtData = reinterpret_cast<EventData<std::string>*>(evtDataPtr);
+    auto eventLoopPtr = Local<External>::Cast(self->GetInternalField(0))->Value();
+    auto eventLoop = reinterpret_cast<voicemynews::core::events::EventLoopPlatform*>(eventLoopPtr);
+    auto eventLoopCasted = dynamic_cast<voicemynews::core::events::EventLoop*>(eventLoop);
+
+    eventLoopCasted->Emit(evtName, std::shared_ptr<EventData<std::string>>(evtData));
 }
 
 /**
@@ -99,7 +119,7 @@ static void ProcessEventsJsLoop(const FunctionCallbackInfo<Value>& info)
 /**
  * \brief Provides a js wrapper over EventLoopPlatform getInstance factory method.
  */
-static void GetLoopInstance(const FunctionCallbackInfo<Value>& info)
+static void GetJsLoopInstance(const FunctionCallbackInfo<Value> &info)
 {
     Isolate* isolate = info.GetIsolate();
 
@@ -137,8 +157,11 @@ EventLoopPlatform::EventLoopPlatform(bool processImmediate)
 
 EventLoopPlatform* EventLoopPlatform::GetInstance()
 {
-    // TODO [rcosnita] Make sure we do not process events immediately.
-    return new EventLoopPlatform(true);
+    if (EventLoopInstance == nullptr) {
+        EventLoopInstance = new EventLoopPlatform(false);
+    }
+
+    return EventLoopInstance;
 }
 
 jobject EventLoopPlatform::BuildEvent(JNIEnv* env, std::string data)
@@ -241,19 +264,24 @@ void EventLoopPlatform::ProcessEvents()
 {
     EventLoop::ProcessEvents();
 
-    // TODO [rcosnita] add support for deferred tasks execution.
-    /*while (!deferredTasks_.empty()) {
+    while (!deferredTasks_.empty()) {
         auto task = deferredTasks_.back();
         task();
         deferredTasks_.pop();
-    }*/
+    }
+}
+
+void EventLoopPlatform::EnqueueTask(EventLoopJsTask task)
+{
+    deferredTasks_.push(task);
 }
 
 void EventLoopPlatform::WireToJs(Isolate* isolate, Local<ObjectTemplate> obj)
 {
     auto jsEventLoopPlatform = ObjectTemplate::New(isolate);
-    jsEventLoopPlatform->Set(isolate, "buildEvent", FunctionTemplate::New(isolate, BuildLoopEvent));
-    jsEventLoopPlatform->Set(isolate, "getInstance", FunctionTemplate::New(isolate, GetLoopInstance));
+    jsEventLoopPlatform->Set(isolate, "buildEvent", FunctionTemplate::New(isolate, BuildJsLoopEvent));
+    jsEventLoopPlatform->Set(isolate, "getInstance",
+                             FunctionTemplate::New(isolate, GetJsLoopInstance));
     obj->Set(isolate, "EventLoopPlatform", jsEventLoopPlatform);
 }
 }
