@@ -5,6 +5,8 @@ import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.voicemynews.core.bindings.events.EventDataBindingNative;
+import com.voicemynews.core.bindings.events.EventHandler;
 import com.voicemynews.core.bindings.events.EventLoopBinding;
 import com.voicemynews.core.bindings.events.EventLoopBindingNative;
 import com.voicemynews.core.bindings.network.HttpClientBinding;
@@ -25,9 +27,21 @@ public class MainActivity extends Activity {
 
         initAppJsLogic();
 
-        // Example of a call to a native method
-        TextView tv = (TextView) findViewById(R.id.sample_text);
-        tv.setText("Hello world ...");
+        final TextView tv = (TextView) findViewById(R.id.sample_text);
+        tv.setText("Initializing app");
+
+        final EventLoopBinding eventLoop = EventLoopBindingNative.getInstance();
+        final String appStartKey = eventLoop.on("app:js:start", new EventHandler() {
+            @Override
+            public void handleEvent(EventDataBindingNative evtData) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        tv.setText("Application started successfully ... app:js::start event received from js.");
+                    }
+                });
+            }
+        });
 
 //        EventLoopBinding eventLoop = EventLoopBindingNative.getInstance();
 //        String handlerKey = eventLoop.on("custom:evt", new EventHandler() {

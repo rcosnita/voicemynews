@@ -111,9 +111,9 @@ static void EmitJsLoop(const FunctionCallbackInfo<Value>& info)
  */
 static void ProcessEventsJsLoop(const FunctionCallbackInfo<Value>& info)
 {
-    // TODO [rcosnita] validate input parameters.
-    // TODO [rcosnita] implement this when necessary.
-    throw std::exception();
+    auto holder = info.Holder();
+    auto eventLoop = reinterpret_cast<voicemynews::core::events::EventLoopPlatform*>(Local<External>::Cast(holder->GetInternalField(0))->Value());
+    eventLoop->ProcessEvents();
 }
 
 /**
@@ -166,10 +166,6 @@ EventLoopPlatform* EventLoopPlatform::GetInstance()
 
 jobject EventLoopPlatform::BuildEvent(JNIEnv* env, std::string data)
 {
-    if (EventDataBindingNativeCls == nullptr) {
-        EventDataBindingNativeCls = (jclass)env->NewGlobalRef(env->FindClass("com/voicemynews/core/bindings/events/EventDataBindingNative"));
-    }
-
     jstring evtDataJNI = env->NewStringUTF(data.c_str());
     return Java_com_voicemynews_core_bindings_events_EventDataBindingNative_getInstanceNative(env, EventDataBindingNativeCls, evtDataJNI);
 }
@@ -214,14 +210,16 @@ jstring EventLoopPlatform::On(JNIEnv* env,
         env->GetJavaVM(&javaVM_);
     }
 
+    if (EventDataBindingNativeCls == nullptr) {
+        auto eventDataBindingCls = env->FindClass("com/voicemynews/core/bindings/events/EventDataBindingNative");
+        EventDataBindingNativeCls = (jclass)env->NewGlobalRef(eventDataBindingCls);
+    }
+
     auto handler = std::function<void(std::shared_ptr<EventLoopPlatform::EventData>)>([this, handlerActionId, evtHandlerGlobal](std::shared_ptr<EventLoopPlatform::EventData> evtDataStd) {
         JNIEnv *env = nullptr;
         javaVM_->AttachCurrentThread(&env, nullptr);
         auto platformEvt = EventLoopPlatform::BuildEvent(env, evtDataStd->data());
         env->CallVoidMethod(evtHandlerGlobal, handlerActionId, platformEvt);
-
-        // TODO [rcosnita] uncomment this and make it more robust when the event loop is multithreaded.
-//        javaVM_->DetachCurrentThread();
     });
     auto evtHandlerPtr = EventLoop::On(evtNameStd, handler);
 
