@@ -1,6 +1,7 @@
 #include "JsApp.h"
 #include "bindings/events/NavigationBinding.h"
 #include "bindings/network/HttpClientBinding.h"
+#include "bindings/news/VoiceBinding.h"
 
 #include <android/asset_manager_jni.h>
 #include <thread>
@@ -118,6 +119,7 @@ void JsApp::Start()
     Local<ObjectTemplate> voicemynewsCoreLocal = ObjectTemplate::New(isolate_);
     Local<ObjectTemplate> voicemynewsEventsLocal = ObjectTemplate::New(isolate_);
     Local<ObjectTemplate> voicemynewsNetworkLocal = ObjectTemplate::New(isolate_);
+    Local<ObjectTemplate> voicemynewsVoiceLocal = ObjectTemplate::New(isolate_);
 
     global->Set(isolate_, "global", ObjectTemplate::New(isolate_));
     global->Set(isolate_, "voicemynews", voicemynewsLocal);
@@ -125,12 +127,14 @@ void JsApp::Start()
     voicemynewsLocal->Set(isolate_, "core", voicemynewsCoreLocal);
     voicemynewsCoreLocal->Set(isolate_, "events", voicemynewsEventsLocal);
     voicemynewsCoreLocal->Set(isolate_, "network", voicemynewsNetworkLocal);
+    voicemynewsCoreLocal->Set(isolate_, "voice", voicemynewsVoiceLocal);
 
     // TODO [rcosnita] cleanup all resources during destruction phase.
     voicemynewsObj = new Persistent<ObjectTemplate>(isolate_, voicemynewsLocal);
     voicemynewsCoreObj = new Persistent<ObjectTemplate>(isolate_, voicemynewsCoreLocal);
     voicemynewsEventsObj = new Persistent<ObjectTemplate>(isolate_, voicemynewsEventsLocal);
     voicemynewsNetworkObj = new Persistent<ObjectTemplate>(isolate_, voicemynewsNetworkLocal);
+    voicemynewsVoiceObj = new Persistent<ObjectTemplate>(isolate_, voicemynewsVoiceLocal);
 
     BindRequireJsNativeSupport();
     BindEventPlatformSupport();
@@ -206,6 +210,11 @@ void JsApp::BindNavigationManagerSupport()
 
 void JsApp::BindVoiceSupport()
 {
+    Isolate::Scope isolateScope(isolate_);
+    EscapableHandleScope handleScope(isolate_);
+    Local<ObjectTemplate> voicemynewsVoiceLocal = voicemynewsVoiceObj->Get(isolate_);
+
+    voicemynews::app::android::bindings::news::VoiceBinding::WireToJs(isolate_, handleScope.Escape(voicemynewsVoiceLocal));
 }
 
 void JsApp::StartApp()
