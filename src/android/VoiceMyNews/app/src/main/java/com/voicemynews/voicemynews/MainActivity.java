@@ -42,17 +42,6 @@ public class MainActivity extends Activity {
                 });
             }
         });
-
-//        EventLoopBinding eventLoop = EventLoopBindingNative.getInstance();
-//        String handlerKey = eventLoop.on("custom:evt", new EventHandler() {
-//            @Override
-//            public void handleEvent(EventDataBindingNative evtData) {
-//                System.out.println(evtData.toString());
-//            }
-//        });
-//
-//        eventLoop.emit("custom:evt", EventDataBindingNative.getInstanceNative("hello world"));
-//        eventLoop.emit("custom:evt", EventDataBindingNative.getInstanceNative("hello world"));
     }
 
     private void initAppJsLogic()
