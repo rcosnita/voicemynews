@@ -39,7 +39,8 @@ JNIEXPORT jstring JNICALL Java_com_voicemynews_core_bindings_events_EventLoopBin
     jobject evtHandler)
 {
     auto eventLoop = GetEventLoopFromObject(env, thisObj);
-    return eventLoop->On(env, evtName, evtHandler);
+    auto listenerId = eventLoop->On(env, evtName, evtHandler);
+    return listenerId;
 }
 
 JNIEXPORT void JNICALL Java_com_voicemynews_core_bindings_events_EventLoopBindingNative_off(

@@ -13,7 +13,6 @@ static Platform* V8Platform = nullptr;
 
 static voicemynews::app::android::js::JsApp* JsAppCurrInstance = nullptr;
 
-static std::thread* V8Thread = nullptr;
 static JavaVM* CurrJavaVM = nullptr;
 
 JNIEXPORT void JNICALL Java_com_voicemynews_voicemynews_JsApp_startPlatform(
@@ -22,23 +21,15 @@ JNIEXPORT void JNICALL Java_com_voicemynews_voicemynews_JsApp_startPlatform(
     jlong nativeEmitterPtr,
     jobject assetManager)
 {
-    if (V8Thread != nullptr) {
-        return;
-    }
-
     env->GetJavaVM(&CurrJavaVM);
 
     assetManager = env->NewGlobalRef(assetManager);
-    V8Thread = new std::thread([assetManager, nativeEmitterPtr]() {
-        JNIEnv* env = nullptr;
-        CurrJavaVM->AttachCurrentThread(&env, nullptr);
-        voicemynews::core::io::fs::FileUtilsPlatform::Initialize(AAssetManager_fromJava(env, assetManager));
-        auto eventLoop = reinterpret_cast<voicemynews::app::android::js::JsApp::EventLoopPlatform*>(nativeEmitterPtr);
-        voicemynews::app::android::js::JsApp::StartPlatform();
+    voicemynews::core::io::fs::FileUtilsPlatform::Initialize(AAssetManager_fromJava(env, assetManager));
+    auto eventLoop = reinterpret_cast<voicemynews::app::android::js::JsApp::EventLoopPlatform*>(nativeEmitterPtr);
+    voicemynews::app::android::js::JsApp::StartPlatform();
 
-        auto jsApp = voicemynews::app::android::js::JsApp::GetInstance(eventLoop);
-        jsApp->Start();
-    });
+    auto jsApp = voicemynews::app::android::js::JsApp::GetInstance(eventLoop);
+    jsApp->Start();
 }
 
 JNIEXPORT void JNICALL Java_com_voicemynews_voicemynews_JsApp_shutdownPlatform(
@@ -152,8 +143,6 @@ void JsApp::Start()
 
 void JsApp::BindRequireJsNativeSupport()
 {
-    Isolate::Scope isolateScope(isolate_);
-    HandleScope handleScope(isolate_);
     Local<ObjectTemplate> voicemynewsCore = voicemynewsCoreObj->Get(isolate_);
     Local<ObjectTemplate> requireFactory = ObjectTemplate::New(isolate_);
 
@@ -163,11 +152,9 @@ void JsApp::BindRequireJsNativeSupport()
 
 void JsApp::BindEventPlatformSupport()
 {
-    Isolate::Scope isolateScope(isolate_);
-    EscapableHandleScope handleScope(isolate_);
     Local<ObjectTemplate> voicemynewsEvents = voicemynewsEventsObj->Get(isolate_);
 
-    EventLoopPlatform::WireToJs(isolate_, handleScope.Escape(voicemynewsEvents));
+    EventLoopPlatform::WireToJs(isolate_, voicemynewsEvents);
 }
 
 void JsApp::BindRequireJsSupport()
@@ -175,8 +162,6 @@ void JsApp::BindRequireJsSupport()
     auto requireSource = fileUtils_.ReadFilePlatform("js/require.js");
     std::string requireSourceUtf8(requireSource.begin(), requireSource.end());
 
-    Isolate::Scope isolateScope(isolate_);
-    HandleScope handleScope(isolate_);
     Local<Context> context = persistentContext_->Get(isolate_);
 
     TryCatch tryCatch(isolate_);
@@ -192,37 +177,29 @@ void JsApp::BindRequireJsSupport()
 
 void JsApp::BindHttpClientSupport()
 {
-    Isolate::Scope isolateScope(isolate_);
-    EscapableHandleScope handleScope(isolate_);
     Local<ObjectTemplate> voicemynewsNetworkLocal = voicemynewsNetworkObj->Get(isolate_);
 
-    voicemynews::app::android::bindings::HttpClientBinding::WireToJs(isolate_, handleScope.Escape(voicemynewsNetworkLocal));
+    voicemynews::app::android::bindings::HttpClientBinding::WireToJs(isolate_, voicemynewsNetworkLocal);
 }
 
 void JsApp::BindNavigationManagerSupport()
 {
-    Isolate::Scope isolateScope(isolate_);
-    EscapableHandleScope handleScope(isolate_);
     Local<ObjectTemplate> voicemynewsEventsLocal = voicemynewsEventsObj->Get(isolate_);
 
-    voicemynews::app::android::bindings::events::NavigationBinding::WireToJs(isolate_, handleScope.Escape(voicemynewsEventsLocal));
+    voicemynews::app::android::bindings::events::NavigationBinding::WireToJs(isolate_, voicemynewsEventsLocal);
 }
 
 void JsApp::BindVoiceSupport()
 {
-    Isolate::Scope isolateScope(isolate_);
-    EscapableHandleScope handleScope(isolate_);
     Local<ObjectTemplate> voicemynewsVoiceLocal = voicemynewsVoiceObj->Get(isolate_);
 
-    voicemynews::app::android::bindings::news::VoiceBinding::WireToJs(isolate_, handleScope.Escape(voicemynewsVoiceLocal));
+    voicemynews::app::android::bindings::news::VoiceBinding::WireToJs(isolate_, voicemynewsVoiceLocal);
 }
 
 void JsApp::StartApp()
 {
     std::string appScript = "(() => { const app = require('js/app'); })();";
 
-    Isolate::Scope isolateScope(isolate_);
-    HandleScope handleScope(isolate_);
     Local<Context> context = persistentContext_->Get(isolate_);
 
     TryCatch tryCatch(isolate_);
