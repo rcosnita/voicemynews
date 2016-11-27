@@ -15,7 +15,6 @@ import com.voicemynews.core.bindings.events.EventLoopBindingNative;
  */
 public class AppStartActivity extends Activity {
     private EventLoopBindingNative eventLoop = null;
-    private TextView tvWelcome = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,29 +22,24 @@ public class AppStartActivity extends Activity {
         setContentView(R.layout.activity_app_start);
 
         eventLoop = ((App)getApplicationContext()).getEventLoop();
-
-        tvWelcome = (TextView) findViewById(R.id.welcome_text);
-        tvWelcome.setText("Welcome to voicemynews app ...");
-
-        testMenuLoading();
     }
 
     /**
      * Just a test method for making sure menu loading works as expected.
      */
     private void testMenuLoading() {
-        eventLoop.on("app:navigation_menu:loaded", new EventHandler() {
-            @Override
-            public void handleEvent(final EventDataBindingNative evtData) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                    tvWelcome.setText(evtData.getEvtData());
-                    }
-                });
-            }
-        });
-
-        eventLoop.emit("app:navigation_menu:load", EventDataBindingNative.getInstanceNative(""));
+//        eventLoop.on("app:navigation_menu:loaded", new EventHandler() {
+//            @Override
+//            public void handleEvent(final EventDataBindingNative evtData) {
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                    tvWelcome.setText(evtData.getEvtData());
+//                    }
+//                });
+//            }
+//        });
+//
+//        eventLoop.emit("app:navigation_menu:load", EventDataBindingNative.getInstanceNative(""));
     }
 }
