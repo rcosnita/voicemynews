@@ -10,7 +10,11 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.voicemynews.core.bindings.events.EventDataBindingNative;
+import com.voicemynews.core.bindings.events.EventHandler;
 import com.voicemynews.core.bindings.events.EventLoopBindingNative;
+
+import org.json.JSONArray;
 
 /**
  * This activity displays the main ui of the application and takes decision of what to display.
@@ -82,12 +86,10 @@ public class AppStartActivity extends Activity {
     private void initSideMenu() {
         final String mTitle = getTitle().toString();
         final String mDrawerTitle = mTitle;
-        String[] titles = {"menu item 1", "menu item 2"};
         sideMenu = (DrawerLayout) findViewById(R.id.drawer_layout);
         sideMenuList = (ListView) findViewById(R.id.left_drawer);
-        sideMenuList.setAdapter(new ArrayAdapter<>(this, R.layout.app_side_menu, R.id.drawer_text, titles));
         sideMenuToggle = new ActionBarDrawerToggle(this, sideMenu,
-                R.string.drawer_open, R.string.drawer_close) {
+                R.string.sidemenu_open, R.string.sidemenu_close) {
 
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
@@ -101,24 +103,47 @@ public class AppStartActivity extends Activity {
         };
 
         sideMenu.addDrawerListener(sideMenuToggle);
+        wireJsMenu();
     }
 
     /**
      * Just a test method for making sure menu loading works as expected.
      */
-    private void testMenuLoading() {
-//        eventLoop.on("app:navigation_menu:loaded", new EventHandler() {
-//            @Override
-//            public void handleEvent(final EventDataBindingNative evtData) {
-//                runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                    tvWelcome.setText(evtData.getEvtData());
-//                    }
-//                });
-//            }
-//        });
-//
-//        eventLoop.emit("app:navigation_menu:load", EventDataBindingNative.getInstanceNative(""));
+    private void wireJsMenu() {
+        eventLoop.on("app:navigation_menu:loaded", new EventHandler() {
+            @Override
+            public void handleEvent(final EventDataBindingNative evtData) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        displayMenuItems(evtData);
+                    }
+                });
+            }
+        });
+
+        eventLoop.emit("app:navigation_menu:load", EventDataBindingNative.getInstanceNative(""));
+    }
+
+    /**
+     * Display the menu items described by the event received as input.
+     * @param evtData the event describing the menu.
+     */
+    private void displayMenuItems(EventDataBindingNative evtData) {
+        try {
+            JSONArray menuItems = new JSONArray(evtData.getEvtData());
+            int menuItemsCount = menuItems.length();
+            String[] menuItemLabels = new String[menuItemsCount];
+
+            for (int idx = 0; idx < menuItemsCount; idx++) {
+                menuItemLabels[idx] = menuItems.getJSONObject(idx).getString("label");
+            }
+
+            sideMenuList.setAdapter(new ArrayAdapter<>(AppStartActivity.this, R.layout.app_side_menu,
+                    R.id.sidemenu_item_label, menuItemLabels));
+        } catch(Exception ex) {
+            // TODO [rcosnita] handle exceptions in a coherent way.
+            System.out.println(ex);
+        }
     }
 }
