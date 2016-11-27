@@ -62,7 +62,7 @@ static void OnJsLoop(const FunctionCallbackInfo<Value>& info)
     auto eventLoop = reinterpret_cast<voicemynews::core::events::EventLoopPlatform*>(eventLoopPtr);
 
     auto evtHandler = std::function<void(std::shared_ptr<voicemynews::core::events::EventData<std::string>>)>(
-        [&callbackPersistent, &isolate](std::shared_ptr<voicemynews::core::events::EventData<std::string>> evtData) {
+        [callbackPersistent, isolate](std::shared_ptr<voicemynews::core::events::EventData<std::string>> evtData) {
         Local<Function> callback = callbackPersistent->Get(isolate);
         Local<Value> args[1];
         Local<ObjectTemplate> objEvtData = ObjectTemplate::New(isolate);

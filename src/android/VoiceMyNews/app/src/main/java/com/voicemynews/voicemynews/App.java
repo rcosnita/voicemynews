@@ -15,13 +15,17 @@ import com.voicemynews.core.bindings.network.HttpClientBinding;
  * v8 engine only once.
  */
 public class App extends Application {
-    private static EventLoopBindingNative eventLoop = null;
-    private static String appStartKey = null;
-    private static Thread v8Thread = null;
+    private EventLoopBindingNative eventLoop = null;
+    private String appStartKey = null;
+    private Thread v8Thread = null;
 
     static {
         System.loadLibrary("voicemynews-core");
         System.loadLibrary("voicemynews-android");
+    }
+
+    public EventLoopBindingNative getEventLoop() {
+        return eventLoop;
     }
 
     @Override
@@ -35,8 +39,6 @@ public class App extends Application {
                 displayMainUI();
             }
         });
-
-        displayAppLoader();
     }
 
     /**
@@ -47,16 +49,6 @@ public class App extends Application {
         Intent mainUiIntent = new Intent(this, AppStartActivity.class);
         mainUiIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         appCtx.startActivity(mainUiIntent);
-    }
-
-    /**
-     * Displays the loader screen for the app.
-     */
-    private void displayAppLoader() {
-        Context appCtx = getApplicationContext();
-        Intent loaderIntent = new Intent(this, AppLoaderActivity.class);
-        loaderIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        appCtx.startActivity(loaderIntent);
     }
 
     /**
