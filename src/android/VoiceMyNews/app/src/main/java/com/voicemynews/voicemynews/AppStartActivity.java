@@ -9,12 +9,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.voicemynews.core.bindings.events.EventDataBindingNative;
 import com.voicemynews.core.bindings.events.EventHandler;
 import com.voicemynews.core.bindings.events.EventLoopBindingNative;
+import com.voicemynews.core.models.JsonArrayAdapter;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.w3c.dom.Text;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This activity displays the main ui of the application and takes decision of what to display.
@@ -132,15 +140,27 @@ public class AppStartActivity extends Activity {
     private void displayMenuItems(EventDataBindingNative evtData) {
         try {
             JSONArray menuItems = new JSONArray(evtData.getEvtData());
-            int menuItemsCount = menuItems.length();
-            String[] menuItemLabels = new String[menuItemsCount];
 
-            for (int idx = 0; idx < menuItemsCount; idx++) {
-                menuItemLabels[idx] = menuItems.getJSONObject(idx).getString("label");
-            }
+            Map<String, JsonArrayAdapter.PopulateViewAction> itemsResources = new HashMap<>();
+            itemsResources.put("label", new JsonArrayAdapter.PopulateViewAction() {
+                @Override
+                public void populate(JSONObject item, String jsonKey, View view) {
+                    TextView labelView = (TextView) view.findViewById(R.id.sidemenu_item_label);
 
-            sideMenuList.setAdapter(new ArrayAdapter<>(AppStartActivity.this, R.layout.app_side_menu,
-                    R.id.sidemenu_item_label, menuItemLabels));
+                    try {
+                        labelView.setText(item.getString(jsonKey));
+                    } catch (JSONException ex) {
+                        // TODO [rcosnita] handle exception correctly and log it.
+                        return;
+                    }
+                }
+            });
+
+            JsonArrayAdapter jsonAdapter = new JsonArrayAdapter(this, R.layout.app_side_menu, menuItems,
+                itemsResources);
+            sideMenuList.setAdapter(jsonAdapter);
+//            sideMenuList.setAdapter(new ArrayAdapter<>(this, R.layout.app_side_menu,
+//                    R.id.sidemenu_item_label, menuItemLabels));
         } catch(Exception ex) {
             // TODO [rcosnita] handle exceptions in a coherent way.
             System.out.println(ex);
