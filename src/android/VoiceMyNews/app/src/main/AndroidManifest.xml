@@ -18,7 +18,11 @@
         </activity>
         <activity android:name=".AppStartActivity">
         </activity>
-        <activity android:name=".CategoriesPreferencesActivity">
+        <activity android:name=".UserPreferencesActivity">
+        </activity>
+        <activity android:name=".GeniusNewsActivity">
+        </activity>
+        <activity android:name=".IndividualNewsActivity">
         </activity>
     </application>
 

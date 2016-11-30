@@ -8,8 +8,8 @@ import com.voicemynews.voicemynews.components.CategoriesPreferencesFragment;
 /**
  * Provides the categories preferences activity. This allows user to configure his interests.
  */
-public class CategoriesPreferencesActivity extends MainPageAppActivity {
-    public CategoriesPreferencesActivity() {
+public class UserPreferencesActivity extends MainPageAppActivity {
+    public UserPreferencesActivity() {
         super(R.layout.activity_categories_preferences);
     }
 
