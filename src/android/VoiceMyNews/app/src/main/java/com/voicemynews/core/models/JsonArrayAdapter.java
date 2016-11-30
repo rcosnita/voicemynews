@@ -103,7 +103,7 @@ public class JsonArrayAdapter extends BaseAdapter {
      * value from the JSONObject found at the requested position.
      *
      * @param position the position of the view we are currently creating.
-     * @return
+     * @return The newly created view with all resources populated.
      */
     private View createView(int position) {
         View view = layoutInflater.inflate(layoutResource, null);
