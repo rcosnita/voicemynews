@@ -18,6 +18,8 @@
         </activity>
         <activity android:name=".AppStartActivity">
         </activity>
+        <activity android:name=".CategoriesPreferencesActivity">
+        </activity>
     </application>
 
 </manifest>
