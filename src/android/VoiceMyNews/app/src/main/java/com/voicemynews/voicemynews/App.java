@@ -15,6 +15,7 @@ import com.voicemynews.core.bindings.network.HttpClientBinding;
  * v8 engine only once.
  */
 public class App extends Application {
+    private static App currAppInstance = null;
     private EventLoopBindingNative eventLoop = null;
     private String appStartKey = null;
     private Thread v8Thread = null;
@@ -28,9 +29,19 @@ public class App extends Application {
         return eventLoop;
     }
 
+    /**
+     * Returns the current application instance. This might be necessary in order to be able to
+     * navigate without an activity context.
+     * @return
+     */
+    public static App getCurrent() {
+        return currAppInstance;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
+        currAppInstance = this;
         initAppJsLogic();
 
         appStartKey = eventLoop.on("app:js:start", new EventHandler() {

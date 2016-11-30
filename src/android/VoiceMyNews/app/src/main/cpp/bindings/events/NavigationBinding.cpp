@@ -1,8 +1,16 @@
+#include "events/EventData.h"
 #include "NavigationBinding.h"
 
 #include <exception>
+#include <jni.h>
+#include <string>
 
 using namespace v8;
+using voicemynews::core::events::EventData;
+
+static JavaVM* CurrJavaVM = nullptr;
+static jobject NavigationBindingObj = nullptr;
+static jmethodID NavigateByEventMethod = nullptr;
 
 /**
  * \brief Provides the js wrapper for navigating to app sections using native implementation.
@@ -10,8 +18,18 @@ using namespace v8;
 static void NavigateJsNavigationManagerByEvent(const FunctionCallbackInfo<Value>& info)
 {
     // TODO [rcosnita] validate input parameters.
-    // TODO [rcosnita] implement this when necessary.
-    throw std::exception();
+    Isolate* isolate = info.GetIsolate();
+    String::Utf8Value evtName(info[0]->ToString());
+    std::string evtNameStd(*evtName);
+    EventData<std::string>* eventObj = reinterpret_cast<EventData<std::string>*>(Local<External>::Cast(info[1]->ToObject()->GetInternalField(0))->Value());
+    std::string evtData = eventObj->data();
+
+    JNIEnv* env = nullptr;
+    CurrJavaVM->AttachCurrentThread(&env, nullptr);
+    jstring evtNameVM = env->NewStringUTF(evtNameStd.c_str());
+    jstring evtDataVM = env->NewStringUTF(evtData.c_str());
+
+    env->CallVoidMethod(NavigationBindingObj, NavigateByEventMethod, evtNameVM, evtDataVM);
 }
 
 /**
@@ -38,6 +56,16 @@ void NavigationBinding::WireToJs(v8::Isolate* isolate, v8::Local<v8::ObjectTempl
     obj->Set(isolate, "NavigationManagerPlatform", navManagerPlatform);
 
     navManagerPlatform->Set(isolate, "getInstance", FunctionTemplate::New(isolate, GetJsNavigationManagerInstance));
+}
+
+void InitNavigationBinding(JNIEnv* env)
+{
+    env->GetJavaVM(&CurrJavaVM);
+
+    auto navigationBindingCls = env->FindClass("com/voicemynews/core/bindings/events/NavigationBinding");
+    auto getInstanceMethod = env->GetStaticMethodID(navigationBindingCls, "getInstance", "()Lcom/voicemynews/core/bindings/events/NavigationBinding;");
+    NavigateByEventMethod = env->GetMethodID(navigationBindingCls, "navigateByEvent", "(Ljava/lang/String;Ljava/lang/String;)V");
+    NavigationBindingObj = env->NewGlobalRef(env->CallStaticObjectMethod(navigationBindingCls, getInstanceMethod));
 }
 }
 }

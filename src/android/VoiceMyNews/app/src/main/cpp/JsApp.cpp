@@ -25,6 +25,7 @@ JNIEXPORT void JNICALL Java_com_voicemynews_voicemynews_JsApp_startPlatform(
 
     assetManager = env->NewGlobalRef(assetManager);
     voicemynews::core::io::fs::FileUtilsPlatform::Initialize(AAssetManager_fromJava(env, assetManager));
+    voicemynews::app::android::bindings::events::InitNavigationBinding(env);
     auto eventLoop = reinterpret_cast<voicemynews::app::android::js::JsApp::EventLoopPlatform*>(nativeEmitterPtr);
     voicemynews::app::android::js::JsApp::StartPlatform();
 

@@ -1,6 +1,7 @@
 #ifndef VoiceMyNewsAndroid_bindings_events_NavigationBinding_H_
 #define VoiceMyNewsAndroid_bindings_events_NavigationBinding_H
 
+#include <jni.h>
 #include "v8.h"
 
 namespace voicemynews {
@@ -25,6 +26,11 @@ public:
      */
     static void WireToJs(v8::Isolate* isolate, v8::Local<v8::ObjectTemplate> obj);
 };
+
+/**
+ * \brief This method is invoked during application bootstrap and initializes all java / c++ bindings required by navigation layer.
+ */
+void InitNavigationBinding(JNIEnv* env);
 }
 }
 }
