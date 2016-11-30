@@ -1,10 +1,10 @@
 package com.voicemynews.voicemynews;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
@@ -77,6 +77,16 @@ public abstract class MainPageAppActivity extends Activity {
     }
 
     /**
+     * Whenever the activity is resumed, we try to display / hide the side menu based on its global
+     * state. We also try to maintain the selection from side menu.
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+        displaySideMenuIfNecessary();
+    }
+
+    /**
      * In case the configuration change, update all relevant pieces of UI.
      * @param newConfig the newly received configuration.
      */
@@ -124,16 +134,34 @@ public abstract class MainPageAppActivity extends Activity {
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
                 getActionBar().setTitle(mTitle);
+                ((App)getApplicationContext()).getSideMenuState().setVisible(false);
             }
 
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
                 getActionBar().setTitle(mDrawerTitle);
+                ((App)getApplicationContext()).getSideMenuState().setVisible(true);
             }
         };
 
         sideMenu.addDrawerListener(sideMenuToggle);
         wireJsMenu();
+
+        displaySideMenuIfNecessary();
+    }
+
+    /**
+     * Provides the logic for displaying / hidding the menu if necessary. It uses the global side
+     * menu state in order to take this decision.
+     */
+    private void displaySideMenuIfNecessary() {
+        boolean isSideMenuVisible = ((App)getApplicationContext()).getSideMenuState().isVisible();
+        if (isSideMenuVisible) {
+            sideMenu.openDrawer(GravityCompat.START);
+        } else {
+            sideMenu.closeDrawer(GravityCompat.START);
+        }
+
     }
 
     /**
@@ -187,6 +215,13 @@ public abstract class MainPageAppActivity extends Activity {
                     selectMenuItem(position);
                 }
             });
+
+            int selectedItem = ((App)getApplicationContext()).getSideMenuState().getSelectedItem();
+            if (selectedItem < 0) {
+                return;
+            }
+
+            sideMenuList.setSelection(selectedItem);
         } catch(Exception ex) {
             // TODO [rcosnita] handle exceptions in a coherent way.
             System.out.println(ex);
@@ -199,6 +234,7 @@ public abstract class MainPageAppActivity extends Activity {
      */
     private void selectMenuItem(int position) {
         JSONObject item = (JSONObject)menuItemsModel.getItem(position);
+        ((App)getApplicationContext()).getSideMenuState().setSelectedItem(position);
 
         try {
             String evtName = item.getJSONObject("data").getString("evtName");

@@ -1,10 +1,8 @@
 package com.voicemynews.voicemynews;
 
 import android.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.voicemynews.voicemynews.components.GeniusNewsFragment;
 import com.voicemynews.voicemynews.components.IndividualNewsFragment;
 
 public class IndividualNewsActivity extends MainPageAppActivity {
