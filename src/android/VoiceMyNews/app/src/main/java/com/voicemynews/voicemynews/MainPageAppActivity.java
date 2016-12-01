@@ -17,6 +17,7 @@ import com.voicemynews.core.bindings.events.EventDataBindingNative;
 import com.voicemynews.core.bindings.events.EventHandler;
 import com.voicemynews.core.bindings.events.EventLoopBindingNative;
 import com.voicemynews.voicemynews.models.JsonArrayAdapter;
+import com.voicemynews.voicemynews.models.SideMenuState;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -207,7 +208,18 @@ public abstract class MainPageAppActivity extends Activity {
             });
 
             menuItemsModel = new JsonArrayAdapter(this, R.layout.app_side_menu, menuItems,
-                    itemsResources);
+                    itemsResources, new JsonArrayAdapter.ItemRenderedAction() {
+                @Override
+                public void handleSelectedItem(int position, JSONObject item, View view) {
+                    SideMenuState state = ((App)getApplicationContext()).getSideMenuState();
+
+                    if (position != state.getSelectedItem()) {
+                        return;
+                    }
+
+                    view.setBackgroundResource(R.color.sideMenuItemSelectedBackground);
+                }
+            });
             sideMenuList.setAdapter(menuItemsModel);
             sideMenuList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override

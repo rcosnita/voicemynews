@@ -3,6 +3,7 @@ package com.voicemynews.voicemynews.models;
 import android.content.Context;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,22 @@ public class JsonArrayAdapter extends BaseAdapter {
          */
         void populate(JSONObject item, String jsonKey, View view);
     }
+
+    /**
+     * Provides the contract which must be implemented in case the consumer of jsonarrayadapter wants
+     * to take actions whenever the a new item is being rendered.
+     */
+    public interface ItemRenderedAction {
+        /**
+         * The actual logic for handling the item being rendered.
+         *
+         * @param position The current position of the item being rendered.
+         * @param item The current item data.
+         * @param view The view associated with the current item.
+         */
+        void handleSelectedItem(int position, JSONObject item, View view);
+    }
+
     /**
      * The current context in which the adapter was used.
      */
@@ -49,6 +66,12 @@ public class JsonArrayAdapter extends BaseAdapter {
     private Map<String, PopulateViewAction> itemsResources;
 
     /**
+     * Provides an action which is invoked whenever the selected item is rendered. In case no such
+     * action is provided this step is skipped.
+     */
+    private ItemRenderedAction onItemRendered = null;
+
+    /**
      * Provides the identifier of the layout which we currently populate with items.
      */
     private int layoutResource;
@@ -64,11 +87,26 @@ public class JsonArrayAdapter extends BaseAdapter {
             JSONArray items,
             @NonNull
             Map<String, PopulateViewAction> itemsResources) {
+        this(context, layoutResource, items, itemsResources, null);
+    }
+
+    public JsonArrayAdapter(
+            @NonNull
+            Context context,
+            @LayoutRes
+            int layoutResource,
+            @NonNull
+            JSONArray items,
+            @NonNull
+            Map<String, PopulateViewAction> itemsResources,
+            @Nullable
+            ItemRenderedAction onItemRendered) {
         this.context = context;
         this.layoutResource = layoutResource;
         this.items = items;
         this.itemsResources = itemsResources;
         this.layoutInflater = LayoutInflater.from(context);
+        this.onItemRendered = onItemRendered;
     }
 
     @Override
@@ -110,6 +148,10 @@ public class JsonArrayAdapter extends BaseAdapter {
         for (String jsonKey : itemsResources.keySet()) {
             PopulateViewAction action = itemsResources.get(jsonKey);
             action.populate(obj, jsonKey, view);
+        }
+
+        if (onItemRendered != null) {
+            onItemRendered.handleSelectedItem(position, obj, view);
         }
 
         return view;
