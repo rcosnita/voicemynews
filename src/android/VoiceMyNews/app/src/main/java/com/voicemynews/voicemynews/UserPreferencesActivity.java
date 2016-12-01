@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import com.voicemynews.voicemynews.components.CategoriesPreferencesFragment;
 
+
 /**
  * Provides the categories preferences activity. This allows user to configure his interests.
  */
