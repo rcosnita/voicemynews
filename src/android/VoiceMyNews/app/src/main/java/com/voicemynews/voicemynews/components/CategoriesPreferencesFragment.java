@@ -18,6 +18,7 @@ import com.voicemynews.core.bindings.events.EventLoopBindingNative;
 import com.voicemynews.voicemynews.App;
 import com.voicemynews.voicemynews.R;
 import com.voicemynews.voicemynews.models.JsonArrayAdapter;
+import com.voicemynews.voicemynews.utils.JsResourcesHelper;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -123,12 +124,8 @@ public class CategoriesPreferencesFragment extends Fragment {
             @Override
             public void populate(JSONObject item, String jsonKey, View view) {
                 try {
-                    String imageSrc = item.getString(jsonKey).substring(1).toLowerCase().replace('-', '_')
-                            .replace('/', '_').split("\\.")[0];
                     ImageView imageView = (ImageView) view.findViewById(R.id.categoriesImage);
-                    Context imageCtx = imageView.getContext();
-                    int imageId = imageCtx.getResources().getIdentifier(imageSrc, "drawable", imageCtx.getPackageName());
-                    imageView.setImageResource(imageId);
+                    imageView.setImageResource(JsResourcesHelper.getIdFromDrawableResourcePath(item.getString(jsonKey), imageView.getContext()));
                 } catch (Exception ex) {
                     // TODO [rcosnita] handle the exception correctly.
                     System.out.println(ex);

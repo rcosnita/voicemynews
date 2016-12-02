@@ -20,6 +20,7 @@ import com.voicemynews.core.bindings.events.EventHandler;
 import com.voicemynews.core.bindings.events.EventLoopBindingNative;
 import com.voicemynews.voicemynews.models.JsonArrayAdapter;
 import com.voicemynews.voicemynews.models.SideMenuState;
+import com.voicemynews.voicemynews.utils.JsResourcesHelper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -199,12 +200,8 @@ public abstract class MainPageAppActivity extends Activity {
                 @Override
                 public void populate(JSONObject item, String jsonKey, View view) {
                     try {
-                        String imageSrc = item.getString(jsonKey).substring(1).toLowerCase().replace('-', '_')
-                                .replace('/', '_').split("\\.")[0];
                         ImageView iconView = (ImageView) view.findViewById(R.id.sidemenu_item_icon);
-                        Context imageCtx = iconView.getContext();
-                        int imageId = imageCtx.getResources().getIdentifier(imageSrc, "drawable", imageCtx.getPackageName());
-                        iconView.setImageResource(imageId);
+                        iconView.setImageResource(JsResourcesHelper.getIdFromDrawableResourcePath(item.getString(jsonKey), iconView.getContext()));
                     } catch(Exception ex) {
                         // TODO [rcosnita] handle exceptions correctly.
                         System.out.println(ex);
