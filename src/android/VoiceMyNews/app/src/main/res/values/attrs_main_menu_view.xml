@@ -1,0 +1,5 @@
+<resources>
+    <declare-styleable name="MainMenuView">
+        <attr name="app_title" format="string"></attr>
+    </declare-styleable>
+</resources>
