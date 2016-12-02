@@ -1,6 +1,9 @@
 package com.voicemynews.voicemynews;
 
 import android.app.Application;
+
+import com.voicemynews.core.bindings.events.EventDataBindingNative;
+import com.voicemynews.core.bindings.events.EventHandler;
 import com.voicemynews.core.bindings.events.EventLoopBindingNative;
 import com.voicemynews.core.bindings.network.HttpClientBinding;
 import com.voicemynews.voicemynews.models.SideMenuState;
@@ -10,6 +13,7 @@ import com.voicemynews.voicemynews.models.SideMenuState;
  * v8 engine only once.
  */
 public class App extends Application {
+    private String appStartKey;
     private static App currAppInstance = null;
     private EventLoopBindingNative eventLoop = null;
     private Thread v8Thread = null;
@@ -18,6 +22,28 @@ public class App extends Application {
     static {
         System.loadLibrary("voicemynews-core");
         System.loadLibrary("voicemynews-android");
+    }
+
+    /**
+     * Provides a mechanism for allowing external activities to listen to on app started. At this point,
+     * we know for sure that there is only one listener interested into this event.
+     */
+    public interface OnAppStarted {
+        void doAction(EventDataBindingNative evtData);
+    }
+
+    private EventDataBindingNative appStartedEvtData = null;
+    private OnAppStarted appStartedListener = null;
+    public OnAppStarted getAppStartedListener() {
+        return appStartedListener;
+    }
+
+    public void setAppStartedListener(OnAppStarted appStartedListener) {
+        this.appStartedListener = appStartedListener;
+
+        if (appStartedEvtData != null) {
+            appStartedListener.doAction(appStartedEvtData);
+        }
     }
 
     /**
@@ -51,6 +77,25 @@ public class App extends Application {
         super.onCreate();
         currAppInstance = this;
         initAppJsLogic();
+
+        appStartKey = eventLoop.on("app:js:start", new EventHandler() {
+            @Override
+            public void handleEvent(EventDataBindingNative evtData) {
+                if (appStartedListener != null) {
+                    appStartedListener.doAction(evtData);
+                    return;
+                }
+
+                appStartedEvtData = evtData;
+            }
+        });
+    }
+
+    /**
+     * Provides the logic for unregistering all listeners from app start event.
+     */
+    public void clearAppStartedListeners() {
+        eventLoop.off(appStartKey);
     }
 
     /**
