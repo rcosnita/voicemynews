@@ -1,12 +1,6 @@
 package com.voicemynews.voicemynews;
 
-
 import android.app.Application;
-import android.content.Context;
-import android.content.Intent;
-
-import com.voicemynews.core.bindings.events.EventDataBindingNative;
-import com.voicemynews.core.bindings.events.EventHandler;
 import com.voicemynews.core.bindings.events.EventLoopBindingNative;
 import com.voicemynews.core.bindings.network.HttpClientBinding;
 import com.voicemynews.voicemynews.models.SideMenuState;
@@ -18,7 +12,6 @@ import com.voicemynews.voicemynews.models.SideMenuState;
 public class App extends Application {
     private static App currAppInstance = null;
     private EventLoopBindingNative eventLoop = null;
-    private String appStartKey = null;
     private Thread v8Thread = null;
     private final SideMenuState sideMenuState = new SideMenuState();
 
@@ -58,23 +51,6 @@ public class App extends Application {
         super.onCreate();
         currAppInstance = this;
         initAppJsLogic();
-
-        appStartKey = eventLoop.on("app:js:start", new EventHandler() {
-            @Override
-            public void handleEvent(EventDataBindingNative evtData) {
-                displayMainUI();
-            }
-        });
-    }
-
-    /**
-     * Navigate to main page of the application.
-     */
-    private void displayMainUI() {
-        Context appCtx = getApplicationContext();
-        Intent mainUiIntent = new Intent(this, AppStartActivity.class);
-        mainUiIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        appCtx.startActivity(mainUiIntent);
     }
 
     /**
