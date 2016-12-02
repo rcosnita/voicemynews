@@ -4,9 +4,9 @@
              android:layout_height="match_parent"
              tools:context="com.voicemynews.voicemynews.components.GeniusNewsFragment">
 
-    <TextView
+    <ListView
+        android:id="@+id/genius_news_listing"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Genius news listing"/>
+        android:layout_height="match_parent"></ListView>
 
 </FrameLayout>

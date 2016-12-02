@@ -20,6 +20,30 @@ import java.util.Map;
  */
 public class JsonArrayAdapter extends BaseAdapter {
     /**
+     * Provides a data model which holds the result of a get operation where compoud key is specified.
+     * Compound keys are used to navigate multiple hierarchy levels of a json object.
+     */
+    private static class CompoundKeyResult {
+        public static final char COMPOUND_KEY_SEPARATOR = '.';
+        public final String key;
+        public final JSONObject jsonObject;
+
+        public CompoundKeyResult(String key, JSONObject jsonObject) {
+            this.key = key;
+            this.jsonObject = jsonObject;
+        }
+
+        /**
+         * Tells if the given key is compound key or not.
+         * @param key A json key we intend to use for accessing a property of a json object.
+         * @return
+         */
+        public static boolean isCompoundKey(String key) {
+            return key.indexOf('.') >= 0;
+        }
+    }
+
+    /**
      * Provides the contract which must be implemented whenever we want to populate a resource with
      * the value of a json key.
      */
@@ -145,13 +169,31 @@ public class JsonArrayAdapter extends BaseAdapter {
     private View createView(int position) {
         View view = layoutInflater.inflate(layoutResource, null);
         JSONObject obj = (JSONObject) getItem(position);
-        for (String jsonKey : itemsResources.keySet()) {
-            PopulateViewAction action = itemsResources.get(jsonKey);
-            action.populate(obj, jsonKey, view);
-        }
 
-        if (onItemRendered != null) {
-            onItemRendered.handleSelectedItem(position, obj, view);
+        try {
+            for (String jsonKey : itemsResources.keySet()) {
+                JSONObject tmpObj = obj;
+                PopulateViewAction action = itemsResources.get(jsonKey);
+
+                if (CompoundKeyResult.isCompoundKey(jsonKey)) {
+                    do {
+                        int dotPos = jsonKey.indexOf(CompoundKeyResult.COMPOUND_KEY_SEPARATOR);
+                        String currKey = jsonKey.substring(0, dotPos);
+                        jsonKey = jsonKey.substring(dotPos + 1);
+                        tmpObj = tmpObj.getJSONObject(currKey);
+
+                    } while (CompoundKeyResult.isCompoundKey(jsonKey));
+                }
+
+                action.populate(tmpObj, jsonKey, view);
+            }
+
+            if (onItemRendered != null) {
+                onItemRendered.handleSelectedItem(position, obj, view);
+            }
+        } catch (Exception ex) {
+            // TODO [rcosnita] handle exception correctly.
+            System.out.println(ex);
         }
 
         return view;
