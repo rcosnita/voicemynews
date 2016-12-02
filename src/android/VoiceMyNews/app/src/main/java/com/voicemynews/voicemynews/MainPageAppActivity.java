@@ -1,6 +1,7 @@
 package com.voicemynews.voicemynews;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
@@ -10,6 +11,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -193,6 +195,24 @@ public abstract class MainPageAppActivity extends Activity {
             JSONArray menuItems = new JSONArray(evtData.getEvtData());
 
             Map<String, JsonArrayAdapter.PopulateViewAction> itemsResources = new HashMap<>();
+            itemsResources.put("icon", new JsonArrayAdapter.PopulateViewAction() {
+                @Override
+                public void populate(JSONObject item, String jsonKey, View view) {
+                    try {
+                        String imageSrc = item.getString(jsonKey).substring(1).toLowerCase().replace('-', '_')
+                                .replace('/', '_').split("\\.")[0];
+                        ImageView iconView = (ImageView) view.findViewById(R.id.sidemenu_item_icon);
+                        Context imageCtx = iconView.getContext();
+                        int imageId = imageCtx.getResources().getIdentifier(imageSrc, "drawable", imageCtx.getPackageName());
+                        iconView.setImageResource(imageId);
+                    } catch(Exception ex) {
+                        // TODO [rcosnita] handle exceptions correctly.
+                        System.out.println(ex);
+                    }
+
+                }
+            });
+
             itemsResources.put("label", new JsonArrayAdapter.PopulateViewAction() {
                 @Override
                 public void populate(JSONObject item, String jsonKey, View view) {
