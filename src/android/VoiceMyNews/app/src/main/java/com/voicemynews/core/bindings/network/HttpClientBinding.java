@@ -1,11 +1,14 @@
 package com.voicemynews.core.bindings.network;
 
+import java.io.ByteArrayOutputStream;
+import java.io.CharArrayReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.CharBuffer;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -94,11 +97,14 @@ public class HttpClientBinding {
                 HttpClientBindingGetResponse response = (HttpClientBindingGetResponse)responseData;
 
                 try {
-                    Reader reader = null;
-                    reader = new InputStreamReader(response.stream, "UTF-8");
-                    char[] buffer = new char[Integer.parseInt(response.headers.get("Content-Length"))];
-                    reader.read(buffer);
-                    callback.onParsed(new String(buffer));
+                    ByteArrayOutputStream content = new ByteArrayOutputStream();
+                    byte[] buffer = new byte[1024];
+                    int length;
+                    while ((length = response.stream.read(buffer)) != -1) {
+                        content.write(buffer, 0, length);
+                    }
+
+                    callback.onParsed(content.toString("UTF-8"));
                 } catch(Exception ex) {
                     // TODO [rcosnita] handle exception.
                     System.out.println(ex);

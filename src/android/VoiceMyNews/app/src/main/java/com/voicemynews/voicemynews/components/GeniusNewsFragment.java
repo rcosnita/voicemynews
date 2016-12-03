@@ -3,11 +3,13 @@ package com.voicemynews.voicemynews.components;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -16,6 +18,7 @@ import com.voicemynews.core.bindings.events.EventDataBindingNative;
 import com.voicemynews.core.bindings.events.EventHandler;
 import com.voicemynews.core.bindings.events.EventLoopBindingNative;
 import com.voicemynews.voicemynews.App;
+import com.voicemynews.voicemynews.IndividualNewsActivity;
 import com.voicemynews.voicemynews.R;
 import com.voicemynews.voicemynews.models.JsonArrayAdapter;
 import com.voicemynews.voicemynews.utils.DownloadImageAsync;
@@ -30,7 +33,7 @@ import java.util.Map;
 /**
  * Provides the fragment which can display all genius news for the current user.
  */
-public class GeniusNewsFragment extends Fragment {
+public class GeniusNewsFragment extends Fragment implements AdapterView.OnItemClickListener {
     /**
      * Gives access to the event loop capable of communicating with js business logic.
      */
@@ -45,6 +48,11 @@ public class GeniusNewsFragment extends Fragment {
      * Provides access to the instance of list view which is going to display all available news.
      */
     private ListView newsListing = null;
+
+    /**
+     * Provides the news model for the current fragment. It might be changed as we refresh news.
+     */
+    private JsonArrayAdapter newsModel = null;
 
     public GeniusNewsFragment() { }
 
@@ -69,7 +77,7 @@ public class GeniusNewsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_genius_news, container, false);
         newsListing = (ListView) view.findViewById(R.id.genius_news_listing);
-
+        newsListing.setOnItemClickListener(this);
         return view;
     }
 
@@ -81,6 +89,23 @@ public class GeniusNewsFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+    }
+
+    /**
+     * Provides an implementation which handles news selected event. It triggers navigation to
+     * individual news activity.
+     */
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if (newsModel == null) {
+            return;
+        }
+
+        JSONObject individualNewsModel = (JSONObject) newsModel.getItem(position);
+        Intent individualNews = new Intent(parentActivity, IndividualNewsActivity.class);
+        individualNews.putExtra(IndividualNewsActivity.PROP_NEWS_MODEL, individualNewsModel.toString());
+
+        parentActivity.startActivity(individualNews);
     }
 
     /**
@@ -143,7 +168,7 @@ public class GeniusNewsFragment extends Fragment {
             }
         });
 
-        JsonArrayAdapter newsModel = new JsonArrayAdapter(parentActivity.getApplicationContext(),
+        newsModel = new JsonArrayAdapter(parentActivity.getApplicationContext(),
                 R.layout.genius_news_listing, items, itemsResources);
         newsListing.setAdapter(newsModel);
     }

@@ -5,8 +5,9 @@
              tools:context="com.voicemynews.voicemynews.components.IndividualNewsFragment">
 
     <TextView
+        android:id="@+id/individual_news_headline"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Individual news listing"/>
+        android:textSize="@dimen/news_headline_font_size"/>
 
 </FrameLayout>

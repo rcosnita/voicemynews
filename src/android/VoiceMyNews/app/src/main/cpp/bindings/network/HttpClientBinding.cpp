@@ -43,9 +43,9 @@ JNIEXPORT void JNICALL Java_com_voicemynews_core_bindings_network_HttpClientBind
     HttpClientBindingGetActionIsolatePtr = env->GetFieldID(HttpClientBindingGetActionClass, "isolatePtr", "J");
 
     HttpClientBindingParseStringContentActionClass = (jclass)env->NewGlobalRef(env->FindClass("com/voicemynews/core/bindings/network/HttpClientBindingParseStringContentAction"));
-    HttpClientBindingParseStringContentActionConstructor = env->GetMethodID(HttpClientBindingGetActionClass, "<init>", "(JJ)V");
-    HttpClientBindingParseStringContentActionJsCallbackPtr = env->GetFieldID(HttpClientBindingGetActionClass, "jsCallbackPtr", "J");
-    HttpClientBindingParseStringContentActionIsolatePtr = env->GetFieldID(HttpClientBindingGetActionClass, "isolatePtr", "J");
+    HttpClientBindingParseStringContentActionConstructor = env->GetMethodID(HttpClientBindingParseStringContentActionClass, "<init>", "(JJ)V");
+    HttpClientBindingParseStringContentActionJsCallbackPtr = env->GetFieldID(HttpClientBindingParseStringContentActionClass, "jsCallbackPtr", "J");
+    HttpClientBindingParseStringContentActionIsolatePtr = env->GetFieldID(HttpClientBindingParseStringContentActionClass, "isolatePtr", "J");
 }
 
 JNIEXPORT void JNICALL Java_com_voicemynews_core_bindings_network_HttpClientBindingGetAction_invokeJsCallback(
@@ -60,7 +60,7 @@ JNIEXPORT void JNICALL Java_com_voicemynews_core_bindings_network_HttpClientBind
     auto responseDataGlobal = env->NewGlobalRef(responseData);
     auto eventLoop = voicemynews::core::events::EventLoopPlatform::GetInstance();
 
-    eventLoop->EnqueueTask(std::function<void()>([&jsCallback, &isolate, &responseDataGlobal]() {
+    eventLoop->EnqueueTask(std::function<void()>([jsCallback, isolate, responseDataGlobal]() {
         Local<Value> args[1];
         Local<ObjectTemplate> obj = ObjectTemplate::New(isolate);
         obj->SetInternalFieldCount(1);
@@ -86,7 +86,7 @@ JNIEXPORT void JNICALL Java_com_voicemynews_core_bindings_network_HttpClientBind
     auto responseGlobal = (jstring)env->NewGlobalRef(response);
     auto eventLoop = voicemynews::core::events::EventLoopPlatform::GetInstance();
 
-    eventLoop->EnqueueTask(std::function<void()>([&jsCallback, &isolate, &responseGlobal]() {
+    eventLoop->EnqueueTask(std::function<void()>([jsCallback, isolate, responseGlobal]() {
         JNIEnv* env = nullptr;
         javaVM->AttachCurrentThread(&env, nullptr);
 
@@ -190,7 +190,6 @@ static void ParseJsHttpClientBindingGetResponse(const FunctionCallbackInfo<Value
 {
     // TODO [rcosnita] validate input parameters.
     Isolate* isolate = info.GetIsolate();
-    auto holder = info.Holder();
 
     jobject responseData = static_cast<jobject>(Local<External>::Cast(info[0]->ToObject()->GetInternalField(0))->Value());
     Local<Function> callback = Local<Function>::Cast(info[1]);
@@ -201,8 +200,8 @@ static void ParseJsHttpClientBindingGetResponse(const FunctionCallbackInfo<Value
 
     JNIEnv* env = nullptr;
     javaVM->AttachCurrentThread(&env, nullptr);
-    auto objInst = env->NewGlobalRef(env->NewObject(HttpClientBindingParseStringContentActionClass, HttpClientBindingParseStringContentActionConstructor, callbackPtr, isolatePtr));
-    env->CallVoidMethod(HttpClientObj, HttpClientParseResponseWithStringContent, objInst);
+    auto objInst = env->NewObject(HttpClientBindingParseStringContentActionClass, HttpClientBindingParseStringContentActionConstructor, callbackPtr, isolatePtr);
+    env->CallVoidMethod(HttpClientObj, HttpClientParseResponseWithStringContent, responseData, objInst);
 }
 
 /**
