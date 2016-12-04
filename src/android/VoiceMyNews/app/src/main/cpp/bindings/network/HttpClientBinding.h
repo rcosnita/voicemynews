@@ -32,7 +32,7 @@ JNIEXPORT void JNICALL Java_com_voicemynews_core_bindings_network_HttpClientBind
 JNIEXPORT void JNICALL Java_com_voicemynews_core_bindings_network_HttpClientBindingParseStringContentAction_invokeJsCallback(
     JNIEnv* env,
     jobject thisObj,
-    jstring response);
+    jobject response);
 
 #ifdef __cplusplus
 };

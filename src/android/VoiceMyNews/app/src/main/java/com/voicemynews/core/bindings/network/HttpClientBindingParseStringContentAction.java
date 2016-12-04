@@ -24,13 +24,13 @@ public class HttpClientBindingParseStringContentAction {
      * Provides the glue layer between java vm and v8 engine. It invokes the binded javascript callback.
      * @param content
      */
-    private native void invokeJsCallback(String content);
+    private native void invokeJsCallback(HttpClientBindingParsedStringResponse content);
 
     /**
      * The method invoked once the request content has been parsed.
      * @param content The content parsed as raw string.
      */
-    public void onParsed(String content)
+    public void onParsed(HttpClientBindingParsedStringResponse content)
     {
         invokeJsCallback(content);
     }

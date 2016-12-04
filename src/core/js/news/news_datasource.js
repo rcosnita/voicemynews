@@ -96,13 +96,15 @@ class NewsDataSourceAbstract {
         let response = this._httpClient.get(url);
 
         response.then((responseParsed) => {
-            if (responseParsed.getStatusCode() < 200 || responseParsed.getStatusCode() >= 300) {
+            const statusCode = responseParsed.getStatusCode();
+            if (statusCode < 200 || statusCode >= 300) {
                 loader.reject(exceptionsFactory.buildErrorDescriptor(exceptionsFactory.NEWS_ERR_URL_NOTFOUND,
                     "Url not found."));
             }
 
             try {
-                let newsModel = this.parseContent(responseParsed.getContent(), rssDesc);
+                const content = responseParsed.getContent();
+                let newsModel = this.parseContent(content, rssDesc);
                 loader.resolve(newsModel);
             } catch(err) {
                 loader.reject(exceptionsFactory.buildErrorDescriptor(exceptionsFactory.NEWS_ERR_PARSE_INVALIDARTICLE,

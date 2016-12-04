@@ -16,7 +16,10 @@ static jclass HttpClientBindingParseStringContentActionClass = nullptr;
 static jmethodID HttpClientBindingParseStringContentActionConstructor = nullptr;
 static jfieldID HttpClientBindingParseStringContentActionJsCallbackPtr = nullptr;
 static jfieldID HttpClientBindingParseStringContentActionIsolatePtr = nullptr;
-static JavaVM* javaVM = nullptr;
+static jclass HttpClientBindingParseResponseClass = nullptr;
+static jmethodID HttpClientBindingParseResponseGetStatusCode = nullptr;
+static jmethodID HttpClientBindingParseResponseGetContent = nullptr;
+static JavaVM* CurrJavaVM = nullptr;
 
 JNIEXPORT void JNICALL Java_com_voicemynews_core_bindings_network_HttpClientBinding_initializeNative(
     JNIEnv* env,
@@ -28,7 +31,7 @@ JNIEXPORT void JNICALL Java_com_voicemynews_core_bindings_network_HttpClientBind
         return;
     }
 
-    env->GetJavaVM(&javaVM);
+    env->GetJavaVM(&CurrJavaVM);
     HttpClientObj = env->NewGlobalRef(httpClientObj);
     HttpClientGetMethod = env->GetMethodID(objClass, "get", "(Ljava/lang/String;Ljava/util/Map;Lcom/voicemynews/core/bindings/network/HttpClientBindingGetAction;)V");
     HttpClientParseResponseWithStringContent = env->GetMethodID(objClass, "parseResponseWithStringContent", "(Ljava/lang/Object;Lcom/voicemynews/core/bindings/network/HttpClientBindingParseStringContentAction;)V");
@@ -46,6 +49,10 @@ JNIEXPORT void JNICALL Java_com_voicemynews_core_bindings_network_HttpClientBind
     HttpClientBindingParseStringContentActionConstructor = env->GetMethodID(HttpClientBindingParseStringContentActionClass, "<init>", "(JJ)V");
     HttpClientBindingParseStringContentActionJsCallbackPtr = env->GetFieldID(HttpClientBindingParseStringContentActionClass, "jsCallbackPtr", "J");
     HttpClientBindingParseStringContentActionIsolatePtr = env->GetFieldID(HttpClientBindingParseStringContentActionClass, "isolatePtr", "J");
+
+    HttpClientBindingParseResponseClass = (jclass)env->NewGlobalRef(env->FindClass("com/voicemynews/core/bindings/network/HttpClientBindingParsedResponseAbstract"));
+    HttpClientBindingParseResponseGetStatusCode = env->GetMethodID(HttpClientBindingParseResponseClass, "getStatusCode", "()I");
+    HttpClientBindingParseResponseGetContent = env->GetMethodID(HttpClientBindingParseResponseClass, "getContent", "()Ljava/lang/Object;");
 }
 
 JNIEXPORT void JNICALL Java_com_voicemynews_core_bindings_network_HttpClientBindingGetAction_invokeJsCallback(
@@ -74,24 +81,64 @@ JNIEXPORT void JNICALL Java_com_voicemynews_core_bindings_network_HttpClientBind
     }));
 }
 
+/**
+ * \brief Provides the js wrapper which can return the current response status code.
+ */
+static void GetJsHttpResponseDataStatusCode(const FunctionCallbackInfo<Value>& info)
+{
+    Local<Object> obj = info.Holder();
+    jobject objJvm = reinterpret_cast<jobject>(Local<External>::Cast(obj->GetInternalField(0))->Value());
+
+    JNIEnv* env = nullptr;
+    CurrJavaVM->AttachCurrentThread(&env, nullptr);
+    jint statusCode = env->CallIntMethod(objJvm, HttpClientBindingParseResponseGetStatusCode);
+
+    info.GetReturnValue().Set(statusCode);
+}
+
+/**
+ * \brief Provides the js wrapper which can return the current response content.
+ */
+static void GetJsHttpResponseDataContent(const FunctionCallbackInfo<Value>& info)
+{
+    Isolate* isolate = info.GetIsolate();
+    Local<Object> obj = info.Holder();
+    jobject objJvm = reinterpret_cast<jobject>(Local<External>::Cast(obj->GetInternalField(0))->Value());
+
+    JNIEnv* env = nullptr;
+    CurrJavaVM->AttachCurrentThread(&env, nullptr);
+    jstring dataContent = static_cast<jstring>(env->CallObjectMethod(objJvm, HttpClientBindingParseResponseGetContent));
+    std::string data(env->GetStringUTFChars(dataContent, nullptr));
+
+    info.GetReturnValue().Set(String::NewFromUtf8(isolate, data.c_str()));
+}
+
 JNIEXPORT void JNICALL Java_com_voicemynews_core_bindings_network_HttpClientBindingParseStringContentAction_invokeJsCallback(
     JNIEnv* env,
     jobject thisObj,
-    jstring response)
+    jobject response)
 {
     auto jsCallbackPtr = env->GetLongField(thisObj, HttpClientBindingParseStringContentActionJsCallbackPtr);
     auto isolatePtr = env->GetLongField(thisObj, HttpClientBindingParseStringContentActionIsolatePtr);
     auto isolate = reinterpret_cast<Isolate*>(isolatePtr);
     auto jsCallback = reinterpret_cast<Persistent<Function>*>(jsCallbackPtr);
-    auto responseGlobal = (jstring)env->NewGlobalRef(response);
+    auto responseGlobal = env->NewGlobalRef(response);
     auto eventLoop = voicemynews::core::events::EventLoopPlatform::GetInstance();
 
     eventLoop->EnqueueTask(std::function<void()>([jsCallback, isolate, responseGlobal]() {
         JNIEnv* env = nullptr;
-        javaVM->AttachCurrentThread(&env, nullptr);
+        CurrJavaVM->AttachCurrentThread(&env, nullptr);
+
+        Local<ObjectTemplate> obj = ObjectTemplate::New(isolate);
+        obj->SetInternalFieldCount(1);
+        obj->Set(isolate, "getStatusCode", FunctionTemplate::New(isolate, GetJsHttpResponseDataStatusCode));
+        obj->Set(isolate, "getContent", FunctionTemplate::New(isolate, GetJsHttpResponseDataContent));
+
+        Local<Object> objInst = obj->NewInstance();
+        objInst->SetInternalField(0, External::New(isolate, responseGlobal));
 
         Local<Value> args[1];
-        args[0] = String::NewFromUtf8(isolate, env->GetStringUTFChars(responseGlobal, nullptr));
+        args[0] = objInst;
 
         auto jsCallbackLocal = jsCallback->Get(isolate);
         jsCallbackLocal->Call(jsCallbackLocal, 1, args);
@@ -123,7 +170,7 @@ static void InsertJsHttpClientBindingHeadersMapValue(const FunctionCallbackInfo<
     std::string headerValue = *String::Utf8Value(info[1]->ToString());
 
     JNIEnv* env = nullptr;
-    javaVM->AttachCurrentThread(&env, nullptr);
+    CurrJavaVM->AttachCurrentThread(&env, nullptr);
     auto headerNameJVM = env->NewStringUTF(headerName.c_str());
     auto headerValueJVM = env->NewStringUTF(headerValue.c_str());
     auto headerMapsJVM = static_cast<jobject>(Local<External>::Cast(holder->GetInternalField(0))->Value());
@@ -139,7 +186,7 @@ static void GetJsHttpClientBindingNewHeadersMap(const FunctionCallbackInfo<Value
     Isolate* isolate = info.GetIsolate();
 
     JNIEnv* env = nullptr;
-    javaVM->AttachCurrentThread(&env, nullptr);
+    CurrJavaVM->AttachCurrentThread(&env, nullptr);
 
     auto javaHeaders = env->NewGlobalRef(env->CallObjectMethod(HttpClientObj, HttpClientGetNewHeadersMap));
 
@@ -171,7 +218,7 @@ static void GetJsHttpClientBinding(const FunctionCallbackInfo<Value>& info)
     auto callbackPersistent = new Persistent<Function>(isolate, callback);
 
     JNIEnv* env = nullptr;
-    javaVM->AttachCurrentThread(&env, nullptr);
+    CurrJavaVM->AttachCurrentThread(&env, nullptr);
     jlong callbackPtr = reinterpret_cast<uintptr_t>(callbackPersistent);
     jlong isolatePtr = reinterpret_cast<uintptr_t>(isolate);
     jobject objGetAction = env->NewObject(HttpClientBindingGetActionClass, HttpClientBindingGetActionConstructor, callbackPtr, isolatePtr);
@@ -199,7 +246,7 @@ static void ParseJsHttpClientBindingGetResponse(const FunctionCallbackInfo<Value
     auto isolatePtr = reinterpret_cast<uintptr_t>(isolate);
 
     JNIEnv* env = nullptr;
-    javaVM->AttachCurrentThread(&env, nullptr);
+    CurrJavaVM->AttachCurrentThread(&env, nullptr);
     auto objInst = env->NewObject(HttpClientBindingParseStringContentActionClass, HttpClientBindingParseStringContentActionConstructor, callbackPtr, isolatePtr);
     env->CallVoidMethod(HttpClientObj, HttpClientParseResponseWithStringContent, responseData, objInst);
 }

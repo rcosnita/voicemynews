@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Individual news styles -->
+    <integer name="news_contributed_by_gravity">5</integer> <!-- right -->
+    <integer name="news_contributed_by_style">2</integer> <!-- italic -->
+    <integer-array name="news_subheadings_font_size">
+        <item>28</item> <!-- level 1 -->
+        <item>24</item> <!-- level 2 -->
+        <item>20</item> <!-- level 3 -->
+        <item>18</item> <!-- level 4 -->
+    </integer-array>
+
+</resources>

@@ -104,7 +104,9 @@ public class HttpClientBinding {
                         content.write(buffer, 0, length);
                     }
 
-                    callback.onParsed(content.toString("UTF-8"));
+                    HttpClientBindingParsedStringResponse parsedResponse =
+                            new HttpClientBindingParsedStringResponse(response.statusCode, content.toString("UTF-8"));
+                    callback.onParsed(parsedResponse);
                 } catch(Exception ex) {
                     // TODO [rcosnita] handle exception.
                     System.out.println(ex);
