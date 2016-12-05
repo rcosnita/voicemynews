@@ -7,7 +7,9 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -151,7 +153,7 @@ public class MainMenuView extends LinearLayout {
             Map<String, JsonArrayAdapter.PopulateViewAction> itemsResources = new HashMap<>();
             itemsResources.put("icon", new JsonArrayAdapter.PopulateViewAction() {
                 @Override
-                public void populate(JSONObject item, String jsonKey, View view) {
+                public void populate(BaseAdapter adapter, JSONObject item, String jsonKey, View view) {
                     try {
                         ImageView iconView = (ImageView) view.findViewById(R.id.sidemenu_item_icon);
                         iconView.setImageResource(JsResourcesHelper.getIdFromDrawableResourcePath(item.getString(jsonKey), iconView.getContext()));
@@ -165,7 +167,7 @@ public class MainMenuView extends LinearLayout {
 
             itemsResources.put("label", new JsonArrayAdapter.PopulateViewAction() {
                 @Override
-                public void populate(JSONObject item, String jsonKey, View view) {
+                public void populate(BaseAdapter adapter, JSONObject item, String jsonKey, View view) {
                     TextView labelView = (TextView) view.findViewById(R.id.sidemenu_item_label);
 
                     try {
@@ -180,7 +182,7 @@ public class MainMenuView extends LinearLayout {
             menuItemsModel = new JsonArrayAdapter(parentActivity, R.layout.app_side_menu, menuItems,
                     itemsResources, new JsonArrayAdapter.ItemRenderedAction() {
                 @Override
-                public void handleSelectedItem(int position, JSONObject item, View view) {
+                public void handleSelectedItem(BaseAdapter adapter, int position, JSONObject item, View view) {
                     SideMenuState state = appContext.getSideMenuState();
 
                     if (position != state.getSelectedItem()) {

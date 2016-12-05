@@ -7,6 +7,8 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
+import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -108,7 +110,7 @@ public class CategoriesPreferencesFragment extends Fragment {
 
         itemsResources.put("name", new JsonArrayAdapter.PopulateViewAction() {
             @Override
-            public void populate(JSONObject item, String jsonKey, View view) {
+            public void populate(BaseAdapter adapter, JSONObject item, String jsonKey, View view) {
                 TextView nameView = (TextView) view.findViewById(R.id.categoriesTitle);
 
                 try {
@@ -122,7 +124,7 @@ public class CategoriesPreferencesFragment extends Fragment {
 
         itemsResources.put("icon", new JsonArrayAdapter.PopulateViewAction() {
             @Override
-            public void populate(JSONObject item, String jsonKey, View view) {
+            public void populate(BaseAdapter adapter, JSONObject item, String jsonKey, View view) {
                 try {
                     ImageView imageView = (ImageView) view.findViewById(R.id.categoriesImage);
                     imageView.setImageResource(JsResourcesHelper.getIdFromDrawableResourcePath(item.getString(jsonKey), imageView.getContext()));

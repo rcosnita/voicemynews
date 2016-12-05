@@ -8,7 +8,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.voicemynews.core.bindings.events.EventDataBindingNative;
@@ -17,13 +17,9 @@ import com.voicemynews.core.bindings.events.EventLoopBindingNative;
 import com.voicemynews.voicemynews.App;
 import com.voicemynews.voicemynews.IndividualNewsActivity;
 import com.voicemynews.voicemynews.R;
-import com.voicemynews.voicemynews.models.JsonArrayAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Provides the fragment which can display individual news.
@@ -31,10 +27,12 @@ import java.util.Map;
 public class IndividualNewsFragment extends Fragment {
     private EventLoopBindingNative eventLoop = null;
     private JSONObject newsModel = null;
+    private String newsModelStr = null;
     private JSONObject articleModel = null;
     private TextView headlineView = null;
     private ViewGroup contributedByLst = null;
-    private ListView paragraphsView = null;
+    private ViewGroup paragraphsView = null;
+    private View currView = null;
 
     public IndividualNewsFragment() { }
 
@@ -52,27 +50,29 @@ public class IndividualNewsFragment extends Fragment {
 
         eventLoop = ((App) getActivity().getApplicationContext()).getEventLoop();
 
-        String newsModelStr = getArguments().getString(IndividualNewsActivity.PROP_NEWS_MODEL);
+        this.newsModelStr = getArguments().getString(IndividualNewsActivity.PROP_NEWS_MODEL);
 
         try {
-            newsModel = new JSONObject(newsModelStr);
+            newsModel = new JSONObject(this.newsModelStr);
         } catch (Exception ex) {
             // TODO [rcosnita] handle exception correctly.
             System.err.println(ex);
         }
-
-        wireJsModel(newsModelStr);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_individual_news, container, false);
-        headlineView = (TextView) view.findViewById(R.id.individual_news_headline);
-        contributedByLst = (ViewGroup) view.findViewById(R.id.individual_news_contributed_by);
-        paragraphsView = (ListView) view.findViewById(R.id.individual_news_paragraphs);
+        super.onCreateView(inflater, container, savedInstanceState);
 
-        return view;
+        currView = inflater.inflate(R.layout.fragment_individual_news, container, false);
+        headlineView = (TextView) currView.findViewById(R.id.individual_news_headline);
+        contributedByLst = (ViewGroup) currView.findViewById(R.id.individual_news_contributed_by);
+        paragraphsView = (ViewGroup) currView.findViewById(R.id.individual_news_paragraphs);
+
+        wireJsModel(newsModelStr);
+
+        return currView;
     }
 
     @Override
@@ -137,9 +137,10 @@ public class IndividualNewsFragment extends Fragment {
      * Provides the logic for displaying contributed by section of the article into the current layout.
      */
     private void displayContributedBy(final JSONArray contributedByArr) throws Exception {
+        final LayoutInflater inflater = LayoutInflater.from(contributedByLst.getContext());
+
         for (int idx = 0; idx < contributedByArr.length(); idx++) {
             final String label = contributedByArr.getString(idx);
-            final LayoutInflater inflater = LayoutInflater.from(contributedByLst.getContext());
             final View view = inflater.inflate(R.layout.fragment_individual_news_contributed_by,
                     contributedByLst);
             ((TextView) view.findViewById(R.id.individual_news_contributed_by_label)).setText(label);
@@ -150,32 +151,29 @@ public class IndividualNewsFragment extends Fragment {
      * Provides the logic for displaying the paragraphs section of the article into the current layout.
      */
     private void displayParagraphs(final JSONArray paragraphsArr) {
-        final Map<String, JsonArrayAdapter.PopulateViewAction> itemsResources = new HashMap<>();
+        final int[] subheadings = getResources().getIntArray(R.array.news_subheadings_font_size);
+        final LayoutInflater inflater = LayoutInflater.from(paragraphsView.getContext());
 
-        itemsResources.put("content", new JsonArrayAdapter.PopulateViewAction() {
-            @Override
-            public void populate(JSONObject item, String jsonKey, View view) {
-                try {
-                    final TextView contentView = (TextView) view.findViewById(R.id.individual_news_paragraphs_content);
-                    final int headingLevel = item.getInt("subheadingLevel");
-                    contentView.setText(item.getString(jsonKey));
+        try {
+            for (int idx = 0; idx < paragraphsArr.length(); idx++) {
+                inflater.inflate(R.layout.fragment_individual_news_paragraphs,
+                                            paragraphsView);
+                TextView contentView = (TextView)((FrameLayout) paragraphsView.getChildAt(paragraphsView.getChildCount() - 1)).findViewById(R.id.individual_news_paragraphs_content);
 
-                    if (headingLevel > 0) {
-                        int[] subheadings = getResources().getIntArray(R.array.news_subheadings_font_size);
-                        int fontSize = subheadings[headingLevel - 1];
-                        contentView.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
-                        contentView.setTypeface(null, Typeface.BOLD);
-                    }
-                } catch (Exception ex) {
-                    // TODO [rcosnita] handle exception correctly.
-                    System.err.println(ex);
+                JSONObject item = paragraphsArr.getJSONObject(idx);
+                final int headingLevel = item.getInt("subheadingLevel");
+                contentView.setText(item.getString("content"));
+
+                if (headingLevel > 0) {
+                    int fontSize = subheadings[headingLevel - 1];
+                    contentView.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
+                    contentView.setTypeface(null, Typeface.BOLD);
                 }
-            }
-        });
 
-        JsonArrayAdapter paragraphsModel = new JsonArrayAdapter(paragraphsView.getContext(),
-                R.layout.fragment_individual_news_paragraphs,
-                paragraphsArr, itemsResources);
-        paragraphsView.setAdapter(paragraphsModel);
+            }
+        } catch (Exception ex) {
+            // TODO [rcosnita] handle exception correctly.
+            System.err.println(ex);
+        }
     }
 }

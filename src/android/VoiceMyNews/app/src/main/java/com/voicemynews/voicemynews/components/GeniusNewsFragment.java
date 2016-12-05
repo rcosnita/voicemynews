@@ -9,7 +9,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -137,7 +139,7 @@ public class GeniusNewsFragment extends Fragment implements AdapterView.OnItemCl
 
         itemsResources.put("headline", new JsonArrayAdapter.PopulateViewAction() {
             @Override
-            public void populate(JSONObject item, String jsonKey, View view) {
+            public void populate(BaseAdapter adapter, JSONObject item, String jsonKey, View view) {
                 try {
                     TextView headline = (TextView) view.findViewById(R.id.genius_news_listing_headline);
                     headline.setText(item.getString(jsonKey));
@@ -150,7 +152,7 @@ public class GeniusNewsFragment extends Fragment implements AdapterView.OnItemCl
 
         itemsResources.put("images.small.url", new JsonArrayAdapter.PopulateViewAction() {
             @Override
-            public void populate(JSONObject item, String jsonKey, View view) {
+            public void populate(BaseAdapter adapter, JSONObject item, String jsonKey, View view) {
                 try {
                     final ImageView icon = (ImageView) view.findViewById(R.id.genius_news_listing_icon);
                     URL iconUri = new URL(item.getString(jsonKey));

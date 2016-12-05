@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.BaseAdapter;
 
 import org.json.JSONArray;
@@ -51,11 +52,12 @@ public class JsonArrayAdapter extends BaseAdapter {
         /**
          * The actual logic for populating a resource for the given item and key.
          *
+         * @param adapter The current adapter where items are populated.
          * @param item The item from where we can extract the actual jsonKey value.
          * @param jsonKey The json key we currently use for populating a resource.
          * @param view The view we are currently populating with data.
          */
-        void populate(JSONObject item, String jsonKey, View view);
+        void populate(BaseAdapter adapter, JSONObject item, String jsonKey, View view);
     }
 
     /**
@@ -66,11 +68,12 @@ public class JsonArrayAdapter extends BaseAdapter {
         /**
          * The actual logic for handling the item being rendered.
          *
+         * @param adapter The current adapter where items are rendered.
          * @param position The current position of the item being rendered.
          * @param item The current item data.
          * @param view The view associated with the current item.
          */
-        void handleSelectedItem(int position, JSONObject item, View view);
+        void handleSelectedItem(BaseAdapter adapter, int position, JSONObject item, View view);
     }
 
     /**
@@ -185,11 +188,11 @@ public class JsonArrayAdapter extends BaseAdapter {
                     } while (CompoundKeyResult.isCompoundKey(jsonKey));
                 }
 
-                action.populate(tmpObj, jsonKey, view);
+                action.populate(this, tmpObj, jsonKey, view);
             }
 
             if (onItemRendered != null) {
-                onItemRendered.handleSelectedItem(position, obj, view);
+                onItemRendered.handleSelectedItem(this, position, obj, view);
             }
         } catch (Exception ex) {
             // TODO [rcosnita] handle exception correctly.
