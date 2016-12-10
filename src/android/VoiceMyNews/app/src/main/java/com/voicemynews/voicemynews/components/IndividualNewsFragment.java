@@ -17,6 +17,7 @@ import com.voicemynews.core.bindings.events.EventLoopBindingNative;
 import com.voicemynews.voicemynews.App;
 import com.voicemynews.voicemynews.IndividualNewsActivity;
 import com.voicemynews.voicemynews.R;
+import com.voicemynews.voicemynews.models.JsonArrayIterator;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -139,41 +140,47 @@ public class IndividualNewsFragment extends Fragment {
     private void displayContributedBy(final JSONArray contributedByArr) throws Exception {
         final LayoutInflater inflater = LayoutInflater.from(contributedByLst.getContext());
 
-        for (int idx = 0; idx < contributedByArr.length(); idx++) {
-            final String label = contributedByArr.getString(idx);
-            final View view = inflater.inflate(R.layout.fragment_individual_news_contributed_by,
-                    contributedByLst);
-            ((TextView) view.findViewById(R.id.individual_news_contributed_by_label)).setText(label);
-        }
+        new JsonArrayIterator(contributedByArr, JsonArrayIterator.JsonItemType.STRING).forEach(new JsonArrayIterator.JsonArrayIteratorOnItem() {
+            @Override
+            public void onItemReceived(Object obj) {
+                final String label = obj.toString();
+                final View view = inflater.inflate(R.layout.fragment_individual_news_contributed_by,
+                        contributedByLst);
+                ((TextView) view.findViewById(R.id.individual_news_contributed_by_label)).setText(label);
+            }
+        });
     }
 
     /**
      * Provides the logic for displaying the paragraphs section of the article into the current layout.
      */
-    private void displayParagraphs(final JSONArray paragraphsArr) {
+    private void displayParagraphs(final JSONArray paragraphsArr) throws Exception {
         final int[] subheadings = getResources().getIntArray(R.array.news_subheadings_font_size);
         final LayoutInflater inflater = LayoutInflater.from(paragraphsView.getContext());
 
-        try {
-            for (int idx = 0; idx < paragraphsArr.length(); idx++) {
-                inflater.inflate(R.layout.fragment_individual_news_paragraphs,
-                                            paragraphsView);
-                TextView contentView = (TextView)((FrameLayout) paragraphsView.getChildAt(paragraphsView.getChildCount() - 1)).findViewById(R.id.individual_news_paragraphs_content);
+        new JsonArrayIterator(paragraphsArr, JsonArrayIterator.JsonItemType.OBJECT).forEach(new JsonArrayIterator.JsonArrayIteratorOnItem() {
+            @Override
+            public void onItemReceived(Object obj) {
+                try {
 
-                JSONObject item = paragraphsArr.getJSONObject(idx);
-                final int headingLevel = item.getInt("subheadingLevel");
-                contentView.setText(item.getString("content"));
+                    inflater.inflate(R.layout.fragment_individual_news_paragraphs,
+                            paragraphsView);
+                    TextView contentView = (TextView) ((FrameLayout) paragraphsView.getChildAt(paragraphsView.getChildCount() - 1)).findViewById(R.id.individual_news_paragraphs_content);
 
-                if (headingLevel > 0) {
-                    int fontSize = subheadings[headingLevel - 1];
-                    contentView.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
-                    contentView.setTypeface(null, Typeface.BOLD);
+                    JSONObject item = (JSONObject) obj;
+                    final int headingLevel = item.getInt("subheadingLevel");
+                    contentView.setText(item.getString("content"));
+
+                    if (headingLevel > 0) {
+                        int fontSize = subheadings[headingLevel - 1];
+                        contentView.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
+                        contentView.setTypeface(null, Typeface.BOLD);
+                    }
+                } catch (Exception ex) {
+                    // TODO [rcosnita] handle exception correctly.
+                    System.err.println(ex);
                 }
-
             }
-        } catch (Exception ex) {
-            // TODO [rcosnita] handle exception correctly.
-            System.err.println(ex);
-        }
+        });
     }
 }
