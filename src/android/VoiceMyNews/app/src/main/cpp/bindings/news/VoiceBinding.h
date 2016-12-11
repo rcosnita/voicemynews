@@ -3,6 +3,7 @@
 
 #include "voice/VoiceSupport.h"
 #include "v8.h"
+#include <jni.h>
 
 namespace voicemynews {
 namespace app {
@@ -43,5 +44,61 @@ public:
 }
 }
 }
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+/**
+ * \brief Provides the implementation of com.voicemynews.core.bindings.news.VoiceSupportActions.invokeWhenPlayheadChangedFn.
+ *
+ * Internally it invokes the specified fnPtr and passes to it the position received as argument.
+ */
+void Java_com_voicemynews_core_bindings_news_VoiceSupportActions_invokeWhenPlayheadChangedFn(
+    JNIEnv* env,
+    jclass objCls,
+    jobject objInst,
+    jint pos,
+    jlong fnPtr);
+
+/**
+ * \brief Provides the implementation of com.voicemynews.core.bindings.news.VoiceSupportActions.invokeWhenPausedFn.
+ *
+ * Internally it invokes the specified fnPtr and passes to it the position received as argument.
+ */
+void Java_com_voicemynews_core_bindings_news_VoiceSupportActions_invokeWhenPausedFn(
+    JNIEnv* env,
+    jclass objCls,
+    jobject objInst,
+    jint pos,
+    jlong fnPtr);
+
+/**
+ * \brief Provides the implementation of com.voicemynews.core.bindings.news.VoiceSupportActions.invokeWhenResumedFn.
+ *
+ * Internally it invokes the specified fnPtr and passes to it the position received as argument.
+ */
+void Java_com_voicemynews_core_bindings_news_VoiceSupportActions_invokeWhenResumedFn(
+    JNIEnv* env,
+    jclass objCls,
+    jobject objInst,
+    jint pos,
+    jlong fnPtr);
+
+/**
+ * \brief Provides the implementation of com.voicemynews.core.bindings.news.VoiceSupportActions.invokeWhenDoneFn.
+ *
+ * Internally it invokes the specified fnPtr.
+ */
+void Java_com_voicemynews_core_bindings_news_VoiceSupportActions_invokeWhenDoneFn(
+    JNIEnv* env,
+    jclass objCls,
+    jobject objInst,
+    jlong fnPtr);
+
+#ifdef __cplusplus
+};
+#endif
 
 #endif /* VoiceMyNewsAndroid_bindings_news_VoiceBinding_H_ */

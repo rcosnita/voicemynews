@@ -6,6 +6,7 @@ import com.voicemynews.core.bindings.events.EventDataBindingNative;
 import com.voicemynews.core.bindings.events.EventHandler;
 import com.voicemynews.core.bindings.events.EventLoopBindingNative;
 import com.voicemynews.core.bindings.network.HttpClientBinding;
+import com.voicemynews.core.bindings.news.VoiceSupportAndroid;
 import com.voicemynews.voicemynews.models.SideMenuState;
 
 /**
@@ -108,6 +109,7 @@ public class App extends Application {
         }
 
         eventLoop = (EventLoopBindingNative)EventLoopBindingNative.getInstance();
+        VoiceSupportAndroid.getInstance();
 
         v8Thread = new Thread(new Runnable() {
             @Override
