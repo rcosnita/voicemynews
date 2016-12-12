@@ -1,10 +1,13 @@
 package com.voicemynews.core.bindings.news;
 
 import android.media.MediaPlayer;
+import android.os.Environment;
 import android.speech.tts.TextToSpeech;
+import android.speech.tts.UtteranceProgressListener;
 
 import com.voicemynews.voicemynews.App;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Queue;
@@ -23,7 +26,7 @@ public class VoiceSupportAndroid implements VoiceSupport {
         void execute() throws Exception;
     }
 
-    private static final String StreamName = "temp_tts_voicemynews.tmp";
+    private static final String StreamName = App.getCurrent().getApplicationInfo().dataDir + "/temp_tts_voicemynews.wav";
     private static final VoiceSupport Instance = new VoiceSupportAndroid();
 
     private boolean initialized = false;
@@ -51,11 +54,54 @@ public class VoiceSupportAndroid implements VoiceSupport {
         final ExecuteWhenReadyAction action = new ExecuteWhenReadyAction() {
             @Override
             public void execute() throws Exception {
-                ttsEngine.synthesizeToFile(text, null, StreamName);
-//                ttsEngine.speak(text, TextToSpeech.QUEUE_FLUSH, null);
-                mediaPlayer.setDataSource(StreamName);
-                mediaPlayer.start();
-                callbacks.onPlayheadChanged(0);
+                mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mp) {
+                        callbacks.onDone();
+                    }
+                });
+
+                HashMap<String, String> ttsParams = new HashMap<>();
+                ttsParams.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, text);
+
+                ttsEngine.setOnUtteranceProgressListener(new UtteranceProgressListener() {
+                    @Override
+                    public void onStart(String utteranceId) {
+                        // TODO [rcosnita] handle start synthesize event correctly.
+                        System.out.println("Starting to synthesize the text ...");
+                    }
+
+                    @Override
+                    public void onDone(String utteranceId) {
+                        try {
+                            if (!utteranceId.equals(text)) {
+                                return;
+                            }
+
+                            mediaPlayer.setDataSource(StreamName);
+                            mediaPlayer.prepare();
+                            mediaPlayer.start();
+                            callbacks.onPlayheadChanged(0);
+                        } catch (Exception ex) {
+                            System.err.println(ex);
+                        }
+                    }
+
+                    @Override
+                    public void onError(String utteranceId) {
+                        if (utteranceId != text) {
+                            return;
+                        }
+
+                        // TODO [rcosnita] handle error synthesize event correctly.
+                        System.err.println("Error synthesizing text ....");
+                    }
+                });
+
+                if (ttsEngine.synthesizeToFile(text, ttsParams, StreamName) == TextToSpeech.ERROR) {
+                    // TODO [rcosnita] handle synthesize to file error handler.
+                    System.err.println("Unable to synthesize " + StreamName);
+                }
             }
         };
 

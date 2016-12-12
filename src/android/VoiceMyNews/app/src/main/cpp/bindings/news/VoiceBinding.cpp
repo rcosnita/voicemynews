@@ -6,10 +6,44 @@
 
 using namespace v8;
 
+static JavaVM* CurrJavaVM = nullptr;
+
 static const int kInternalFieldWhenProgress = 1;
 static const int kInternalFieldWhenReadPaused = 2;
 static const int kInternalFieldWhenReadResumed = 3;
 static const int kInternalFieldWhenDone = 4;
+
+static jobject TtsEngine = nullptr;
+static jmethodID TtsEngineReadText = nullptr;
+static jmethodID TtsEngineReadSsml = nullptr;
+static jmethodID TtsEnginePause = nullptr;
+static jmethodID TtsEngineResume = nullptr;
+static jmethodID TtsEngineSkip = nullptr;
+
+static jclass VoiceSupportActionsCls = nullptr;
+static jmethodID VoiceSupportActionsCtor = nullptr;
+static jmethodID VoiceSupportActionsOnPlayheadChanged = nullptr;
+static jmethodID VoiceSupportActionsOnPaused = nullptr;
+static jmethodID VoiceSupportActionsOnResumed = nullptr;
+static jmethodID VoiceSupportActionsOnDone = nullptr;
+
+using VoiceSupportAbstract = voicemynews::core::voice::VoiceSupportAbstract;
+using VoiceBinding = voicemynews::app::android::bindings::news::VoiceBinding;
+using VoiceReadingNotifications = voicemynews::app::android::bindings::news::VoiceBinding::VoiceReadingNotifications;
+
+template<typename T>
+class SimpleCarry
+{
+private:
+    T data_;
+public:
+    SimpleCarry(T&& data) : data_(data) { }
+
+    T Data()
+    {
+        return data_;
+    }
+};
 
 /**
  * \brief Provides a js wrapper over ReadText voice binding implementation.
@@ -17,8 +51,18 @@ static const int kInternalFieldWhenDone = 4;
 static void ReadJsVoiceSupportText(const FunctionCallbackInfo<Value>& info)
 {
     // TODO [rcosnita] validate input.
-    // TODO [rcosnita] implement this when necessary.
-    throw std::exception();
+    auto text = std::string(*String::Utf8Value(info[0]->ToString()));
+    auto notificationsJs = info[1]->ToObject();
+    auto holder = info.Holder();
+
+    auto voiceSupportPtr = Local<External>::Cast(holder->GetInternalField(0))->Value();
+    auto voiceSupportCarry = reinterpret_cast<SimpleCarry<std::shared_ptr<VoiceSupportAbstract>>*>(voiceSupportPtr);
+    auto voiceSupport = voiceSupportCarry->Data();
+    auto notificationsPtr = Local<External>::Cast(notificationsJs->GetInternalField(0))->Value();
+    auto notificationsCarry = reinterpret_cast<SimpleCarry<std::shared_ptr<VoiceReadingNotifications>>*>(notificationsPtr);
+    auto notifications = notificationsCarry->Data();
+
+    voiceSupport->ReadText(text, notifications);
 }
 
 /**
@@ -78,7 +122,7 @@ static void GetJsVoiceSupportInstance(const FunctionCallbackInfo<Value>& info)
     obj->Set(isolate, "skip", FunctionTemplate::New(isolate, SkipJsVoiceSupport));
 
     auto objInst = obj->NewInstance();
-    objInst->SetInternalField(0, External::New(isolate, voicemynews::core::voice::GetVoiceSupportInstance().get()));
+    objInst->SetInternalField(0, External::New(isolate, new SimpleCarry<std::shared_ptr<VoiceSupportAbstract>>(voicemynews::core::voice::GetVoiceSupportInstance())));
 
     info.GetReturnValue().Set(objInst);
 }
@@ -164,41 +208,44 @@ static void GetJsVoiceSupportNotificationsInstance(const FunctionCallbackInfo<Va
     obj->SetInternalFieldCount(5);
 
     auto objInst = obj->NewInstance();
-    auto readingNotifications = new voicemynews::app::android::bindings::news::VoiceBinding::VoiceReadingNotifications(
-        std::function<void(int)>([&whenProgress, &isolate](int currPos) {
-            auto whenProgressLocal = whenProgress->Get(isolate);
-            Local<Value> args[1];
-            args[0] = Number::New(isolate, currPos);
 
-            whenProgressLocal->CallAsFunction(whenProgressLocal, 1, args);
-        }),
-        std::function<void(long)>([&whenReadPaused, &isolate](long currPos) {
-            auto whenReadPausedLocal = whenReadPaused->Get(isolate);
-            Local<Value> args[1];
-            args[0] = Number::New(isolate, currPos);
+    objInst->SetInternalField(0, External::New(isolate, new SimpleCarry<std::shared_ptr<VoiceReadingNotifications>>(
+        std::make_shared<VoiceReadingNotifications>(
+            std::function<void(int)>([whenProgress, isolate](int currPos) {
+                auto whenProgressLocal = whenProgress->Get(isolate);
+                Local<Value> args[1];
+                args[0] = Number::New(isolate, currPos);
 
-            whenReadPausedLocal->CallAsFunction(whenReadPausedLocal, 1, args);
-        }),
-        std::function<void(long)>([&whenReadResumed, &isolate](long currPos) {
-            auto whenReadResumedLocal = whenReadResumed->Get(isolate);
-            Local<Value> args[1];
-            args[0] = Number::New(isolate, currPos);
+                whenProgressLocal->CallAsFunction(whenProgressLocal, 1, args);
+            }),
+            std::function<void(long)>([whenReadPaused, isolate](long currPos) {
+                auto whenReadPausedLocal = whenReadPaused->Get(isolate);
+                Local<Value> args[1];
+                args[0] = Number::New(isolate, currPos);
 
-            whenReadResumedLocal->CallAsFunction(whenReadResumedLocal, 1, args);
-        }),
-        std::function<void()>([&whenDone, &isolate]() {
-            auto whenDoneLocal = whenDone->Get(isolate);
-            Local<Value> args[0];
+                whenReadPausedLocal->CallAsFunction(whenReadPausedLocal, 1, args);
+            }),
+            std::function<void(long)>([whenReadResumed, isolate](long currPos) {
+                auto whenReadResumedLocal = whenReadResumed->Get(isolate);
+                Local<Value> args[1];
+                args[0] = Number::New(isolate, currPos);
 
-            whenDoneLocal->CallAsFunction(whenDoneLocal, 1, args);
-        })
-    );
+                whenReadResumedLocal->CallAsFunction(whenReadResumedLocal, 1, args);
+            }),
+            std::function<void()>([whenDone, isolate]() {
+                auto whenDoneLocal = whenDone->Get(isolate);
+                Local<Value> args[0];
 
-    objInst->SetInternalField(0, External::New(isolate, readingNotifications));
+                whenDoneLocal->CallAsFunction(whenDoneLocal, 1, args);
+            })
+        )
+    )));
     objInst->SetInternalField(kInternalFieldWhenProgress, External::New(isolate, whenProgress));
     objInst->SetInternalField(kInternalFieldWhenReadPaused, External::New(isolate, whenReadPaused));
     objInst->SetInternalField(kInternalFieldWhenReadResumed, External::New(isolate, whenReadResumed));
     objInst->SetInternalField(kInternalFieldWhenDone, External::New(isolate, whenDone));
+
+    info.GetReturnValue().Set(objInst);
 }
 
 namespace voicemynews {
@@ -206,6 +253,26 @@ namespace app {
 namespace android {
 namespace bindings {
 namespace news {
+void InitVoiceSupportBinding(JNIEnv* env, jobject voiceSupportInstance)
+{
+    env->GetJavaVM(&CurrJavaVM);
+    TtsEngine = env->NewGlobalRef(voiceSupportInstance);
+
+    auto ttsEngineCls = env->GetObjectClass(voiceSupportInstance);
+    TtsEngineReadText = env->GetMethodID(ttsEngineCls, "readText", "(Ljava/lang/String;Lcom/voicemynews/core/bindings/news/VoiceSupportActions;)V");
+    TtsEngineReadSsml = env->GetMethodID(ttsEngineCls, "readSsml", "(Ljava/lang/String;Lcom/voicemynews/core/bindings/news/VoiceSupportActions;)V");
+    TtsEnginePause = env->GetMethodID(ttsEngineCls, "pause", "(Lcom/voicemynews/core/bindings/news/VoiceSupportActions;)V");
+    TtsEngineResume = env->GetMethodID(ttsEngineCls, "resume", "(Lcom/voicemynews/core/bindings/news/VoiceSupportActions;)V");
+    TtsEngineSkip = env->GetMethodID(ttsEngineCls, "skip", "()V");
+
+    VoiceSupportActionsCls = reinterpret_cast<jclass>(env->NewGlobalRef(env->FindClass("com/voicemynews/core/bindings/news/VoiceSupportActions")));
+    VoiceSupportActionsCtor = env->GetMethodID(VoiceSupportActionsCls, "<init>", "(J)V");
+    VoiceSupportActionsOnPlayheadChanged = env->GetMethodID(VoiceSupportActionsCls, "onPlayheadChanged", "(I)V");
+    VoiceSupportActionsOnPaused = env->GetMethodID(VoiceSupportActionsCls, "onPaused", "(J)V");
+    VoiceSupportActionsOnResumed = env->GetMethodID(VoiceSupportActionsCls, "onPaused", "(J)V");
+    VoiceSupportActionsOnDone = env->GetMethodID(VoiceSupportActionsCls, "onDone", "()V");
+}
+
 void VoiceBinding::WireToJs(v8::Isolate *isolate, v8::Local<v8::ObjectTemplate> obj)
 {
     Local<ObjectTemplate> voiceSupport = ObjectTemplate::New(isolate);
@@ -218,8 +285,14 @@ void VoiceBinding::WireToJs(v8::Isolate *isolate, v8::Local<v8::ObjectTemplate> 
 
 void VoiceBinding::ReadText(std::string text, std::shared_ptr<VoiceReadingNotifications> readingCallbacks)
 {
-    // TODO [rcosnita] implement this when necessary.
-    throw std::exception();
+    JNIEnv* env = nullptr;
+    CurrJavaVM->AttachCurrentThread(&env, nullptr);
+
+    jlong notificationsPtr = reinterpret_cast<uintptr_t>(readingCallbacks.get());
+    jstring textJVM = env->NewStringUTF(text.c_str());
+    jobject actions = env->NewObject(VoiceSupportActionsCls, VoiceSupportActionsCtor, notificationsPtr);
+
+    env->CallVoidMethod(TtsEngine, TtsEngineReadText, textJVM, actions);
 }
 
 void VoiceBinding::ReadSsml(std::string text, std::shared_ptr<VoiceReadingNotifications> readingCallbacks)
@@ -259,8 +332,59 @@ namespace voice {
  */
 std::shared_ptr<VoiceSupportAbstract> GetVoiceSupportInstance()
 {
-    return std::shared_ptr<VoiceSupportAbstract>(new voicemynews::app::android::bindings::news::VoiceBinding);
+    return std::make_shared<VoiceBinding>();
 }
 }
 }
+}
+
+JNIEXPORT void JNICALL Java_com_voicemynews_core_bindings_news_VoiceSupportActions_invokeWhenPlayheadChangedFn(
+    JNIEnv* env,
+    jobject objInst,
+    jint pos,
+    jlong fnPtr)
+{
+    throw std::exception();
+}
+
+/**
+ * \brief Provides the implementation of com.voicemynews.core.bindings.news.VoiceSupportActions.invokeWhenPausedFn.
+ *
+ * Internally it invokes the specified fnPtr and passes to it the position received as argument.
+ */
+JNIEXPORT void JNICALL Java_com_voicemynews_core_bindings_news_VoiceSupportActions_invokeWhenPausedFn(
+    JNIEnv* env,
+    jobject objInst,
+    jlong pos,
+    jlong fnPtr)
+{
+    throw std::exception();
+}
+
+/**
+ * \brief Provides the implementation of com.voicemynews.core.bindings.news.VoiceSupportActions.invokeWhenResumedFn.
+ *
+ * Internally it invokes the specified fnPtr and passes to it the position received as argument.
+ */
+JNIEXPORT void JNICALL Java_com_voicemynews_core_bindings_news_VoiceSupportActions_invokeWhenResumedFn(
+    JNIEnv* env,
+    jobject objInst,
+    jlong pos,
+    jlong fnPtr)
+{
+    throw std::exception();
+}
+
+/**
+ * \brief Provides the implementation of com.voicemynews.core.bindings.news.VoiceSupportActions.invokeWhenDoneFn.
+ *
+ * Internally it invokes the specified fnPtr.
+ */
+JNIEXPORT void JNICALL Java_com_voicemynews_core_bindings_news_VoiceSupportActions_invokeWhenDoneFn(
+    JNIEnv* env,
+    jobject objInst,
+    jlong fnPtr)
+{
+    // TODO [rcosnita] implement this as soon as possible.
+//    throw std::exception();
 }

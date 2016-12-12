@@ -150,7 +150,8 @@ JNIEXPORT void JNICALL Java_com_voicemynews_voicemynews_JsApp_startPlatform(
     JNIEnv* env,
     jclass objClass,
     jlong nativeEmitterPtr,
-    jobject assetManager);
+    jobject assetManager,
+    jobject voiceSupport);
 
 /**
  * \brief Provides the logic for stopping the js application platform.

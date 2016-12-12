@@ -8,6 +8,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -67,6 +68,12 @@ public class IndividualNewsFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
 
         currView = inflater.inflate(R.layout.fragment_individual_news, container, false);
+        currView.findViewById(R.id.btnReadNews).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onReadNewsClick(v);
+            }
+        });
         headlineView = (TextView) currView.findViewById(R.id.individual_news_headline);
         contributedByLst = (ViewGroup) currView.findViewById(R.id.individual_news_contributed_by);
         paragraphsView = (ViewGroup) currView.findViewById(R.id.individual_news_paragraphs);
@@ -84,6 +91,10 @@ public class IndividualNewsFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+    }
+
+    public void onReadNewsClick(View view) {
+        eventLoop.emit("js:news:voice:read", EventDataBindingNative.getInstanceNative(articleModel.toString()));
     }
 
     /**

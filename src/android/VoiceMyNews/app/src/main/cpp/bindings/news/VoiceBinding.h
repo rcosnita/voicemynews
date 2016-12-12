@@ -3,6 +3,7 @@
 
 #include "voice/VoiceSupport.h"
 #include "v8.h"
+#include <iostream>
 #include <jni.h>
 
 namespace voicemynews {
@@ -27,6 +28,7 @@ public:
 
 public:
     VoiceBinding() = default;
+
     virtual ~VoiceBinding() = default;
 
     virtual void ReadText(std::string text, std::shared_ptr<VoiceReadingNotifications> readingCallbacks) override;
@@ -39,6 +41,14 @@ public:
 
     virtual void Skip() override;
 };
+
+/**
+ * \brief Initializes all jni related objects which are required by voice binding implementation.
+ *
+ * It simply saves pointers to VoiceSupportAndroid / VoiceSupportActions methods so that it can invoke
+ * them at a later stage.
+ */
+void InitVoiceSupportBinding(JNIEnv* env, jobject voiceSupportInstance);
 }
 }
 }
@@ -46,8 +56,7 @@ public:
 }
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**
@@ -55,9 +64,8 @@ extern "C"
  *
  * Internally it invokes the specified fnPtr and passes to it the position received as argument.
  */
-void Java_com_voicemynews_core_bindings_news_VoiceSupportActions_invokeWhenPlayheadChangedFn(
+JNIEXPORT void JNICALL Java_com_voicemynews_core_bindings_news_VoiceSupportActions_invokeWhenPlayheadChangedFn(
     JNIEnv* env,
-    jclass objCls,
     jobject objInst,
     jint pos,
     jlong fnPtr);
@@ -67,11 +75,10 @@ void Java_com_voicemynews_core_bindings_news_VoiceSupportActions_invokeWhenPlayh
  *
  * Internally it invokes the specified fnPtr and passes to it the position received as argument.
  */
-void Java_com_voicemynews_core_bindings_news_VoiceSupportActions_invokeWhenPausedFn(
+JNIEXPORT void JNICALL Java_com_voicemynews_core_bindings_news_VoiceSupportActions_invokeWhenPausedFn(
     JNIEnv* env,
-    jclass objCls,
     jobject objInst,
-    jint pos,
+    jlong pos,
     jlong fnPtr);
 
 /**
@@ -79,11 +86,10 @@ void Java_com_voicemynews_core_bindings_news_VoiceSupportActions_invokeWhenPause
  *
  * Internally it invokes the specified fnPtr and passes to it the position received as argument.
  */
-void Java_com_voicemynews_core_bindings_news_VoiceSupportActions_invokeWhenResumedFn(
+JNIEXPORT void JNICALL Java_com_voicemynews_core_bindings_news_VoiceSupportActions_invokeWhenResumedFn(
     JNIEnv* env,
-    jclass objCls,
     jobject objInst,
-    jint pos,
+    jlong pos,
     jlong fnPtr);
 
 /**
@@ -91,9 +97,8 @@ void Java_com_voicemynews_core_bindings_news_VoiceSupportActions_invokeWhenResum
  *
  * Internally it invokes the specified fnPtr.
  */
-void Java_com_voicemynews_core_bindings_news_VoiceSupportActions_invokeWhenDoneFn(
+JNIEXPORT void JNICALL Java_com_voicemynews_core_bindings_news_VoiceSupportActions_invokeWhenDoneFn(
     JNIEnv* env,
-    jclass objCls,
     jobject objInst,
     jlong fnPtr);
 

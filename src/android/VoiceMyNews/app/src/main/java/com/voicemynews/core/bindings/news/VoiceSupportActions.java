@@ -4,17 +4,10 @@ package com.voicemynews.core.bindings.news;
  * Provides a wrapper over native actions which can be injected into voice operations.
  */
 public class VoiceSupportActions {
-    private long whenPlayheadChangedFnPtr;
-    private long whenPausedFnPtr;
-    private long whenResumedFnPtr;
-    private long whenDoneFnPtr;
+    private long voiceReadingNotificationsPtr;
 
-    public VoiceSupportActions(long whenPlayheadChangedFnPtr, long whenPausedFnPtr,
-                               long whenResumedFnPtr, long whenDoneFnPtr) {
-        this.whenPlayheadChangedFnPtr = whenPlayheadChangedFnPtr;
-        this.whenPausedFnPtr = whenPausedFnPtr;
-        this.whenResumedFnPtr = whenResumedFnPtr;
-        this.whenDoneFnPtr = whenDoneFnPtr;
+    public VoiceSupportActions(long voiceReadingNotificationsPtr) {
+        this.voiceReadingNotificationsPtr = voiceReadingNotificationsPtr;
     }
 
     /**
@@ -23,7 +16,7 @@ public class VoiceSupportActions {
      * @param pos The current playhead position.
      */
     public void onPlayheadChanged(int pos) {
-        invokeWhenPlayheadChangedFn(pos, whenPlayheadChangedFnPtr);
+        invokeWhenPlayheadChangedFn(pos, voiceReadingNotificationsPtr);
     }
 
     /**
@@ -32,7 +25,7 @@ public class VoiceSupportActions {
      * @param pos The current position in stream.
      */
     public void onPaused(long pos) {
-        invokeWhenPausedFn(pos, whenPausedFnPtr);
+        invokeWhenPausedFn(pos, voiceReadingNotificationsPtr);
     }
 
     /**
@@ -41,14 +34,14 @@ public class VoiceSupportActions {
      * @param pos The current position in stream.
      */
     public void onResumed(long pos) {
-        invokeWhenResumedFn(pos, whenResumedFnPtr);
+        invokeWhenResumedFn(pos, voiceReadingNotificationsPtr);
     }
 
     /**
      * Provides the logic for invoking the native whenDone callback.
      */
     public void onDone() {
-        invokeWhenDoneFn(whenDoneFnPtr);
+        invokeWhenDoneFn(voiceReadingNotificationsPtr);
     }
 
     private native void invokeWhenPlayheadChangedFn(int pos, long fnPtr);
