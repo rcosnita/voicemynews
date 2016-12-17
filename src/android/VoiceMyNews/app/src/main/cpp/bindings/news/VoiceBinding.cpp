@@ -83,8 +83,17 @@ static void ReadJsVoiceSupportSsml(const FunctionCallbackInfo<Value>& info)
 static void PauseJsVoiceSupport(const FunctionCallbackInfo<Value>& info)
 {
     // TODO [rcosnita] validate input.
-    // TODO [rcosnita] implement this when necessary.
-    throw std::exception();
+    auto notificationsJs = info[0]->ToObject();
+    auto holder = info.Holder();
+
+    auto voiceSupportPtr = Local<External>::Cast(holder->GetInternalField(0))->Value();
+    auto voiceSupportCarry = reinterpret_cast<SimpleCarry<std::shared_ptr<VoiceSupportAbstract>>*>(voiceSupportPtr);
+    auto voiceSupport = voiceSupportCarry->Data();
+    auto notificationsPtr = Local<External>::Cast(notificationsJs->GetInternalField(0))->Value();
+    auto notificationsCarry = reinterpret_cast<SimpleCarry<std::shared_ptr<VoiceReadingNotifications>>*>(notificationsPtr);
+    auto notifications = notificationsCarry->Data();
+
+    voiceSupport->Pause(notifications);
 }
 
 /**
@@ -93,8 +102,17 @@ static void PauseJsVoiceSupport(const FunctionCallbackInfo<Value>& info)
 static void ResumeJsVoiceSupport(const FunctionCallbackInfo<Value>& info)
 {
     // TODO [rcosnita] validate input.
-    // TODO [rcosnita] implement this when necessary.
-    throw std::exception();
+    auto notificationsJs = info[0]->ToObject();
+    auto holder = info.Holder();
+
+    auto voiceSupportPtr = Local<External>::Cast(holder->GetInternalField(0))->Value();
+    auto voiceSupportCarry = reinterpret_cast<SimpleCarry<std::shared_ptr<VoiceSupportAbstract>>*>(voiceSupportPtr);
+    auto voiceSupport = voiceSupportCarry->Data();
+    auto notificationsPtr = Local<External>::Cast(notificationsJs->GetInternalField(0))->Value();
+    auto notificationsCarry = reinterpret_cast<SimpleCarry<std::shared_ptr<VoiceReadingNotifications>>*>(notificationsPtr);
+    auto notifications = notificationsCarry->Data();
+
+    voiceSupport->Resume(notifications);
 }
 
 /**
@@ -102,9 +120,14 @@ static void ResumeJsVoiceSupport(const FunctionCallbackInfo<Value>& info)
  */
 static void SkipJsVoiceSupport(const FunctionCallbackInfo<Value>& info)
 {
+    auto holder = info.Holder();
+
     // TODO [rcosnita] validate input.
-    // TODO [rcosnita] implement this when necessary.
-    throw std::exception();
+    auto voiceSupportPtr = Local<External>::Cast(holder->GetInternalField(0))->Value();
+    auto voiceSupportCarry = reinterpret_cast<SimpleCarry<std::shared_ptr<VoiceSupportAbstract>>*>(voiceSupportPtr);
+    auto voiceSupport = voiceSupportCarry->Data();
+
+    voiceSupport->Skip();
 }
 
 
@@ -305,20 +328,34 @@ void VoiceBinding::ReadSsml(std::string text, std::shared_ptr<VoiceReadingNotifi
 
 void VoiceBinding::Pause(std::shared_ptr<VoiceReadingNotifications> readingCallbacks)
 {
-    // TODO [rcosnita] implement this when necessary.
-    throw std::exception();
+    JNIEnv* env = nullptr;
+    CurrJavaVM->AttachCurrentThread(&env, nullptr);
+
+    jlong notificationsPtr = reinterpret_cast<uintptr_t>(readingCallbacks.get());
+    jobject actions = env->NewObject(VoiceSupportActionsCls, VoiceSupportActionsCtor, notificationsPtr);
+
+    env->CallVoidMethod(TtsEngine, TtsEnginePause, actions);
 }
 
 void VoiceBinding::Resume(std::shared_ptr<VoiceReadingNotifications> readingCallbacks)
 {
-    // TODO [rcosnita] implement this when necessary.
-    throw std::exception();
+    JNIEnv* env = nullptr;
+    CurrJavaVM->AttachCurrentThread(&env, nullptr);
+
+    jlong notificationsPtr = reinterpret_cast<uintptr_t>(readingCallbacks.get());
+    jobject actions = env->NewObject(VoiceSupportActionsCls, VoiceSupportActionsCtor, notificationsPtr);
+
+    env->CallVoidMethod(TtsEngine, TtsEngineResume, actions);
 }
 
 void VoiceBinding::Skip()
 {
-    // TODO [rcosnita] implement this when necessary.
-    throw std::exception();
+    JNIEnv* env = nullptr;
+    CurrJavaVM->AttachCurrentThread(&env, nullptr);
+
+    jobject actions = env->NewObject(VoiceSupportActionsCls, VoiceSupportActionsCtor, nullptr);
+
+    env->CallVoidMethod(TtsEngine, TtsEngineSkip, actions);
 }
 }
 }

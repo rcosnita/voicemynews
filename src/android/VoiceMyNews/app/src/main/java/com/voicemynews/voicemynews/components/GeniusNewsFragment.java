@@ -9,9 +9,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -71,7 +71,6 @@ public class GeniusNewsFragment extends Fragment implements AdapterView.OnItemCl
 
         parentActivity = getActivity();
         eventLoop = ((App)parentActivity.getApplicationContext()).getEventLoop();
-        wireJsModel();
     }
 
     @Override
@@ -80,6 +79,7 @@ public class GeniusNewsFragment extends Fragment implements AdapterView.OnItemCl
         View view = inflater.inflate(R.layout.fragment_genius_news, container, false);
         newsListing = (ListView) view.findViewById(R.id.genius_news_listing);
         newsListing.setOnItemClickListener(this);
+        wireJsModel(view);
         return view;
     }
 
@@ -111,19 +111,62 @@ public class GeniusNewsFragment extends Fragment implements AdapterView.OnItemCl
     }
 
     /**
+     * Wire all click events for every button found in the genius news layout.
+     *
+     * @param view the current view rendered for the fragment.
+     * @param items the json array holding all news currently displayed in the playlist.
+     */
+    private void wireButtonEvents(View view, final JSONArray items) {
+        Button btnRead = (Button)view.findViewById(R.id.btnReadNews);
+        Button btnSkip = (Button)view.findViewById(R.id.btnSkipNews);
+        Button btnPause = (Button)view.findViewById(R.id.btnPauseNews);
+        Button btnResume = (Button)view.findViewById(R.id.btnResumeNews);
+
+        JSONObject evtData = new JSONObject();
+
+        try {
+            evtData.put("news", items);
+
+        } catch (Exception ex) {
+            // TODO [rcosnita] correctly handle the json exception.
+            System.err.print(ex);
+        }
+
+        final EventDataBindingNative evt =
+                EventDataBindingNative.getInstanceNative(evtData.toString());
+
+        wireButtonSendEvent(btnRead, "js:news:voice:read:playlist", evt);
+        wireButtonSendEvent(btnSkip, "js:news:voice:read:playlist:skip", evt);
+        wireButtonSendEvent(btnPause, "js:news:voice:read:playlist:pause", evt);
+        wireButtonSendEvent(btnResume, "js:news:voice:read:playlist:resume", evt);
+    }
+
+    /**
+     * Wires a click action which simply sends the event name with provided evt data through the eventLoop.
+     */
+    private void wireButtonSendEvent(Button btn, final String evtName, final EventDataBindingNative evt) {
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                eventLoop.emit(evtName, evt);
+            }
+        });
+    }
+
+    /**
      * Sends an event to js business logic in order to trigger genius news loading.
      */
-    private void wireJsModel() {
+    private void wireJsModel(final View view) {
         eventLoop.on("js:news:get:from_preferred_categories:loaded", new EventHandler() {
             @Override
             public void handleEvent(EventDataBindingNative evtData) {
-                try {
-                    JSONArray items = new JSONArray(evtData.getEvtData());
-                    displayNews(items);
-                } catch (Exception ex) {
-                    // TODO [rcosnita] handle the exception.
-                    System.out.println(ex);
-                }
+            try {
+                JSONArray items = new JSONArray(evtData.getEvtData());
+                displayNews(view, items);
+            } catch (Exception ex) {
+                // TODO [rcosnita] handle the exception.
+                System.out.println(ex);
+            }
             }
         });
 
@@ -132,9 +175,11 @@ public class GeniusNewsFragment extends Fragment implements AdapterView.OnItemCl
 
     /**
      * Provides the logic for displaying all available news.
+     *
+     * @param view the view being rendered.
      * @param items The items we want to list.
      */
-    private void displayNews(JSONArray items) {
+    private void displayNews(View view, JSONArray items) {
         Map<String, JsonArrayAdapter.PopulateViewAction> itemsResources = new HashMap<>();
 
         itemsResources.put("headline", new JsonArrayAdapter.PopulateViewAction() {
@@ -173,5 +218,7 @@ public class GeniusNewsFragment extends Fragment implements AdapterView.OnItemCl
         newsModel = new JsonArrayAdapter(parentActivity.getApplicationContext(),
                 R.layout.genius_news_listing, items, itemsResources);
         newsListing.setAdapter(newsModel);
+
+        wireButtonEvents(view, items);
     }
 }
