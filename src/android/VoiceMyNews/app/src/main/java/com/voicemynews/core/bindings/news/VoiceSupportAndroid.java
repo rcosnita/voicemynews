@@ -58,6 +58,7 @@ public class VoiceSupportAndroid implements VoiceSupport {
                     @Override
                     public void onCompletion(MediaPlayer mp) {
                         callbacks.onDone();
+                        mediaPlayer.reset();
                     }
                 });
 

@@ -1,8 +1,10 @@
 #include "VoiceBinding.h"
+#include "bindings/events/EventLoopBinding.h"
 
 #include <exception>
 #include <functional>
 #include <memory>
+#include <bindings/events/EventLoopPlatform.h>
 
 using namespace v8;
 
@@ -236,7 +238,7 @@ static void GetJsVoiceSupportNotificationsInstance(const FunctionCallbackInfo<Va
                 auto whenDoneLocal = whenDone->Get(isolate);
                 Local<Value> args[0];
 
-                whenDoneLocal->CallAsFunction(whenDoneLocal, 1, args);
+                whenDoneLocal->CallAsFunction(whenDoneLocal, 0, args);
             })
         )
     )));
@@ -344,7 +346,12 @@ JNIEXPORT void JNICALL Java_com_voicemynews_core_bindings_news_VoiceSupportActio
     jint pos,
     jlong fnPtr)
 {
-    throw std::exception();
+    auto fn = reinterpret_cast<VoiceReadingNotifications*>(fnPtr);
+    auto evtLoop = voicemynews::core::events::EventLoopPlatform::GetInstance();
+    evtLoop->EnqueueTask([fn, pos]() {
+        // TODO [rcosnita] uncomment this line when you want to start telling the progress of the playhead.
+        // fn->whenPlayheadChanged()(pos);
+    });
 }
 
 /**
@@ -358,7 +365,11 @@ JNIEXPORT void JNICALL Java_com_voicemynews_core_bindings_news_VoiceSupportActio
     jlong pos,
     jlong fnPtr)
 {
-    throw std::exception();
+    auto fn = reinterpret_cast<VoiceReadingNotifications*>(fnPtr);
+    auto evtLoop = voicemynews::core::events::EventLoopPlatform::GetInstance();
+    evtLoop->EnqueueTask([fn, pos]() {
+        fn->whenPaused()(pos);
+    });
 }
 
 /**
@@ -371,8 +382,13 @@ JNIEXPORT void JNICALL Java_com_voicemynews_core_bindings_news_VoiceSupportActio
     jobject objInst,
     jlong pos,
     jlong fnPtr)
+
 {
-    throw std::exception();
+    auto fn = reinterpret_cast<VoiceReadingNotifications*>(fnPtr);
+    auto evtLoop = voicemynews::core::events::EventLoopPlatform::GetInstance();
+    evtLoop->EnqueueTask([fn, pos]() {
+        fn->whenResumed()(pos);
+    });
 }
 
 /**
@@ -385,6 +401,10 @@ JNIEXPORT void JNICALL Java_com_voicemynews_core_bindings_news_VoiceSupportActio
     jobject objInst,
     jlong fnPtr)
 {
-    // TODO [rcosnita] implement this as soon as possible.
-//    throw std::exception();
+    auto fn = reinterpret_cast<VoiceReadingNotifications*>(fnPtr);
+
+    auto evtLoop = voicemynews::core::events::EventLoopPlatform::GetInstance();
+    evtLoop->EnqueueTask([fn]() {
+        fn->whenDone()();
+    });
 }
