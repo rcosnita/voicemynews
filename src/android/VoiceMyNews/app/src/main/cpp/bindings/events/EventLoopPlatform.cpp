@@ -1,5 +1,6 @@
 #include "EventLoopBinding.h"
 #include "EventLoopPlatform.h"
+#include "utils/DataWrapper.h"
 #include "utils/StringHelpers.h"
 
 #include <functional>
@@ -9,6 +10,7 @@ using namespace v8;
 
 using voicemynews::core::events::EventData;
 using voicemynews::app::android::bindings::events::EventDataBinding;
+using voicemynews::app::android::utils::DataWrapper;
 using voicemynews::app::android::utils::StringHelpers;
 
 static const char* EventHandlerActionMethodSig = "(Lcom/voicemynews/core/bindings/events/EventDataBindingNative;)V";
@@ -31,7 +33,7 @@ static void BuildJsLoopEvent(const FunctionCallbackInfo<Value> &info)
     obj->SetInternalFieldCount(1);
 
     Local<Object> objInstance = obj->NewInstance();
-    auto evtData = new EventData<std::string>(*String::Utf8Value(info[0]->ToString()));
+    auto evtData = new DataWrapper<std::shared_ptr<EventData<std::string>>>(std::make_shared<EventData<std::string>>(*String::Utf8Value(info[0]->ToString())));
     objInstance->SetInternalField(0, External::New(isolate, evtData));
     info.GetReturnValue().Set(objInstance);
 }
@@ -42,8 +44,8 @@ static void BuildJsLoopEvent(const FunctionCallbackInfo<Value> &info)
 static void GetJsEvtData(Local<String> property, const PropertyCallbackInfo<Value>& info)
 {
     auto self = info.Holder();
-    auto evtData = reinterpret_cast<EventData<std::string>*>(Local<External>::Cast(self->GetInternalField(0))->Value());
-    auto jsEvtData = String::NewFromUtf8(info.GetIsolate(), evtData->data().c_str());
+    auto evtData = reinterpret_cast<DataWrapper<std::shared_ptr<EventData<std::string>>>*>(Local<External>::Cast(self->GetInternalField(0))->Value());
+    auto jsEvtData = String::NewFromUtf8(info.GetIsolate(), evtData->Data()->data().c_str());
     info.GetReturnValue().Set(jsEvtData);
 }
 
@@ -53,7 +55,7 @@ static void GetJsEvtData(Local<String> property, const PropertyCallbackInfo<Valu
 static void OnJsLoop(const FunctionCallbackInfo<Value>& info)
 {
     // TODO [rcosnita] validate input parameters.
-    Isolate* isolate = info.GetIsolate();
+    auto isolate = info.GetIsolate();
     Local<Object> self = info.Holder();
     std::string evtName = *(String::Utf8Value(info[0]->ToString()));
     auto callback = Local<Function>::Cast(info[1]);
@@ -62,7 +64,8 @@ static void OnJsLoop(const FunctionCallbackInfo<Value>& info)
     auto eventLoop = reinterpret_cast<voicemynews::core::events::EventLoopPlatform*>(eventLoopPtr);
 
     auto evtHandler = std::function<void(std::shared_ptr<voicemynews::core::events::EventData<std::string>>)>(
-        [callbackPersistent, isolate](std::shared_ptr<voicemynews::core::events::EventData<std::string>> evtData) {
+        [callbackPersistent](std::shared_ptr<voicemynews::core::events::EventData<std::string>> evtData) {
+        auto isolate = Isolate::GetCurrent();
         Local<Function> callback = callbackPersistent->Get(isolate);
         Local<Value> args[1];
         Local<ObjectTemplate> objEvtData = ObjectTemplate::New(isolate);
@@ -70,7 +73,8 @@ static void OnJsLoop(const FunctionCallbackInfo<Value>& info)
         objEvtData->SetAccessor(String::NewFromUtf8(isolate, "evtData"), GetJsEvtData);
 
         Local<Object> evt = objEvtData->NewInstance();
-        evt->SetInternalField(0, External::New(isolate, evtData.get()));
+        auto evtDataPtr = new DataWrapper<std::shared_ptr<voicemynews::core::events::EventData<std::string>>>(evtData);
+        evt->SetInternalField(0, External::New(isolate, evtDataPtr));
         args[0] = evt;
 
         callback->Call(callback, 1, args);
@@ -98,12 +102,12 @@ static void EmitJsLoop(const FunctionCallbackInfo<Value>& info)
     Local<Object> self = info.Holder();
     std::string evtName = *String::Utf8Value(info[0]->ToString());
     auto evtDataPtr = Local<External>::Cast(info[1]->ToObject()->GetInternalField(0))->Value();
-    auto evtData = reinterpret_cast<EventData<std::string>*>(evtDataPtr);
+    auto evtData = reinterpret_cast<DataWrapper<std::shared_ptr<EventData<std::string>>>*>(evtDataPtr);
     auto eventLoopPtr = Local<External>::Cast(self->GetInternalField(0))->Value();
     auto eventLoop = reinterpret_cast<voicemynews::core::events::EventLoopPlatform*>(eventLoopPtr);
     auto eventLoopCasted = dynamic_cast<voicemynews::core::events::EventLoop*>(eventLoop);
 
-    eventLoopCasted->Emit(evtName, std::shared_ptr<EventData<std::string>>(evtData));
+    eventLoopCasted->Emit(evtName, evtData->Data());
 }
 
 /**

@@ -38,10 +38,16 @@ public class NavigationBinding {
      * @param evtData The event data which must be passed to the intent.
      */
     public void navigateByEvent(String evtName, String evtData) {
-        App app = App.getCurrent();
-        Class intentType = EVT_NAME_INTENTS.get(evtName);
-        Intent navigation = new Intent(app, intentType);
-        navigation.putExtra("EVENT_DATA", evtData);
-        app.startActivity(navigation);
+        try {
+            App app = App.getCurrent();
+            Class intentType = EVT_NAME_INTENTS.get(evtName);
+            Intent navigation = new Intent(app, intentType);
+            navigation.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            navigation.putExtra("EVENT_DATA", evtData);
+            app.startActivity(navigation);
+        } catch (Exception ex) {
+            // TODO [rcosnita] handle exception correctly.
+            System.err.print(ex);
+        }
     }
 }

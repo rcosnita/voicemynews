@@ -1,5 +1,5 @@
-#ifndef app_VoiceMyNews_android_StringHelpers_H
-#define app_VoiceMyNews_android_StringHelpers_H
+#ifndef app_VoiceMyNews_android_utils_StringHelpers_H
+#define app_VoiceMyNews_android_utils_StringHelpers_H
 
 #include <string>
 #include <sstream>
@@ -32,4 +32,4 @@ public:
 }
 }
 
-#endif /* app_VoiceMyNews_android_StringHelpers_H */
+#endif /* app_VoiceMyNews_android_utils_StringHelpers_H */

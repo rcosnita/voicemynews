@@ -5,6 +5,7 @@
 #include <functional>
 #include <memory>
 #include <bindings/events/EventLoopPlatform.h>
+#include <utils/DataWrapper.h>
 
 using namespace v8;
 
@@ -29,23 +30,10 @@ static jmethodID VoiceSupportActionsOnPaused = nullptr;
 static jmethodID VoiceSupportActionsOnResumed = nullptr;
 static jmethodID VoiceSupportActionsOnDone = nullptr;
 
+using voicemynews::app::android::utils::DataWrapper;
 using VoiceSupportAbstract = voicemynews::core::voice::VoiceSupportAbstract;
 using VoiceBinding = voicemynews::app::android::bindings::news::VoiceBinding;
 using VoiceReadingNotifications = voicemynews::app::android::bindings::news::VoiceBinding::VoiceReadingNotifications;
-
-template<typename T>
-class SimpleCarry
-{
-private:
-    T data_;
-public:
-    SimpleCarry(T&& data) : data_(data) { }
-
-    T Data()
-    {
-        return data_;
-    }
-};
 
 /**
  * \brief Provides a js wrapper over ReadText voice binding implementation.
@@ -58,10 +46,10 @@ static void ReadJsVoiceSupportText(const FunctionCallbackInfo<Value>& info)
     auto holder = info.Holder();
 
     auto voiceSupportPtr = Local<External>::Cast(holder->GetInternalField(0))->Value();
-    auto voiceSupportCarry = reinterpret_cast<SimpleCarry<std::shared_ptr<VoiceSupportAbstract>>*>(voiceSupportPtr);
+    auto voiceSupportCarry = reinterpret_cast<DataWrapper <std::shared_ptr<VoiceSupportAbstract>>*>(voiceSupportPtr);
     auto voiceSupport = voiceSupportCarry->Data();
     auto notificationsPtr = Local<External>::Cast(notificationsJs->GetInternalField(0))->Value();
-    auto notificationsCarry = reinterpret_cast<SimpleCarry<std::shared_ptr<VoiceReadingNotifications>>*>(notificationsPtr);
+    auto notificationsCarry = reinterpret_cast<DataWrapper<std::shared_ptr<VoiceReadingNotifications>>*>(notificationsPtr);
     auto notifications = notificationsCarry->Data();
 
     voiceSupport->ReadText(text, notifications);
@@ -87,10 +75,10 @@ static void PauseJsVoiceSupport(const FunctionCallbackInfo<Value>& info)
     auto holder = info.Holder();
 
     auto voiceSupportPtr = Local<External>::Cast(holder->GetInternalField(0))->Value();
-    auto voiceSupportCarry = reinterpret_cast<SimpleCarry<std::shared_ptr<VoiceSupportAbstract>>*>(voiceSupportPtr);
+    auto voiceSupportCarry = reinterpret_cast<DataWrapper<std::shared_ptr<VoiceSupportAbstract>>*>(voiceSupportPtr);
     auto voiceSupport = voiceSupportCarry->Data();
     auto notificationsPtr = Local<External>::Cast(notificationsJs->GetInternalField(0))->Value();
-    auto notificationsCarry = reinterpret_cast<SimpleCarry<std::shared_ptr<VoiceReadingNotifications>>*>(notificationsPtr);
+    auto notificationsCarry = reinterpret_cast<DataWrapper <std::shared_ptr<VoiceReadingNotifications>>*>(notificationsPtr);
     auto notifications = notificationsCarry->Data();
 
     voiceSupport->Pause(notifications);
@@ -106,10 +94,10 @@ static void ResumeJsVoiceSupport(const FunctionCallbackInfo<Value>& info)
     auto holder = info.Holder();
 
     auto voiceSupportPtr = Local<External>::Cast(holder->GetInternalField(0))->Value();
-    auto voiceSupportCarry = reinterpret_cast<SimpleCarry<std::shared_ptr<VoiceSupportAbstract>>*>(voiceSupportPtr);
+    auto voiceSupportCarry = reinterpret_cast<DataWrapper<std::shared_ptr<VoiceSupportAbstract>>*>(voiceSupportPtr);
     auto voiceSupport = voiceSupportCarry->Data();
     auto notificationsPtr = Local<External>::Cast(notificationsJs->GetInternalField(0))->Value();
-    auto notificationsCarry = reinterpret_cast<SimpleCarry<std::shared_ptr<VoiceReadingNotifications>>*>(notificationsPtr);
+    auto notificationsCarry = reinterpret_cast<DataWrapper<std::shared_ptr<VoiceReadingNotifications>>*>(notificationsPtr);
     auto notifications = notificationsCarry->Data();
 
     voiceSupport->Resume(notifications);
@@ -124,7 +112,7 @@ static void SkipJsVoiceSupport(const FunctionCallbackInfo<Value>& info)
 
     // TODO [rcosnita] validate input.
     auto voiceSupportPtr = Local<External>::Cast(holder->GetInternalField(0))->Value();
-    auto voiceSupportCarry = reinterpret_cast<SimpleCarry<std::shared_ptr<VoiceSupportAbstract>>*>(voiceSupportPtr);
+    auto voiceSupportCarry = reinterpret_cast<DataWrapper<std::shared_ptr<VoiceSupportAbstract>>*>(voiceSupportPtr);
     auto voiceSupport = voiceSupportCarry->Data();
 
     voiceSupport->Skip();
@@ -147,7 +135,7 @@ static void GetJsVoiceSupportInstance(const FunctionCallbackInfo<Value>& info)
     obj->Set(isolate, "skip", FunctionTemplate::New(isolate, SkipJsVoiceSupport));
 
     auto objInst = obj->NewInstance();
-    objInst->SetInternalField(0, External::New(isolate, new SimpleCarry<std::shared_ptr<VoiceSupportAbstract>>(voicemynews::core::voice::GetVoiceSupportInstance())));
+    objInst->SetInternalField(0, External::New(isolate, new DataWrapper<std::shared_ptr<VoiceSupportAbstract>>(voicemynews::core::voice::GetVoiceSupportInstance())));
 
     info.GetReturnValue().Set(objInst);
 }
@@ -234,7 +222,7 @@ static void GetJsVoiceSupportNotificationsInstance(const FunctionCallbackInfo<Va
 
     auto objInst = obj->NewInstance();
 
-    objInst->SetInternalField(0, External::New(isolate, new SimpleCarry<std::shared_ptr<VoiceReadingNotifications>>(
+    objInst->SetInternalField(0, External::New(isolate, new DataWrapper<std::shared_ptr<VoiceReadingNotifications>>(
         std::make_shared<VoiceReadingNotifications>(
             std::function<void(int)>([whenProgress, isolate](int currPos) {
                 auto whenProgressLocal = whenProgress->Get(isolate);

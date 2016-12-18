@@ -86,12 +86,12 @@ public class App extends Application {
         appStartKey = eventLoop.on("app:js:start", new EventHandler() {
             @Override
             public void handleEvent(EventDataBindingNative evtData) {
+                appStartedEvtData = evtData;
+
                 if (appStartedListener != null) {
                     appStartedListener.doAction(evtData);
                     return;
                 }
-
-                appStartedEvtData = evtData;
             }
         });
     }
@@ -122,6 +122,7 @@ public class App extends Application {
                 JsApp.startPlatform(eventLoop.getNativeEmitterPtr(), getAssets(), voiceSupport);
             }
         });
+        v8Thread.setName("V8 JS engine");
         v8Thread.start();
     }
 }

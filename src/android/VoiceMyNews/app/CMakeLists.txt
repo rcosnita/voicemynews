@@ -42,6 +42,7 @@ add_library(
   ${VOICEMYNEWS_ANDROID}/src/main/cpp/bindings/news/VoiceBinding.cpp
   ${VOICEMYNEWS_ANDROID}/src/main/cpp/io/fs/FileUtilsPlatform.h
   ${VOICEMYNEWS_ANDROID}/src/main/cpp/io/fs/FileUtilsPlatform.cpp
+  ${VOICEMYNEWS_ANDROID}/src/main/cpp/utils/DataWrapper.h
   ${VOICEMYNEWS_ANDROID}/src/main/cpp/utils/StringHelpers.h
   ${VOICEMYNEWS_ANDROID}/src/main/cpp/utils/StringHelpers.cpp
 )

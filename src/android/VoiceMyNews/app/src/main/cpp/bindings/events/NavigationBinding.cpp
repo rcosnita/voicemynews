@@ -1,5 +1,6 @@
 #include "events/EventData.h"
 #include "NavigationBinding.h"
+#include "utils/DataWrapper.h"
 
 #include <exception>
 #include <jni.h>
@@ -7,6 +8,7 @@
 
 using namespace v8;
 using voicemynews::core::events::EventData;
+using voicemynews::app::android::utils::DataWrapper;
 
 static JavaVM* CurrJavaVM = nullptr;
 static jobject NavigationBindingObj = nullptr;
@@ -18,11 +20,10 @@ static jmethodID NavigateByEventMethod = nullptr;
 static void NavigateJsNavigationManagerByEvent(const FunctionCallbackInfo<Value>& info)
 {
     // TODO [rcosnita] validate input parameters.
-    Isolate* isolate = info.GetIsolate();
     String::Utf8Value evtName(info[0]->ToString());
     std::string evtNameStd(*evtName);
-    EventData<std::string>* eventObj = reinterpret_cast<EventData<std::string>*>(Local<External>::Cast(info[1]->ToObject()->GetInternalField(0))->Value());
-    std::string evtData = eventObj->data();
+    auto eventObj = reinterpret_cast<DataWrapper<std::shared_ptr<EventData<std::string>>>*>(Local<External>::Cast(info[1]->ToObject()->GetInternalField(0))->Value());
+    std::string evtData = eventObj->Data()->data();
 
     JNIEnv* env = nullptr;
     CurrJavaVM->AttachCurrentThread(&env, nullptr);
