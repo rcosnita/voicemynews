@@ -64,8 +64,6 @@ public abstract class MainPageAppActivity extends Activity {
 
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
-
-        displaySideMenuIfNecessary();
     }
 
     /**
@@ -96,6 +94,8 @@ public abstract class MainPageAppActivity extends Activity {
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         mainMenu.getSideMenuToggle().syncState();
+
+        displaySideMenuIfNecessary();
     }
 
     /**

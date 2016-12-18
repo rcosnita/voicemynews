@@ -46,6 +46,10 @@ public class MainMenuView extends LinearLayout {
     private ActionBarDrawerToggle sideMenuToggle = null;
 
     public EventLoopBindingNative getEventLoop() {
+        if (eventLoop == null) {
+            eventLoop = App.getCurrent().getEventLoop();
+        }
+
         return eventLoop;
     }
 
@@ -120,6 +124,14 @@ public class MainMenuView extends LinearLayout {
         };
 
         sideMenu.addDrawerListener(sideMenuToggle);
+    }
+
+    /**
+     * Start initializing the side menu with data only when the main view is part of an active visual
+     * tree.
+     */
+    @Override
+    protected void onAttachedToWindow() {
         wireJsMenu();
     }
 
@@ -127,7 +139,7 @@ public class MainMenuView extends LinearLayout {
      * Just a test method for making sure menu loading works as expected.
      */
     private void wireJsMenu() {
-        eventLoop.on("app:navigation_menu:loaded", new EventHandler() {
+        getEventLoop().on("app:navigation_menu:loaded", new EventHandler() {
             @Override
             public void handleEvent(final EventDataBindingNative evtData) {
                 post(new Runnable() {
@@ -139,7 +151,7 @@ public class MainMenuView extends LinearLayout {
             }
         });
 
-        eventLoop.emit("app:navigation_menu:load", EventDataBindingNative.getInstanceNative(""));
+        getEventLoop().emit("app:navigation_menu:load", EventDataBindingNative.getInstanceNative(""));
     }
 
     /**
@@ -223,7 +235,7 @@ public class MainMenuView extends LinearLayout {
         try {
             String evtName = item.getJSONObject("data").getString("evtName");
             String evtData = item.toString();
-            eventLoop.emit(evtName, EventDataBindingNative.getInstanceNative(evtData));
+            getEventLoop().emit(evtName, EventDataBindingNative.getInstanceNative(evtData));
         } catch (JSONException ex) {
             // TODO [rcosnita] handle and log the exception.
             System.out.println(ex);
