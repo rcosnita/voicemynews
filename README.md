@@ -26,3 +26,7 @@ You can now open the project in Sublime, click on Tools -> Build System and sele
 ## Windows 10
 
 In order to have everything setup on a development machine you must follow the steps described in [Windows 10 Readme](src/win10/README.md).
+
+## Android
+
+In order to have everything setup on a development machine you must follow the steps described in [Android Readme](src/android/README.md).
