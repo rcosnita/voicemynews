@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.voicemynews.core.bindings.events.EventDataBindingNative;
 import com.voicemynews.core.bindings.events.EventHandler;
 import com.voicemynews.core.bindings.events.EventLoopBindingNative;
+import com.voicemynews.core.bindings.events.EventNames;
 import com.voicemynews.voicemynews.App;
 import com.voicemynews.voicemynews.IndividualNewsActivity;
 import com.voicemynews.voicemynews.R;
@@ -94,7 +95,7 @@ public class IndividualNewsFragment extends Fragment {
     }
 
     public void onReadNewsClick(View view) {
-        eventLoop.emit("js:news:voice:read", EventDataBindingNative.getInstanceNative(articleModel.toString()));
+        eventLoop.emit(EventNames.kNewsVoiceRead, EventDataBindingNative.getInstanceNative(articleModel.toString()));
     }
 
     /**
@@ -103,7 +104,7 @@ public class IndividualNewsFragment extends Fragment {
      * @param newsModelStr The selected news model string representation.
      */
     private void wireJsModel(String newsModelStr) {
-        eventLoop.on("js:news:get:byurl:loaded", new EventHandler() {
+        eventLoop.on(EventNames.kNewsFetchByUrlLoaded, new EventHandler() {
             @Override
             public void handleEvent(EventDataBindingNative evtData) {
                 try {
@@ -128,7 +129,7 @@ public class IndividualNewsFragment extends Fragment {
             }
         });
 
-        eventLoop.emit("js:news:get:byurl", EventDataBindingNative.getInstanceNative(newsModelStr));
+        eventLoop.emit(EventNames.kNewsFetchByUrl, EventDataBindingNative.getInstanceNative(newsModelStr));
     }
 
     /**

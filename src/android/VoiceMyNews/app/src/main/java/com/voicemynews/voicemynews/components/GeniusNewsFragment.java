@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.voicemynews.core.bindings.events.EventDataBindingNative;
 import com.voicemynews.core.bindings.events.EventHandler;
 import com.voicemynews.core.bindings.events.EventLoopBindingNative;
+import com.voicemynews.core.bindings.events.EventNames;
 import com.voicemynews.voicemynews.App;
 import com.voicemynews.voicemynews.IndividualNewsActivity;
 import com.voicemynews.voicemynews.R;
@@ -157,7 +158,7 @@ public class GeniusNewsFragment extends Fragment implements AdapterView.OnItemCl
      * Sends an event to js business logic in order to trigger genius news loading.
      */
     private void wireJsModel(final View view) {
-        eventLoop.on("js:news:get:from_preferred_categories:loaded", new EventHandler() {
+        eventLoop.on(EventNames.kNewsFetchFromPreferredCategoriesLoaded, new EventHandler() {
             @Override
             public void handleEvent(EventDataBindingNative evtData) {
             try {
@@ -170,7 +171,7 @@ public class GeniusNewsFragment extends Fragment implements AdapterView.OnItemCl
             }
         });
 
-        eventLoop.emit("js:news:get:from_preferred_categories", EventDataBindingNative.getInstanceNative(""));
+        eventLoop.emit(EventNames.kNewsFetchFromPreferredCategories, EventDataBindingNative.getInstanceNative(""));
     }
 
     /**

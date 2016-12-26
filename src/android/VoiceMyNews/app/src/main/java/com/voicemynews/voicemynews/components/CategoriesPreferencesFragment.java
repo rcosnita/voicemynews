@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.voicemynews.core.bindings.events.EventDataBindingNative;
 import com.voicemynews.core.bindings.events.EventHandler;
 import com.voicemynews.core.bindings.events.EventLoopBindingNative;
+import com.voicemynews.core.bindings.events.EventNames;
 import com.voicemynews.voicemynews.App;
 import com.voicemynews.voicemynews.R;
 import com.voicemynews.voicemynews.models.JsonArrayAdapter;
@@ -83,7 +84,7 @@ public class CategoriesPreferencesFragment extends Fragment {
      * Provides the logic for loading all available categories from js business logic.
      */
     private void wireJsModel() {
-        onCategoriesLoaded = eventLoop.on("js:categories:get:loaded", new EventHandler() {
+        onCategoriesLoaded = eventLoop.on(EventNames.kCategoriesGetLoaded, new EventHandler() {
             @Override
             public void handleEvent(EventDataBindingNative evtData) {
                 final String data = evtData.getEvtData();
@@ -102,7 +103,7 @@ public class CategoriesPreferencesFragment extends Fragment {
             }
         });
 
-        eventLoop.emit("js:categories:get", EventDataBindingNative.getInstanceNative(""));
+        eventLoop.emit(EventNames.kCategoriesGet, EventDataBindingNative.getInstanceNative(""));
     }
 
     /**

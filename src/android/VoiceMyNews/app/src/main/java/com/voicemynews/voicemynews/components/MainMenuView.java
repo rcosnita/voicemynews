@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.voicemynews.core.bindings.events.EventDataBindingNative;
 import com.voicemynews.core.bindings.events.EventHandler;
 import com.voicemynews.core.bindings.events.EventLoopBindingNative;
+import com.voicemynews.core.bindings.events.EventNames;
 import com.voicemynews.voicemynews.App;
 import com.voicemynews.voicemynews.R;
 import com.voicemynews.voicemynews.models.JsonArrayAdapter;
@@ -139,7 +140,7 @@ public class MainMenuView extends LinearLayout {
      * Just a test method for making sure menu loading works as expected.
      */
     private void wireJsMenu() {
-        getEventLoop().on("app:navigation_menu:loaded", new EventHandler() {
+        getEventLoop().on(EventNames.kAppNavigationMenuLoaded, new EventHandler() {
             @Override
             public void handleEvent(final EventDataBindingNative evtData) {
                 post(new Runnable() {
@@ -151,7 +152,7 @@ public class MainMenuView extends LinearLayout {
             }
         });
 
-        getEventLoop().emit("app:navigation_menu:load", EventDataBindingNative.getInstanceNative(""));
+        getEventLoop().emit(EventNames.kAppNavigationMenuLoad, EventDataBindingNative.getInstanceNative(""));
     }
 
     /**

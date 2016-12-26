@@ -5,6 +5,7 @@ import android.app.Application;
 import com.voicemynews.core.bindings.events.EventDataBindingNative;
 import com.voicemynews.core.bindings.events.EventHandler;
 import com.voicemynews.core.bindings.events.EventLoopBindingNative;
+import com.voicemynews.core.bindings.events.EventNames;
 import com.voicemynews.core.bindings.network.HttpClientBinding;
 import com.voicemynews.core.bindings.news.VoiceSupport;
 import com.voicemynews.core.bindings.news.VoiceSupportActions;
@@ -83,7 +84,7 @@ public class App extends Application {
 
         initAppJsLogic();
 
-        appStartKey = eventLoop.on("app:js:start", new EventHandler() {
+        appStartKey = eventLoop.on(EventNames.kAppJsStart, new EventHandler() {
             @Override
             public void handleEvent(EventDataBindingNative evtData) {
                 appStartedEvtData = evtData;
