@@ -1,6 +1,9 @@
 package com.voicemynews.voicemynews.components;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -20,6 +23,7 @@ import com.voicemynews.core.bindings.events.EventLoopBindingNative;
 import com.voicemynews.voicemynews.App;
 import com.voicemynews.voicemynews.R;
 import com.voicemynews.voicemynews.models.JsonArrayAdapter;
+import com.voicemynews.voicemynews.utils.ImageHelper;
 import com.voicemynews.voicemynews.utils.JsResourcesHelper;
 
 import org.json.JSONArray;
@@ -127,7 +131,9 @@ public class CategoriesPreferencesFragment extends Fragment {
             public void populate(BaseAdapter adapter, JSONObject item, String jsonKey, View view) {
                 try {
                     ImageView imageView = (ImageView) view.findViewById(R.id.categoriesImage);
-                    imageView.setImageResource(JsResourcesHelper.getIdFromDrawableResourcePath(item.getString(jsonKey), imageView.getContext()));
+                    int width = imageView.getLayoutParams().width;
+                    int drawableId = JsResourcesHelper.getIdFromDrawableResourcePath(item.getString(jsonKey), imageView.getContext());
+                    imageView.setImageBitmap(ImageHelper.decodeSampledBitmapFromResource(getResources(), drawableId, width));
                 } catch (Exception ex) {
                     // TODO [rcosnita] handle the exception correctly.
                     System.out.println(ex);
