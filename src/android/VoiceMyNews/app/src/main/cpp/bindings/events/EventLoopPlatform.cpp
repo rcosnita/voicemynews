@@ -8,7 +8,7 @@
 
 using namespace v8;
 
-using voicemynews::core::events::EventData;
+using EventData = voicemynews::core::events::EventLoopPlatform::EventData;
 using voicemynews::app::android::bindings::events::EventDataBinding;
 using voicemynews::app::android::utils::DataWrapper;
 using voicemynews::app::android::utils::StringHelpers;
@@ -33,7 +33,7 @@ static void BuildJsLoopEvent(const FunctionCallbackInfo<Value> &info)
     obj->SetInternalFieldCount(1);
 
     Local<Object> objInstance = obj->NewInstance();
-    auto evtData = new DataWrapper<std::shared_ptr<EventData<std::string>>>(std::make_shared<EventData<std::string>>(*String::Utf8Value(info[0]->ToString())));
+    auto evtData = new DataWrapper<std::shared_ptr<EventData>>(std::make_shared<EventData>(*String::Utf8Value(info[0]->ToString())));
     objInstance->SetInternalField(0, External::New(isolate, evtData));
     info.GetReturnValue().Set(objInstance);
 }
@@ -44,7 +44,7 @@ static void BuildJsLoopEvent(const FunctionCallbackInfo<Value> &info)
 static void GetJsEvtData(Local<String> property, const PropertyCallbackInfo<Value>& info)
 {
     auto self = info.Holder();
-    auto evtData = reinterpret_cast<DataWrapper<std::shared_ptr<EventData<std::string>>>*>(Local<External>::Cast(self->GetInternalField(0))->Value());
+    auto evtData = reinterpret_cast<DataWrapper<std::shared_ptr<EventData>>*>(Local<External>::Cast(self->GetInternalField(0))->Value());
     auto jsEvtData = String::NewFromUtf8(info.GetIsolate(), evtData->Data()->data().c_str());
     info.GetReturnValue().Set(jsEvtData);
 }
@@ -99,15 +99,20 @@ static void OffJsLoop(const FunctionCallbackInfo<Value>& info)
 static void EmitJsLoop(const FunctionCallbackInfo<Value>& info)
 {
     // TODO [rcosnita] validate input parameters.
+    Isolate* isolate = info.GetIsolate();
     Local<Object> self = info.Holder();
     std::string evtName = *String::Utf8Value(info[0]->ToString());
     auto evtDataPtr = Local<External>::Cast(info[1]->ToObject()->GetInternalField(0))->Value();
-    auto evtData = reinterpret_cast<DataWrapper<std::shared_ptr<EventData<std::string>>>*>(evtDataPtr);
+    auto evtData = reinterpret_cast<DataWrapper<std::shared_ptr<EventData>>*>(evtDataPtr);
     auto eventLoopPtr = Local<External>::Cast(self->GetInternalField(0))->Value();
     auto eventLoop = reinterpret_cast<voicemynews::core::events::EventLoopPlatform*>(eventLoopPtr);
     auto eventLoopCasted = dynamic_cast<voicemynews::core::events::EventLoop*>(eventLoop);
 
     eventLoopCasted->Emit(evtName, evtData->Data());
+
+    eventLoop->EnqueueTask([evtData]() {
+        delete evtData;
+    });
 }
 
 /**
@@ -256,6 +261,10 @@ void EventLoopPlatform::Emit(JNIEnv* env,
     auto evtDataNative = reinterpret_cast<voicemynews::app::android::bindings::events::EventDataBinding*>(evtDataPtr);
 
     EventLoop::Emit(evtNameStd, std::make_shared<EventLoopPlatform::EventData>(evtDataNative->data()));
+
+    EnqueueTask([evtDataNative]() {
+        delete evtDataNative;
+    });
 
     if (processImmediate_) {
         EventLoopPlatform::ProcessEvents();
