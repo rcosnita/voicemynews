@@ -3,7 +3,9 @@
 
 #include "EventData.h"
 
+#include <algorithm>
 #include <chrono>
+#include <condition_variable>
 #include <functional>
 #include <map>
 #include <memory>
@@ -134,7 +136,7 @@ public:
      * Internally it uses a notification based mechanism and becomes blocking till events are available. Like this,
      * we can avoid polling intervals and other mechanism which are killers for performance.
      */
-    void ProcessEvents()
+    virtual void ProcessEvents()
     {
         std::unique_lock<std::mutex> lock(pendingEventsMutex_);
         auto checkNonZeroSize = [this]() {

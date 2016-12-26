@@ -12,7 +12,7 @@ FileNotFoundException::FileNotFoundException(std::string errMsg, std::string fil
 
 }
 
-const char* FileNotFoundException::what() const { return errMsg_.c_str(); }
+const char* FileNotFoundException::what() const _NOEXCEPT { return errMsg_.c_str(); }
 
 const std::string FileNotFoundException::FileName() const { return fileName_; }
 
