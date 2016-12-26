@@ -73,6 +73,12 @@ JNIEXPORT void JNICALL Java_com_voicemynews_core_bindings_network_HttpClientBind
 
         auto jsCallbackLocal = jsCallback->Get(isolate);
         jsCallbackLocal->Call(jsCallbackLocal, 1, args);
+
+        JNIEnv* env = nullptr;
+        CurrJavaVM->AttachCurrentThread(&env, nullptr);
+        env->DeleteGlobalRef(responseDataGlobal);
+        jsCallback->Reset();
+        delete jsCallback;
     }));
 }
 
@@ -136,6 +142,10 @@ JNIEXPORT void JNICALL Java_com_voicemynews_core_bindings_network_HttpClientBind
         auto jsCallback = reinterpret_cast<Persistent<Function>*>(jsCallbackPtr);
         auto jsCallbackLocal = jsCallback->Get(isolate);
         jsCallbackLocal->Call(jsCallbackLocal, 1, args);
+
+        env->DeleteGlobalRef(responseGlobal);
+        jsCallback->Reset();
+        delete jsCallback;
     }));
 }
 
@@ -215,11 +225,13 @@ static void GetJsHttpClientBinding(const FunctionCallbackInfo<Value>& info)
     CurrJavaVM->AttachCurrentThread(&env, nullptr);
     jlong callbackPtr = reinterpret_cast<uintptr_t>(callbackPersistent);
     jlong isolatePtr = reinterpret_cast<uintptr_t>(isolate);
-    jobject objGetAction = env->NewGlobalRef(env->NewObject(HttpClientBindingGetActionClass, HttpClientBindingGetActionConstructor, callbackPtr, isolatePtr));
+    jobject objGetAction = env->NewObject(HttpClientBindingGetActionClass, HttpClientBindingGetActionConstructor, callbackPtr, isolatePtr);
     jstring url = env->NewStringUTF(urlStd.c_str());
     jobject headers = static_cast<jobject>(Local<External>::Cast(headersMap->GetInternalField(0))->Value());
 
     env->CallVoidMethod(HttpClientObj, HttpClientGetMethod, url, headers, objGetAction);
+
+    env->DeleteGlobalRef(headers);
 }
 
 /**
@@ -241,7 +253,8 @@ static void ParseJsHttpClientBindingGetResponse(const FunctionCallbackInfo<Value
 
     JNIEnv* env = nullptr;
     CurrJavaVM->AttachCurrentThread(&env, nullptr);
-    auto objInst = env->NewGlobalRef(env->NewObject(HttpClientBindingParseStringContentActionClass, HttpClientBindingParseStringContentActionConstructor, callbackPtr, isolatePtr));
+    auto objInst = env->NewObject(HttpClientBindingParseStringContentActionClass, HttpClientBindingParseStringContentActionConstructor,
+                                  callbackPtr, isolatePtr);
     env->CallVoidMethod(HttpClientObj, HttpClientParseResponseWithStringContent, responseData, objInst);
 }
 

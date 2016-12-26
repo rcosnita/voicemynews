@@ -224,7 +224,7 @@ jstring EventLoopPlatform::On(JNIEnv* env,
         EventDataBindingNativeCls = (jclass)env->NewGlobalRef(eventDataBindingCls);
     }
 
-    auto handler = std::function<void(std::shared_ptr<EventLoopPlatform::EventData>)>([this, handlerActionId, evtHandlerGlobal](std::shared_ptr<EventLoopPlatform::EventData> evtDataStd) {
+    auto handler = std::function<void(std::shared_ptr<EventData>)>([this, handlerActionId, evtHandlerGlobal](std::shared_ptr<EventData> evtDataStd) {
         JNIEnv *env = nullptr;
         javaVM_->AttachCurrentThread(&env, nullptr);
         auto platformEvt = EventLoopPlatform::BuildEvent(env, evtDataStd->data());
@@ -260,7 +260,7 @@ void EventLoopPlatform::Emit(JNIEnv* env,
     jlong evtDataPtr = env->GetLongField(evtData, evtDataPtrId);
     auto evtDataNative = reinterpret_cast<voicemynews::app::android::bindings::events::EventDataBinding*>(evtDataPtr);
 
-    EventLoop::Emit(evtNameStd, std::make_shared<EventLoopPlatform::EventData>(evtDataNative->data()));
+    EventLoop::Emit(evtNameStd, std::make_shared<EventData>(evtDataNative->data()));
 
     EnqueueTask([evtDataNative]() {
         delete evtDataNative;
