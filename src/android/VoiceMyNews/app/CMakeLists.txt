@@ -63,11 +63,13 @@ elseif(${CMAKE_ANDROID_ARCH_ABI} STREQUAL "x86")
     set(V8-ARCH ia32)
 endif(${CMAKE_ANDROID_ARCH_ABI} STREQUAL "arm64-v8a")
 
-set_target_properties(v8-android-libplatform PROPERTIES IMPORTED_LOCATION "/Users/cosnita/work-personal/voicemynews-deps/release/${V8-ARCH}/libv8_libplatform.a")
-set_target_properties(v8-android-base PROPERTIES IMPORTED_LOCATION "/Users/cosnita/work-personal/voicemynews-deps/release/${V8-ARCH}/libv8_base.a")
-set_target_properties(v8-android-libbase PROPERTIES IMPORTED_LOCATION "/Users/cosnita/work-personal/voicemynews-deps/release/${V8-ARCH}/libv8_libbase.a")
-set_target_properties(v8-android-snapshot PROPERTIES IMPORTED_LOCATION "/Users/cosnita/work-personal/voicemynews-deps/release/${V8-ARCH}/libv8_nosnapshot.a")
-set_target_properties(v8-android-libsampler PROPERTIES IMPORTED_LOCATION "/Users/cosnita/work-personal/voicemynews-deps/release/${V8-ARCH}/libv8_libsampler.a")
+set(V8_LOCATION "${CMAKE_CURRENT_SOURCE_DIR}/../../../../")
+
+set_target_properties(v8-android-libplatform PROPERTIES IMPORTED_LOCATION "${V8_LOCATION}/third_party/voicemynews-deps/release/${V8-ARCH}/libv8_libplatform.a")
+set_target_properties(v8-android-base PROPERTIES IMPORTED_LOCATION "${V8_LOCATION}/third_party/voicemynews-deps/release/${V8-ARCH}/libv8_base.a")
+set_target_properties(v8-android-libbase PROPERTIES IMPORTED_LOCATION "${V8_LOCATION}/third_party/voicemynews-deps/release/${V8-ARCH}/libv8_libbase.a")
+set_target_properties(v8-android-snapshot PROPERTIES IMPORTED_LOCATION "${V8_LOCATION}/third_party/voicemynews-deps/release/${V8-ARCH}/libv8_nosnapshot.a")
+set_target_properties(v8-android-libsampler PROPERTIES IMPORTED_LOCATION "${V8_LOCATION}/third_party/voicemynews-deps/release/${V8-ARCH}/libv8_libsampler.a")
 
 if(${CMAKE_ANDROID_ARCH_ABI} IN_LIST VOICEMYNEWS_SUPPORTED_ARCHS)
     list(APPEND VOICEMYNEWS_TARGET_LIBS
