@@ -90,6 +90,11 @@ namespace events {
      * \brief This event is emitted by the native app in order to tell the business logic to skip the current stream.
      */
     const std::string kNewsVoiceReadPlaylistSkip = "js:news:voice:read:playlist:skip";
+
+    /**
+     * \brief This event is emitted by the native / js app in order to tell the analytics layer to log the specified event.
+     */
+    const std::string kAnalyticsLogEvent = "js:analytics:log:event";
 }
 }
 }

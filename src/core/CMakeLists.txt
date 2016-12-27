@@ -13,6 +13,8 @@ add_library(
   SHARED
 
   ${VOICEMYNEWS_CORE}/analytics/Analytics.h
+  ${VOICEMYNEWS_CORE}/analytics/Analytics.cpp
+  ${VOICEMYNEWS_CORE}/analytics/WebBrowser.h
   ${VOICEMYNEWS_CORE}/events/EventData.h
   ${VOICEMYNEWS_CORE}/events/EventLoop.h
   ${VOICEMYNEWS_CORE}/events/EventNames.h
