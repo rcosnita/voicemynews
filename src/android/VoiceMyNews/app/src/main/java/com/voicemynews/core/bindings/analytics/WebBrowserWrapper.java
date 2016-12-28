@@ -6,6 +6,8 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.voicemynews.core.bindings.config.Config;
+
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -52,7 +54,8 @@ public class WebBrowserWrapper {
     }
 
     public void loadContent(String content, String contentType) {
-        this.webBrowser.loadDataWithBaseURL("http://voicemynews.com", content, contentType, "UTF-8", "");
+        String baseUrl = Config.getWebBaseUrl();
+        this.webBrowser.loadDataWithBaseURL(baseUrl, content, contentType, "UTF-8", "");
     }
 
     /**

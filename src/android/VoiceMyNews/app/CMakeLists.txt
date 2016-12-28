@@ -32,6 +32,8 @@ add_library(
   ${VOICEMYNEWS_ANDROID}/src/main/cpp/bindings/analytics/AnalyticsBinding.cpp
   ${VOICEMYNEWS_ANDROID}/src/main/cpp/bindings/analytics/WebBrowserBinding.h
   ${VOICEMYNEWS_ANDROID}/src/main/cpp/bindings/analytics/WebBrowserBinding.cpp
+  ${VOICEMYNEWS_ANDROID}/src/main/cpp/bindings/config/ConfigBinding.h
+  ${VOICEMYNEWS_ANDROID}/src/main/cpp/bindings/config/ConfigBinding.cpp
   ${VOICEMYNEWS_ANDROID}/src/main/cpp/bindings/events/EventDataBinding.h
   ${VOICEMYNEWS_ANDROID}/src/main/cpp/bindings/events/EventDataBinding.cpp
   ${VOICEMYNEWS_ANDROID}/src/main/cpp/bindings/events/EventLoopBinding.h
