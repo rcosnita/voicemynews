@@ -38,6 +38,30 @@ An analytic event from voicemynews has the following attributes:
 | **eventLabel**     | text | yes | Useful for categorizing events (e.g. 'Fall Campaign'). |
 | **eventValue**     | integer | yes | A numeric value associated with the event (e.g. 42). |
 
+## Event categories
+
+In voicemynews app, we use the following categories in order to track our users behavior:
+
+| **Category** | **Description** |
+| ------------ | --------------- |
+| **app cycle** | Contains all events related to application lifecycle. |
+| **app navigation** | Contains all events related to application navigation. |
+| **individual news onscreen** | Contains all events related to individual news on screen events (e.g reading, scrolling, etc ...). Audio related events are not included in here. |
+| **individual news audio** | Contains all events related to voice support for individual news. |
+| **genius news onscreen** | Contains all events related to genius news on screen events (e.g reading, scrolling, etc ...). Audio related events are not included in here. |
+| **genius news audio** | Contains all events related to voice support for genius news. |
+
+## Events
+
+In voicemynews app, we use the following events in order to track our users behavior:
+
+| **Category** | **Event name** | **Code part** | **Description** |
+| ------------ | -------------- | ------------- | --------------- |
+|**app cycle** | **analytics ui started** | native ui | Event emitted by native ui when the analytics layer started. |
+|**app cycle** | **analytics native started** | native | Event emitted by native code when the analytics layer started. |
+
+In the future we are going to add all analytics events in here.
+
 # Revisions history
 
 | **Version** | **Date** | **Author** | **Description** |
