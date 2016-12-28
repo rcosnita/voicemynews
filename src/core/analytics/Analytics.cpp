@@ -1,4 +1,5 @@
 #include "Analytics.h"
+#include "config/Config.h"
 #include "events/EventNames.h"
 
 #include <sstream>
@@ -57,6 +58,8 @@ Analytics::Analytics(std::shared_ptr<WebBrowser> webBrowser)
 
 void Analytics::LogEvent(const AnalyticsEvent& evt)
 {
+    auto var1 = voicemynews::core::config::kWebBaseUrl;
+    auto var2 = voicemynews::core::config::kAnalyticsGaTrackingCode;
     webBrowser_->SendEvent(kAnalyticsLogEvent, evt.ToJson());
 }
 }
