@@ -1,10 +1,10 @@
 package com.voicemynews.voicemynews;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.voicemynews.core.bindings.analytics.Analytics;
 import com.voicemynews.core.bindings.events.EventDataBindingNative;
 
 public class AppLoaderActivity extends Activity {
@@ -19,6 +19,7 @@ public class AppLoaderActivity extends Activity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        App.getCurrent().setAnalytics(Analytics.startAnalytics(getApplicationContext()));
                         displayMainUI();
                     }
                 });

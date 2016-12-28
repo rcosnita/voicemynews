@@ -43,7 +43,8 @@ std::string AnalyticsEvent::ToJson() const
     json << "{\"eventCategory\": \"" << EventCategory() << "\",";
     json << "\"eventAction\": \"" << EventAction() << "\",";
     json << "\"eventLabel\": \"" << EventLabel() << "\",";
-    json << "\"eventValue\": \"" << EventValue() << "\"";
+    json << "\"eventValue\": " << EventValue() << ",";
+    json << "\"custom-eventName\": \"" << kAnalyticsLogEvent << "\"";
     json << "}";
 
     return json.str();

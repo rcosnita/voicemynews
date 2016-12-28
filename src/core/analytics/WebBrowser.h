@@ -15,9 +15,6 @@ namespace analytics {
  */
 class WebBrowser
 {
-private:
-    WebBrowser() = default;
-
 public:
     /**
      * \brief Allows developers to load valid html content into the web browser.
@@ -34,7 +31,7 @@ public:
     /**
      * \brief Obtains an instance of the web browser.
      */
-    virtual std::shared_ptr<WebBrowser> GetInstance() = 0;
+    static std::shared_ptr<WebBrowser> GetInstance();
 };
 }
 }
