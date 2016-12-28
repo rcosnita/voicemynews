@@ -6,9 +6,10 @@
  * it starts listening for post messages.
  */
 class AnalyticsApp {
-    constructor(wnd, allowedEventNames) {
+    constructor(wnd, allowedEventNames, trackingBackend) {
         this._wnd = wnd;
         this._allowedEventNames = allowedEventNames || [];
+        this._trackingBackend = trackingBackend;
         this._listen();
 
         console.log("Analytics layer started ...");
@@ -23,9 +24,8 @@ class AnalyticsApp {
             return;
         }
 
-        // TODO [rcosnita] here comes the google analytics code.
-        console.log(evt);
+        this._trackingBackend("send", "event", evt.eventCategory, evt.eventAction, evt.eventLabel, evt.eventValue);
     }
 }
 
-new AnalyticsApp(window, ["js:analytics:log:event"]);
+new AnalyticsApp(window, ["js:analytics:log:event"], ga);

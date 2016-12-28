@@ -1,4 +1,5 @@
 #include "analytics/Analytics.h"
+#include "config/Config.h"
 #include "AnalyticsBinding.h"
 
 #include "io/fs/FileUtilsPlatform.h"
@@ -22,6 +23,10 @@ JNIEXPORT jstring JNICALL Java_com_voicemynews_core_bindings_analytics_Analytics
     std::string jsStd(js.begin(), js.end());
     auto analyticsAppLoc = htmlStd.find("{{analytics_app_js}}");
     htmlStd = htmlStd.replace(analyticsAppLoc, std::strlen("{{analytics_app_js}}"), jsStd);
+
+    auto trackingJs = voicemynews::core::config::kAnalyticsGaTrackingCode;
+    auto analyticsTrackingLoc = htmlStd.find("{{analytics_tracking_js}}");
+    htmlStd = htmlStd.replace(analyticsTrackingLoc, std::strlen("{{analytics_tracking_js}}"), trackingJs);
 
     return env->NewStringUTF(htmlStd.c_str());
 }
