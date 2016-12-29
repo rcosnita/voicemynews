@@ -12,7 +12,9 @@ namespace config {
         "  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)\n"
         "  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');\n"
         "\n"
-        "  ga('create', 'UA-84360208-3', 'auto');\n"
+        "  ga('create', 'UA-84360208-5', 'auto');\n"
+        "  ga('set', 'appName', 'VoiceMyNewsDev');\n"
+        "  console.log('ga initialized ...');\n"
         "\n"
         "</script>";
 }

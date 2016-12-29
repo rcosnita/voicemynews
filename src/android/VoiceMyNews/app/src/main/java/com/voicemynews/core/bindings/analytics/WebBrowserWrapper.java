@@ -41,7 +41,8 @@ public class WebBrowserWrapper {
 
         this.webBrowser = new WebView(ctx);
         this.webSettings = this.webBrowser.getSettings();
-
+        this.webSettings.setBlockNetworkImage(false);
+        this.webSettings.setBlockNetworkLoads(false);
         this.webSettings.setJavaScriptEnabled(true);
 
         this.webBrowser.setWebViewClient(new WebViewClient() {

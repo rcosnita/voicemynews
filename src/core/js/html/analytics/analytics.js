@@ -24,7 +24,7 @@ class AnalyticsApp {
             return;
         }
 
-        this._trackingBackend("send", "event", evt.eventCategory, evt.eventAction, evt.eventLabel, evt.eventValue);
+        this._trackingBackend("send", "event", evt);
     }
 }
 
