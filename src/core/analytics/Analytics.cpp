@@ -56,10 +56,24 @@ Analytics::Analytics(std::shared_ptr<WebBrowser> webBrowser)
 {
 }
 
+std::string Analytics::LoadAnalyticsHtmlApp(voicemynews::core::io::fs::FileUtils& fileUtils)
+{
+    auto html = fileUtils.ReadFilePlatform("js/html/analytics/app.html");
+    auto js = fileUtils.ReadFilePlatform("js/html/analytics/analytics.js");
+    std::string htmlStd(html.begin(), html.end());
+    std::string jsStd(js.begin(), js.end());
+    auto analyticsAppLoc = htmlStd.find("{{analytics_app_js}}");
+    htmlStd = htmlStd.replace(analyticsAppLoc, std::strlen("{{analytics_app_js}}"), jsStd);
+
+    auto trackingJs = voicemynews::core::config::kAnalyticsGaTrackingCode;
+    auto analyticsTrackingLoc = htmlStd.find("{{analytics_tracking_js}}");
+    htmlStd = htmlStd.replace(analyticsTrackingLoc, std::strlen("{{analytics_tracking_js}}"), trackingJs);
+
+    return htmlStd;
+}
+
 void Analytics::LogEvent(const AnalyticsEvent& evt)
 {
-    auto var1 = voicemynews::core::config::kWebBaseUrl;
-    auto var2 = voicemynews::core::config::kAnalyticsGaTrackingCode;
     webBrowser_->SendEvent(kAnalyticsLogEvent, evt.ToJson());
 }
 }

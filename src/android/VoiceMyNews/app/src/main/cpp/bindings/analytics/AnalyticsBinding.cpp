@@ -1,8 +1,7 @@
 #include "analytics/Analytics.h"
-#include "config/Config.h"
+#include "io/fs/FileUtilsPlatform.h"
 #include "AnalyticsBinding.h"
 
-#include "io/fs/FileUtilsPlatform.h"
 #include <exception>
 
 using voicemynews::core::io::fs::FileUtilsPlatform;
@@ -17,17 +16,7 @@ JNIEXPORT jstring JNICALL Java_com_voicemynews_core_bindings_analytics_Analytics
     jobject objInst)
 {
     FileUtilsPlatform fileUtils;
-    auto html = fileUtils.ReadFilePlatform("js/html/analytics/app.html");
-    auto js = fileUtils.ReadFilePlatform("js/html/analytics/analytics.js");
-    std::string htmlStd(html.begin(), html.end());
-    std::string jsStd(js.begin(), js.end());
-    auto analyticsAppLoc = htmlStd.find("{{analytics_app_js}}");
-    htmlStd = htmlStd.replace(analyticsAppLoc, std::strlen("{{analytics_app_js}}"), jsStd);
-
-    auto trackingJs = voicemynews::core::config::kAnalyticsGaTrackingCode;
-    auto analyticsTrackingLoc = htmlStd.find("{{analytics_tracking_js}}");
-    htmlStd = htmlStd.replace(analyticsTrackingLoc, std::strlen("{{analytics_tracking_js}}"), trackingJs);
-
+    auto htmlStd = Analytics::LoadAnalyticsHtmlApp(fileUtils);
     return env->NewStringUTF(htmlStd.c_str());
 }
 

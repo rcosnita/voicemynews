@@ -2,6 +2,8 @@
 #define VOICEMYNEWSCORE_ANALYTICS_ANALYTICS_H_
 
 #include "WebBrowser.h"
+#include "io/fs/FileUtils.h"
+
 #include <string>
 
 namespace voicemynews {
@@ -53,6 +55,13 @@ public:
      * It simply builds a string from the analytics event and sends it to the web browser.
      */
     void LogEvent(const AnalyticsEvent& evt);
+
+    /**
+     * \brief Provides the logic for retrieving the analytics html application.
+     *
+     * On each platform, this application must be embedded into a web browser or headless dom.
+     */
+    static std::string LoadAnalyticsHtmlApp(voicemynews::core::io::fs::FileUtils& fileUtils);
 
 private:
     std::shared_ptr<WebBrowser> webBrowser_;
