@@ -1,5 +1,5 @@
-#ifndef VOICEMYNEWSANDROID_ANALYTICS_WEBBROWSERBINDING_H_
-#define VOICEMYNEWSANDROID_ANALYTICS_WEBBROWSERBINDING_H_
+#ifndef VOICEMYNEWSANDROID_BINDINGS_ANALYTICS_WEBBROWSERBINDING_H_
+#define VOICEMYNEWSANDROID_BINDINGS_ANALYTICS_WEBBROWSERBINDING_H_
 
 #include "analytics/WebBrowser.h"
 #include <jni.h>
@@ -7,23 +7,25 @@
 namespace voicemynews {
 namespace app {
 namespace android {
+namespace bindings {
 namespace analytics {
 /**
- * \brief Provides a web browser native wrapper over android web browser.
- *
- * All methods will delegate to the java implementation of the web browser.
- */
-class WebBrowserBinding : public voicemynews::core::analytics::WebBrowser
-{
-private:
-    WebBrowserBinding() = default;
-    friend class voicemynews::core::analytics::WebBrowser;
+* \brief Provides a web browser native wrapper over android web browser.
+*
+* All methods will delegate to the java implementation of the web browser.
+*/
+    class WebBrowserBinding : public voicemynews::core::analytics::WebBrowser {
+    private:
+        WebBrowserBinding() = default;
 
-public:
-    void LoadContent(std::string webPageContent) override;
+        friend class voicemynews::core::analytics::WebBrowser;
 
-    void SendEvent(std::string evtName, std::string evtData) override;
-};
+    public:
+        void LoadContent(std::string webPageContent) override;
+
+        void SendEvent(std::string evtName, std::string evtData) override;
+    };
+}
 }
 }
 }
@@ -47,4 +49,4 @@ JNIEXPORT void JNICALL Java_com_voicemynews_core_bindings_analytics_WebBrowserWr
 };
 #endif
 
-#endif /* VOICEMYNEWSANDROID_ANALYTICS_WEBBROWSERBINDING_H_ */
+#endif /* VOICEMYNEWSANDROID_BINDINGS_ANALYTICS_WEBBROWSERBINDING_H_ */
