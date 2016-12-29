@@ -60,6 +60,7 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)..\core;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <PreprocessorDefinitions>_UNICODE;UNICODE;DEV_BUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -76,6 +77,7 @@
       <RemoveUnreferencedCodeData>true</RemoveUnreferencedCodeData>
       <Optimization>MaxSpeed</Optimization>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <PreprocessorDefinitions>_UNICODE;UNICODE;PROD_BUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -85,6 +87,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\core\analytics\Analytics.h" />
+    <ClInclude Include="..\..\core\analytics\WebBrowser.h" />
+    <ClInclude Include="..\..\core\config\Config.h" />
     <ClInclude Include="..\..\core\events\EventData.h" />
     <ClInclude Include="..\..\core\events\EventLoop.h" />
     <ClInclude Include="..\..\core\events\EventNames.h" />
@@ -96,6 +100,9 @@
     <ClInclude Include="utils\Conversions.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\core\analytics\Analytics.cpp" />
+    <ClCompile Include="..\..\core\config\ConfigDev.cpp" />
+    <ClCompile Include="..\..\core\config\ConfigProd.cpp" />
     <ClCompile Include="..\..\core\io\fs\exceptions\FileNotFoundException.cpp" />
     <ClCompile Include="..\..\core\io\fs\FileUtils.cpp" />
     <ClCompile Include="..\..\core\io\fs\Require.cpp" />

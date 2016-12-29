@@ -1,3 +1,4 @@
+#ifdef PROD_BUILD
 #include "Config.h"
 
 namespace voicemynews {
@@ -17,3 +18,4 @@ namespace config {
 }
 }
 }
+#endif

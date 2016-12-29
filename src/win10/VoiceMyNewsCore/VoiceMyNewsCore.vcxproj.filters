@@ -32,6 +32,9 @@
     <Filter Include="voice">
       <UniqueIdentifier>{f9304c7d-776a-4f45-94f6-b83865170751}</UniqueIdentifier>
     </Filter>
+    <Filter Include="config">
+      <UniqueIdentifier>{db9fd66b-7444-404a-bc35-28bc3996ad1d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\core\io\fs\Require.cpp">
@@ -48,6 +51,15 @@
     </ClCompile>
     <ClCompile Include="..\..\core\voice\VoiceSupport.cpp">
       <Filter>voice</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\core\analytics\Analytics.cpp">
+      <Filter>analytics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\core\config\ConfigDev.cpp">
+      <Filter>config</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\core\config\ConfigProd.cpp">
+      <Filter>config</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -80,6 +92,12 @@
     </ClInclude>
     <ClInclude Include="..\..\core\voice\VoiceSupport.h">
       <Filter>voice</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\core\analytics\WebBrowser.h">
+      <Filter>analytics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\core\config\Config.h">
+      <Filter>config</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
