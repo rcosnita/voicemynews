@@ -42,6 +42,7 @@ android {
             externalNativeBuild {
                 cmake {
                     arguments "-DPROD_BUILD=true"
+                    cppFlags "-std=c++14 -frtti -fexceptions -DPROD_BUILD"
                     targets "voicemynews-core", "voicemynews-android", "v8-android-libplatform", "v8-android-base", "v8-android-libbase", "v8-android-snapshot"
                 }
             }
@@ -55,6 +56,7 @@ android {
             externalNativeBuild {
                 cmake {
                     arguments "-DDEV_BUILD=true"
+                    cppFlags "-std=c++14 -frtti -fexceptions -DDEV_BUILD"
                     targets "voicemynews-core", "voicemynews-android", "v8-android-libplatform", "v8-android-base", "v8-android-libbase", "v8-android-snapshot", "v8-android-libsampler"
                 }
             }

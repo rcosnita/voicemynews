@@ -1,5 +1,6 @@
 package com.voicemynews.core.bindings.analytics;
 
+import android.app.Activity;
 import android.content.Context;
 import android.webkit.ValueCallback;
 import android.webkit.WebSettings;
@@ -7,6 +8,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.voicemynews.core.bindings.config.Config;
+import com.voicemynews.voicemynews.utils.Tasks;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -68,14 +70,24 @@ public class WebBrowserWrapper {
         final String postMessageJS = String.format("window.postMessage(`%s`, '*')", evtData);
 
         if (browserReady) {
-            this.webBrowser.evaluateJavascript(postMessageJS, new NoOpValueCallback());
+            Tasks.runOnUiThread(new Runnable() {
+                  @Override
+                  public void run() {
+                      webBrowser.evaluateJavascript(postMessageJS, new NoOpValueCallback());
+                  }
+            });
             return;
         }
 
         pendingSendEvents.add(new DelayedSendEvent() {
             @Override
             public void send() {
-                webBrowser.evaluateJavascript(postMessageJS, new NoOpValueCallback());
+                Tasks.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        webBrowser.evaluateJavascript(postMessageJS, new NoOpValueCallback());
+                    }
+                });
             }
         });
     }
