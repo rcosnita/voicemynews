@@ -3,7 +3,7 @@
 #include <memory>
 #include <exception>
 
-using voicemynews::app::android::analytics::WebBrowserBinding;
+using voicemynews::app::android::bindings::analytics::WebBrowserBinding;
 using voicemynews::core::analytics::WebBrowser;
 
 static JavaVM* CurrJavaVM = nullptr;
@@ -34,24 +34,25 @@ JNIEXPORT void JNICALL Java_com_voicemynews_core_bindings_analytics_WebBrowserWr
 namespace voicemynews {
 namespace app {
 namespace android {
+namespace bindings {
 namespace analytics {
-void WebBrowserBinding::LoadContent(std::string webPageContent)
-{
-    JNIEnv* env = nullptr;
+void WebBrowserBinding::LoadContent(std::string webPageContent) {
+    JNIEnv *env = nullptr;
     CurrJavaVM->AttachCurrentThread(&env, nullptr);
     jstring content = env->NewStringUTF(webPageContent.c_str());
 
     env->CallVoidMethod(WebBrowserObjInst, WebBrowserLoadContent, content);
 }
 
-void WebBrowserBinding::SendEvent(std::string evtName, std::string evtData)
-{
-    JNIEnv* env = nullptr;
+void WebBrowserBinding::SendEvent(std::string evtName, std::string evtData) {
+    JNIEnv *env = nullptr;
     CurrJavaVM->AttachCurrentThread(&env, nullptr);
     jstring evtNameVM = env->NewStringUTF(evtName.c_str());
     jstring evtDataVM = env->NewStringUTF(evtData.c_str());
 
-    env->CallVoidMethod(WebBrowserObjInst, WebBrowserSendEvent, evtNameVM, evtDataVM);
+    env->CallVoidMethod(WebBrowserObjInst, WebBrowserSendEvent, evtNameVM,
+                        evtDataVM);
+}
 }
 }
 }
