@@ -45,7 +45,7 @@ void WebBrowserBinding::SendEvent(WebBrowserBinding::String^ evtName, WebBrowser
         return;
     }
 
-    delayedEvt();
+    RunOnUiThread(delayedEvt);
 }
 
 void WebBrowserBinding::OnNavigationCompleted(WebView^ sender, Windows::UI::Xaml::Controls::WebViewNavigationCompletedEventArgs^ args)
@@ -53,10 +53,18 @@ void WebBrowserBinding::OnNavigationCompleted(WebView^ sender, Windows::UI::Xaml
     ready_ = true;
 
     for (DelayedEventExecution^ delayedEvent : delayedEvents_) {
-        delayedEvent();
+        RunOnUiThread(delayedEvent);
     }
 
     delayedEvents_->Clear();
+}
+
+void WebBrowserBinding::RunOnUiThread(DelayedEventExecution^ action)
+{
+    webBrowser_->Dispatcher->RunAsync(Windows::UI::Core::CoreDispatcherPriority::Low,
+        ref new Windows::UI::Core::DispatchedHandler([action]() {
+        action();
+    }));
 }
 
 WebBrowserBindingNative::WebBrowserBindingNative(WebBrowserBinding^ browser)

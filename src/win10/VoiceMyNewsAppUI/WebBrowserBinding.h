@@ -41,6 +41,14 @@ private:
      */
     void OnNavigationCompleted(WebView^ sender, Windows::UI::Xaml::Controls::WebViewNavigationCompletedEventArgs^ args);
 
+    /**
+     * \brief Provides a simple implementation for running actions on ui thread.
+     *
+     * This is mandatory, because analytics events can be generated from various threads and we must dispatch them
+     * to the ui thread.
+     */
+    void RunOnUiThread(DelayedEventExecution^ action);
+
 private:
     WebView^ webBrowser_;
     bool ready_;

@@ -24,7 +24,6 @@ class AnalyticsApp {
             return;
         }
 
-        console.log(evt);
         this._trackingBackend("send", "event", evt.eventCategory, evt.eventAction, evt.eventLabel, evt.eventValue);
     }
 }
