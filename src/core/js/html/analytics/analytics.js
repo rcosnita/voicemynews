@@ -24,10 +24,6 @@ class AnalyticsApp {
             return;
         }
 
-        let url = document.location.href;
-        document.location.href = "http://dev.voicemynews.com";
-
-        debugger;
         this._getTrackingBackend()("send", "event", evt);
     }
 }
