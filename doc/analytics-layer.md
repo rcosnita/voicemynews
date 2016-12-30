@@ -62,8 +62,15 @@ In voicemynews app, we use the following events in order to track our users beha
 
 In the future we are going to add all analytics events in here.
 
+## OS peculiarities
+
+For most platforms (Android / iOS / Amazon) the analytics script is internally composed from local resources. Unfortunately, for windows 10 platform we can not do this because webview API does not provide a loadDataWithUrl API.
+
+In order to overcome this, the web browser binding logic navigates to a remote http resource which is hosted at the value indicated by **Config<Env>.cpp / kWebBaseUrl** property.
+
 # Revisions history
 
 | **Version** | **Date** | **Author** | **Description** |
 |-------------|----------|------------|-----------------|
 | 1.0 | 27.12.2016 | Radu Viorel Cosnita | This revision contains the initial technical specification for analytics layer. |
+| 1.1 | 30.12.2016 | Radu Viorel Cosnita | This revision contains the peculiarities encountered for Win10 implementation. |
