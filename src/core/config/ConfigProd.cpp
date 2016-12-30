@@ -4,7 +4,7 @@
 namespace voicemynews {
 namespace core {
 namespace config {
-    const std::string kWebBaseUrl = "http://prod.voicemynews.com";
+    const std::string kWebBaseUrl = "http://readmy.news/voicemynews/analytics-tracking-prod.html";
 
     const std::string kAnalyticsGaTrackingCode = "<script>\n"
         "  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){\n"
