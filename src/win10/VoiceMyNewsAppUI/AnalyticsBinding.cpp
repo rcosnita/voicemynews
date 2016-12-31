@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "AnalyticsBinding.h"
+#include "analytics/AnalyticsConstants.h"
 #include "analytics/WebBrowser.h"
 #include "events/EventNames.h"
 #include "bindings/events/EventLoopBinding.h"
@@ -81,7 +82,10 @@ void AnalyticsBinding::StartAnalytics()
     auto htmlStd = analyticsBinding->analytics_->LoadAnalyticsHtmlApp(fileUtils);
     webBrowser->LoadContent(htmlStd);
 
-    auto evt = ref new AnalyticsBindingEvent("test", "click", "play video", 1);
+    auto evt = ref new AnalyticsBindingEvent(
+                ConvertStdStrToPlatform(voicemynews::core::analytics::constants::categories::kAppLifecycle),
+                ConvertStdStrToPlatform(voicemynews::core::analytics::constants::actions::kAppStartAction),
+                ConvertStdStrToPlatform(voicemynews::core::analytics::constants::labels::kAppStartLabel), 1);
     analyticsBinding->LogEvent(evt);
 
     auto evtLoop = voicemynews::app::win10::bindings::events::EventLoopBinding::GetInstance();

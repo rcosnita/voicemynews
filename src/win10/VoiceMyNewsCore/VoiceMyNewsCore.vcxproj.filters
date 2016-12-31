@@ -99,5 +99,8 @@
     <ClInclude Include="..\..\core\config\Config.h">
       <Filter>config</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\core\analytics\AnalyticsConstants.h">
+      <Filter>analytics</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

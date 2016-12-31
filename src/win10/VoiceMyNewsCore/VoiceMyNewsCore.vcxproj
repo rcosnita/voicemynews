@@ -87,6 +87,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\core\analytics\Analytics.h" />
+    <ClInclude Include="..\..\core\analytics\AnalyticsConstants.h" />
     <ClInclude Include="..\..\core\analytics\WebBrowser.h" />
     <ClInclude Include="..\..\core\config\Config.h" />
     <ClInclude Include="..\..\core\events\EventData.h" />
