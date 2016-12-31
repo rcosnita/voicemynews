@@ -8,6 +8,7 @@
 "use strict";
 
 const analytics = require("js/analytics/analytics_logic.js").init();
+const AnalyticsConstants = require("js/analytics/analytics_constants");
 const buildEventData = voicemynews.core.events.EventLoopPlatform.buildEvent;
 const eventLoop = voicemynews.core.events.EventLoopPlatform.getInstance();
 const EventNames = require("js/events/event_names");
@@ -23,9 +24,9 @@ eventLoop.emit(EventNames.APP_START, buildEventData(JSON.stringify("{}")));
 
 eventLoop.on(EventNames.ANALYTICS_STARTED, () => {
     analytics.logEvent({
-        eventCategory: "app_cycle",
-        eventAction: "start-js",
-        eventLabel: "JS Business Logic Started",
+        eventCategory: AnalyticsConstants.categories.APP_LIFECYCLE,
+        eventAction: AnalyticsConstants.events.JS_START_ACTION,
+        eventLabel: AnalyticsConstants.labels.JS_START_LABEL,
         eventValue: 1
     });
 });
