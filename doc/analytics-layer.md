@@ -57,8 +57,8 @@ In voicemynews app, we use the following events in order to track our users beha
 
 | **Category** | **Event name** | **Code part** | **Description** |
 | ------------ | -------------- | ------------- | --------------- |
-|**app cycle** | **analytics ui started** | native ui | Event emitted by native ui when the analytics layer started. |
-|**app cycle** | **analytics native started** | native | Event emitted by native code when the analytics layer started. |
+|**app cycle** | **start-native** | native ui | Event emitted by native ui when the analytics layer started. |
+|**app cycle** | **start-js** | native | Event emitted by native code when the analytics layer started. |
 
 In the future we are going to add all analytics events in here.
 
