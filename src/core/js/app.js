@@ -7,6 +7,7 @@
  */
 "use strict";
 
+const analytics = require("js/analytics/analytics_logic.js").init();
 const buildEventData = voicemynews.core.events.EventLoopPlatform.buildEvent;
 const eventLoop = voicemynews.core.events.EventLoopPlatform.getInstance();
 const EventNames = require("js/events/event_names");
@@ -19,6 +20,15 @@ eventLoop.on(EventNames.APP_SHUTDOWN, (evtData) => {
 });
 
 eventLoop.emit(EventNames.APP_START, buildEventData(JSON.stringify("{}")));
+
+eventLoop.on(EventNames.ANALYTICS_STARTED, () => {
+    analytics.logEvent({
+        eventCategory: "app_cycle",
+        eventAction: "start-js",
+        eventLabel: "JS Business Logic Started",
+        eventValue: 1
+    });
+});
 
 const newsProviders = {
     "cnn": new (require("js/news/datasources/cnn_news_datasource").CnnNewsDataSource)(httpClient)

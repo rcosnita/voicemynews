@@ -92,9 +92,14 @@ namespace events {
     const std::string kNewsVoiceReadPlaylistSkip = "js:news:voice:read:playlist:skip";
 
     /**
-     * \brief This event is emitted by the native / js app in order to tell the analytics layer to log the specified event.
+     * \brief This event name is not actually used through event emitter. It is only used to decorate post messages.
      */
     const std::string kAnalyticsLogEvent = "js:analytics:log:event";
+
+    /**
+     * \brief This event is emitted by the native side once the analytics layer started correctly.
+     */
+    const std::string kAnalyticsLayerStarted = "analytics:started";
 }
 }
 }
