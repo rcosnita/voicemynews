@@ -72,11 +72,17 @@ private:
     v8::Context::Scope *contextScope_ = nullptr;
     v8::Persistent<v8::ObjectTemplate> *voicemynewsObj = nullptr;
     v8::Persistent<v8::ObjectTemplate> *voicemynewsCoreObj = nullptr;
+    v8::Persistent<v8::ObjectTemplate> *voicemynewsAnalyticsObj = nullptr;
     v8::Persistent<v8::ObjectTemplate> *voicemynewsEventsObj = nullptr;
     v8::Persistent<v8::ObjectTemplate> *voicemynewsNetworkObj = nullptr;
     v8::Persistent<v8::ObjectTemplate> *voicemynewsVoiceObj = nullptr;
 
 private:
+    /**
+     * \brief Bind the analytics layer to the js engine.
+     */
+    void BindAnalyticsSupport();
+
     /**
      * \brief Binds the namespace which can provide the native requirejs support methods.
      */

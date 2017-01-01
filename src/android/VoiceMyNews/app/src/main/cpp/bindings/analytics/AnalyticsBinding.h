@@ -2,6 +2,24 @@
 #define VOICEMYNEWSANDROID_BINDINGS_ANALYTICS_ANALYTICSBINDING_H_
 
 #include <jni.h>
+#include <v8.h>
+
+namespace voicemynews {
+namespace app {
+namespace android {
+namespace bindings {
+namespace analytics {
+    /**
+     * \brief Provides the logic for binding the analytics layer to the running js vm.
+     *
+     * All objects / methods will be binded under the given analyticsNamespace.
+     */
+    void BindAnalyticsToJs(v8::Isolate* isolate, v8::Persistent<v8::ObjectTemplate>* analyticsNamespace);
+}
+}
+}
+}
+}
 
 #ifdef __cplusplus
 extern "C" {

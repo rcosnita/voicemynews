@@ -13,6 +13,7 @@ include_directories(
 list(APPEND VOICEMYNEWS_TARGET_SOURCES
   ${VOICEMYNEWS_CORE}/analytics/Analytics.h
   ${VOICEMYNEWS_CORE}/analytics/Analytics.cpp
+  ${VOICEMYNEWS_CORE}/analytics/AnalyticsConstants.h
   ${VOICEMYNEWS_CORE}/analytics/WebBrowser.h
   ${VOICEMYNEWS_CORE}/config/Config.h
   ${VOICEMYNEWS_CORE}/events/EventData.h
