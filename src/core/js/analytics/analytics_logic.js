@@ -6,6 +6,8 @@
  * @module voicemynews/js/analytics/analytics
  */
 
+const InvalidArgumentException = require("js/exceptions/invalid_argument").InvalidArgumentException;
+
 /**
  * Provides the implementation for the analytics layer. From js code, we can track various events using the same
  * code as in the native / ui side.
@@ -30,6 +32,26 @@ class Analytics {
      * @param {String} evt.eventValue the event value.
      */
     logEvent(evt) {
+        if (!evt) {
+            throw new InvalidArgumentException("evt");
+        }
+
+        if (!evt.eventCategory) {
+            throw new InvalidArgumentException("evt.eventCategory");
+        }
+
+        if (!evt.eventAction) {
+            throw new InvalidArgumentException("evt.eventAction");
+        }
+
+        if (!evt.eventLabel) {
+            throw new InvalidArgumentException("evt.eventLabel");
+        }
+
+        if (!evt.eventValue) {
+            throw new InvalidArgumentException("evt.eventValue");
+        }
+
         const evtNative = this._analyticsNative.buildEvent(evt.eventCategory, evt.eventAction, evt.eventLabel,
             evt.eventValue);
         this._analyticsNative.logEvent(evtNative);
