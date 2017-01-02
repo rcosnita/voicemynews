@@ -14,7 +14,7 @@ module.exports = {
         JS_START_ACTION: "start-js"
     },
     labels: {
-        APP_START_LABEL: "Native business logic started"
+        APP_START_LABEL: "Native business logic started",
         JS_START_LABEL: "JS Business Logic Started"
     }
 }
