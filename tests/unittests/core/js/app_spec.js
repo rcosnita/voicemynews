@@ -49,6 +49,7 @@ class EventLoopMock {
 describe("Test suites for unit testing app.js implementation.", () => {
     beforeAll(() => {
         this._oldVoiceMyNewsCtx = global.voicemynews;
+        this._analyticsNative = jasmine.createSpyObj("AnalyticsNative", ["logEvent", "buildEvent"]);
         this._eventLoop = new EventLoopMock();
         this._eventLoopPlatform = jasmine.createSpyObj("EventLoopPlatform", ["getInstance", "buildEvent"]);
         this._navigationManagerPlatform = jasmine.createSpyObj("NavigationBinding", ["getInstance"]);
@@ -60,6 +61,11 @@ describe("Test suites for unit testing app.js implementation.", () => {
 
         global.voicemynews = {
             core: {
+                analytics: {
+                    AnalyticsFactory: {
+                        getInstance: () => this._analyticsNative
+                    }
+                },
                 events: {
                     EventLoopPlatform: this._eventLoopPlatform,
                     NavigationManagerPlatform: this._navigationManagerPlatform
@@ -106,5 +112,14 @@ describe("Test suites for unit testing app.js implementation.", () => {
         expect(this._eventLoop.processedEvents.length).toBe(2);
         expect(this._eventLoop.processedEvents[0]).toBe(EventNames.APP_SHUTDOWN)
         expect(this._eventLoop.processedEvents[1]).toBe(EventNames.APP_START);
+
+        const analyticsEvt = {};
+        this._analyticsNative.buildEvent.and.returnValue(analyticsEvt);
+        
+        this._eventLoop.emit(EventNames.ANALYTICS_STARTED, {});
+        this._eventLoop.processEvents();
+        expect(this._analyticsNative.buildEvent)
+            .toHaveBeenCalledWith('app_cycle', 'start-js', 'JS Business Logic Started', 1);
+        expect(this._analyticsNative.logEvent).toHaveBeenCalledWith(analyticsEvt);
     });
 });

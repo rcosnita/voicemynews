@@ -150,5 +150,11 @@ module.exports = Object.freeze({
      * This event is emitted by the business logic in order to tell the native part that the reading skipped an article.
      * @constant
      */
-    NEWS_VOICE_READ_PLAYLIST_SKIPPED: "js:news:voice:read:playlist:skipped"
+    NEWS_VOICE_READ_PLAYLIST_SKIPPED: "js:news:voice:read:playlist:skipped",
+
+    /**
+     * This event is emitted by the native side once the analytics layer started correctly.
+     * @constant
+     */
+    ANALYTICS_STARTED: "analytics:started"
 });

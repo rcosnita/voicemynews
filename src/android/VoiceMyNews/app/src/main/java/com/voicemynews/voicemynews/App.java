@@ -1,14 +1,15 @@
 package com.voicemynews.voicemynews;
 
+import android.app.Activity;
 import android.app.Application;
 
+import com.voicemynews.core.bindings.analytics.Analytics;
 import com.voicemynews.core.bindings.events.EventDataBindingNative;
 import com.voicemynews.core.bindings.events.EventHandler;
 import com.voicemynews.core.bindings.events.EventLoopBindingNative;
 import com.voicemynews.core.bindings.events.EventNames;
 import com.voicemynews.core.bindings.network.HttpClientBinding;
 import com.voicemynews.core.bindings.news.VoiceSupport;
-import com.voicemynews.core.bindings.news.VoiceSupportActions;
 import com.voicemynews.core.bindings.news.VoiceSupportAndroid;
 import com.voicemynews.voicemynews.models.SideMenuState;
 
@@ -22,6 +23,7 @@ public class App extends Application {
     private EventLoopBindingNative eventLoop = null;
     private VoiceSupport voiceSupport = null;
     private Thread v8Thread = null;
+    private Analytics analytics = null;
     private final SideMenuState sideMenuState = new SideMenuState();
 
     static {
@@ -77,6 +79,14 @@ public class App extends Application {
         return sideMenuState;
     }
 
+    public void setAnalytics(Analytics analytics) {
+        this.analytics = analytics;
+    }
+
+    public Analytics getAnalytics() {
+        return this.analytics;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -119,8 +129,8 @@ public class App extends Application {
         v8Thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                HttpClientBinding.initializeNative(new HttpClientBinding());
-                JsApp.startPlatform(eventLoop.getNativeEmitterPtr(), getAssets(), voiceSupport);
+            HttpClientBinding.initializeNative(new HttpClientBinding());
+            JsApp.startPlatform(eventLoop.getNativeEmitterPtr(), getAssets(), voiceSupport);
             }
         });
         v8Thread.setName("V8 JS engine");

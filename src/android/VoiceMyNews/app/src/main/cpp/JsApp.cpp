@@ -2,6 +2,7 @@
 #include "bindings/events/NavigationBinding.h"
 #include "bindings/network/HttpClientBinding.h"
 #include "bindings/news/VoiceBinding.h"
+#include "bindings/analytics/AnalyticsBinding.h"
 
 #include <android/asset_manager_jni.h>
 #include <thread>
@@ -111,6 +112,7 @@ void JsApp::Start()
     Local<ObjectTemplate> global = ObjectTemplate::New(isolate_);
     Local<ObjectTemplate> voicemynewsLocal = ObjectTemplate::New(isolate_);
     Local<ObjectTemplate> voicemynewsCoreLocal = ObjectTemplate::New(isolate_);
+    Local<ObjectTemplate> voicemynewsAnalyticsLocal = ObjectTemplate::New(isolate_);
     Local<ObjectTemplate> voicemynewsEventsLocal = ObjectTemplate::New(isolate_);
     Local<ObjectTemplate> voicemynewsNetworkLocal = ObjectTemplate::New(isolate_);
     Local<ObjectTemplate> voicemynewsVoiceLocal = ObjectTemplate::New(isolate_);
@@ -119,6 +121,7 @@ void JsApp::Start()
     global->Set(isolate_, "voicemynews", voicemynewsLocal);
 
     voicemynewsLocal->Set(isolate_, "core", voicemynewsCoreLocal);
+    voicemynewsCoreLocal->Set(isolate_, "analytics", voicemynewsAnalyticsLocal);
     voicemynewsCoreLocal->Set(isolate_, "events", voicemynewsEventsLocal);
     voicemynewsCoreLocal->Set(isolate_, "network", voicemynewsNetworkLocal);
     voicemynewsCoreLocal->Set(isolate_, "voice", voicemynewsVoiceLocal);
@@ -126,11 +129,13 @@ void JsApp::Start()
     // TODO [rcosnita] cleanup all resources during destruction phase.
     voicemynewsObj = new Persistent<ObjectTemplate>(isolate_, voicemynewsLocal);
     voicemynewsCoreObj = new Persistent<ObjectTemplate>(isolate_, voicemynewsCoreLocal);
+    voicemynewsAnalyticsObj = new Persistent<ObjectTemplate>(isolate_, voicemynewsAnalyticsLocal);
     voicemynewsEventsObj = new Persistent<ObjectTemplate>(isolate_, voicemynewsEventsLocal);
     voicemynewsNetworkObj = new Persistent<ObjectTemplate>(isolate_, voicemynewsNetworkLocal);
     voicemynewsVoiceObj = new Persistent<ObjectTemplate>(isolate_, voicemynewsVoiceLocal);
 
     BindRequireJsNativeSupport();
+    BindAnalyticsSupport();
     BindEventPlatformSupport();
     BindHttpClientSupport();
     BindNavigationManagerSupport();
@@ -151,6 +156,11 @@ void JsApp::BindRequireJsNativeSupport()
 
     requireFactory->Set(isolate_, "getInstance", FunctionTemplate::New(isolate_, voicemynews::app::android::bindings::require::GetRequireInstance));
     voicemynewsCore->Set(isolate_, "RequireFactory", requireFactory);
+}
+
+void JsApp::BindAnalyticsSupport()
+{
+    voicemynews::app::android::bindings::analytics::BindAnalyticsToJs(isolate_, voicemynewsAnalyticsObj);
 }
 
 void JsApp::BindEventPlatformSupport()

@@ -1,16 +1,24 @@
 package com.voicemynews.voicemynews;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.voicemynews.core.bindings.analytics.Analytics;
 import com.voicemynews.core.bindings.events.EventDataBindingNative;
 
 public class AppLoaderActivity extends Activity {
+    private static AppLoaderActivity currentInstance = null;
+
+    public static AppLoaderActivity getCurrentInstance() {
+        return currentInstance;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        currentInstance = this;
         setContentView(R.layout.activity_main);
 
         ((App)getApplicationContext()).setAppStartedListener(new App.OnAppStarted() {
@@ -19,6 +27,7 @@ public class AppLoaderActivity extends Activity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        App.getCurrent().setAnalytics(Analytics.startAnalytics(getApplicationContext()));
                         displayMainUI();
                     }
                 });

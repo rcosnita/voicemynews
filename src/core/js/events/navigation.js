@@ -1,5 +1,5 @@
 /**
- * This module provides the module for navigating to various sections of the app.
+ * This module provides the navigation logic to various sections of the app.
  * @module voicemynews/js/events/navigation
  */
 "use strict";

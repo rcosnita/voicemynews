@@ -18,6 +18,7 @@ using namespace Windows::UI::Xaml::Media;
 using namespace Windows::UI::Xaml::Navigation;
 
 using voicemynews::app::win10::MainPage;
+using voicemynews::app::win10::bindings::analytics::AnalyticsBinding;
 using voicemynews::app::win10::bindings::events::EventDataBinding;
 using voicemynews::app::win10::bindings::events::EventLoopBinding;
 using voicemynews::app::win10::utils::ConvertStdStrToPlatform;
@@ -61,6 +62,11 @@ void App::OnLaunched(Windows::ApplicationModel::Activation::LaunchActivatedEvent
     {
         rootFrame = ref new Frame();
 
+        rootFrame->Dispatcher->RunAsync(Windows::UI::Core::CoreDispatcherPriority::High,
+            ref new Windows::UI::Core::DispatchedHandler([]() {
+            AnalyticsBinding::StartAnalytics();
+        }));
+
         rootFrame->NavigationFailed += ref new Windows::UI::Xaml::Navigation::NavigationFailedEventHandler(this, &App::OnNavigationFailed);
 
         if (e->PreviousExecutionState == ApplicationExecutionState::Terminated)
@@ -93,6 +99,11 @@ void App::OnLaunched(Windows::ApplicationModel::Activation::LaunchActivatedEvent
     }
     else
     {
+        rootFrame->Dispatcher->RunAsync(Windows::UI::Core::CoreDispatcherPriority::High,
+            ref new Windows::UI::Core::DispatchedHandler([]() {
+            AnalyticsBinding::StartAnalytics();
+        }));
+
         if (e->PrelaunchActivated == false)
         {
             if (rootFrame->Content == nullptr)
