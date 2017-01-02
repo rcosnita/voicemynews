@@ -8,7 +8,8 @@
 module.exports = {
     categories: {
         APP_LIFECYCLE: "app cycle",
-        JS_GENIUSNEWS_ONSCREEN: "genius news onscreen"
+        JS_GENIUSNEWS_ONSCREEN: "genius news onscreen",
+        JS_INDIVIDUALNEWS_ONSCREEN: "individual news onscreen"
     },
     events: {
         APP_START_ACTION: "start-native",

@@ -6,10 +6,17 @@ const voiceLogic = require("js/news/voice_logic");
 
 const EventEmitter = require("events").EventEmitter;
 
+const INDIVIDUALNEWS_ONSCREEN_CATEG = "individual news onscreen";
+
 describe("Tests suite for making sure voice reading business logic works as expected.", () => {
     beforeEach(() => {
         this._originalVoicemynews = global.voicemynews;
         this._buildEventData = jasmine.createSpy();
+        this._analyticsLogic = jasmine.createSpyObj("AnalyticsObj", ["logEvent"]);
+        this._logEvt = undefined;
+        this._analyticsLogic.logEvent.and.callFake((evt) => {
+            this._logEvt = evt;
+        });
         this._eventLoop = new EventEmitter();
         this._voiceSupportBuilder = jasmine.createSpy();
         this._voiceSupport = jasmine.createSpyObj("VoiceSupport", ["readText", "readTextSsml", "pause", "resume", "skip"]);
@@ -37,7 +44,7 @@ describe("Tests suite for making sure voice reading business logic works as expe
             }
         };
 
-        this._voiceLogic = new voiceLogic.VoiceLogic(this._eventLoop, this._buildEventData);
+        this._voiceLogic = new voiceLogic.VoiceLogic(this._eventLoop, this._buildEventData, this._analyticsLogic);
         expect(this._voiceSupportBuilder).toHaveBeenCalledWith();
         expect(this._playerNotifications).not.toBe(undefined);
         expect(this._playerNotifications.whenProgress).not.toBe(undefined);
@@ -143,6 +150,11 @@ describe("Tests suite for making sure voice reading business logic works as expe
         expect(this._voiceLogic.pendingParagraphs.length).toBe(newsModel.paragraphs.length);
         expect(JSON.stringify(this._voiceLogic.pendingParagraphs[0])).toBe(JSON.stringify(newsModel.paragraphs[0]));
         expect(JSON.stringify(this._voiceLogic.pendingParagraphs[1])).toBe(JSON.stringify(newsModel.paragraphs[1]));
+        expect(this._logEvt).not.toBe(undefined);
+        expect(this._logEvt.eventCategory).toBe(INDIVIDUALNEWS_ONSCREEN_CATEG);
+        expect(this._logEvt.eventAction).toBe("read-js");
+        expect(this._logEvt.eventLabel).toBe("JS Business Logic Read News");
+        expect(this._logEvt.eventValue).toBe(1);
     });
 
     it("Test read news corrupted event ok.", () => {

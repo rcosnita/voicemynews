@@ -63,6 +63,7 @@ In voicemynews app, we use the following events in order to track our users beha
 | **genius news onscreen** | **pause-js** | js | Event emitted by the js code when user clicks pause in the ui. |
 | **genius news onscreen** | **resume-js** | js | Event emitted by the js code when user clicks resume in the ui. |
 | **genius news onscreen** | **skip-js** | js | Event emitted by the js code when user clicks skip in the ui. |
+| **individual news onscreen** | **read-js** | js | Event emitted by the js code when user clicks read in the individual news ui. |
 
 In the future we are going to add all analytics events in here.
 
