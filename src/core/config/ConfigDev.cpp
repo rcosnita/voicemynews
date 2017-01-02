@@ -4,7 +4,7 @@
 namespace voicemynews {
 namespace core {
 namespace config {
-    const std::string kWebBaseUrl = "http://readmy.news/voicemynews/analytics-tracking-dev.html";
+    const std::string kWebBaseUrl = "http://voicemynews.s3-website-us-east-1.amazonaws.com/tracking/analytics-tracking-dev.html";
 
     const std::string kAnalyticsGaTrackingCode = "<script>\n"
         "  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){\n"
@@ -14,7 +14,6 @@ namespace config {
         "\n"
         "  window.ga_debug = {trace: true};\n"
         "  ga('create', 'UA-84360208-5', 'auto');\n"
-        "  ga('set', 'transport', 'beacon');\n"
         "  ga('set', 'appName', 'VoiceMyNewsDev');\n"
         "  ga('set', 'appVersion', '0.0.1');\n"
         "  console.log('ga initialized ...');\n"
