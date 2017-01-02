@@ -21,8 +21,8 @@
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
       </uap:VisualElements>
       <uap:ApplicationContentUriRules>
-        <uap:Rule Match="http://readmynews.com/voicemynews/analytics-tracking-dev.html" Type="include" WindowsRuntimeAccess="all" />
-        <uap:Rule Match="http://readmynews.com/voicemynews/analytics-tracking-prod.html" Type="include" WindowsRuntimeAccess="all" />
+        <uap:Rule Match="http://voicemynews.s3-website-us-east-1.amazonaws.com/tracking/analytics-tracking-dev.html" Type="include" WindowsRuntimeAccess="all" />
+        <uap:Rule Match="http://voicemynews.s3-website-us-east-1.amazonaws.com/tracking/analytics-tracking-prod.html" Type="include" WindowsRuntimeAccess="all" />
       </uap:ApplicationContentUriRules>
     </Application>
   </Applications>
