@@ -100,6 +100,13 @@ class VoicePlaylistLogic {
 
         const pauseEvt = this._buildEventData("{}");
         this._voiceLogic.pause().then(() => {
+            this._analyticsLogic.logEvent({
+                eventCategory: AnalyticsConstants.categories.JS_GENIUSNEWS_ONSCREEN,
+                eventAction: AnalyticsConstants.events.JS_PAUSE_ACTION,
+                eventLabel: AnalyticsConstants.labels.JS_PAUSE_LABEL,
+                eventValue: 1
+            });
+
             this._eventLoop.emit(EventNames.NEWS_VOICE_READ_PLAYLIST_PAUSED, pauseEvt);
         });
     }
@@ -125,6 +132,13 @@ class VoicePlaylistLogic {
 
         const evt = this._buildEventData("{}");
         this._voiceLogic.resume().then(() => {
+            this._analyticsLogic.logEvent({
+                eventCategory: AnalyticsConstants.categories.JS_GENIUSNEWS_ONSCREEN,
+                eventAction: AnalyticsConstants.events.JS_RESUME_ACTION,
+                eventLabel: AnalyticsConstants.labels.JS_RESUME_LABEL,
+                eventValue: 1
+            });
+
             this._eventLoop.emit(EventNames.NEWS_VOICE_READ_PLAYLIST_RESUMED, evt);
         });
     }
@@ -140,6 +154,13 @@ class VoicePlaylistLogic {
 
         this._voiceLogic.pause().then(() => {
             this._voiceLogic.skip().then(() => {
+                this._analyticsLogic.logEvent({
+                    eventCategory: AnalyticsConstants.categories.JS_GENIUSNEWS_ONSCREEN,
+                    eventAction: AnalyticsConstants.events.JS_SKIP_ACTION,
+                    eventLabel: AnalyticsConstants.labels.JS_SKIP_LABEL,
+                    eventValue: 1
+                });
+
                 const evtData = this._buildEventData("{}");
                 this._eventLoop.emit(EventNames.NEWS_VOICE_READ_PLAYLIST_SKIPPED, evtData);
             });

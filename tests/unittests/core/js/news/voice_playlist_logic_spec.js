@@ -123,6 +123,7 @@ describe("Tests suite for making sure voice playlist logic is correctly implemen
                 return;
             }
             
+            this._logEvt = undefined;
             this._eventLoop.emit(EventNames.NEWS_VOICE_READ_PLAYLIST_PAUSE, JSON.stringify({}));
             process.nextTick(() => {
                 pauseNotifier.resolve();
@@ -133,6 +134,11 @@ describe("Tests suite for making sure voice playlist logic is correctly implemen
             expect(this._buildEventData).toHaveBeenCalledWith("{}");
             expect(pausedEvt).toBe(expectedPausedEvt);
             expect(this._voiceLogic.pause).toHaveBeenCalledWith();
+            expect(this._logEvt).not.toBe(undefined);
+            expect(this._logEvt.eventCategory).toBe(GENIUS_NEWS_ONSCREEN_CATEG);
+            expect(this._logEvt.eventAction).toBe("pause-js");
+            expect(this._logEvt.eventLabel).toBe("JS Business Logic Pause News");
+            expect(this._logEvt.eventValue).toBe(1);
             done();
         });
 
@@ -162,6 +168,11 @@ describe("Tests suite for making sure voice playlist logic is correctly implemen
         this._eventLoop.on(EventNames.NEWS_VOICE_READ_PLAYLIST_RESUMED, (resumedEvt) => {
             expect(this._buildEventData).toHaveBeenCalledWith("{}");
             expect(resumedEvt).toBe(expectedEvt);
+            expect(this._logEvt).not.toBe(undefined);
+            expect(this._logEvt.eventCategory).toBe(GENIUS_NEWS_ONSCREEN_CATEG);
+            expect(this._logEvt.eventAction).toBe("resume-js");
+            expect(this._logEvt.eventLabel).toBe("JS Business Logic Resume News");
+            expect(this._logEvt.eventValue).toBe(1);
             done();
         });
 
@@ -219,6 +230,11 @@ describe("Tests suite for making sure voice playlist logic is correctly implemen
             expect(this._voiceLogic.pause).toHaveBeenCalled();
             expect(this._voiceLogic.skip).toHaveBeenCalled();
             expect(this._voiceLogic.readNews).toHaveBeenCalled();
+            expect(this._logEvt).not.toBe(undefined);
+            expect(this._logEvt.eventCategory).toBe(GENIUS_NEWS_ONSCREEN_CATEG);
+            expect(this._logEvt.eventAction).toBe("skip-js");
+            expect(this._logEvt.eventLabel).toBe("JS Business Logic Skip News");
+            expect(this._logEvt.eventValue).toBe(1);
             done();
         });
 
