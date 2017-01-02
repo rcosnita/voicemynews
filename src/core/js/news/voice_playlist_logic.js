@@ -8,6 +8,7 @@
 "use strict";
 
 const EventNames = require("js/events/event_names");
+const AnalyticsConstants = require("js/analytics/analytics_constants");
 const invalidPlayback = require("js/exceptions/invalid_playback");
 const Q = require("js/third_party/q/q");
 
@@ -19,11 +20,12 @@ const Q = require("js/third_party/q/q");
  * @alias module:voicemynews/js/news/voice_playlist_logic.VoicePlaylistLogic
  */
 class VoicePlaylistLogic {
-    constructor(eventLoop, buildEventData, voiceLogic, newsLogic) {
+    constructor(eventLoop, buildEventData, voiceLogic, newsLogic, analyticsLogic) {
         this._eventLoop = eventLoop;
         this._buildEventData = buildEventData;
         this._voiceLogic = voiceLogic;
         this._newsLogic = newsLogic;
+        this._analyticsLogic = analyticsLogic;
         this._doneNotifier = undefined;
     }
 
@@ -62,6 +64,13 @@ class VoicePlaylistLogic {
         if (this._doneNotifier) {
             throw new invalidPlayback.MultiplePlaybackStreamsNotSupported();
         }
+
+        this._analyticsLogic.logEvent({
+            eventCategory: AnalyticsConstants.categories.JS_GENIUSNEWS_ONSCREEN,
+            eventAction: AnalyticsConstants.events.JS_READ_ACTION,
+            eventLabel: AnalyticsConstants.labels.JS_READ_LABEL,
+            eventValue: 1
+        });
 
         this._doneNotifier = Q.defer();
         const articleLoaders = [];
@@ -160,8 +169,9 @@ class VoicePlaylistLogic {
 
 module.exports = {
     VoicePlaylistLogic: VoicePlaylistLogic,
-    init: (eventLoop, buildEventData, voiceLogic, newsLogic) => {
-        const voicePlaylistLogic = new VoicePlaylistLogic(eventLoop, buildEventData, voiceLogic, newsLogic);
+    init: (eventLoop, buildEventData, voiceLogic, newsLogic, analyticsLogic) => {
+        const voicePlaylistLogic = new VoicePlaylistLogic(eventLoop, buildEventData, voiceLogic, newsLogic,
+            analyticsLogic);
         voicePlaylistLogic.init();
         return voicePlaylistLogic;
     }

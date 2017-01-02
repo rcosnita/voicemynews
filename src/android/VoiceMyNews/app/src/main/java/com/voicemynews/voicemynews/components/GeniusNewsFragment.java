@@ -136,10 +136,10 @@ public class GeniusNewsFragment extends Fragment implements AdapterView.OnItemCl
         final EventDataBindingNative evt =
                 EventDataBindingNative.getInstanceNative(evtData.toString());
 
-        wireButtonSendEvent(btnRead, "js:news:voice:read:playlist", evt);
-        wireButtonSendEvent(btnSkip, "js:news:voice:read:playlist:skip", evt);
-        wireButtonSendEvent(btnPause, "js:news:voice:read:playlist:pause", evt);
-        wireButtonSendEvent(btnResume, "js:news:voice:read:playlist:resume", evt);
+        wireButtonSendEvent(btnRead, EventNames.kNewsVoiceReadPlaylist, evt);
+        wireButtonSendEvent(btnSkip, EventNames.kNewsVoiceReadPlaylistSkip, evt);
+        wireButtonSendEvent(btnPause, EventNames.kNewsVoiceReadPlaylistPause, evt);
+        wireButtonSendEvent(btnResume, EventNames.kNewsVoiceReadPlaylistResume, evt);
     }
 
     /**

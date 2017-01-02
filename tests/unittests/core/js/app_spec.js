@@ -119,7 +119,7 @@ describe("Test suites for unit testing app.js implementation.", () => {
         this._eventLoop.emit(EventNames.ANALYTICS_STARTED, {});
         this._eventLoop.processEvents();
         expect(this._analyticsNative.buildEvent)
-            .toHaveBeenCalledWith('app_cycle', 'start-js', 'JS Business Logic Started', 1);
+            .toHaveBeenCalledWith('app cycle', 'start-js', 'JS Business Logic Started', 1);
         expect(this._analyticsNative.logEvent).toHaveBeenCalledWith(analyticsEvt);
     });
 });

@@ -41,7 +41,8 @@ const preferencesLogic = require("js/users/preferences_logic").init(eventLoop, b
 categoriesLogic.preferencesManager = preferencesLogic;
 const newsLogic = require("js/news/news_logic").init(eventLoop, buildEventData, newsProviders);
 const voiceLogic = require("js/news/voice_logic").init(eventLoop, buildEventData);
-const voicePlaylistLogic = require("js/news/voice_playlist_logic").init(eventLoop, buildEventData, voiceLogic, newsLogic);
+const voicePlaylistLogic = require("js/news/voice_playlist_logic").init(eventLoop, buildEventData, voiceLogic,
+    newsLogic, analytics);
 
 while (isRunning) {
     eventLoop.processEvents();

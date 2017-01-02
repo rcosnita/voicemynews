@@ -58,7 +58,11 @@ In voicemynews app, we use the following events in order to track our users beha
 | **Category** | **Event name** | **Code part** | **Description** |
 | ------------ | -------------- | ------------- | --------------- |
 |**app cycle** | **start-native** | native ui | Event emitted by native ui when the analytics layer started. |
-|**app cycle** | **start-js** | native | Event emitted by native code when the analytics layer started. |
+|**app cycle** | **start-js** | js | Event emitted by native code when the analytics layer started. |
+| **genius news onscreen** | **read-js** | js | Event emitted by the js code when user clicks play in the ui. |
+| **genius news onscreen** | **pause-js** | js | Event emitted by the js code when user clicks pause in the ui. |
+| **genius news onscreen** | **resume-js** | js | Event emitted by the js code when user clicks resume in the ui. |
+| **genius news onscreen** | **skip-js** | js | Event emitted by the js code when user clicks skip in the ui. |
 
 In the future we are going to add all analytics events in here.
 

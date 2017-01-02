@@ -1,7 +1,7 @@
 {
     "build_systems": [{
         "name": "voicemynews npm test",
-        "cmd": ["npm", "test"],
+        "cmd": ["npm test"],
         "selector": "source.js",
         "shell": true,
         "working_dir": "${project_path}"
