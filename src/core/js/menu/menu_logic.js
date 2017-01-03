@@ -31,8 +31,8 @@ class MenuLogic {
      */
     init() {
         this._eventLoop.on(EventNames.APP_NAVIGATION_MENU_LOAD, () => this._loadMenu());
-        this._eventLoop.on(EventNames.MENUITEMS_OPENPREFERENCES, (evt) => this._handleOpenPreferences(evt));
-        this._eventLoop.on(EventNames.MENUITEMS_OPENGENIUS, (evt) => this._handleOpenGenius(evt));
+        this._eventLoop.on(EventNames.MENUITEMS_OPENPREFERENCES, (evt) => this._handleOpenPreferences(evt.evtData));
+        this._eventLoop.on(EventNames.MENUITEMS_OPENGENIUS, (evt) => this._handleOpenGenius(evt.evtData));
     }
 
     /**

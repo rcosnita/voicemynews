@@ -1,5 +1,8 @@
 (function() {
 
+var SCREEN_EVENT_TYPE = 1;
+var CUSTOM_EVENT_TYPE = 2;
+
 /**
  * @class
  * Provides the js code which can log events to the analytics backend. When it is instantiated,
@@ -27,7 +30,18 @@ AnalyticsApp.prototype._handleMessage = function(evt) {
         return;
     }
 
-    this._getTrackingBackend()("send", "event", evt);
+    switch(evt["custom-eventType"]) {
+        case CUSTOM_EVENT_TYPE:
+            this._getTrackingBackend()("send", "event", evt);
+            break;
+
+        case SCREEN_EVENT_TYPE:
+            console.log(evt);
+            this._getTrackingBackend()("send", "screenview", {
+                screenName: evt.eventCategory
+            });
+            break;
+    }
 }
 
 return new AnalyticsApp(window, ["js:analytics:log:event"], function() { return ga; });

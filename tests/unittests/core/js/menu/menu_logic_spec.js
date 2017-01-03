@@ -66,14 +66,14 @@ describe("This tests suite ensures menu logic business logic works as expected."
 
     it("Open preferences ok.", () => {
         const preferencesDesc = this._menuContentObj[0];
-        this._eventLoop.emit(EventNames.MENUITEMS_OPENPREFERENCES, JSON.stringify(preferencesDesc));
+        this._eventLoop.emit(EventNames.MENUITEMS_OPENPREFERENCES, {evtData: JSON.stringify(preferencesDesc)});
         expect(this._analyticsLogic.logEvent).toHaveBeenCalledWith({"screenName": preferencesDesc.data.screenName});
         expect(this._navigationManager.navigateTo).toHaveBeenCalledWith(EventNames.MENUITEMS_OPENPREFERENCES);
     });
 
     it("Open genius news ok.", () => {
         const geniusNewsDesc = this._menuContentObj[1];
-        this._eventLoop.emit(EventNames.MENUITEMS_OPENGENIUS, JSON.stringify(geniusNewsDesc));
+        this._eventLoop.emit(EventNames.MENUITEMS_OPENGENIUS, {evtData: JSON.stringify(geniusNewsDesc)});
         expect(this._analyticsLogic.logEvent).toHaveBeenCalledWith({"screenName": geniusNewsDesc.data.screenName});
         expect(this._navigationManager.navigateTo).toHaveBeenCalledWith(EventNames.MENUITEMS_OPENGENIUS);
     });

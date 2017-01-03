@@ -66,7 +66,7 @@ class Analytics {
             }
         }
 
-        const evtNative = this._analyticsNative.buildEvent(CUSTOM_EVENT_TYPE, evt.eventCategory, evt.eventAction, evt.eventLabel,
+        const evtNative = this._analyticsNative.buildEvent(evtType, evt.eventCategory, evt.eventAction, evt.eventLabel,
             evt.eventValue);
         this._analyticsNative.logEvent(evtNative);
     }
