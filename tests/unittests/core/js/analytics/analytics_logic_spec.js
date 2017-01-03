@@ -125,4 +125,54 @@ describe("analytics/analytics_logic tests suite.", () => {
 
         expect(caughtErr).toBe(err);
     });
+
+    it("logEvent screen tracking works as expected.", () => {
+        const evt = {screenName: "my screen"};
+        const nativeEvt = {};
+
+        this._analyticsNative.buildEvent.and.returnValue(nativeEvt);
+
+        this._analyticsInst.logEvent(evt);
+
+        expect(this._analyticsNative.buildEvent).toHaveBeenCalledWith(1, evt.screenName, "", "", 0);
+        expect(this._analyticsNative.logEvent).toHaveBeenCalledWith(nativeEvt);
+    });
+
+    it("logEvent - buildEvent unexpected exception bubbled up for screen tracking.", () => {
+        const err = new Error();
+        let caughtErr;
+
+        this._analyticsNative.buildEvent.and.callFake(() => {
+            throw err;
+        });
+
+        try {
+            this._analyticsInst.logEvent({
+                screenName: "my screen"
+            });
+        } catch (ex) {
+            caughtErr = ex;
+        }
+
+        expect(caughtErr).toBe(err);
+    });
+
+    it("logEvent - logEvent unexpected exception bubbled up for screen tracking.", () => {
+        const err = new Error();
+        let caughtErr;
+
+        this._analyticsNative.logEvent.and.callFake(() => {
+            throw err;
+        });
+
+        try {
+            this._analyticsInst.logEvent({
+                screenName: "my screen"
+            });
+        } catch (ex) {
+            caughtErr = ex;
+        }
+
+        expect(caughtErr).toBe(err);
+    });
 });
