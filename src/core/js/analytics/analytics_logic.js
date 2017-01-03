@@ -8,6 +8,9 @@
 
 const InvalidArgumentException = require("js/exceptions/invalid_argument").InvalidArgumentException;
 
+const SCREEN_EVENT_TYPE = 1;
+const CUSTOM_EVENT_TYPE = 2;
+
 /**
  * Provides the implementation for the analytics layer. From js code, we can track various events using the same
  * code as in the native / ui side.
@@ -52,7 +55,7 @@ class Analytics {
             throw new InvalidArgumentException("evt.eventValue");
         }
 
-        const evtNative = this._analyticsNative.buildEvent(evt.eventCategory, evt.eventAction, evt.eventLabel,
+        const evtNative = this._analyticsNative.buildEvent(CUSTOM_EVENT_TYPE, evt.eventCategory, evt.eventAction, evt.eventLabel,
             evt.eventValue);
         this._analyticsNative.logEvent(evtNative);
     }

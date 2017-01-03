@@ -45,7 +45,7 @@ In voicemynews app, we use the following categories in order to track our users 
 | **Category** | **Description** |
 | ------------ | --------------- |
 | **app cycle** | Contains all events related to application lifecycle. |
-| **app navigation** | Contains all events related to application navigation. |
+| **app navigation** | Contains all events related to application navigation. This must be reported as screen navigation events if the tracking backend has such a concept. |
 | **individual news onscreen** | Contains all events related to individual news on screen events (e.g reading, scrolling, etc ...). Audio related events are not included in here. |
 | **individual news audio** | Contains all events related to voice support for individual news. |
 | **genius news onscreen** | Contains all events related to genius news on screen events (e.g reading, scrolling, etc ...). Audio related events are not included in here. |
@@ -64,6 +64,8 @@ In voicemynews app, we use the following events in order to track our users beha
 | **genius news onscreen** | **resume-js** | js | Event emitted by the js code when user clicks resume in the ui. |
 | **genius news onscreen** | **skip-js** | js | Event emitted by the js code when user clicks skip in the ui. |
 | **individual news onscreen** | **read-js** | js | Event emitted by the js code when user clicks read in the individual news ui. |
+| **app navigation** | **genius news** | js | Event emitted by the js side whenever user navigates to the genius news page of the app. |
+| **app navigation** | **preferences** | js | Event emitted by the js side whenever user navigates to the preferences page of the app. |
 
 In the future we are going to add all analytics events in here.
 

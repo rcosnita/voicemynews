@@ -10,6 +10,15 @@ namespace voicemynews {
 namespace core {
 namespace analytics {
 /**
+ * \brief Provides all types of analytics events we currently support in voicemynews.
+ */
+enum class AnalyticsEventTypeEnum : int
+{
+    ScreenEvent = 1,
+    CustomEvent = 2
+};
+
+/**
  * \brief Provides the model for an analytics event. It is compliant with the analytics-layer spec.
  */
 class AnalyticsEvent
@@ -26,6 +35,8 @@ public:
 
     int EventValue() const;
 
+    virtual AnalyticsEventTypeEnum EventType() const;
+
     /**
      * \brief Builds a json string out of the current event.
      */
@@ -36,6 +47,17 @@ private:
     std::string eventAction_;
     std::string eventLabel_;
     int eventValue_;
+};
+
+/**
+ * \brief Provides the screen event which is going to be used for tracking screen transitions.
+ */
+class AnalyticsScreenEvent : public AnalyticsEvent
+{
+public:
+    AnalyticsScreenEvent(std::string screenName);
+
+    AnalyticsEventTypeEnum EventType() const override;
 };
 
 /**

@@ -35,7 +35,7 @@ describe("analytics/analytics_logic tests suite.", () => {
         this._analyticsNative.buildEvent.and.returnValue(evtNative);
 
         this._analyticsInst.logEvent(evt);
-        expect(this._analyticsNative.buildEvent).toHaveBeenCalledWith(evt.eventCategory, evt.eventAction, evt.eventLabel,
+        expect(this._analyticsNative.buildEvent).toHaveBeenCalledWith(2, evt.eventCategory, evt.eventAction, evt.eventLabel,
             evt.eventValue);
         expect(this._analyticsNative.logEvent).toHaveBeenCalledWith(evtNative);
     });

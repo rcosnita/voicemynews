@@ -38,6 +38,11 @@ int AnalyticsEvent::EventValue() const
     return eventValue_;
 }
 
+AnalyticsEventTypeEnum AnalyticsEvent::EventType() const
+{
+    return AnalyticsEventTypeEnum::CustomEvent;
+}
+
 std::string AnalyticsEvent::ToJson() const
 {
     std::ostringstream json;
@@ -45,6 +50,7 @@ std::string AnalyticsEvent::ToJson() const
     json << "\"eventAction\": \"" << EventAction() << "\",";
     json << "\"eventLabel\": \"" << EventLabel() << "\",";
     json << "\"eventValue\": " << EventValue() << ",";
+    json << "\"custom-eventType\": " << static_cast<int>(EventType()) << ",";
     json << "\"custom-eventName\": \"" << kAnalyticsLogEvent << "\"";
     json << "}";
 
@@ -54,6 +60,16 @@ std::string AnalyticsEvent::ToJson() const
 Analytics::Analytics(std::shared_ptr<WebBrowser> webBrowser)
     : webBrowser_(webBrowser)
 {
+}
+
+AnalyticsScreenEvent::AnalyticsScreenEvent(std::string screenName)
+    : AnalyticsEvent(screenName, "", "", 0)
+{
+}
+
+AnalyticsEventTypeEnum AnalyticsScreenEvent::EventType() const
+{
+    return AnalyticsEventTypeEnum::ScreenEvent;
 }
 
 std::string Analytics::LoadAnalyticsHtmlApp(voicemynews::core::io::fs::FileUtils& fileUtils)
