@@ -32,27 +32,38 @@ class Analytics {
      * @param {String} evt.eventCategory the event category.
      * @param {String} evt.eventAction the event action.
      * @param {String} evt.eventLabel the event label.
-     * @param {String} evt.eventValue the event value.
+     * @param {Number} evt.eventValue the event value.
+     * @param {String} evt.screenName (optional) the screen name we want to track. If this is specified all other properties are optional.
      */
     logEvent(evt) {
+        let evtType = CUSTOM_EVENT_TYPE;
+
         if (!evt) {
             throw new InvalidArgumentException("evt");
         }
 
-        if (!evt.eventCategory) {
-            throw new InvalidArgumentException("evt.eventCategory");
-        }
+        if (evt.screenName) {
+            evtType = SCREEN_EVENT_TYPE;
+            evt.eventCategory = evt.screenName;
+            evt.eventAction = "";
+            evt.eventLabel = "";
+            evt.eventValue = 0;
+        } else {
+            if (!evt.eventCategory) {
+                throw new InvalidArgumentException("evt.eventCategory");
+            }
 
-        if (!evt.eventAction) {
-            throw new InvalidArgumentException("evt.eventAction");
-        }
+            if (!evt.eventAction) {
+                throw new InvalidArgumentException("evt.eventAction");
+            }
 
-        if (!evt.eventLabel) {
-            throw new InvalidArgumentException("evt.eventLabel");
-        }
+            if (!evt.eventLabel) {
+                throw new InvalidArgumentException("evt.eventLabel");
+            }
 
-        if (!evt.eventValue) {
-            throw new InvalidArgumentException("evt.eventValue");
+            if (!evt.eventValue) {
+                throw new InvalidArgumentException("evt.eventValue");
+            }
         }
 
         const evtNative = this._analyticsNative.buildEvent(CUSTOM_EVENT_TYPE, evt.eventCategory, evt.eventAction, evt.eventLabel,

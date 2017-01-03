@@ -35,7 +35,7 @@ const newsProviders = {
     "cnn": new (require("js/news/datasources/cnn_news_datasource").CnnNewsDataSource)(httpClient)
 }
 
-require("js/menu/menu_logic").init(eventLoop, buildEventData, new NavigationManager(undefined, buildEventData));
+require("js/menu/menu_logic").init(eventLoop, buildEventData, new NavigationManager(undefined, buildEventData), analytics);
 const categoriesLogic = require("js/news/categories_logic").init(eventLoop, buildEventData);
 const preferencesLogic = require("js/users/preferences_logic").init(eventLoop, buildEventData, categoriesLogic);
 categoriesLogic.preferencesManager = preferencesLogic;
