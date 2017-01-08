@@ -36,7 +36,6 @@ AnalyticsApp.prototype._handleMessage = function(evt) {
             break;
 
         case SCREEN_EVENT_TYPE:
-            console.log(evt);
             this._getTrackingBackend()("send", "screenview", {
                 screenName: evt.eventCategory
             });
