@@ -7,14 +7,22 @@ const newsModel = require("js/news/news_datasource");
 const Q = require("js/third_party/q/q");
 const VoicePlaylistLogic = require("js/news/voice_playlist_logic");
 
+const GENIUS_NEWS_ONSCREEN_CATEG = "genius news onscreen";
+
 describe("Tests suite for making sure voice playlist logic is correctly implemented.", () => {
     beforeEach(() => {
         this._eventLoop = new EventEmitter();
         this._buildEventData = jasmine.createSpy();
+        this._analyticsLogic = jasmine.createSpyObj("AnalyticsLoigc", ["logEvent"]);
+        this._logEvt = undefined;
+        this._analyticsLogic.logEvent.and.callFake((evt) => {
+            this._logEvt = evt;
+        });
+
         this._voiceLogic = jasmine.createSpyObj("VoiceLogic", ["readNews", "pause", "resume", "skip"]);
         this._newsLogic = jasmine.createSpyObj("NewsLogic", ["fetchNewsByUrl"]);
         this._playlistLogic = VoicePlaylistLogic.init(this._eventLoop, this._buildEventData, this._voiceLogic,
-            this._newsLogic);
+            this._newsLogic, this._analyticsLogic);
         this._sampleEvtData = {
             "evtData": {
                 "news": [{
@@ -74,6 +82,11 @@ describe("Tests suite for making sure voice playlist logic is correctly implemen
         this._playlistLogic.doneNotifier.then(() => {
             expect(this._voiceLogic.readNews).toHaveBeenCalledWith(newsModel2);
             expect(this._playlistLogic.doneNotifier).toBe(undefined);
+            expect(this._logEvt).not.toBe(undefined);
+            expect(this._logEvt.eventCategory).toBe(GENIUS_NEWS_ONSCREEN_CATEG);
+            expect(this._logEvt.eventAction).toBe("read-js");
+            expect(this._logEvt.eventLabel).toBe("JS Business Logic Read News");
+            expect(this._logEvt.eventValue).toBe(1);
             done();
         });
     });
@@ -81,14 +94,19 @@ describe("Tests suite for making sure voice playlist logic is correctly implemen
     it("Read news while play in progress fails.", () => {
         const evtData = this._sampleEvtData;
         const evt = {"evtData": JSON.stringify(evtData.evtData)};
+        let caughtErr;
         this._eventLoop.emit(EventNames.NEWS_VOICE_READ_PLAYLIST, evt);
 
         try {
             this._eventLoop.emit(EventNames.NEWS_VOICE_READ_PLAYLIST, evt);
-            expect(true).toBeFalsy("Method should have raised an exception ...");
+
         } catch(err) {
-            expect(err instanceof invalidPlayback.MultiplePlaybackStreamsNotSupported).toBeTruthy();
+            caughtErr = err;
         }
+
+        expect(caughtErr instanceof invalidPlayback.MultiplePlaybackStreamsNotSupported).toBeTruthy();
+        expect(this._logEvt).not.toBe(undefined);
+        expect(this._analyticsLogic.logEvent).toHaveBeenCalledTimes(1);
     });
 
     it("Pause news while play in progress ok.", (done) => {
@@ -105,6 +123,7 @@ describe("Tests suite for making sure voice playlist logic is correctly implemen
                 return;
             }
             
+            this._logEvt = undefined;
             this._eventLoop.emit(EventNames.NEWS_VOICE_READ_PLAYLIST_PAUSE, JSON.stringify({}));
             process.nextTick(() => {
                 pauseNotifier.resolve();
@@ -115,6 +134,11 @@ describe("Tests suite for making sure voice playlist logic is correctly implemen
             expect(this._buildEventData).toHaveBeenCalledWith("{}");
             expect(pausedEvt).toBe(expectedPausedEvt);
             expect(this._voiceLogic.pause).toHaveBeenCalledWith();
+            expect(this._logEvt).not.toBe(undefined);
+            expect(this._logEvt.eventCategory).toBe(GENIUS_NEWS_ONSCREEN_CATEG);
+            expect(this._logEvt.eventAction).toBe("pause-js");
+            expect(this._logEvt.eventLabel).toBe("JS Business Logic Pause News");
+            expect(this._logEvt.eventValue).toBe(1);
             done();
         });
 
@@ -144,6 +168,11 @@ describe("Tests suite for making sure voice playlist logic is correctly implemen
         this._eventLoop.on(EventNames.NEWS_VOICE_READ_PLAYLIST_RESUMED, (resumedEvt) => {
             expect(this._buildEventData).toHaveBeenCalledWith("{}");
             expect(resumedEvt).toBe(expectedEvt);
+            expect(this._logEvt).not.toBe(undefined);
+            expect(this._logEvt.eventCategory).toBe(GENIUS_NEWS_ONSCREEN_CATEG);
+            expect(this._logEvt.eventAction).toBe("resume-js");
+            expect(this._logEvt.eventLabel).toBe("JS Business Logic Resume News");
+            expect(this._logEvt.eventValue).toBe(1);
             done();
         });
 
@@ -201,6 +230,11 @@ describe("Tests suite for making sure voice playlist logic is correctly implemen
             expect(this._voiceLogic.pause).toHaveBeenCalled();
             expect(this._voiceLogic.skip).toHaveBeenCalled();
             expect(this._voiceLogic.readNews).toHaveBeenCalled();
+            expect(this._logEvt).not.toBe(undefined);
+            expect(this._logEvt.eventCategory).toBe(GENIUS_NEWS_ONSCREEN_CATEG);
+            expect(this._logEvt.eventAction).toBe("skip-js");
+            expect(this._logEvt.eventLabel).toBe("JS Business Logic Skip News");
+            expect(this._logEvt.eventValue).toBe(1);
             done();
         });
 

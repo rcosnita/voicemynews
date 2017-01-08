@@ -67,13 +67,10 @@
     <ClCompile Include="converters\ParagraphSubHeadingConverter.cpp">
       <Filter>converters</Filter>
     </ClCompile>
-    <ClCompile Include="WebBrowserBinding.h">
+    <ClCompile Include="bindings\analytics\AnalyticsBinding.cpp">
       <Filter>bindings\analytics</Filter>
     </ClCompile>
-    <ClCompile Include="WebBrowserBinding.cpp">
-      <Filter>bindings\analytics</Filter>
-    </ClCompile>
-    <ClCompile Include="AnalyticsBinding.cpp">
+    <ClCompile Include="bindings\analytics\WebBrowserBinding.cpp">
       <Filter>bindings\analytics</Filter>
     </ClCompile>
   </ItemGroup>
@@ -114,7 +111,10 @@
     <ClInclude Include="converters\ParagraphSubHeadingConverter.h">
       <Filter>converters</Filter>
     </ClInclude>
-    <ClInclude Include="AnalyticsBinding.h">
+    <ClInclude Include="bindings\analytics\AnalyticsBinding.h">
+      <Filter>bindings\analytics</Filter>
+    </ClInclude>
+    <ClInclude Include="bindings\analytics\WebBrowserBinding.h">
       <Filter>bindings\analytics</Filter>
     </ClInclude>
   </ItemGroup>

@@ -35,13 +35,14 @@ const newsProviders = {
     "cnn": new (require("js/news/datasources/cnn_news_datasource").CnnNewsDataSource)(httpClient)
 }
 
-require("js/menu/menu_logic").init(eventLoop, buildEventData, new NavigationManager(undefined, buildEventData));
+require("js/menu/menu_logic").init(eventLoop, buildEventData, new NavigationManager(undefined, buildEventData), analytics);
 const categoriesLogic = require("js/news/categories_logic").init(eventLoop, buildEventData);
 const preferencesLogic = require("js/users/preferences_logic").init(eventLoop, buildEventData, categoriesLogic);
 categoriesLogic.preferencesManager = preferencesLogic;
 const newsLogic = require("js/news/news_logic").init(eventLoop, buildEventData, newsProviders);
-const voiceLogic = require("js/news/voice_logic").init(eventLoop, buildEventData);
-const voicePlaylistLogic = require("js/news/voice_playlist_logic").init(eventLoop, buildEventData, voiceLogic, newsLogic);
+const voiceLogic = require("js/news/voice_logic").init(eventLoop, buildEventData, analytics);
+const voicePlaylistLogic = require("js/news/voice_playlist_logic").init(eventLoop, buildEventData, voiceLogic,
+    newsLogic, analytics);
 
 while (isRunning) {
     eventLoop.processEvents();

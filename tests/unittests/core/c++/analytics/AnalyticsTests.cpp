@@ -8,6 +8,7 @@
 
 using voicemynews::core::analytics::Analytics;
 using voicemynews::core::analytics::AnalyticsEvent;
+using voicemynews::core::analytics::AnalyticsScreenEvent;
 using voicemynews::core::analytics::WebBrowser;
 
 using voicemynews::core::events::kAnalyticsLogEvent;
@@ -64,10 +65,28 @@ TEST_F(AnalyticsTest, AnalyticsLogEventOk)
     analyticsInstance->LogEvent(evt);
 }
 
+TEST_F(AnalyticsTest, AnalyticsLogScreenEventOk)
+{
+    AnalyticsScreenEvent evt("customScreen");
+    auto evtData = evt.ToJson();
+    EXPECT_CALL(*webBrowser, SendEvent(kAnalyticsLogEvent, evtData));
+
+    analyticsInstance->LogEvent(evt);
+}
+
 TEST_F(AnalyticsLogEventTest, ToJsonOk)
 {
     AnalyticsEvent evt("category", "action", "label", 20);
-    std::string expectedJson = "{\"eventCategory\": \"category\",\"eventAction\": \"action\",\"eventLabel\": \"label\",\"eventValue\": 20,\"custom-eventName\": \"js:analytics:log:event\"}";
+    std::string expectedJson = "{\"eventCategory\": \"category\",\"eventAction\": \"action\",\"eventLabel\": \"label\",\"eventValue\": 20,\"custom-eventType\": 2,\"custom-eventName\": \"js:analytics:log:event\"}";
+    auto json = evt.ToJson();
+
+    EXPECT_EQ(expectedJson, json);
+}
+
+TEST_F(AnalyticsLogEventTest, ToJsonScreenEventOk)
+{
+    AnalyticsScreenEvent evt("customScreen");
+    std::string expectedJson = "{\"eventCategory\": \"customScreen\",\"eventAction\": \"\",\"eventLabel\": \"\",\"eventValue\": 0,\"custom-eventType\": 1,\"custom-eventName\": \"js:analytics:log:event\"}";
     auto json = evt.ToJson();
 
     EXPECT_EQ(expectedJson, json);

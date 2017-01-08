@@ -8,6 +8,7 @@
 "use strict";
 
 const EventNames = require("js/events/event_names");
+const AnalyticsConstants = require("js/analytics/analytics_constants");
 const invalidPlayback = require("js/exceptions/invalid_playback");
 const NotImplementedMethodException = require("js/exceptions/notimplemented").NotImplementedMethodException;
 const Q = require("js/third_party/q/q");
@@ -19,9 +20,10 @@ const Q = require("js/third_party/q/q");
  * @alias module:voicemynews/js/news/voice_logic.VoiceLogic
  */
 class VoiceLogic {
-    constructor(eventLoop, buildEventData) {
+    constructor(eventLoop, buildEventData, analyticsLogic) {
         this._eventLoop = eventLoop;
         this._buildEventData = buildEventData;
+        this._analyticsLogic = analyticsLogic;
         this._voiceSupport = voicemynews.core.voice.VoiceSupport.getInstance();
         this._remainingParagraphs = [];
         this._playerNotifications = voicemynews.core.voice.VoiceSupport.getNotificationsInstance(
@@ -166,6 +168,13 @@ class VoiceLogic {
             return;
         }
 
+        this._analyticsLogic.logEvent({
+            eventCategory: AnalyticsConstants.categories.JS_INDIVIDUALNEWS_ONSCREEN,
+            eventAction: AnalyticsConstants.events.JS_READ_ACTION,
+            eventLabel: AnalyticsConstants.labels.JS_READ_LABEL,
+            eventValue: 1
+        });
+
         const newsModel = JSON.parse(evt.evtData);
         this.readNews(newsModel);
     }
@@ -209,8 +218,8 @@ class VoiceLogic {
 
 module.exports = {
     VoiceLogic: VoiceLogic,
-    init: (eventLoop, buildEventData) => {
-        let voiceLogic = new VoiceLogic(eventLoop, buildEventData);
+    init: (eventLoop, buildEventData, analyticsLogic) => {
+        let voiceLogic = new VoiceLogic(eventLoop, buildEventData, analyticsLogic);
         voiceLogic.init();
         return voiceLogic;
     }

@@ -3,13 +3,15 @@
     "label": "Preferences",
     "type": "item",
     "data": {
-        "evtName": "js:menuitems:openPreferences"
+        "evtName": "js:menuitems:openPreferences",
+        "screenName": "preferences"
     }
 }, {
     "icon": "/Assets/icons/menuitems/genius.png",
     "label": "Genius news",
     "type": "item",
     "data": {
-        "evtName": "js:menuitems:openGenius"
+        "evtName": "js:menuitems:openGenius",
+        "screenName": "genius news"
     }
 }]

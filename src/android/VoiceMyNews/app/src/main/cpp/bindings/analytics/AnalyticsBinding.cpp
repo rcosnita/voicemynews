@@ -13,6 +13,8 @@ using voicemynews::app::android::utils::DataWrapper;
 using voicemynews::core::io::fs::FileUtilsPlatform;
 using voicemynews::core::analytics::Analytics;
 using voicemynews::core::analytics::AnalyticsEvent;
+using voicemynews::core::analytics::AnalyticsEventTypeEnum;
+using voicemynews::core::analytics::AnalyticsScreenEvent;
 using voicemynews::core::analytics::WebBrowser;
 
 static Analytics* AnalyticsInstance = nullptr;
@@ -54,16 +56,28 @@ static void BuildAnalyticsNativeEvent(const FunctionCallbackInfo<Value>& info)
     // TODO [rcosnita] validate input parameters.
     auto isolate = info.GetIsolate();
 
-    auto evtCategory = std::string(*String::Utf8Value(info[0]->ToString()));
-    auto evtAction = std::string(*String::Utf8Value(info[1]->ToString()));
-    auto evtLabel = std::string(*String::Utf8Value(info[2]->ToString()));
-    auto evtValue = info[3]->ToNumber()->Int32Value();
+    auto evtType = info[0]->ToNumber()->Int32Value();
+    auto evtCategory = std::string(*String::Utf8Value(info[1]->ToString()));
+    auto evtAction = std::string(*String::Utf8Value(info[2]->ToString()));
+    auto evtLabel = std::string(*String::Utf8Value(info[3]->ToString()));
+    auto evtValue = info[4]->ToNumber()->Int32Value();
 
     auto evt = ObjectTemplate::New(isolate);
     evt->SetInternalFieldCount(1);
 
     auto evtInst = evt->NewInstance();
-    auto evtNative = new DataWrapper<std::shared_ptr<AnalyticsEvent>>(std::make_shared<AnalyticsEvent>(evtCategory, evtAction, evtLabel, evtValue));
+    AnalyticsEvent* evtInstance = nullptr;
+
+    if (evtType == static_cast<int>(AnalyticsEventTypeEnum::CustomEvent))
+    {
+        evtInstance = new AnalyticsEvent(evtCategory, evtAction, evtLabel, evtValue);
+    }
+    else
+    {
+        evtInstance = new AnalyticsScreenEvent(evtCategory);
+    }
+
+    auto evtNative = new DataWrapper<std::shared_ptr<AnalyticsEvent>>(std::shared_ptr<AnalyticsEvent>(evtInstance));
     evtInst->SetInternalField(0, External::New(isolate, evtNative));
 
     info.GetReturnValue().Set(evtInst);

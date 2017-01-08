@@ -10,7 +10,16 @@ describe("This tests suite ensures menu logic business logic works as expected."
             "label": "Preferences",
             "type": "item",
             "data": {
-                "evtName": "js:menuitems:openPreferences"
+                "evtName": "js:menuitems:openPreferences",
+                "screenName": "preferences"
+            }
+        }, {
+            "icon": "/Assets/icons/menuitems/genius.png",
+            "label": "Genius news",
+            "type": "item",
+            "data": {
+                "evtName": "js:menuitems:openGenius",
+                "screenName": "genius news"
             }
         }];
         this._menuContent = JSON.stringify(this._menuContentObj);
@@ -34,8 +43,9 @@ describe("This tests suite ensures menu logic business logic works as expected."
             return evtData;
         };
         this._navigationManager = jasmine.createSpyObj("NavigationManager", ["navigateTo"]);
+        this._analyticsLogic = jasmine.createSpyObj("AnalyticsLogic", ["logEvent"]);
         this._menuLogic = new MenuLogic(this._eventLoop, (evtData) => this._buildEventData(evtData),
-                                        this._navigationManager);
+                                        this._navigationManager, this._analyticsLogic);
         this._menuLogic.init();
     });
 
@@ -55,12 +65,16 @@ describe("This tests suite ensures menu logic business logic works as expected."
     });
 
     it("Open preferences ok.", () => {
-        this._eventLoop.emit(EventNames.MENUITEMS_OPENPREFERENCES);
+        const preferencesDesc = this._menuContentObj[0];
+        this._eventLoop.emit(EventNames.MENUITEMS_OPENPREFERENCES, {evtData: JSON.stringify(preferencesDesc)});
+        expect(this._analyticsLogic.logEvent).toHaveBeenCalledWith({"screenName": preferencesDesc.data.screenName});
         expect(this._navigationManager.navigateTo).toHaveBeenCalledWith(EventNames.MENUITEMS_OPENPREFERENCES);
     });
 
     it("Open genius news ok.", () => {
-        this._eventLoop.emit(EventNames.MENUITEMS_OPENGENIUS);
+        const geniusNewsDesc = this._menuContentObj[1];
+        this._eventLoop.emit(EventNames.MENUITEMS_OPENGENIUS, {evtData: JSON.stringify(geniusNewsDesc)});
+        expect(this._analyticsLogic.logEvent).toHaveBeenCalledWith({"screenName": geniusNewsDesc.data.screenName});
         expect(this._navigationManager.navigateTo).toHaveBeenCalledWith(EventNames.MENUITEMS_OPENGENIUS);
     });
 });

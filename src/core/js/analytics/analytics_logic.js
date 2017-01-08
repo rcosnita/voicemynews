@@ -8,6 +8,9 @@
 
 const InvalidArgumentException = require("js/exceptions/invalid_argument").InvalidArgumentException;
 
+const SCREEN_EVENT_TYPE = 1;
+const CUSTOM_EVENT_TYPE = 2;
+
 /**
  * Provides the implementation for the analytics layer. From js code, we can track various events using the same
  * code as in the native / ui side.
@@ -29,30 +32,41 @@ class Analytics {
      * @param {String} evt.eventCategory the event category.
      * @param {String} evt.eventAction the event action.
      * @param {String} evt.eventLabel the event label.
-     * @param {String} evt.eventValue the event value.
+     * @param {Number} evt.eventValue the event value.
+     * @param {String} evt.screenName (optional) the screen name we want to track. If this is specified all other properties are optional.
      */
     logEvent(evt) {
+        let evtType = CUSTOM_EVENT_TYPE;
+
         if (!evt) {
             throw new InvalidArgumentException("evt");
         }
 
-        if (!evt.eventCategory) {
-            throw new InvalidArgumentException("evt.eventCategory");
+        if (evt.screenName) {
+            evtType = SCREEN_EVENT_TYPE;
+            evt.eventCategory = evt.screenName;
+            evt.eventAction = "";
+            evt.eventLabel = "";
+            evt.eventValue = 0;
+        } else {
+            if (!evt.eventCategory) {
+                throw new InvalidArgumentException("evt.eventCategory");
+            }
+
+            if (!evt.eventAction) {
+                throw new InvalidArgumentException("evt.eventAction");
+            }
+
+            if (!evt.eventLabel) {
+                throw new InvalidArgumentException("evt.eventLabel");
+            }
+
+            if (!evt.eventValue) {
+                throw new InvalidArgumentException("evt.eventValue");
+            }
         }
 
-        if (!evt.eventAction) {
-            throw new InvalidArgumentException("evt.eventAction");
-        }
-
-        if (!evt.eventLabel) {
-            throw new InvalidArgumentException("evt.eventLabel");
-        }
-
-        if (!evt.eventValue) {
-            throw new InvalidArgumentException("evt.eventValue");
-        }
-
-        const evtNative = this._analyticsNative.buildEvent(evt.eventCategory, evt.eventAction, evt.eventLabel,
+        const evtNative = this._analyticsNative.buildEvent(evtType, evt.eventCategory, evt.eventAction, evt.eventLabel,
             evt.eventValue);
         this._analyticsNative.logEvent(evtNative);
     }

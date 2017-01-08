@@ -18,8 +18,10 @@ public ref class AnalyticsBindingEvent sealed
 using String = Platform::String;
 
 public:
-    AnalyticsBindingEvent(String^ eventCategory, String^ eventAction, String^ eventLabel,
+    AnalyticsBindingEvent(int eventType, String^ eventCategory, String^ eventAction, String^ eventLabel,
         int eventValue);
+
+    int EventType();
 
     String^ EventCategory();
 
@@ -33,6 +35,7 @@ internal:
     operator voicemynews::core::analytics::AnalyticsEvent();
 
 private:
+    int eventType_;
     String^ eventCategory_;
     String^ eventAction_;
     String^ eventLabel_;
@@ -62,7 +65,8 @@ public:
     /**
      * \brief Obtains a native event instance from the received input parameters.
      */
-    AnalyticsBindingEvent^ BuildEvent(String^ evtCategory, String^ evtAction, String^ evtLabel, int evtValue);
+    AnalyticsBindingEvent^ BuildEvent(int evtType, String^ evtCategory, String^ evtAction, String^ evtLabel,
+        int evtValue);
 
     /**
      * \brief Provides a thin wrapper over analytics native LogEvent implementation.
