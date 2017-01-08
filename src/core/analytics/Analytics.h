@@ -35,12 +35,15 @@ public:
 
     int EventValue() const;
 
-    virtual AnalyticsEventTypeEnum EventType() const;
+    AnalyticsEventTypeEnum EventType() const;
 
     /**
      * \brief Builds a json string out of the current event.
      */
     std::string ToJson() const;
+
+protected:
+    AnalyticsEventTypeEnum eventType_;
 
 private:
     std::string eventCategory_;
@@ -56,8 +59,6 @@ class AnalyticsScreenEvent : public AnalyticsEvent
 {
 public:
     AnalyticsScreenEvent(std::string screenName);
-
-    AnalyticsEventTypeEnum EventType() const override;
 };
 
 /**

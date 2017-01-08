@@ -9,6 +9,8 @@
 
 using voicemynews::core::analytics::Analytics;
 using voicemynews::core::analytics::AnalyticsEvent;
+using voicemynews::core::analytics::AnalyticsScreenEvent;
+using voicemynews::core::analytics::AnalyticsEventTypeEnum;
 using voicemynews::core::analytics::WebBrowser;
 
 using voicemynews::app::win10::utils::ConvertPlatformStrToStd;
@@ -23,13 +25,19 @@ namespace app {
 namespace win10 {
 namespace bindings {
 namespace analytics {
-AnalyticsBindingEvent::AnalyticsBindingEvent(String^ eventCategory, String^ eventAction, String^ eventLabel,
-    int eventValue)
-    : eventCategory_(eventCategory),
+AnalyticsBindingEvent::AnalyticsBindingEvent(int eventType, String^ eventCategory, String^ eventAction,
+    String^ eventLabel, int eventValue)
+    : eventType_(eventType),
+    eventCategory_(eventCategory),
     eventAction_(eventAction),
     eventLabel_(eventLabel),
     eventValue_(eventValue)
 {
+}
+
+int AnalyticsBindingEvent::EventType()
+{
+    return eventType_;
 }
 
 AnalyticsBindingEvent::String^ AnalyticsBindingEvent::EventCategory()
@@ -58,7 +66,11 @@ AnalyticsBindingEvent::operator voicemynews::core::analytics::AnalyticsEvent()
     auto eventAction = ConvertPlatformStrToStd(EventAction());
     auto eventLabel = ConvertPlatformStrToStd(EventLabel());
 
-    return AnalyticsEvent(eventCategory, eventAction, eventLabel, EventValue());
+    if (EventType() == static_cast<int>(AnalyticsEventTypeEnum::CustomEvent)) {
+        return AnalyticsEvent(eventCategory, eventAction, eventLabel, EventValue());
+    }
+
+    return AnalyticsScreenEvent(eventCategory);
 }
 
 AnalyticsBinding::AnalyticsBinding() { }
@@ -83,6 +95,7 @@ void AnalyticsBinding::StartAnalytics()
     webBrowser->LoadContent(htmlStd);
 
     auto evt = ref new AnalyticsBindingEvent(
+                static_cast<int>(AnalyticsEventTypeEnum::CustomEvent),
                 ConvertStdStrToPlatform(voicemynews::core::analytics::constants::categories::kAppLifecycle),
                 ConvertStdStrToPlatform(voicemynews::core::analytics::constants::actions::kAppStartAction),
                 ConvertStdStrToPlatform(voicemynews::core::analytics::constants::labels::kAppStartLabel), 1);
@@ -92,9 +105,9 @@ void AnalyticsBinding::StartAnalytics()
     evtLoop->Emit(ConvertStdStrToPlatform(kAnalyticsLayerStarted), ref new EventDataBinding(""));
 }
 
-AnalyticsBindingEvent^ AnalyticsBinding::BuildEvent(String^ evtCategory, String^ evtAction, String^ evtLabel,
-    int evtValue) {
-    return ref new AnalyticsBindingEvent(evtCategory, evtAction, evtLabel, evtValue);
+AnalyticsBindingEvent^ AnalyticsBinding::BuildEvent(int evtType, String^ evtCategory, String^ evtAction,
+    String^ evtLabel, int evtValue) {
+    return ref new AnalyticsBindingEvent(evtType, evtCategory, evtAction, evtLabel, evtValue);
 }
 
 void AnalyticsBinding::LogEvent(AnalyticsBindingEvent^ evt)
