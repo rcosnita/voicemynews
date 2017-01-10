@@ -21,6 +21,8 @@ static jclass EventDataBindingNativeCls = nullptr;
 static voicemynews::core::events::EventLoopPlatform* EventLoopInstance = nullptr;
 static Persistent<Object> *JsLoopInstance = nullptr;
 
+static const int EventCyclesTTL = 10;
+
 /**
  * \brief Provides the js wrapper which can obtain js events wrapped around native events.
  */
@@ -110,9 +112,9 @@ static void EmitJsLoop(const FunctionCallbackInfo<Value>& info)
 
     eventLoopCasted->Emit(evtName, evtData->Data());
 
-    eventLoop->EnqueueTask([evtData]() {
+    eventLoop->EnqueueDelayedTask([evtData]() {
         delete evtData;
-    });
+    }, EventCyclesTTL);
 }
 
 /**
@@ -237,6 +239,27 @@ jstring EventLoopPlatform::On(JNIEnv* env,
     return env->NewStringUTF(handlerKey.c_str());
 }
 
+EventLoopDelayedTask::EventLoopDelayedTask(EventLoopJsTask task, long cycles)
+    : task_(task),
+       cycles_(cycles)
+{
+}
+
+EventLoopJsTask EventLoopDelayedTask::Task() const
+{
+    return task_;
+}
+
+long EventLoopDelayedTask::Cycles() const
+{
+    return cycles_;
+}
+
+void EventLoopDelayedTask::DecreaseCycles(long cyclesCount)
+{
+    cycles_ -= cyclesCount;
+}
+
 void EventLoopPlatform::Off(std::string handlerKey)
 {
     std::unique_lock<std::mutex> listenersLock(registeredListenersMutex_);
@@ -262,9 +285,9 @@ void EventLoopPlatform::Emit(JNIEnv* env,
 
     EventLoop::Emit(evtNameStd, std::make_shared<EventData>(evtDataNative->data()));
 
-    EnqueueTask([evtDataNative]() {
+    EnqueueDelayedTask([evtDataNative]() {
         delete evtDataNative;
-    });
+    }, EventCyclesTTL);
 
     if (processImmediate_) {
         EventLoopPlatform::ProcessEvents();
@@ -280,11 +303,31 @@ void EventLoopPlatform::ProcessEvents()
         task();
         deferredTasks_.pop();
     }
+
+    for (auto& delayedTask : delayedTasks_)
+    {
+        delayedTask.DecreaseCycles(1);
+
+        if (delayedTask.Cycles() <= 0) {
+            delayedTask.Task();
+        }
+    }
+
+    delayedTasks_.erase(std::remove_if(delayedTasks_.begin(), delayedTasks_.end(),
+        [](EventLoopDelayedTask task) {
+            return task.Cycles() <= 0;
+        }), delayedTasks_.end());
 }
 
 void EventLoopPlatform::EnqueueTask(EventLoopJsTask task)
 {
     deferredTasks_.push(task);
+}
+
+void EventLoopPlatform::EnqueueDelayedTask(EventLoopJsTask task, long cyclesCount)
+{
+    EventLoopDelayedTask taskDelayed(task, cyclesCount);
+    delayedTasks_.push_back(taskDelayed);
 }
 
 void EventLoopPlatform::WireToJs(Isolate* isolate, Local<ObjectTemplate> obj)

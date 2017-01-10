@@ -9,6 +9,7 @@
 #include <map>
 #include <mutex>
 #include <queue>
+#include <vector>
 
 namespace voicemynews {
 namespace core {
@@ -17,6 +18,28 @@ namespace events {
  * \brief Provides the signature for deferred tasks queued in the event loop.
  */
 typedef std::function<void()> EventLoopJsTask;
+
+/**
+ * \brief Provides a model of a task which is executed with delay.
+ */
+class EventLoopDelayedTask
+{
+public:
+    EventLoopDelayedTask(EventLoopJsTask task, long cycles);
+
+    EventLoopJsTask Task() const;
+
+    long Cycles() const;
+
+    /**
+     * \brief Allows the decrease of the delay with a given period.
+     */
+    void DecreaseCycles(long cyclesCount);
+
+private:
+    EventLoopJsTask task_;
+    long cycles_;
+};
 
 /**
  * \brief Provides the logic for obtaining specifc instances of event loop for the android platform.
@@ -78,6 +101,13 @@ public:
      */
     void EnqueueTask(EventLoopJsTask task);
 
+    /**
+     * \brief Provides the mechanism for executing the task after the given number of cycles.
+     *
+     * We use this mechanism especially for scheduling garbage collection of objects shared between jvm / c++ / js.
+     */
+    void EnqueueDelayedTask(EventLoopJsTask task, long cycles);
+
 private:
     struct ListenerModel
     {
@@ -108,6 +138,7 @@ private:
     std::mutex registeredListenersMutex_;
     std::map<std::string, ListenerModel> registeredListeners_;
     std::queue<EventLoopJsTask> deferredTasks_;
+    std::vector<EventLoopDelayedTask> delayedTasks_;
 };
 }
 }
