@@ -19,6 +19,8 @@ static jmethodID HttpClientBindingParseResponseGetStatusCode = nullptr;
 static jmethodID HttpClientBindingParseResponseGetContent = nullptr;
 static JavaVM* CurrJavaVM = nullptr;
 
+static const int GcTTLCyclesCount = 5;
+
 JNIEXPORT void JNICALL Java_com_voicemynews_core_bindings_network_HttpClientBinding_initializeNative(
     JNIEnv* env,
     jclass objClass,
@@ -73,13 +75,16 @@ JNIEXPORT void JNICALL Java_com_voicemynews_core_bindings_network_HttpClientBind
 
         auto jsCallbackLocal = jsCallback->Get(isolate);
         jsCallbackLocal->Call(jsCallbackLocal, 1, args);
+    }));
 
+    eventLoop->EnqueueDelayedTask([jsCallback, responseDataGlobal]() {
         JNIEnv* env = nullptr;
         CurrJavaVM->AttachCurrentThread(&env, nullptr);
+
         env->DeleteGlobalRef(responseDataGlobal);
         jsCallback->Reset();
         delete jsCallback;
-    }));
+    }, GcTTLCyclesCount);
 }
 
 /**
@@ -120,10 +125,11 @@ JNIEXPORT void JNICALL Java_com_voicemynews_core_bindings_network_HttpClientBind
     jobject response)
 {
     auto jsCallbackPtr = env->GetLongField(thisObj, HttpClientBindingParseStringContentActionJsCallbackPtr);
+    auto jsCallback = reinterpret_cast<Persistent<Function>*>(jsCallbackPtr);
     auto responseGlobal = env->NewGlobalRef(response);
     auto eventLoop = voicemynews::core::events::EventLoopPlatform::GetInstance();
 
-    eventLoop->EnqueueTask(std::function<void()>([jsCallbackPtr, responseGlobal]() {
+    eventLoop->EnqueueTask(std::function<void()>([jsCallback, responseGlobal]() {
         JNIEnv* env = nullptr;
         CurrJavaVM->AttachCurrentThread(&env, nullptr);
 
@@ -139,14 +145,18 @@ JNIEXPORT void JNICALL Java_com_voicemynews_core_bindings_network_HttpClientBind
         Local<Value> args[1];
         args[0] = objInst;
 
-        auto jsCallback = reinterpret_cast<Persistent<Function>*>(jsCallbackPtr);
         auto jsCallbackLocal = jsCallback->Get(isolate);
         jsCallbackLocal->Call(jsCallbackLocal, 1, args);
+    }));
+
+    eventLoop->EnqueueDelayedTask([jsCallback, responseGlobal]() {
+        JNIEnv* env = nullptr;
+        CurrJavaVM->AttachCurrentThread(&env, nullptr);
 
         env->DeleteGlobalRef(responseGlobal);
         jsCallback->Reset();
         delete jsCallback;
-    }));
+    }, GcTTLCyclesCount);
 }
 
 namespace voicemynews {
